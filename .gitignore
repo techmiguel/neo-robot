@@ -1,0 +1,26 @@
+# Instrucciones de contexto para asistentes IA — no pertenecen al repositorio
+CLAUDE.md
+.claude/
+.cursor/
+.cursorrules
+
+# Artefactos de entorno local
+.vscode/
+
+# Datasheets y documentos de terceros (referenciar externamente)
+docs/*.pdf
+
+# PlatformIO — artefactos de build
+firmware/.pio/
+
+# Python — entorno virtual y artefactos
+servidor/.venv/
+servidor/__pycache__/
+servidor/**/__pycache__/
+servidor/*.pyc
+servidor/.env
+
+# Credenciales y configuración local
+*.env
+secrets.h
+config_local.h

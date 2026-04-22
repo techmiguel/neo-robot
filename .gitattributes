@@ -1,0 +1,17 @@
+# Normalizar line endings: LF en el repo, conversión automática por OS al checkout
+* text=auto
+
+# Forzar LF para código fuente (servidor Python corre en Linux)
+*.cpp    text eol=lf
+*.h      text eol=lf
+*.py     text eol=lf
+*.ini    text eol=lf
+*.md     text eol=lf
+*.json   text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+
+# Binarios — sin conversión
+*.pdf    binary
+*.bin    binary
+*.elf    binary
