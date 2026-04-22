@@ -1,6 +1,6 @@
 /*
  * NEO — Firmware principal
- * Fase 0: Blink básico para verificar toolchain y comunicación con el ESP32-S3.
+ * Fase 1, Módulo 1.1: prueba del OLED SSD1306
  *
  * La placa Le-ESP32-S3-Lipo (Ledo Electronics) tiene un LED RGB WS2812B en GPIO 48.
  * El Arduino core de espressif incluye neopixelWrite() de forma nativa,
@@ -8,28 +8,45 @@
  */
 
 #include <Arduino.h>
+#include "display/oled.h"
 
 // GPIO del LED RGB WS2812B en la Le-ESP32-S3-Lipo
 static const int LED_PIN = 48;
 
+Oled oled;
+
 void setup() {
     Serial.begin(115200);
-    Serial.println("[NEO] Iniciando Fase 0 — Blink (ESP32-S3)");
+    Serial.println("[NEO] Iniciando Módulo 1.1 — OLED");
 
-    // El LED NeoPixel no necesita pinMode(); neopixelWrite lo maneja internamente
+    if (!oled.begin()) {
+        // Si el OLED falla, parpadear en rojo como señal de error
+        while (true) {
+            neopixelWrite(LED_PIN, 50, 0, 0);
+            delay(300);
+            neopixelWrite(LED_PIN, 0, 0, 0);
+            delay(300);
+        }
+    }
+
+    oled.mostrarEstado("Iniciando...");
+    delay(1000);
+
+    oled.mostrar("NEO listo");
+    neopixelWrite(LED_PIN, 0, 50, 0); // verde = OK
 }
 
 void loop() {
-    // Encender en azul: neopixelWrite(pin, rojo, verde, azul)
-    neopixelWrite(LED_PIN, 0, 0, 50);
-    Serial.println("[NEO] LED ON (azul)");
-    delay(500);
+    // Módulo 1.1: ciclo de prueba de textos
+    oled.mostrar("Hola, mundo!");
+    delay(1500);
 
-    // Apagar
-    neopixelWrite(LED_PIN, 0, 0, 0);
-    Serial.println("[NEO] LED OFF");
-    delay(500);
+    oled.mostrar("NEO Robot", "Modulo 1.1 OK");
+    delay(1500);
 
-    // NOTA: delay() es intencional en Fase 0 para mantener el código simple.
-    // A partir de Fase 1 se usarán máquinas de estado o FreeRTOS tasks.
+    oled.mostrarEstado("Escuchando...");
+    delay(1500);
+
+    oled.limpiar();
+    delay(500);
 }
