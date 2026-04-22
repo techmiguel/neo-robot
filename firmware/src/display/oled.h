@@ -3,18 +3,26 @@
  * oled.h — Wrapper para pantalla OLED SSD1306 vía I2C
  * SDA→8, SCL→9, dirección I2C 0x3C
  * Módulo 1.1 (Fase 1)
+ *
+ * Librería: Adafruit SSD1306 + Adafruit GFX
+ * Nota: U8g2 tiene incompatibilidad con ESP32-S3 Arduino core 3.x (constructor
+ * global llama a ets_delay_us() antes de que el reloj de CPU esté configurado).
  */
 
 #include <Arduino.h>
-#include <U8g2lib.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
-// Pines I2C de la Le-ESP32-S3-Lipo
-static const int OLED_SDA = 8;
-static const int OLED_SCL = 9;
+static const int OLED_SDA     = 8;
+static const int OLED_SCL     = 9;
+static const int OLED_WIDTH   = 128;
+static const int OLED_HEIGHT  = 64;
+static const uint8_t OLED_ADDR = 0x3C;
 
 class Oled {
 public:
-    // Inicializa U8g2 y limpia la pantalla. Devuelve true si tuvo éxito.
+    // Inicializa I2C y el display. Devuelve true si tuvo éxito.
     bool begin();
 
     // Imprime una línea de texto (borra contenido previo).
@@ -30,7 +38,6 @@ public:
     void limpiar();
 
 private:
-    // Modo full-buffer: todo el frame se construye en RAM y se envía de golpe.
-    // El constructor recibe (rotación, reset_pin, SDA, SCL).
-    U8G2_SSD1306_128X64_NONAME_F_HW_I2C _display{U8G2_R0, U8X8_PIN_NONE, OLED_SCL, OLED_SDA};
+    // Reset pin = -1 porque el módulo SSD1306 no usa pin de reset externo
+    Adafruit_SSD1306 _display{OLED_WIDTH, OLED_HEIGHT, &Wire, -1};
 };

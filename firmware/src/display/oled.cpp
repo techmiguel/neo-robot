@@ -6,47 +6,55 @@
 #include "oled.h"
 
 bool Oled::begin() {
-    // begin() manda la secuencia de inicialización al SSD1306 por I2C.
-    // Devuelve false si el dispositivo no responde en la dirección 0x3C.
-    if (!_display.begin()) {
+    // Inicializar I2C con los pines de la Le-ESP32-S3-Lipo antes de begin().
+    Wire.begin(OLED_SDA, OLED_SCL);
+
+    // SSD1306_SWITCHCAPVCC: el display genera internamente los 3.3V → 7.5V
+    // que necesita el panel OLED. La alternativa es SSD1306_EXTERNALVCC.
+    if (!_display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR)) {
         Serial.println("[OLED] Error: dispositivo no encontrado en 0x3C");
         return false;
     }
+
     limpiar();
     Serial.println("[OLED] Inicializado correctamente");
     return true;
 }
 
 void Oled::mostrar(const char* texto) {
-    _display.clearBuffer();
-    _display.setFont(u8g2_font_helvR12_tr);
-    // Y=20: la línea base del texto queda centrada verticalmente para una línea
-    _display.drawStr(0, 20, texto);
-    _display.sendBuffer();
+    _display.clearDisplay();
+    _display.setTextSize(2);
+    _display.setTextColor(SSD1306_WHITE);
+    _display.setCursor(0, 10);
+    _display.println(texto);
+    _display.display();
 }
 
 void Oled::mostrar(const char* linea1, const char* linea2) {
-    _display.clearBuffer();
-    _display.setFont(u8g2_font_helvR12_tr);
-    _display.drawStr(0, 20, linea1);
-    // Segunda línea a 38px de la base — deja margen entre líneas
-    _display.drawStr(0, 38, linea2);
-    _display.sendBuffer();
+    _display.clearDisplay();
+    _display.setTextSize(2);
+    _display.setTextColor(SSD1306_WHITE);
+    _display.setCursor(0, 5);
+    _display.println(linea1);
+    _display.setCursor(0, 35);
+    _display.println(linea2);
+    _display.display();
 }
 
 void Oled::mostrarEstado(const char* estado) {
-    _display.clearBuffer();
-    _display.setFont(u8g2_font_helvR08_tr);
-    // Línea separadora superior
-    _display.drawHLine(0, 14, 128);
-    _display.setFont(u8g2_font_helvR12_tr);
-    _display.drawStr(0, 12, "NEO");
-    _display.setFont(u8g2_font_helvR08_tr);
-    _display.drawStr(0, 30, estado);
-    _display.sendBuffer();
+    _display.clearDisplay();
+    _display.setTextSize(2);
+    _display.setTextColor(SSD1306_WHITE);
+    _display.setCursor(0, 0);
+    _display.println("NEO");
+    _display.drawFastHLine(0, 20, OLED_WIDTH, SSD1306_WHITE);
+    _display.setTextSize(1);
+    _display.setCursor(0, 26);
+    _display.println(estado);
+    _display.display();
 }
 
 void Oled::limpiar() {
-    _display.clearBuffer();
-    _display.sendBuffer();
+    _display.clearDisplay();
+    _display.display();
 }
