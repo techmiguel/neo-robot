@@ -22,7 +22,6 @@ import os
 import time
 
 import websockets
-from websockets.server import WebSocketServerProtocol
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 log = logging.getLogger("ws_server")
@@ -37,11 +36,11 @@ CHUNK = 4096   # bytes por chunk al enviar audio de vuelta (~85 ms a 24 kHz)
 MODO = os.getenv("WS_MODO", "echo")
 
 
-async def _enviar_json(ws: WebSocketServerProtocol, data: dict):
+async def _enviar_json(ws, data: dict):
     await ws.send(json.dumps(data, ensure_ascii=False))
 
 
-async def _modo_echo(ws: WebSocketServerProtocol, buffer: bytearray):
+async def _modo_echo(ws, buffer: bytearray):
     """Devuelve el audio recibido tal cual, en chunks."""
     log.info(f"[echo] devolviendo {len(buffer)} bytes en chunks de {CHUNK}")
     for i in range(0, len(buffer), CHUNK):
@@ -49,7 +48,7 @@ async def _modo_echo(ws: WebSocketServerProtocol, buffer: bytearray):
     await _enviar_json(ws, {"cmd": "fin_respuesta"})
 
 
-async def _modo_pipeline(ws: WebSocketServerProtocol, buffer: bytearray):
+async def _modo_pipeline(ws, buffer: bytearray):
     """Corre STT → LLM → TTS y envía el audio resultante."""
     from src.stt.transcriber import transcribe
     from src.llm.client      import ask
@@ -79,7 +78,7 @@ async def _modo_pipeline(ws: WebSocketServerProtocol, buffer: bytearray):
         await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
 
 
-async def handler(ws: WebSocketServerProtocol):
+async def handler(ws):
     remote = ws.remote_address
     log.info(f"Conexión desde {remote}")
     await _enviar_json(ws, {"cmd": "listo"})
