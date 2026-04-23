@@ -2,3 +2,6 @@
 .vscode/
 .claude/
 CLAUDE.md
+src/demos/bocina/frase.h
+build_output.txt
+ffmpeg/

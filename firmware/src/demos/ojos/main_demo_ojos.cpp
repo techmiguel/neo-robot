@@ -15,8 +15,6 @@
 #include "display/face.h"
 #include "audio/microphone.h"
 
-static const int LED_PIN = 48;
-
 static Oled*       oled = nullptr;
 static Face*       face = nullptr;
 static Microphone* mic  = nullptr;
@@ -28,12 +26,8 @@ void setup() {
     static Oled oled_instance;
     oled = &oled_instance;
     if (!oled->begin()) {
-        while (true) {
-            neopixelWrite(LED_PIN, 50, 0, 0);
-            delay(300);
-            neopixelWrite(LED_PIN, 0, 0, 0);
-            delay(300);
-        }
+        Serial.println("[DEMO] Error: OLED");
+        while (true) delay(1000);
     }
 
     static Face face_instance(oled->rawDisplay());
@@ -44,15 +38,9 @@ void setup() {
     mic = &mic_instance;
     if (!mic->begin()) {
         oled->mostrarEstado("Error: mic");
-        while (true) {
-            neopixelWrite(LED_PIN, 50, 0, 50);
-            delay(300);
-            neopixelWrite(LED_PIN, 0, 0, 0);
-            delay(300);
-        }
+        while (true) delay(1000);
     }
 
-    neopixelWrite(LED_PIN, 0, 20, 0);
     Serial.println("[DEMO] Listo — habla cerca del micrófono");
 }
 
@@ -77,11 +65,6 @@ void loop() {
     } else {
         face->mostrarAsombro(asombro);
     }
-
-    // LED según nivel
-    if      (asombro == 0) neopixelWrite(LED_PIN, 0,  20, 0);   // verde
-    else if (asombro == 1) neopixelWrite(LED_PIN, 0,  0,  20);  // azul
-    else                   neopixelWrite(LED_PIN, 20, 20, 0);   // amarillo
 
     Serial.printf("[DEMO] RMS bruto: %4d  suavizado: %5.1f  nivel: %d\n",
                   rms_raw, rms_suave, asombro);
