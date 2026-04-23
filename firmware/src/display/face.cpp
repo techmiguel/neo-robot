@@ -100,6 +100,35 @@ void Face::_drawEye(int cx, int cy, int pupilOx, int pupilOy, int blinkLevel, bo
     }
 }
 
+void Face::mostrarAsombro(int nivel) {
+    _dsp.clearDisplay();
+    switch (nivel) {
+        case 1:
+            _drawEyeAsombro(EYE_L_X, EYE_Y, 21, 5);
+            _drawEyeAsombro(EYE_R_X, EYE_Y, 21, 5);
+            break;
+        case 2: {
+            // Cejas alzadas como líneas sobre los ojos
+            _dsp.drawFastHLine(EYE_L_X - 12, EYE_Y - 28, 24, SSD1306_WHITE);
+            _dsp.drawFastHLine(EYE_R_X - 12, EYE_Y - 28, 24, SSD1306_WHITE);
+            _drawEyeAsombro(EYE_L_X, EYE_Y, 24, 3);
+            _drawEyeAsombro(EYE_R_X, EYE_Y, 24, 3);
+            break;
+        }
+        default:
+            _drawEye(EYE_L_X, EYE_Y, 0, 0, 0, false);
+            _drawEye(EYE_R_X, EYE_Y, 0, 0, 0, false);
+            break;
+    }
+    _dsp.display();
+}
+
+void Face::_drawEyeAsombro(int cx, int cy, int eye_r, int pupil_r) {
+    _dsp.fillCircle(cx, cy, eye_r, SSD1306_WHITE);
+    _dsp.fillCircle(cx, cy, pupil_r, SSD1306_BLACK);
+    _dsp.fillCircle(cx - 2, cy - 2, 1, SSD1306_WHITE);  // reflejo de luz
+}
+
 void Face::_render(int pupilOx, int pupilOy, int blinkLevel, bool happy) {
     _dsp.clearDisplay();
     _drawEye(EYE_L_X, EYE_Y, pupilOx, pupilOy, blinkLevel, happy);

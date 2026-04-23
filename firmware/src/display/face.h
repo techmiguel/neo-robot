@@ -27,6 +27,9 @@ public:
     // Llamar en cada iteración de loop(). Avanza la animación según el tiempo.
     void update(unsigned long now);
 
+    // Muestra cara de asombro según nivel (0=normal, 1=sorprendido, 2=impactado).
+    void mostrarAsombro(int nivel);
+
 private:
     Adafruit_SSD1306& _dsp;
     AnimState         _state;
@@ -43,5 +46,6 @@ private:
 
     void _render(int pupilOx, int pupilOy, int blinkLevel, bool happy);
     void _drawEye(int cx, int cy, int pupilOx, int pupilOy, int blinkLevel, bool happy);
+    void _drawEyeAsombro(int cx, int cy, int eye_r, int pupil_r);
     void _pickNextState(unsigned long now);
 };
