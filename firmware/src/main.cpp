@@ -1,6 +1,6 @@
 /*
  * NEO — Firmware principal
- * Fase 1, Módulo 1.1: prueba del OLED SSD1306
+ * Fase 1, Módulo 1.1+: OLED SSD1306 con animación de ojos robot
  *
  * La placa Le-ESP32-S3-Lipo (Ledo Electronics) tiene un LED RGB WS2812B en GPIO 48.
  *
@@ -14,14 +14,16 @@
 
 #include <Arduino.h>
 #include "display/oled.h"
+#include "display/face.h"
 
 static const int LED_PIN = 48;
 
 static Oled* oled = nullptr;
+static Face* face = nullptr;
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("[NEO] Iniciando Módulo 1.1 — OLED");
+    Serial.println("[NEO] Iniciando — OLED + animación");
 
     static Oled oled_instance;
     oled = &oled_instance;
@@ -35,22 +37,14 @@ void setup() {
         }
     }
 
-    oled->mostrarEstado("Iniciando...");
-    delay(1000);
-    oled->mostrar("NEO listo");
+    static Face face_instance(oled->rawDisplay());
+    face = &face_instance;
+    face->begin();
+
     neopixelWrite(LED_PIN, 0, 50, 0);
+    Serial.println("[NEO] Listo");
 }
 
 void loop() {
-    oled->mostrar("Hola, mundo!");
-    delay(1500);
-
-    oled->mostrar("NEO Robot", "Mod 1.1 OK");
-    delay(1500);
-
-    oled->mostrarEstado("Escuchando...");
-    delay(1500);
-
-    oled->limpiar();
-    delay(500);
+    face->update(millis());
 }

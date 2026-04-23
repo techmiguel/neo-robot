@@ -37,6 +37,9 @@ public:
     // Limpia la pantalla.
     void limpiar();
 
+    // Acceso directo al display para módulos de animación (Face, etc.).
+    Adafruit_SSD1306& rawDisplay() { return _display; }
+
 private:
     // Reset pin = -1 porque el módulo SSD1306 no usa pin de reset externo
     Adafruit_SSD1306 _display{OLED_WIDTH, OLED_HEIGHT, &Wire, -1};
