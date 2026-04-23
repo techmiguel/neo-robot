@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.wav
+respuesta.wav
+CLAUDE.md
