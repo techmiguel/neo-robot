@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SAMPLE_RATE   = 24000
+SAMPLE_RATE   = 16000  # rate del micrófono INMP441 en el ESP32
 _PROVIDER     = os.getenv("STT_PROVIDER", "groq")
 
 

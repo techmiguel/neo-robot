@@ -20,8 +20,11 @@ import json
 import logging
 import os
 import time
+import wave
 
 import websockets
+
+MIC_SAMPLE_RATE = 16000  # rate del INMP441 en el ESP32
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 log = logging.getLogger("ws_server")
@@ -40,8 +43,18 @@ async def _enviar_json(ws, data: dict):
     await ws.send(json.dumps(data, ensure_ascii=False))
 
 
+def _guardar_wav(pcm: bytes, ruta: str, sample_rate: int = MIC_SAMPLE_RATE):
+    with wave.open(ruta, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(sample_rate)
+        w.writeframes(pcm)
+    log.info(f"[wav] guardado {ruta} ({len(pcm)//2} muestras, {len(pcm)/sample_rate/2:.2f}s)")
+
+
 async def _modo_echo(ws, buffer: bytearray):
-    """Devuelve el audio recibido tal cual, en chunks."""
+    """Guarda WAV para verificación y devuelve el audio recibido."""
+    _guardar_wav(bytes(buffer), "grabacion_esp32.wav")
     log.info(f"[echo] devolviendo {len(buffer)} bytes en chunks de {CHUNK}")
     for i in range(0, len(buffer), CHUNK):
         await ws.send(bytes(buffer[i:i + CHUNK]))
@@ -58,7 +71,8 @@ async def _modo_pipeline(ws, buffer: bytearray):
     t0 = time.time()
 
     try:
-        transcripcion = transcribe(bytes(buffer))
+        _guardar_wav(bytes(buffer), "grabacion_esp32.wav")
+        transcripcion = transcribe(bytes(buffer), sample_rate=MIC_SAMPLE_RATE)
         log.info(f"[STT] {time.time()-t0:.2f}s → \"{transcripcion}\"")
 
         respuesta = ask(transcripcion)
