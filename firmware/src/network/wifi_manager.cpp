@@ -97,6 +97,7 @@ bool WifiManager::_intentarConexion(const String& ssid, const String& pass) {
         }
         delay(200);
     }
+
     return true;
 }
 
