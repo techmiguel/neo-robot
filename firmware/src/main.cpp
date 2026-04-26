@@ -9,6 +9,7 @@
 
 #include <Arduino.h>
 #include <cstring>
+#include <esp_heap_caps.h>
 #include "display/oled.h"
 #include "network/wifi_manager.h"
 #include "network/ws_client.h"
@@ -16,14 +17,15 @@
 #include "audio/speaker.h"
 #include "input/trigger.h"
 
-static const char*    SERVIDOR_HOST    = "172.20.10.8";
-static const uint16_t SERVIDOR_PORT    = 8765;
-static const uint32_t DURACION_GRAB_MS = 3000;
+static const char*    SERVIDOR_HOST   = "172.20.10.8";
+static const uint16_t SERVIDOR_PORT   = 8765;
 
-// Buffer completo de grabación en SRAM interna.
-// 3s × 16000 Hz × 2 bytes = 96 KB — sin PSRAM ni fragmentación dinámica.
-static const size_t AUDIO_MUESTRAS = DURACION_GRAB_MS * 16000 / 1000;
-static int16_t audio_buf[AUDIO_MUESTRAS];
+static const size_t PLAY_MUESTRAS    = 30 * 16000;  // 480000 (30s, PSRAM)
+static const size_t PLAY_MUESTRAS_FB = 5  * 16000;  // 80000  (5s,  SRAM fallback)
+
+// Buffer asignado en setup(): PSRAM si está disponible (30s), SRAM si no (5s).
+static int16_t* audio_buf     = nullptr;
+static size_t   audio_buf_cap = 0;   // capacidad en bytes
 
 static Oled*        oled    = nullptr;
 static WifiManager* wifi    = nullptr;
@@ -33,8 +35,6 @@ static Speaker*     spk     = nullptr;
 static Trigger*     trigger = nullptr;
 static bool         wifiOk  = false;
 
-// Buffer de reproducción: reutiliza el mismo bloque de 96 KB que la grabación.
-// La respuesta TTS llega tras el envío, nunca simultáneamente.
 static size_t play_bytes = 0;
 static bool   play_ready = false;
 
@@ -53,42 +53,121 @@ void reproducirRespuesta() {
     Serial.println("[NEO] Reproducción completa");
 }
 
+// ── Parámetros VAD ────────────────────────────────────────────────────────────
+// Cuántos bloques iniciales se usan solo para medir el ruido ambiente.
+static const uint16_t VAD_BLOQUES_CAL   = 32;     // ~0.5s de calibración
+// El RMS debe superar este múltiplo del ruido de fondo para iniciar grabación.
+static const float    VAD_FACTOR_INICIO = 6.0f;
+// El RMS debe bajar de este múltiplo del ruido de fondo para contar silencio.
+static const float    VAD_FACTOR_FIN    = 2.5f;
+// Silencio sostenido antes de cerrar la grabación.
+static const uint32_t VAD_HOLD_MS       = 1500;
+// Tiempo máximo de espera antes de que aparezca voz.
+static const uint32_t VAD_TIMEOUT_MS    = 5000;
+// Duración máxima de grabación (limitada por el buffer disponible).
+static const uint32_t VAD_MAX_GRAB_MS   = 30000;
+// Duración mínima para considerar la grabación válida (evita falsos disparos).
+static const uint32_t VAD_MIN_GRAB_MS   = 400;
+
 void grabarYEnviar() {
     play_bytes = 0;
     play_ready = false;
 
-    // ── Fase 1: grabación pura (sin llamadas WiFi) ──────────────────────
-    oled->mostrar("NEO", "Escuchando...");
-    Serial.println("[NEO] Grabando...");
-
-    size_t offset = 0;
     int16_t tmp[Microphone::BLOCK_SIZE];
-    uint32_t inicio = millis();
 
-    while (millis() - inicio < DURACION_GRAB_MS
-           && offset + Microphone::BLOCK_SIZE <= AUDIO_MUESTRAS) {
-        if (mic->leer(tmp)) {
-            memcpy(audio_buf + offset, tmp, Microphone::BLOCK_SIZE * sizeof(int16_t));
-            offset += Microphone::BLOCK_SIZE;
+    // ── Fase 1: calibración del ruido de fondo ───────────────────────────────
+    oled->mostrar("NEO", "Escuchando...");
+    Serial.println("[VAD] Calibrando ruido de fondo...");
 
-            // Diagnóstico: RMS cada ~0.5s para verificar captura
-            if (offset % (Microphone::BLOCK_SIZE * 32) == 0) {
-                Serial.printf("[MIC] RMS: %d  muestras: %u\n",
-                              Microphone::rms(tmp), offset);
-            }
+    float suma_cal = 0;
+    for (uint16_t i = 0; i < VAD_BLOQUES_CAL; i++) {
+        if (mic->leer(tmp)) suma_cal += Microphone::rms(tmp);
+    }
+    const float noise_floor   = suma_cal / VAD_BLOQUES_CAL;
+    const float umbral_inicio = noise_floor * VAD_FACTOR_INICIO;
+    const float umbral_fin    = noise_floor * VAD_FACTOR_FIN;
+
+    Serial.printf("[VAD] Ruido base: %.1f  umbral inicio: %.1f  fin: %.1f\n",
+                  noise_floor, umbral_inicio, umbral_fin);
+
+    // ── Fase 2: espera de voz ────────────────────────────────────────────────
+    const uint32_t t_espera = millis();
+    bool voz_detectada = false;
+
+    while (millis() - t_espera < VAD_TIMEOUT_MS) {
+        if (mic->leer(tmp) && Microphone::rms(tmp) > umbral_inicio) {
+            voz_detectada = true;
+            break;
         }
     }
 
-    Serial.printf("[NEO] Grabado: %u muestras (%.2fs)\n",
-                  offset, offset / 16000.0f);
+    if (!voz_detectada) {
+        oled->mostrar("NEO", "Listo");
+        Serial.println("[VAD] Timeout — sin voz detectada");
+        return;
+    }
 
-    // ── Fase 2: envío por WebSocket ─────────────────────────────────────
+    // ── Fase 3: grabación con detección de fin por silencio ──────────────────
+    oled->mostrar("NEO", "Grabando...");
+    Serial.println("[VAD] Voz detectada — grabando");
+
+    // Copia el bloque que disparó el inicio (ya contiene voz).
+    size_t offset = Microphone::BLOCK_SIZE;
+    memcpy(audio_buf, tmp, offset * sizeof(int16_t));
+
+    const size_t   max_muestras = audio_buf_cap / sizeof(int16_t);
+    const uint32_t t_inicio     = millis();
+    uint32_t       t_silencio   = 0;
+    // RMS suavizado por IIR: amortigua picos puntuales de ruido que de otro modo
+    // reiniciarían el temporizador de silencio en cada bloque con varianza alta.
+    float rms_suavizado = umbral_inicio;  // arranca en zona "activa" (ya hay voz)
+
+    while (offset + Microphone::BLOCK_SIZE <= max_muestras) {
+        if (!mic->leer(tmp)) continue;
+
+        memcpy(audio_buf + offset, tmp, Microphone::BLOCK_SIZE * sizeof(int16_t));
+        offset += Microphone::BLOCK_SIZE;
+
+        const uint32_t ahora      = millis();
+        const uint32_t grabado_ms = ahora - t_inicio;
+
+        if (grabado_ms >= VAD_MAX_GRAB_MS) {
+            Serial.println("[VAD] Límite de 30s alcanzado");
+            break;
+        }
+
+        // Suavizado exponencial: un solo bloque ruidoso no resetea el temporizador.
+        rms_suavizado = rms_suavizado * 0.7f + (float)Microphone::rms(tmp) * 0.3f;
+
+        if (rms_suavizado < umbral_fin) {
+            if (t_silencio == 0) t_silencio = ahora;
+            if (ahora - t_silencio >= VAD_HOLD_MS) {
+                Serial.println("[VAD] Silencio prolongado — fin de grabación");
+                break;
+            }
+        } else {
+            t_silencio = 0;
+        }
+    }
+
+    const uint32_t duracion_ms = (offset * 1000) / 16000;
+
+    // Descarta grabaciones demasiado cortas (falsos disparos por ruido puntual)
+    if (duracion_ms < VAD_MIN_GRAB_MS) {
+        oled->mostrar("NEO", "Listo");
+        Serial.printf("[VAD] Grabación muy corta (%ums) — descartada\n", duracion_ms);
+        return;
+    }
+
+    Serial.printf("[NEO] Grabado: %u muestras (%.2fs)\n", offset, offset / 16000.0f);
+
+    // ── Fase 4: envío por WebSocket ──────────────────────────────────────────
     oled->mostrar("NEO", "Enviando...");
 
-    const size_t CHUNK_BYTES = Microphone::BLOCK_SIZE * sizeof(int16_t);
-    const uint8_t* ptr = reinterpret_cast<const uint8_t*>(audio_buf);
-    const size_t total_bytes = offset * sizeof(int16_t);
-    size_t enviados = 0;
+    const size_t   CHUNK_BYTES  = Microphone::BLOCK_SIZE * sizeof(int16_t);
+    const uint8_t* ptr          = reinterpret_cast<const uint8_t*>(audio_buf);
+    const size_t   total_bytes  = offset * sizeof(int16_t);
+    size_t         enviados     = 0;
 
     for (size_t i = 0; i < total_bytes; i += CHUNK_BYTES) {
         size_t n = min(CHUNK_BYTES, total_bytes - i);
@@ -105,6 +184,18 @@ void grabarYEnviar() {
 void setup() {
     Serial.begin(115200);
     Serial.println("[NEO] Módulo 3.3 — Pipeline completo (graba → envía → reproduce)");
+
+    // Intenta asignar el buffer en PSRAM (10s); si no hay PSRAM, usa SRAM (3s).
+    audio_buf = (int16_t*)heap_caps_malloc(PLAY_MUESTRAS * sizeof(int16_t),
+                                            MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+    if (audio_buf) {
+        audio_buf_cap = PLAY_MUESTRAS * sizeof(int16_t);
+        Serial.println("[NEO] Buffer de audio: PSRAM (30s)");
+    } else {
+        audio_buf = (int16_t*)malloc(PLAY_MUESTRAS_FB * sizeof(int16_t));
+        audio_buf_cap = PLAY_MUESTRAS_FB * sizeof(int16_t);
+        Serial.println("[NEO] Buffer de audio: SRAM (5s) — sin PSRAM disponible");
+    }
 
     static Oled oled_instance;
     oled = &oled_instance;
@@ -142,8 +233,7 @@ void setup() {
         else if (msg.indexOf("error")        >= 0) oled->mostrarEstado("Error servidor");
     });
     ws->onBinario([](const uint8_t* data, size_t len) {
-        // Acumula chunks PCM de la respuesta TTS en el buffer de audio.
-        size_t espacio = sizeof(audio_buf) - play_bytes;
+        size_t espacio = audio_buf_cap - play_bytes;
         size_t n = (len < espacio) ? len : espacio;
         memcpy(reinterpret_cast<uint8_t*>(audio_buf) + play_bytes, data, n);
         play_bytes += n;
