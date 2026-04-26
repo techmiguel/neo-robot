@@ -1,9 +1,10 @@
 /*
  * NEO — Firmware principal
- * Módulo 3.2: botón BOOT → graba 3s en RAM → envía audio por WebSocket.
+ * Módulo 3.3: pipeline completo — graba → envía → recibe TTS → reproduce.
  *
- * La grabación y el envío son fases separadas para evitar que el DMA de
- * I2S se corrompa por las interrupciones del stack WiFi.
+ * Grabación y envío son fases separadas para evitar que el DMA I2S se
+ * corrompa por las interrupciones del stack WiFi. La reproducción ocurre
+ * en loop() tras acumular todos los chunks binarios del servidor.
  */
 
 #include <Arduino.h>
@@ -12,6 +13,7 @@
 #include "network/wifi_manager.h"
 #include "network/ws_client.h"
 #include "audio/microphone.h"
+#include "audio/speaker.h"
 #include "input/trigger.h"
 
 static const char*    SERVIDOR_HOST    = "172.20.10.8";
@@ -27,10 +29,34 @@ static Oled*        oled    = nullptr;
 static WifiManager* wifi    = nullptr;
 static WsClient*    ws      = nullptr;
 static Microphone*  mic     = nullptr;
+static Speaker*     spk     = nullptr;
 static Trigger*     trigger = nullptr;
 static bool         wifiOk  = false;
 
+// Buffer de reproducción: reutiliza el mismo bloque de 96 KB que la grabación.
+// La respuesta TTS llega tras el envío, nunca simultáneamente.
+static size_t play_bytes = 0;
+static bool   play_ready = false;
+
+void reproducirRespuesta() {
+    oled->mostrar("NEO", "Hablando...");
+    Serial.printf("[NEO] Reproduciendo: %u bytes (%.2fs)\n",
+                  play_bytes, play_bytes / (16000.0f * 2));
+
+    const size_t muestras = play_bytes / sizeof(int16_t);
+    for (size_t i = 0; i + Speaker::BLOCK_SIZE <= muestras; i += Speaker::BLOCK_SIZE) {
+        spk->reproducir(audio_buf + i);
+    }
+
+    play_bytes = 0;
+    oled->mostrar("NEO", "Listo");
+    Serial.println("[NEO] Reproducción completa");
+}
+
 void grabarYEnviar() {
+    play_bytes = 0;
+    play_ready = false;
+
     // ── Fase 1: grabación pura (sin llamadas WiFi) ──────────────────────
     oled->mostrar("NEO", "Escuchando...");
     Serial.println("[NEO] Grabando...");
@@ -78,7 +104,7 @@ void grabarYEnviar() {
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("[NEO] Módulo 3.2 — Audio streaming (record-then-send)");
+    Serial.println("[NEO] Módulo 3.3 — Pipeline completo (graba → envía → reproduce)");
 
     static Oled oled_instance;
     oled = &oled_instance;
@@ -99,14 +125,28 @@ void setup() {
         while (true) delay(1000);
     }
 
+    static Speaker spk_instance;
+    spk = &spk_instance;
+    if (!spk->begin()) {
+        oled->mostrarEstado("Error: speaker");
+        while (true) delay(1000);
+    }
+
     static WsClient ws_instance;
     ws = &ws_instance;
     ws->onTexto([](const String& msg) {
         Serial.printf("[WS] %s\n", msg.c_str());
         if      (msg.indexOf("listo")        >= 0) oled->mostrar("NEO", "Listo");
         else if (msg.indexOf("procesando")   >= 0) oled->mostrar("NEO", "Procesando...");
-        else if (msg.indexOf("fin_respuesta")>= 0) oled->mostrar("NEO", "Listo");
+        else if (msg.indexOf("fin_respuesta")>= 0) play_ready = true;
         else if (msg.indexOf("error")        >= 0) oled->mostrarEstado("Error servidor");
+    });
+    ws->onBinario([](const uint8_t* data, size_t len) {
+        // Acumula chunks PCM de la respuesta TTS en el buffer de audio.
+        size_t espacio = sizeof(audio_buf) - play_bytes;
+        size_t n = (len < espacio) ? len : espacio;
+        memcpy(reinterpret_cast<uint8_t*>(audio_buf) + play_bytes, data, n);
+        play_bytes += n;
     });
 
     oled->mostrarEstado("Conectando WS...");
@@ -136,4 +176,9 @@ void loop() {
 
     ws->tick();
     trigger->tick();
+
+    if (play_ready) {
+        play_ready = false;
+        reproducirRespuesta();
+    }
 }

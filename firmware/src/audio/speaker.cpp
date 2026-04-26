@@ -8,8 +8,8 @@
 bool Speaker::begin() {
     const i2s_config_t cfg = {
         .mode                 = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
-        .sample_rate          = 24000,
-        // 32 bits por frame: el PM5100A (DAC 24-bit) necesita frames de 32 bits
+        .sample_rate          = 16000,  // igual que micrófono; TTS resampleado en servidor
+        // 32 bits por frame: el PCM5100A (DAC 24-bit) necesita frames de 32 bits
         // para sincronizar su PLL interno. El audio de 16 bits va en los MSBs.
         .bits_per_sample      = I2S_BITS_PER_SAMPLE_32BIT,
         .channel_format       = I2S_CHANNEL_FMT_RIGHT_LEFT,
@@ -17,7 +17,7 @@ bool Speaker::begin() {
         .intr_alloc_flags     = ESP_INTR_FLAG_LEVEL1,
         .dma_buf_count        = 8,
         .dma_buf_len          = 512,
-        .use_apll             = false,
+        .use_apll             = true,
         .tx_desc_auto_clear   = true,
         .fixed_mclk           = 0,
     };

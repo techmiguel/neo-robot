@@ -9,7 +9,7 @@ import miniaudio
 import edge_tts
 
 VOZ_DEFAULT = "es-MX-JorgeNeural"
-SAMPLE_RATE  = 24000
+SAMPLE_RATE  = 16000  # igual que el micrófono → el ESP32 usa un solo rate para I2S
 
 
 async def _sintetizar_mp3(texto: str, voz: str) -> bytes:
