@@ -27,6 +27,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from src.commands.router import CommandRouter
+_router = CommandRouter()
+
 MIC_SAMPLE_RATE = 16000  # rate del INMP441 en el ESP32
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
@@ -62,6 +65,23 @@ async def _modo_echo(ws, buffer: bytearray):
     for i in range(0, len(buffer), CHUNK):
         await ws.send(bytes(buffer[i:i + CHUNK]))
     await _enviar_json(ws, {"cmd": "fin_respuesta"})
+
+
+async def _modo_consulta(ws, tipo: str, args: dict):
+    """Despacha un comando estructurado al handler y devuelve audio TTS."""
+    from src.tts.synthesizer import synthesize
+    await _enviar_json(ws, {"cmd": "procesando"})
+    t0 = time.time()
+    try:
+        texto = await _router.handle(tipo, args)
+        log.info(f"[consulta:{tipo}] {time.time()-t0:.2f}s → \"{texto}\"")
+        pcm = await synthesize(texto)
+        for i in range(0, len(pcm), CHUNK):
+            await ws.send(pcm[i:i + CHUNK])
+        await _enviar_json(ws, {"cmd": "fin_respuesta"})
+    except Exception as e:
+        log.error(f"[consulta:{tipo}] error: {e}")
+        await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
 
 
 async def _modo_pipeline(ws, buffer: bytearray):
@@ -119,6 +139,12 @@ async def handler(ws):
                     else:
                         await _modo_pipeline(ws, buffer)
                     buffer.clear()
+
+                elif cmd == "consulta":
+                    tipo = data.get("tipo", "")
+                    args = data.get("args", {})
+                    log.info(f"consulta directa: tipo={tipo} args={args}")
+                    await _modo_consulta(ws, tipo, args)
 
                 elif cmd == "cancelar":
                     log.info("grabación cancelada")
