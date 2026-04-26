@@ -21,12 +21,9 @@ async def _sintetizar_mp3(texto: str, voz: str) -> bytes:
     return mp3
 
 
-def synthesize(texto: str, voz: str = VOZ_DEFAULT) -> bytes:
-    """Convierte texto en PCM crudo (24 kHz, mono, 16-bit, little-endian).
-
-    El formato de salida es el que espera el ESP32 y el que devuelve el micrófono.
-    """
-    mp3 = asyncio.run(_sintetizar_mp3(texto, voz))
+async def synthesize(texto: str, voz: str = VOZ_DEFAULT) -> bytes:
+    """Convierte texto en PCM crudo (16 kHz, mono, 16-bit, little-endian)."""
+    mp3 = await _sintetizar_mp3(texto, voz)
     decoded = miniaudio.decode(
         mp3,
         output_format=miniaudio.SampleFormat.SIGNED16,

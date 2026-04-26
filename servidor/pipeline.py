@@ -9,6 +9,7 @@ Uso:
 Genera respuesta.wav con el audio de respuesta.
 """
 
+import asyncio
 import sys
 import os
 import time
@@ -59,7 +60,7 @@ def run(texto_directo: str | None = None, wav_entrada: str | None = None):
     # — Etapa 3: TTS —
     print("[TTS]  Sintetizando...")
     t_tts = time.time()
-    pcm_salida = synthesize(respuesta)
+    pcm_salida = asyncio.run(synthesize(respuesta))
     print(f"[TTS]  ({time.time()-t_tts:.2f}s) → {len(pcm_salida)//2} muestras")
 
     # — Guardar resultado —

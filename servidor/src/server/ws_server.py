@@ -23,6 +23,9 @@ import time
 import wave
 
 import websockets
+from dotenv import load_dotenv
+
+load_dotenv()
 
 MIC_SAMPLE_RATE = 16000  # rate del INMP441 en el ESP32
 
@@ -78,7 +81,7 @@ async def _modo_pipeline(ws, buffer: bytearray):
         respuesta = ask(transcripcion)
         log.info(f"[LLM] {time.time()-t0:.2f}s → \"{respuesta}\"")
 
-        pcm_salida = synthesize(respuesta)
+        pcm_salida = await synthesize(respuesta)
         log.info(f"[TTS] {time.time()-t0:.2f}s → {len(pcm_salida)//2} muestras")
 
         for i in range(0, len(pcm_salida), CHUNK):

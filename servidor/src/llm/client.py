@@ -10,9 +10,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SYSTEM_PROMPT = (
-    "Eres NEO, un asistente de voz en español compacto y amigable. "
-    "Responde siempre en español, de forma breve (máximo 2 oraciones). "
-    "Eres conciso porque tu respuesta se convierte en audio."
+    "Eres NEO, asistente de voz. "
+    "Responde SIEMPRE en español con UNA sola oración directa de máximo 20 palabras. "
+    "Sin introducciones, sin disculpas, sin relleno. Solo la respuesta."
 )
 
 
@@ -26,7 +26,7 @@ def _preguntar_groq(prompt: str) -> str:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user",   "content": prompt},
         ],
-        max_tokens=120,
+        max_tokens=60,
         temperature=0.7,
     )
     return resp.choices[0].message.content.strip()
