@@ -2,6 +2,7 @@
 /*
  * microphone.h — Captura de audio via I2S con micrófono INMP441
  * I2S_NUM_0: WS→GPIO15, SCK→GPIO16, SD→GPIO17
+ * INMP441 con L/R a GND → salida en el slot I2S LEFT (modo ONLY_LEFT).
  * Módulo 1.2 (Fase 1)
  */
 
@@ -20,9 +21,7 @@ public:
     // Inicializa el driver I2S. Devuelve true si tuvo éxito.
     bool begin();
 
-    // Lee BLOCK_SIZE muestras en buffer. Bloquea hasta completar (timeout 100 ms).
-    // El INMP441 envía 24 bits en frames de 32 bits (MSB-alineado); esta función
-    // convierte a int16_t tomando los 16 bits más significativos.
+    // Lee BLOCK_SIZE muestras mono en buffer. Bloquea hasta completar (timeout 100 ms).
     bool leer(int16_t* buffer);
 
     // Calcula el nivel RMS de un buffer de BLOCK_SIZE muestras.
@@ -31,6 +30,14 @@ public:
     void end();
 
 private:
-    // Buffer temporal para la lectura raw en 32 bits antes de convertir.
+    // Mono: una muestra de 32 bits por frame I2S (ONLY_LEFT).
     int32_t _raw[BLOCK_SIZE];
+
+    // Estado del DC-blocker IIR de un polo (continuo entre bloques,
+    // evita el escalón que producía la resta de media por bloque).
+    float _dc_x1 = 0.0f;
+    float _dc_y1 = 0.0f;
+
+    // Última muestra raw (antes del IIR) para el detector de tramas espurias.
+    int32_t _last_raw = 0;
 };
