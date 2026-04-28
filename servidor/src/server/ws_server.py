@@ -146,10 +146,10 @@ async def handler(ws):
     log.info(f"Sesión terminada — {remote}")
 
 
-async def _health(path, headers):
+async def _health(connection, request):
     """Health check para Hugging Face Spaces y proxies inversos."""
-    if path in ("/", "/health"):
-        return http.HTTPStatus.OK, [("Content-Type", "text/plain")], b"NEO OK\n"
+    if request.path in ("/", "/health"):
+        return connection.respond(http.HTTPStatus.OK, "NEO OK\n")
 
 
 async def main():
