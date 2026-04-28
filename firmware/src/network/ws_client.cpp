@@ -1,11 +1,11 @@
 /*
  * ws_client.cpp — Cliente WebSocket hacia servidor Python NEO.
- * Módulo 3.1 (Fase 3)
+ * Módulo 3.1 / 3.5 (Fase 3)
  */
 
 #include "ws_client.h"
 
-bool WsClient::conectar(const char* host, uint16_t puerto, const char* path) {
+void WsClient::_registrarCallbacks() {
     _client.onMessage([this](websockets::WebsocketsMessage msg) {
         if (msg.isBinary() && _cbBinario) {
             _cbBinario(reinterpret_cast<const uint8_t*>(msg.c_str()), msg.length());
@@ -13,11 +13,30 @@ bool WsClient::conectar(const char* host, uint16_t puerto, const char* path) {
             _cbTexto(String(msg.c_str()));
         }
     });
+}
 
+bool WsClient::conectar(const char* host, uint16_t puerto, const char* path) {
+    _registrarCallbacks();
     bool ok = _client.connect(host, puerto, path);
-    if (!ok) {
-        Serial.printf("[WS] Error al conectar a %s:%u%s\n", host, puerto, path);
-    }
+    if (!ok) Serial.printf("[WS] Error al conectar a %s:%u%s\n", host, puerto, path);
+    return ok;
+}
+
+bool WsClient::conectarSeguro(const char* host, uint16_t puerto, const char* path) {
+    _registrarCallbacks();
+
+    // Omite verificación del certificado TLS — válido para uso personal.
+    // Para producción real, usar _client.setCACert(cert) con el cert raíz del servidor.
+    _client.setInsecure();
+
+    // Construye URL wss:// para que la librería use TLS
+    String url = "wss://";
+    url += host;
+    if (puerto != 443) { url += ":"; url += puerto; }
+    url += path;
+
+    bool ok = _client.connect(url);
+    if (!ok) Serial.printf("[WS] Error al conectar (seguro) a %s\n", url.c_str());
     return ok;
 }
 

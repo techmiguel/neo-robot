@@ -16,11 +16,11 @@ Protocolo (texto = JSON, binario = PCM crudo):
 """
 
 import asyncio
+import http
 import json
 import logging
 import os
 import time
-import wave
 
 import websockets
 from dotenv import load_dotenv
@@ -47,15 +47,6 @@ MODO = os.getenv("WS_MODO", "echo")
 
 async def _enviar_json(ws, data: dict):
     await ws.send(json.dumps(data, ensure_ascii=False))
-
-
-def _guardar_wav(pcm: bytes, ruta: str, sample_rate: int = MIC_SAMPLE_RATE):
-    with wave.open(ruta, "wb") as w:
-        w.setnchannels(1)
-        w.setsampwidth(2)
-        w.setframerate(sample_rate)
-        w.writeframes(pcm)
-    log.info(f"[wav] guardado {ruta} ({len(pcm)//2} muestras, {len(pcm)/sample_rate/2:.2f}s)")
 
 
 async def _modo_echo(ws, buffer: bytearray):
@@ -94,7 +85,6 @@ async def _modo_pipeline(ws, buffer: bytearray):
     t0 = time.time()
 
     try:
-        _guardar_wav(bytes(buffer), "grabacion_esp32.wav")
         transcripcion = transcribe(bytes(buffer), sample_rate=MIC_SAMPLE_RATE)
         log.info(f"[STT] {time.time()-t0:.2f}s → \"{transcripcion}\"")
 
@@ -156,9 +146,15 @@ async def handler(ws):
     log.info(f"Sesión terminada — {remote}")
 
 
+async def _health(path, headers):
+    """Health check para Hugging Face Spaces y proxies inversos."""
+    if path in ("/", "/health"):
+        return http.HTTPStatus.OK, [("Content-Type", "text/plain")], b"NEO OK\n"
+
+
 async def main():
     log.info(f"Servidor NEO WebSocket en ws://{HOST}:{PORT}  modo={MODO}")
-    async with websockets.serve(handler, HOST, PORT):
+    async with websockets.serve(handler, HOST, PORT, process_request=_health):
         await asyncio.Future()  # corre indefinidamente
 
 

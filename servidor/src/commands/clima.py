@@ -5,11 +5,14 @@ Opcional: CLIMA_CIUDAD_DEFAULT (default: "Ciudad de México")
 """
 
 import asyncio
+import logging
 import os
 
 import requests
 
 from .base import Handler
+
+log = logging.getLogger("handler.clima")
 
 _BASE = "https://api.openweathermap.org/data/2.5/weather"
 
@@ -34,10 +37,12 @@ class ClimaHandler(Handler):
         try:
             data = await asyncio.to_thread(_fetch)
         except requests.HTTPError as e:
+            log.error(f"HTTP {e.response.status_code}: {e.response.text[:200]}")
             if e.response.status_code == 404:
                 return f"No encontré la ciudad {ciudad}."
             return "No pude obtener el clima en este momento."
-        except Exception:
+        except Exception as e:
+            log.error(f"excepción inesperada: {e}", exc_info=True)
             return "No pude conectarme al servicio de clima."
 
         temp = round(data["main"]["temp"])

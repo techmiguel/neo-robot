@@ -17,8 +17,19 @@
 #include "audio/speaker.h"
 #include "input/trigger.h"
 
+// ── Configuración del servidor ────────────────────────────────────────────────
+// Modo desarrollo (PC local):
 static const char*    SERVIDOR_HOST   = "172.20.10.8";
 static const uint16_t SERVIDOR_PORT   = 8765;
+#define NEO_SERVIDOR_LOCAL  // comentar esta línea para usar la nube
+
+// Modo producción (Hugging Face Spaces):
+// Reemplazar con tu usuario y nombre del Space tras el deploy.
+static const char*    SERVIDOR_HOST_NUBE = "TU_USUARIO-neo-servidor.hf.space";
+static const uint16_t SERVIDOR_PORT_NUBE = 443;
+
+// Pin de prueba temporal: conectar a GND para consultar El Toque USD/CUP.
+static const int PIN_TOQUE = 1;
 
 static const size_t PLAY_MUESTRAS    = 30 * 16000;  // 480000 (30s, PSRAM)
 static const size_t PLAY_MUESTRAS_FB = 5  * 16000;  // 80000  (5s,  SRAM fallback)
@@ -68,6 +79,14 @@ static const uint32_t VAD_TIMEOUT_MS    = 5000;
 static const uint32_t VAD_MAX_GRAB_MS   = 30000;
 // Duración mínima para considerar la grabación válida (evita falsos disparos).
 static const uint32_t VAD_MIN_GRAB_MS   = 400;
+
+void consultarToque() {
+    play_bytes = 0;
+    play_ready = false;
+    oled->mostrar("NEO", "Toque USD...");
+    Serial.println("[NEO] Consultando El Toque — USD/CUP");
+    ws->enviarTexto("{\"cmd\":\"consulta\",\"tipo\":\"toque\",\"args\":{\"moneda\":\"USD\"}}");
+}
 
 void grabarYEnviar() {
     play_bytes = 0;
@@ -183,7 +202,7 @@ void grabarYEnviar() {
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("[NEO] Módulo 3.3 — Pipeline completo (graba → envía → reproduce)");
+    Serial.println("[NEO] Módulo 3.3 — Pipeline completo + consultas directas");
 
     // Intenta asignar el buffer en PSRAM (10s); si no hay PSRAM, usa SRAM (3s).
     audio_buf = (int16_t*)heap_caps_malloc(PLAY_MUESTRAS * sizeof(int16_t),
@@ -240,18 +259,48 @@ void setup() {
     });
 
     oled->mostrarEstado("Conectando WS...");
-    if (!ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/")) {
+#ifdef NEO_SERVIDOR_LOCAL
+    bool wsOk = ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/");
+#else
+    bool wsOk = ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/");
+#endif
+    if (!wsOk) {
         oled->mostrar("NEO", "WS: error");
         while (true) delay(1000);
     }
 
     static Trigger trigger_instance;
     trigger = &trigger_instance;
+    pinMode(PIN_TOQUE, INPUT_PULLUP);
+
     trigger->begin();
     trigger->onActivado(grabarYEnviar);
+    trigger->onPulsacionLarga(consultarToque);
 
     oled->mostrar("NEO", "Listo");
-    Serial.println("[NEO] Listo — presiona BOOT para grabar");
+    Serial.println("[NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque");
+}
+
+// Detección de flanco de bajada en PIN_TOQUE con debounce simple.
+static void checkPinToque() {
+    static bool     prev      = HIGH;
+    static uint32_t t_bajo    = 0;
+    static bool     disparado = false;
+
+    const bool     curr  = digitalRead(PIN_TOQUE);
+    const uint32_t ahora = millis();
+
+    if (curr == LOW && prev == HIGH) {
+        t_bajo    = ahora;
+        disparado = false;
+    }
+    if (curr == LOW && !disparado && (ahora - t_bajo >= 80)) {
+        disparado = true;
+        consultarToque();
+    }
+    if (curr == HIGH) disparado = false;
+
+    prev = curr;
 }
 
 void loop() {
@@ -266,6 +315,7 @@ void loop() {
 
     ws->tick();
     trigger->tick();
+    checkPinToque();
 
     if (play_ready) {
         play_ready = false;

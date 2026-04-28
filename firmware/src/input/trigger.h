@@ -5,6 +5,9 @@
  *
  * Hoy: botón BOOT (GPIO0, activo en LOW con pull-up interno).
  * Futuro: wake word TFLite — solo cambia begin(), el resto del sistema no varía.
+ *
+ * Pulsación corta (< LONG_PRESS_MS, al soltar) → onActivado
+ * Pulsación larga (>= LONG_PRESS_MS, mientras se mantiene) → onPulsacionLarga
  */
 
 #include <Arduino.h>
@@ -12,19 +15,23 @@
 
 class Trigger {
 public:
-    static const int PIN_BOOT  = 0;
-    static const int DEBOUNCE_MS = 80;
+    static const int      PIN_BOOT      = 0;
+    static const uint32_t DEBOUNCE_MS   = 80;
+    static const uint32_t LONG_PRESS_MS = 1500;
 
     using Callback = std::function<void()>;
 
     void begin(int pin = PIN_BOOT);
     void tick();
-    void onActivado(Callback cb) { _cb = cb; }
+
+    void onActivado(Callback cb)       { _cbCorta = cb; }
+    void onPulsacionLarga(Callback cb) { _cbLarga = cb; }
 
 private:
     int      _pin       = PIN_BOOT;
     bool     _prevBajo  = false;
     uint32_t _tBajo     = 0;
-    bool     _disparado = false;
-    Callback _cb;
+    bool     _largaDisp = false;  // ya se disparó la larga en esta pulsación
+    Callback _cbCorta;
+    Callback _cbLarga;
 };
