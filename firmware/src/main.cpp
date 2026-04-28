@@ -21,11 +21,10 @@
 // Modo desarrollo (PC local):
 static const char*    SERVIDOR_HOST   = "172.20.10.8";
 static const uint16_t SERVIDOR_PORT   = 8765;
-#define NEO_SERVIDOR_LOCAL  // comentar esta línea para usar la nube
+// #define NEO_SERVIDOR_LOCAL  // descomentar para volver al servidor local
 
 // Modo producción (Hugging Face Spaces):
-// Reemplazar con tu usuario y nombre del Space tras el deploy.
-static const char*    SERVIDOR_HOST_NUBE = "TU_USUARIO-neo-servidor.hf.space";
+static const char*    SERVIDOR_HOST_NUBE = "techmigue-neo-servidor.hf.space";
 static const uint16_t SERVIDOR_PORT_NUBE = 443;
 
 // Pin de prueba temporal: conectar a GND para consultar El Toque USD/CUP.
@@ -202,6 +201,8 @@ void grabarYEnviar() {
 
 void setup() {
     Serial.begin(115200);
+    delay(500);  // espera a que UART0 se estabilice antes del primer print
+    Serial.println("\n\n=== NEO BOOT ===");
     Serial.println("[NEO] Módulo 3.3 — Pipeline completo + consultas directas");
 
     // Intenta asignar el buffer en PSRAM (10s); si no hay PSRAM, usa SRAM (3s).
@@ -259,14 +260,26 @@ void setup() {
     });
 
     oled->mostrarEstado("Conectando WS...");
+    delay(1000);  // deja que el stack WiFi termine de estabilizarse
+
+    int intento = 0;
+    while (true) {
+        intento++;
+        Serial.printf("[NEO] Intento WS #%d\n", intento);
 #ifdef NEO_SERVIDOR_LOCAL
-    bool wsOk = ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/");
+        bool wsOk = ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/");
 #else
-    bool wsOk = ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/");
+        bool wsOk = ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/");
 #endif
-    if (!wsOk) {
-        oled->mostrar("NEO", "WS: error");
-        while (true) delay(1000);
+        if (wsOk) {
+            Serial.println("[NEO] WS conectado");
+            break;
+        }
+        char buf[24];
+        snprintf(buf, sizeof(buf), "WS reintento %d", intento);
+        oled->mostrar("NEO", buf);
+        Serial.println("[NEO] Reintentando en 5s...");
+        delay(5000);
     }
 
     static Trigger trigger_instance;
@@ -309,7 +322,11 @@ void loop() {
     if (!ws->conectado()) {
         oled->mostrar("NEO", "WS: perdido");
         delay(3000);
+#ifdef NEO_SERVIDOR_LOCAL
         ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/");
+#else
+        ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/");
+#endif
         return;
     }
 

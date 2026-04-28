@@ -27,16 +27,10 @@ bool WsClient::conectarSeguro(const char* host, uint16_t puerto, const char* pat
 
     // Omite verificación del certificado TLS — válido para uso personal.
     // Para producción real, usar _client.setCACert(cert) con el cert raíz del servidor.
-    _client.setInsecure();
+    _client.setInsecure();  // omite verificación de certificado
 
-    // Construye URL wss:// para que la librería use TLS
-    String url = "wss://";
-    url += host;
-    if (puerto != 443) { url += ":"; url += puerto; }
-    url += path;
-
-    bool ok = _client.connect(url);
-    if (!ok) Serial.printf("[WS] Error al conectar (seguro) a %s\n", url.c_str());
+    bool ok = _client.connectSecure(host, (int)puerto, path);
+    if (!ok) Serial.printf("[WS] Error al conectar (seguro) a wss://%s:%u%s\n", host, puerto, path);
     return ok;
 }
 
