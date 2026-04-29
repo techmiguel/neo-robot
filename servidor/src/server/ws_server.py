@@ -43,7 +43,7 @@ CHUNK = 4096   # bytes por chunk al enviar audio de vuelta (~85 ms a 24 kHz)
 # — Modo de operación —————————————————————————————————————————————————
 # "echo":     devuelve los bytes recibidos tal cual (prueba de conectividad)
 # "pipeline": STT → LLM → TTS (modo producción)
-MODO = os.getenv("WS_MODO", "echo")
+MODO = os.getenv("WS_MODO", "pipeline")
 
 
 async def _enviar_json(ws, data: dict):
@@ -68,8 +68,7 @@ async def _iniciar_keepalive(ws, intervalo: int = 5) -> asyncio.Task:
 
 
 async def _modo_echo(ws, buffer: bytearray):
-    """Guarda WAV para verificación y devuelve el audio recibido."""
-    _guardar_wav(bytes(buffer), "grabacion_esp32.wav")
+    """Devuelve el audio recibido tal cual (prueba de conectividad)."""
     log.info(f"[echo] devolviendo {len(buffer)} bytes en chunks de {CHUNK}")
     for i in range(0, len(buffer), CHUNK):
         await ws.send(bytes(buffer[i:i + CHUNK]))
@@ -155,10 +154,14 @@ async def handler(ws):
 
                 if cmd == "fin_grabacion":
                     log.info(f"fin_grabacion — buffer: {len(buffer)} bytes")
-                    if MODO == "echo":
-                        await _modo_echo(ws, buffer)
-                    else:
-                        await _modo_pipeline(ws, buffer)
+                    try:
+                        if MODO == "echo":
+                            await _modo_echo(ws, buffer)
+                        else:
+                            await _modo_pipeline(ws, buffer)
+                    except Exception as e:
+                        log.error(f"[fin_grabacion] excepción no capturada: {e}", exc_info=True)
+                        await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
                     buffer.clear()
 
                 elif cmd == "consulta":
