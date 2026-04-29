@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "servidor/**"
+  workflow_dispatch:  # permite dispararlo manualmente desde GitHub o gh CLI
 
 jobs:
   deploy:
