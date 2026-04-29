@@ -17,5 +17,5 @@ jobs:
 
       - name: Push servidor/ to HF Space
         run: |
-          git remote add hf https://techmigue:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/techmigue/neo-servidor
+          git remote add hf https://techmigue:${{ secrets.NEOTOKENHF }}@huggingface.co/spaces/techmigue/neo-servidor
           git push hf $(git subtree split --prefix servidor main):main --force
