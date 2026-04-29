@@ -181,9 +181,16 @@ async def handler(ws):
 
 
 async def _health(connection, request):
-    """Health check para Hugging Face Spaces y proxies inversos."""
+    """Health check para Hugging Face Spaces y proxies inversos.
+
+    Solo responde HTTP GET planos. Los WebSocket upgrades tienen el header
+    'Upgrade: websocket' y deben pasar al handler normal para recibir 101.
+    Si process_request devuelve algo para un upgrade, el cliente recibe 200
+    en vez de 101 y desconecta inmediatamente (bug websockets >=12).
+    """
     if request.path in ("/", "/health"):
-        return connection.respond(http.HTTPStatus.OK, "NEO OK\n")
+        if request.headers.get("Upgrade", "").lower() != "websocket":
+            return connection.respond(http.HTTPStatus.OK, "NEO OK\n")
 
 
 async def main():

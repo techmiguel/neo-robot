@@ -67,9 +67,9 @@ struct PedidoEnvio {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 static bool _wsConectar() {
 #ifdef NEO_SERVIDOR_LOCAL
-    return ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/");
+    return ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/ws");
 #else
-    return ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/");
+    return ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/ws");
 #endif
 }
 
@@ -355,7 +355,30 @@ void setup() {
     int intento = 0;
     while (true) {
         intento++;
-        Serial.printf("[NEO] Intento WS #%d\n", intento);
+        Serial.printf("[NEO] Intento WS #%d  heap DRAM: %u\n",
+                      intento, heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
+
+        // Demasiados fallos seguidos: reiniciar WiFi para limpiar sockets huérfanos.
+        // El stack lwIP acumula descriptores si los intentos TLS fallan sin cerrar bien.
+        if (intento > 1 && intento % 4 == 0) {
+            Serial.println("[NEO] Reiniciando stack WiFi...");
+            oled->mostrar("NEO", "Reset WiFi...");
+            WiFi.disconnect(true);
+            delay(2000);
+            wifiOk = wifi->begin(*oled);
+            if (!wifiOk) { delay(3000); continue; }
+            WiFi.config(WiFi.localIP(), WiFi.gatewayIP(), WiFi.subnetMask(),
+                        IPAddress(8, 8, 8, 8), IPAddress(1, 1, 1, 1));
+            delay(500);
+        }
+
+        // Último recurso: si lleva muchos fallos, reiniciar el ESP32 completo.
+        if (intento > 12) {
+            Serial.println("[NEO] Demasiados fallos — reiniciando ESP32...");
+            oled->mostrar("NEO", "Reiniciando...");
+            delay(2000);
+            ESP.restart();
+        }
 
 #ifndef NEO_SERVIDOR_LOCAL
         {
@@ -379,8 +402,7 @@ void setup() {
         char buf[24];
         snprintf(buf, sizeof(buf), "WS reintento %d", intento);
         oled->mostrar("NEO", buf);
-        Serial.println("[NEO] Reintentando en 5s...");
-        delay(5000);
+        delay(3000);
     }
 
     static Trigger trigger_instance;
@@ -395,7 +417,7 @@ void setup() {
     // cuando ambas están listas, garantizando latencia baja al procesar el socket.
     hTareaPrincipal = xTaskGetCurrentTaskHandle();
     xColaEnvio      = xQueueCreate(1, sizeof(PedidoEnvio));
-    xTaskCreatePinnedToCore(tareaWs, "ws_task", 8192, nullptr, 5, nullptr, 0);
+    xTaskCreatePinnedToCore(tareaWs, "ws_task", 16384, nullptr, 5, nullptr, 0);
 
     oled->mostrar("NEO", "Listo");
     Serial.println("[NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque");
