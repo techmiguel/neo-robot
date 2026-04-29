@@ -6,50 +6,98 @@
 #include "ws_client.h"
 
 void WsClient::_registrarCallbacks() {
-    _client.onMessage([this](websockets::WebsocketsMessage msg) {
-        if (msg.isBinary() && _cbBinario) {
-            _cbBinario(reinterpret_cast<const uint8_t*>(msg.c_str()), msg.length());
-        } else if (msg.isText() && _cbTexto) {
-            _cbTexto(String(msg.c_str()));
+    if (_callbacksRegistrados) return;
+
+    // Heartbeat: ping cada 8s — más agresivo que el default para sobrevivir
+    // los timeouts cortos del NAT del carrier móvil (~30s).
+    // Sin setReconnectInterval: la reconexión la maneja tareaWs.
+    _client.enableHeartbeat(8000, 3000, 2);
+
+    _client.onEvent([this](WStype_t type, uint8_t* payload, size_t length) {
+        switch (type) {
+        case WStype_CONNECTED:
+            _conectado = true;
+            Serial.println("[WS] Evento: conectado");
+            break;
+        case WStype_DISCONNECTED:
+            _conectado = false;
+            Serial.println("[WS] Evento: desconectado");
+            break;
+        case WStype_TEXT:
+            if (_cbTexto) {
+                _cbTexto(String(reinterpret_cast<const char*>(payload)));
+            }
+            break;
+        case WStype_BIN:
+            if (_cbBinario) {
+                _cbBinario(payload, length);
+            }
+            break;
+        default:
+            break;
         }
     });
+
+    _callbacksRegistrados = true;
 }
 
 bool WsClient::conectar(const char* host, uint16_t puerto, const char* path) {
     _registrarCallbacks();
-    bool ok = _client.connect(host, puerto, path);
+    _conectado = false;
+    _client.disconnect();
+    _client.begin(host, puerto, path);
+
+    const uint32_t t0 = millis();
+    while ((millis() - t0) < 4000 && !_conectado) {
+        _client.loop();
+        delay(10);
+    }
+
+    const bool ok = _client.isConnected();
+    _conectado = ok;
     if (!ok) Serial.printf("[WS] Error al conectar a %s:%u%s\n", host, puerto, path);
     return ok;
 }
 
 bool WsClient::conectarSeguro(const char* host, uint16_t puerto, const char* path) {
     _registrarCallbacks();
+    _conectado = false;
+    _client.disconnect();
 
-    // Omite verificación del certificado TLS — válido para uso personal.
-    // Para producción real, usar _client.setCACert(cert) con el cert raíz del servidor.
-    _client.setInsecure();  // omite verificación de certificado
+    // En esta librería, beginSSL sin CA/fingerprint termina en modo insecure.
+    _client.beginSSL(host, puerto, path);
 
-    bool ok = _client.connectSecure(host, (int)puerto, path);
+    const uint32_t t0 = millis();
+    while ((millis() - t0) < 6000 && !_conectado) {
+        _client.loop();
+        delay(10);
+    }
+
+    const bool ok = _client.isConnected();
+    _conectado = ok;
     if (!ok) Serial.printf("[WS] Error al conectar (seguro) a wss://%s:%u%s\n", host, puerto, path);
     return ok;
 }
 
 bool WsClient::enviarBinario(const uint8_t* datos, size_t longitud) {
-    return _client.sendBinary(reinterpret_cast<const char*>(datos), longitud);
+    return _client.sendBIN(datos, longitud);
 }
 
 bool WsClient::enviarTexto(const char* mensaje) {
-    return _client.send(mensaje);
+    return _client.sendTXT(mensaje);
 }
 
 void WsClient::tick() {
-    _client.poll();
+    _client.loop();
+    _conectado = _client.isConnected();
 }
 
 bool WsClient::conectado() {
-    return _client.available();
+    _conectado = _client.isConnected();
+    return _conectado;
 }
 
 void WsClient::desconectar() {
-    _client.close();
+    _client.disconnect();
+    _conectado = false;
 }

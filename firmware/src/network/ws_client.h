@@ -8,7 +8,7 @@
  */
 
 #include <Arduino.h>
-#include <ArduinoWebsockets.h>
+#include <WebSocketsClient.h>
 #include <functional>
 
 class WsClient {
@@ -40,9 +40,11 @@ public:
     void onBinario(CbBinario cb) { _cbBinario = cb; }
 
 private:
-    websockets::WebsocketsClient _client;
+    WebSocketsClient _client;
     CbTexto   _cbTexto;
     CbBinario _cbBinario;
+    bool      _conectado = false;
+    bool      _callbacksRegistrados = false;
 
     void _registrarCallbacks();
 };

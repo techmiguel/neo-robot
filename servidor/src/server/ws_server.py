@@ -10,6 +10,7 @@ Protocolo (texto = JSON, binario = PCM crudo):
   Servidor → ESP32:
     {"cmd":"listo"}          — conexión aceptada, listo para recibir audio
     {"cmd":"procesando"}     — STT+LLM+TTS en curso
+    {"cmd":"keepalive"}      — latido durante procesamiento (evita timeout del proxy móvil)
     bytes                    — chunk de audio PCM respuesta (24 kHz, mono, 16-bit)
     {"cmd":"fin_respuesta"}  — último chunk enviado
     {"cmd":"error","msg":"…"}
@@ -49,6 +50,23 @@ async def _enviar_json(ws, data: dict):
     await ws.send(json.dumps(data, ensure_ascii=False))
 
 
+async def _iniciar_keepalive(ws, intervalo: int = 5) -> asyncio.Task:
+    """Envía {"cmd":"keepalive"} cada `intervalo` segundos.
+
+    Impide que el proxy del carrier móvil cierre la conexión TCP durante
+    el procesamiento del pipeline (STT+LLM+TTS puede tardar ~10 segundos).
+    """
+    async def _loop():
+        try:
+            while True:
+                await asyncio.sleep(intervalo)
+                await _enviar_json(ws, {"cmd": "keepalive"})
+                log.debug("[keepalive] enviado")
+        except asyncio.CancelledError:
+            pass
+    return asyncio.create_task(_loop())
+
+
 async def _modo_echo(ws, buffer: bytearray):
     """Guarda WAV para verificación y devuelve el audio recibido."""
     _guardar_wav(bytes(buffer), "grabacion_esp32.wav")
@@ -63,36 +81,48 @@ async def _modo_consulta(ws, tipo: str, args: dict):
     from src.tts.synthesizer import synthesize
     await _enviar_json(ws, {"cmd": "procesando"})
     t0 = time.time()
+    ka = await _iniciar_keepalive(ws)
     try:
         texto = await _router.handle(tipo, args)
         log.info(f"[consulta:{tipo}] {time.time()-t0:.2f}s → \"{texto}\"")
         pcm = await synthesize(texto)
+        ka.cancel()
         for i in range(0, len(pcm), CHUNK):
             await ws.send(pcm[i:i + CHUNK])
         await _enviar_json(ws, {"cmd": "fin_respuesta"})
     except Exception as e:
+        ka.cancel()
         log.error(f"[consulta:{tipo}] error: {e}")
         await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
 
 
 async def _modo_pipeline(ws, buffer: bytearray):
-    """Corre STT → LLM → TTS y envía el audio resultante."""
+    """Corre STT → LLM → TTS y envía el audio resultante.
+
+    transcribe() y ask() son funciones síncronas (bloquean el hilo).
+    Se ejecutan en un thread separado con asyncio.to_thread() para no
+    bloquear el event loop: si el loop se bloquea, los keepalives y los
+    pings WebSocket no se pueden enviar y el proxy móvil cierra la conexión.
+    """
     from src.stt.transcriber import transcribe
     from src.llm.client      import ask
     from src.tts.synthesizer import synthesize
 
     await _enviar_json(ws, {"cmd": "procesando"})
     t0 = time.time()
+    ka = await _iniciar_keepalive(ws)
 
     try:
-        transcripcion = transcribe(bytes(buffer), sample_rate=MIC_SAMPLE_RATE)
+        transcripcion = await asyncio.to_thread(transcribe, bytes(buffer), MIC_SAMPLE_RATE)
         log.info(f"[STT] {time.time()-t0:.2f}s → \"{transcripcion}\"")
 
-        respuesta = ask(transcripcion)
+        respuesta = await asyncio.to_thread(ask, transcripcion)
         log.info(f"[LLM] {time.time()-t0:.2f}s → \"{respuesta}\"")
 
         pcm_salida = await synthesize(respuesta)
         log.info(f"[TTS] {time.time()-t0:.2f}s → {len(pcm_salida)//2} muestras")
+
+        ka.cancel()
 
         for i in range(0, len(pcm_salida), CHUNK):
             await ws.send(pcm_salida[i:i + CHUNK])
@@ -101,6 +131,7 @@ async def _modo_pipeline(ws, buffer: bytearray):
         log.info(f"[pipeline] latencia total: {time.time()-t0:.2f}s")
 
     except Exception as e:
+        ka.cancel()
         log.error(f"[pipeline] error: {e}")
         await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
 
@@ -139,6 +170,9 @@ async def handler(ws):
                 elif cmd == "cancelar":
                     log.info("grabación cancelada")
                     buffer.clear()
+
+                elif cmd == "keepalive":
+                    pass  # el ESP32 no envía keepalives, pero por si acaso
 
     except websockets.exceptions.ConnectionClosed as e:
         log.info(f"Conexión cerrada: {e}")
