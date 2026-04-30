@@ -24,3 +24,4 @@ servidor/.env
 *.env
 secrets.h
 config_local.h
+servidor/set_hf_secrets.py
