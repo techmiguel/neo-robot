@@ -17,6 +17,7 @@ load_dotenv()
 from .base import Handler
 from .clima import ClimaHandler
 from .cripto import CriptoHandler
+from .hola import HolaHandler
 from .noticias import NoticiasHandler
 from .toque import ToqueTasasHandler
 
@@ -28,6 +29,7 @@ class CommandRouter:
         self._handlers: dict[str, Handler] = {
             "clima":    ClimaHandler(),
             "cripto":   CriptoHandler(),
+            "hola":     HolaHandler(),
             "noticias": NoticiasHandler(),
             "toque":    ToqueTasasHandler(),
         }
