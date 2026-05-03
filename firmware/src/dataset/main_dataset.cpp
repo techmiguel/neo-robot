@@ -6,7 +6,7 @@
  *
  * Clases disponibles: "hola_neo", "desconocido", "silencio"
  *
- * ── Protocolo Serial (460800 baud) ───────────────────────────────────────────
+ * ── Protocolo Serial (115200 baud) ───────────────────────────────────────────
  *  PC → ESP32:
  *    "RECORD:{clase}\n"   — inicia grabación de la clase indicada
  *    "STATUS\n"           — consulta clase y conteo actuales
@@ -149,7 +149,7 @@ static void procesarSerial() {
 // ── Setup ─────────────────────────────────────────────────────────────────────
 
 void setup() {
-    Serial.begin(460800);
+    Serial.begin(115200);
     delay(500);
     Serial.println("=== NEO DATASET CAPTURE ===");
     Serial.println("Clases: hola_neo | desconocido | silencio");

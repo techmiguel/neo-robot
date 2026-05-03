@@ -13,14 +13,13 @@ Uso:
 import argparse
 import os
 import serial
-import struct
 import sys
 import time
 import wave
 from pathlib import Path
 
 # ── Configuración ─────────────────────────────────────────────────────────────
-BAUD_RATE    = 460800
+BAUD_RATE    = 115200
 SAMPLE_RATE  = 16000
 CHANNELS     = 1
 SAMPLE_WIDTH = 2        # int16 → 2 bytes por muestra
@@ -82,16 +81,37 @@ def leer_linea(ser: serial.Serial, timeout: float = 5.0) -> str:
     while time.time() < deadline:
         if ser.in_waiting:
             byte = ser.read(1)
-            if byte in (b"\n", b"\r\n"):
+            if byte == b"\n":
                 text = buf.decode("utf-8", errors="ignore").strip()
+                buf.clear()
                 if text:
                     return text
-                buf.clear()
             elif byte != b"\r":
                 buf.extend(byte)
         else:
             time.sleep(0.001)
-    raise TimeoutError(f"Timeout esperando respuesta del ESP32 (leído: {bytes(buf)!r})")
+    raise TimeoutError(f"Timeout (leído hasta ahora: {bytes(buf)!r})")
+
+
+def esperar_linea(ser: serial.Serial, prefijo: str, timeout: float = 5.0) -> str:
+    """
+    Lee líneas hasta encontrar una que comience con `prefijo`.
+    Ignora silenciosamente cualquier línea no esperada (mensajes de boot
+    del ROM, mensajes de debug del firmware, etc.).
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        restante = deadline - time.time()
+        if restante <= 0:
+            break
+        try:
+            linea = leer_linea(ser, timeout=min(restante, 0.5))
+            if linea.startswith(prefijo):
+                return linea
+            # Cualquier otra línea se descarta (boot ROM, debug, etc.)
+        except TimeoutError:
+            pass
+    raise TimeoutError(f"Timeout esperando '{prefijo}' del ESP32")
 
 
 def leer_audio(ser: serial.Serial, n_bytes: int, timeout: float = 15.0) -> bytes:
@@ -108,13 +128,12 @@ def leer_audio(ser: serial.Serial, n_bytes: int, timeout: float = 15.0) -> bytes
             restante = n_bytes - len(buf)
             chunk = ser.read(min(disponible, restante))
             buf.extend(chunk)
-            # Barra de progreso simple
             pct = len(buf) * 100 // n_bytes
             print(f"\r    Recibiendo... {pct:3d}%  [{len(buf)}/{n_bytes} bytes]",
                   end="", flush=True)
         else:
             time.sleep(0.001)
-    print()   # nueva línea tras la barra
+    print()
     return bytes(buf)
 
 
@@ -124,26 +143,19 @@ def grabar(ser: serial.Serial, clase: str) -> Path:
     ser.write(f"RECORD:{clase}\n".encode())
     ser.flush()
 
-    # 1. Confirmar inicio de grabación
-    linea = leer_linea(ser, timeout=4.0)
-    if not linea.startswith("RECORDING:"):
-        raise RuntimeError(f"Respuesta inesperada tras RECORD: {linea!r}")
+    # Esperar confirmación de inicio (ignora mensajes de boot residuales)
+    esperar_linea(ser, "RECORDING:", timeout=4.0)
 
-    # 2. Esperar encabezado START_AUDIO:{bytes}
-    linea = leer_linea(ser, timeout=4.0)
-    if not linea.startswith("START_AUDIO:"):
-        raise RuntimeError(f"Respuesta inesperada antes de audio: {linea!r}")
+    # Esperar encabezado con tamaño del audio
+    linea = esperar_linea(ser, "START_AUDIO:", timeout=4.0)
     n_bytes = int(linea.split(":")[1])
 
-    # 3. Leer PCM crudo
+    # Leer PCM crudo
     pcm = leer_audio(ser, n_bytes, timeout=15.0)
 
-    # 4. Confirmar fin
-    linea = leer_linea(ser, timeout=4.0)
-    if linea != "END_AUDIO":
-        raise RuntimeError(f"Fin inesperado de audio: {linea!r}")
+    # Esperar confirmación de fin
+    esperar_linea(ser, "END_AUDIO", timeout=4.0)
 
-    # 5. Guardar WAV
     return guardar_wav(pcm, clase)
 
 
@@ -173,6 +185,8 @@ def mostrar_menu(conteos: dict, clase_actual: str):
 # ── Inicio ────────────────────────────────────────────────────────────────────
 
 def main():
+    global DATASET_DIR
+
     parser = argparse.ArgumentParser(description="NEO Dataset Capture")
     parser.add_argument("--port", required=True,
                         help="Puerto serial (ej: COM3  o  /dev/ttyUSB0)")
@@ -182,29 +196,37 @@ def main():
                         help=f"Directorio de salida (default: {DATASET_DIR})")
     args = parser.parse_args()
 
-    global DATASET_DIR
     DATASET_DIR = Path(args.dir)
     crear_directorios()
 
     print(f"Conectando a {args.port} @ {args.baud} baud...")
     try:
-        ser = serial.Serial(args.port, args.baud, timeout=1)
+        # dsrdtr=False / rtscts=False: evita que pyserial toggle DTR/RTS
+        # durante la sesión, lo que causaría resets involuntarios del ESP32.
+        ser = serial.Serial(args.port, args.baud, timeout=1,
+                            dsrdtr=False, rtscts=False)
     except serial.SerialException as e:
         print(f"Error al abrir puerto: {e}")
         sys.exit(1)
 
-    # El ESP32 se resetea al abrir el puerto (CH340C activa DTR)
-    print("Esperando boot del ESP32...")
-    time.sleep(2)
+    # Aunque dsrdtr=False, abrir el puerto puede hacer un reset breve.
+    # Esperamos que el ESP32 termine de bootear completamente.
+    print("Esperando boot del ESP32 (3s)...")
+    time.sleep(3)
     ser.reset_input_buffer()
 
-    # Leer mensaje de arranque
+    # Verificar que el firmware correcto está corriendo
+    print("Verificando firmware...")
+    ser.write(b"STATUS\n")
+    ser.flush()
     try:
-        while ser.in_waiting:
-            linea = leer_linea(ser, timeout=1.0)
-            print(f"  ESP32: {linea}")
+        linea = esperar_linea(ser, "STATUS:", timeout=3.0)
+        print(f"  Firmware OK: {linea}")
     except TimeoutError:
-        pass
+        print("  Advertencia: el firmware no responde a STATUS.")
+        print("  ¿Flasheaste el entorno dataset_capture?")
+        print("  Comando: pio run -e dataset_capture --target upload")
+        print()
 
     conteos = {c: contar_muestras(c) for c in CLASES}
     clase_actual = CLASES[0]
@@ -230,7 +252,7 @@ def main():
                 except (TimeoutError, RuntimeError, serial.SerialException) as e:
                     print(f"  ✗ Error: {e}")
                     ser.reset_input_buffer()
-                    time.sleep(2)
+                    time.sleep(1)
 
     except KeyboardInterrupt:
         print("\n\nInterrumpido por el usuario.")
