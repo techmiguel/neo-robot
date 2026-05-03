@@ -50,7 +50,7 @@ async def _enviar_json(ws, data: dict):
     await ws.send(json.dumps(data, ensure_ascii=False))
 
 
-async def _iniciar_keepalive(ws, intervalo: int = 5) -> asyncio.Task:
+async def _iniciar_keepalive(ws, intervalo: int = 2) -> asyncio.Task:
     """Envía {"cmd":"keepalive"} cada `intervalo` segundos.
 
     Impide que el proxy del carrier móvil cierre la conexión TCP durante

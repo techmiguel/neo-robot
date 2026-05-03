@@ -23,7 +23,7 @@ class ClimaHandler(Handler):
         if not api_key:
             return "El servicio de clima no está configurado."
 
-        ciudad = args.get("ciudad", os.getenv("CLIMA_CIUDAD_DEFAULT", "Ciudad de México"))
+        ciudad = args.get("ciudad", os.getenv("CLIMA_CIUDAD_DEFAULT", "La Habana"))
 
         def _fetch():
             r = requests.get(
