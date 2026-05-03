@@ -19,6 +19,7 @@
 #include "audio/microphone.h"
 #include "audio/speaker.h"
 #include "input/trigger.h"
+#include "commands/dispatcher.h"
 
 // ── Configuración del servidor ────────────────────────────────────────────────
 // Modo desarrollo (PC local):
@@ -29,9 +30,6 @@ static const uint16_t SERVIDOR_PORT   = 8765;
 // Modo producción (Hugging Face Spaces):
 static const char*    SERVIDOR_HOST_NUBE = "techmigue-neo-servidor.hf.space";
 static const uint16_t SERVIDOR_PORT_NUBE = 443;
-
-// Pin de prueba temporal: conectar a GND para consultar El Toque USD/CUP.
-static const int PIN_TOQUE = 1;
 
 static const size_t PLAY_MUESTRAS    = 30 * 16000;  // 480000 (30s, PSRAM)
 static const size_t PLAY_MUESTRAS_FB = 5  * 16000;  // 80000  (5s,  SRAM fallback)
@@ -45,8 +43,9 @@ static WifiManager* wifi    = nullptr;
 static WsClient*    ws      = nullptr;
 static Microphone*  mic     = nullptr;
 static Speaker*     spk     = nullptr;
-static Trigger*     trigger = nullptr;
-static bool         wifiOk  = false;
+static Trigger*     trigger    = nullptr;
+static Dispatcher*  dispatcher = nullptr;
+static bool         wifiOk     = false;
 
 // volatile: escritos por tareaWs (Core 0), leídos por loop (Core 1).
 static volatile size_t play_bytes = 0;
@@ -75,6 +74,7 @@ static bool _wsConectar() {
 
 // ── Reproducción ──────────────────────────────────────────────────────────────
 void reproducirRespuesta() {
+
     oled->mostrar("NEO", "Hablando...");
     Serial.printf("[NEO] Reproduciendo: %u bytes (%.2fs)\n",
                   (unsigned)play_bytes, play_bytes / (16000.0f * 2));
@@ -95,11 +95,16 @@ static const float    VAD_FACTOR_INICIO = 6.0f;
 static const float    VAD_FACTOR_FIN    = 2.5f;
 static const uint32_t VAD_HOLD_MS       = 1500;
 static const uint32_t VAD_TIMEOUT_MS    = 5000;
+// Evita falsos positivos: exige varios bloques seguidos sobre umbral de inicio.
+static const uint8_t  VAD_BLOQUES_INICIO_CONSEC = 3;
+// Si durante la grabación no reaparece voz "fuerte" por este tiempo, se corta.
+static const uint32_t VAD_SIN_VOZ_MS    = 2500;
 static const uint32_t VAD_MAX_GRAB_MS   = 30000;
 static const uint32_t VAD_MIN_GRAB_MS   = 400;
 
 // ── Consulta directa ──────────────────────────────────────────────────────────
 void consultarToque() {
+
     play_bytes = 0;
     play_ready = false;
     oled->mostrar("NEO", "Toque USD...");
@@ -115,6 +120,7 @@ void consultarToque() {
 
 // ── Grabación y envío ─────────────────────────────────────────────────────────
 void grabarYEnviar() {
+
     play_bytes = 0;
     play_ready = false;
 
@@ -138,11 +144,19 @@ void grabarYEnviar() {
     // ── Fase 2: espera de voz ────────────────────────────────────────────────
     const uint32_t t_espera = millis();
     bool voz_detectada = false;
+    uint8_t bloques_consecutivos = 0;
 
     while (millis() - t_espera < VAD_TIMEOUT_MS) {
-        if (mic->leer(tmp) && Microphone::rms(tmp) > umbral_inicio) {
-            voz_detectada = true;
-            break;
+        if (!mic->leer(tmp)) continue;
+
+        if (Microphone::rms(tmp) > umbral_inicio) {
+            if (bloques_consecutivos < 255) bloques_consecutivos++;
+            if (bloques_consecutivos >= VAD_BLOQUES_INICIO_CONSEC) {
+                voz_detectada = true;
+                break;
+            }
+        } else {
+            bloques_consecutivos = 0;
         }
     }
 
@@ -162,6 +176,7 @@ void grabarYEnviar() {
     const size_t   max_muestras = audio_buf_cap / sizeof(int16_t);
     const uint32_t t_inicio     = millis();
     uint32_t       t_silencio   = 0;
+    uint32_t       t_ultima_voz_fuerte = t_inicio;
     float rms_suavizado = umbral_inicio;
 
     while (offset + Microphone::BLOCK_SIZE <= max_muestras) {
@@ -179,6 +194,13 @@ void grabarYEnviar() {
         }
 
         rms_suavizado = rms_suavizado * 0.7f + (float)Microphone::rms(tmp) * 0.3f;
+
+        if (rms_suavizado > umbral_inicio) {
+            t_ultima_voz_fuerte = ahora;
+        } else if (grabado_ms >= 1200 && (ahora - t_ultima_voz_fuerte) >= VAD_SIN_VOZ_MS) {
+            Serial.println("[VAD] Sin voz útil — fin de grabación");
+            break;
+        }
 
         if (rms_suavizado < umbral_fin) {
             if (t_silencio == 0) t_silencio = ahora;
@@ -230,6 +252,7 @@ static void tareaWs(void* /* pvParam */) {
                 continue;
             }
             Serial.println("[WS-TASK] Reconexión OK");
+        
         }
 
         // Procesa ACKs, pings y datos entrantes (callbacks onTexto/onBinario).
@@ -242,6 +265,7 @@ static void tareaWs(void* /* pvParam */) {
             if (pedido.tipo == PEDIDO_TEXTO) {
                 ws->enviarTexto(pedido.texto);
                 Serial.printf("[WS-TASK] Texto enviado: %s\n", pedido.texto);
+            
 
             } else {
                 // PEDIDO_AUDIO: enviar en chunks con vTaskDelay entre cada uno.
@@ -266,6 +290,7 @@ static void tareaWs(void* /* pvParam */) {
                     ws->enviarTexto("{\"cmd\":\"fin_grabacion\"}");
                     Serial.println("[WS-TASK] fin_grabacion enviado");
                     oled->mostrar("NEO", "Procesando...");
+                
                 } else {
                     Serial.println("[WS-TASK] Corte durante envío de audio");
                     oled->mostrarEstado("WS perdido");
@@ -336,12 +361,14 @@ void setup() {
     // Los callbacks son invocados desde tareaWs (Core 0) vía ws->tick().
     ws->onTexto([](const String& msg) {
         Serial.printf("[WS] %s\n", msg.c_str());
+    
         if      (msg.indexOf("listo")         >= 0) oled->mostrar("NEO", "Listo");
         else if (msg.indexOf("procesando")    >= 0) oled->mostrar("NEO", "Procesando...");
         else if (msg.indexOf("fin_respuesta") >= 0) play_ready = true;
         else if (msg.indexOf("error")         >= 0) oled->mostrarEstado("Error servidor");
     });
     ws->onBinario([](const uint8_t* data, size_t len) {
+    
         size_t espacio = audio_buf_cap - play_bytes;
         size_t n = (len < espacio) ? len : espacio;
         memcpy(reinterpret_cast<uint8_t*>(audio_buf) + play_bytes, data, n);
@@ -407,10 +434,20 @@ void setup() {
 
     static Trigger trigger_instance;
     trigger = &trigger_instance;
-    pinMode(PIN_TOQUE, INPUT_PULLUP);
     trigger->begin();
     trigger->onActivado(grabarYEnviar);
     trigger->onPulsacionLarga(consultarToque);
+
+    static Dispatcher disp_instance(oled,
+        [](const char* json) {
+            PedidoEnvio p{};
+            p.tipo = PEDIDO_TEXTO;
+            strncpy(p.texto, json, sizeof(p.texto) - 1);
+            xQueueSend(xColaEnvio, &p, pdMS_TO_TICKS(200));
+        },
+        grabarYEnviar
+    );
+    dispatcher = &disp_instance;
 
     // A partir de aquí toda la E/S WebSocket ocurre en tareaWs.
     // Prioridad 5 > loop (prioridad 1): el scheduler la elige antes que loop
@@ -421,28 +458,7 @@ void setup() {
 
     oled->mostrar("NEO", "Listo");
     Serial.println("[NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque");
-}
 
-// Detección de flanco de bajada en PIN_TOQUE con debounce simple.
-static void checkPinToque() {
-    static bool     prev      = HIGH;
-    static uint32_t t_bajo    = 0;
-    static bool     disparado = false;
-
-    const bool     curr  = digitalRead(PIN_TOQUE);
-    const uint32_t ahora = millis();
-
-    if (curr == LOW && prev == HIGH) {
-        t_bajo    = ahora;
-        disparado = false;
-    }
-    if (curr == LOW && !disparado && (ahora - t_bajo >= 80)) {
-        disparado = true;
-        consultarToque();
-    }
-    if (curr == HIGH) disparado = false;
-
-    prev = curr;
 }
 
 void loop() {
@@ -450,7 +466,6 @@ void loop() {
 
     // ws->tick() y reconexión los maneja tareaWs en Core 0.
     trigger->tick();
-    checkPinToque();
 
     if (play_ready) {
         play_ready = false;
