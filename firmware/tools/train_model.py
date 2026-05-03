@@ -23,6 +23,7 @@ import tensorflow as tf
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.utils.class_weight import compute_class_weight
 import matplotlib
 matplotlib.use("Agg")   # sin ventana gráfica; guarda PNG
 import matplotlib.pyplot as plt
@@ -34,6 +35,8 @@ SR     = 16000   # Hz — debe coincidir con el firmware de captura
 # Parámetros MFCC — deben ser idénticos a la implementación C++ en el ESP32
 FRAME_LENGTH = 400    # 25 ms a 16 kHz
 FRAME_STEP   = 160    # 10 ms a 16 kHz  → stride de inferencia en el ESP32
+FFT_LENGTH   = 512    # potencia de 2 >= FRAME_LENGTH; tf.signal.stft usa esta por defecto
+NUM_SPEC_BINS = FFT_LENGTH // 2 + 1  # 257 bins de frecuencia
 NUM_MEL_BINS = 40
 NUM_MFCC     = 40
 FREQ_MIN     = 20.0   # Hz
@@ -70,14 +73,17 @@ def extraer_mfcc(audio: np.ndarray) -> np.ndarray:
     t = tf.constant(audio, dtype=tf.float32)
 
     # Espectrograma de magnitud
-    stft = tf.signal.stft(t, frame_length=FRAME_LENGTH, frame_step=FRAME_STEP)
-    magnitud = tf.abs(stft)                         # (frames, FRAME_LENGTH//2+1)
+    # fft_length=FFT_LENGTH hace explícito el tamaño del FFT (512 → 257 bins).
+    # Sin este parámetro tf usa la siguiente potencia de 2, que es 512 de todas
+    # formas, pero dejarlo implícito causó la incompatibilidad con la mel matrix.
+    stft = tf.signal.stft(t, frame_length=FRAME_LENGTH, frame_step=FRAME_STEP,
+                          fft_length=FFT_LENGTH)
+    magnitud = tf.abs(stft)                         # (frames, 257)
 
     # Banco de filtros Mel
-    num_bins = FRAME_LENGTH // 2 + 1               # 201 bins
     mel_w = tf.signal.linear_to_mel_weight_matrix(
         num_mel_bins=NUM_MEL_BINS,
-        num_spectrogram_bins=num_bins,
+        num_spectrogram_bins=NUM_SPEC_BINS,         # 257 — debe coincidir con stft
         sample_rate=SR,
         lower_edge_hertz=FREQ_MIN,
         upper_edge_hertz=FREQ_MAX,
@@ -226,40 +232,51 @@ def main():
     print(f"\n  Longitud fija   : {longitud} muestras  ({longitud/SR:.2f} s)")
     print(f"  Augmentation    : {'sí (×7)' if args.augment else 'no'}")
 
-    # ── 2. Extraer MFCC ──────────────────────────────────────────────────────
-    print(f"\n[2/5] Extrayendo MFCC (frame={FRAME_LENGTH}, step={FRAME_STEP}, mel={NUM_MEL_BINS})...")
+    # ── 2. Split sobre originales (ANTES de augmentación) ───────────────────
+    # Crítico: si se augmenta primero y se splitea después, versiones del mismo
+    # audio original quedan en train Y test → el modelo memoriza en lugar de
+    # generalizar (data leakage → accuracy artificialmente alto).
+    print(f"\n[2/5] Dividiendo originales en train / val / test ...")
 
-    X, y = [], []
+    audios_flat, labels_flat = [], []
     for idx_clase, clase in enumerate(CLASES):
         for audio in audios_por_clase[clase]:
-            audio = ajustar_longitud(audio, longitud)
-            variantes = aumentar(audio) if args.augment else [audio]
+            audios_flat.append(ajustar_longitud(audio, longitud))
+            labels_flat.append(idx_clase)
+
+    a_tv, a_test, l_tv, l_test = train_test_split(
+        audios_flat, labels_flat, test_size=0.15, stratify=labels_flat, random_state=42)
+    a_train, a_val, l_train, l_val = train_test_split(
+        a_tv, l_tv, test_size=0.15, stratify=l_tv, random_state=42)
+
+    print(f"  Originales  →  Train: {len(a_train)}  Val: {len(a_val)}  Test: {len(a_test)}")
+
+    # ── 3. Extraer MFCC (augmentación solo en train) ─────────────────────────
+    print(f"\n[3/5] Extrayendo MFCC (frame={FRAME_LENGTH}, fft={FFT_LENGTH}, mel={NUM_MEL_BINS})...")
+
+    def preparar(audios, labels, aumentar_datos: bool) -> tuple:
+        X, y = [], []
+        for audio, label in zip(audios, labels):
+            variantes = aumentar(audio) if aumentar_datos else [audio]
             for v in variantes:
-                mfcc = extraer_mfcc(ajustar_longitud(v, longitud))
-                X.append(mfcc)
-                y.append(idx_clase)
+                X.append(extraer_mfcc(ajustar_longitud(v, longitud)))
+                y.append(label)
+        return (np.array(X, dtype=np.float32)[..., np.newaxis],
+                np.array(y, dtype=np.int32))
 
-    X = np.array(X, dtype=np.float32)[..., np.newaxis]  # (N, frames, mfcc, 1)
-    y = np.array(y, dtype=np.int32)
+    X_train, y_train = preparar(a_train, l_train, aumentar_datos=args.augment)
+    X_val,   y_val   = preparar(a_val,   l_val,   aumentar_datos=False)
+    X_test,  y_test  = preparar(a_test,  l_test,  aumentar_datos=False)
 
-    print(f"  Shape del tensor: {X.shape}")
+    print(f"  Tras augmentation →  Train: {len(X_train)}  Val: {len(X_val)}  Test: {len(X_test)}")
     for i, clase in enumerate(CLASES):
-        print(f"  {clase:<20}: {(y == i).sum():>4} muestras tras augmentation")
-
-    # ── 3. Split train / val / test ──────────────────────────────────────────
-    print(f"\n[3/5] Dividiendo en train / val / test ...")
-
-    X_tv, X_test, y_tv, y_test = train_test_split(
-        X, y, test_size=0.15, stratify=y, random_state=42)
-    X_train, X_val, y_train, y_val = train_test_split(
-        X_tv, y_tv, test_size=0.15, stratify=y_tv, random_state=42)
-
-    print(f"  Train : {len(X_train):>5}  Val : {len(X_val):>5}  Test : {len(X_test):>5}")
+        print(f"  {clase:<20}: {(y_train == i).sum():>4} en train  "
+              f"{(y_test == i).sum():>4} en test")
 
     # ── 4. Construir y entrenar ──────────────────────────────────────────────
     print(f"\n[4/5] Construyendo y entrenando modelo...")
 
-    modelo = construir_modelo(X.shape[1:], len(CLASES))
+    modelo = construir_modelo(X_train.shape[1:], len(CLASES))
     modelo.summary(print_fn=lambda s: print("  " + s))
 
     modelo.compile(
@@ -267,6 +284,12 @@ def main():
         loss="sparse_categorical_crossentropy",
         metrics=["accuracy"],
     )
+
+    # Pesos inversamente proporcionales a la frecuencia de cada clase.
+    # Evita que la clase mayoritaria (hola_neo) domine el gradiente.
+    pesos = compute_class_weight("balanced", classes=np.unique(y_train), y=y_train)
+    class_weight = dict(enumerate(pesos))
+    print(f"  Class weights: { {CLASES[k]: f'{v:.2f}' for k, v in class_weight.items()} }")
 
     callbacks = [
         tf.keras.callbacks.EarlyStopping(
@@ -281,6 +304,7 @@ def main():
         epochs=args.epocas,
         batch_size=32,
         callbacks=callbacks,
+        class_weight=class_weight,
     )
 
     # ── 5. Evaluar y exportar ────────────────────────────────────────────────
