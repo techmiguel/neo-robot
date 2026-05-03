@@ -13,6 +13,9 @@ docs/*.pdf
 # PlatformIO — artefactos de build
 firmware/.pio/
 
+# Dataset de audio — archivos WAV crudos (>10 MB, no versionar)
+firmware/dataset/
+
 # Python — entorno virtual y artefactos
 servidor/.venv/
 servidor/__pycache__/

@@ -20,6 +20,8 @@
 #include "audio/speaker.h"
 #include "input/trigger.h"
 #include "commands/dispatcher.h"
+#include "commands/inference.h"
+#include "audio/mfcc.h"
 
 // ── Configuración del servidor ────────────────────────────────────────────────
 // Modo desarrollo (PC local):
@@ -45,7 +47,14 @@ static Microphone*  mic     = nullptr;
 static Speaker*     spk     = nullptr;
 static Trigger*     trigger    = nullptr;
 static Dispatcher*  dispatcher = nullptr;
+static Inference*   inference  = nullptr;
 static bool         wifiOk     = false;
+
+// ── Wake word — buffer y estado ───────────────────────────────────────────────
+static int16_t* s_wake_buf    = nullptr;
+static int      s_wake_pos    = 0;
+static uint8_t  s_conf_count  = 0;
+static const uint8_t CONF_MINIMAS = 2;  // detecciones consecutivas antes de activar
 
 // volatile: escritos por tareaWs (Core 0), leídos por loop (Core 1).
 static volatile size_t play_bytes = 0;
@@ -74,7 +83,8 @@ static bool _wsConectar() {
 
 // ── Reproducción ──────────────────────────────────────────────────────────────
 void reproducirRespuesta() {
-
+    s_wake_pos   = 0;
+    s_conf_count = 0;
     oled->mostrar("NEO", "Hablando...");
     Serial.printf("[NEO] Reproduciendo: %u bytes (%.2fs)\n",
                   (unsigned)play_bytes, play_bytes / (16000.0f * 2));
@@ -120,7 +130,8 @@ void consultarToque() {
 
 // ── Grabación y envío ─────────────────────────────────────────────────────────
 void grabarYEnviar() {
-
+    s_wake_pos   = 0;
+    s_conf_count = 0;
     play_bytes = 0;
     play_ready = false;
 
@@ -449,6 +460,25 @@ void setup() {
     );
     dispatcher = &disp_instance;
 
+    // Buffer de wake word (1.5 s, PSRAM si disponible)
+    s_wake_buf = (int16_t*)heap_caps_malloc(
+        MFCC_AUDIO_SAMPLES * sizeof(int16_t),
+        MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+    if (!s_wake_buf) {
+        s_wake_buf = (int16_t*)malloc(MFCC_AUDIO_SAMPLES * sizeof(int16_t));
+    }
+    if (!s_wake_buf) {
+        Serial.println("[NEO] Advertencia: sin memoria para wake word buffer");
+    }
+
+    // Inferencia TFLite Micro
+    static Inference inf_instance;
+    inference = &inf_instance;
+    if (!inference->begin()) {
+        Serial.println("[NEO] Advertencia: inferencia no disponible — solo modo botón");
+        inference = nullptr;
+    }
+
     // A partir de aquí toda la E/S WebSocket ocurre en tareaWs.
     // Prioridad 5 > loop (prioridad 1): el scheduler la elige antes que loop
     // cuando ambas están listas, garantizando latencia baja al procesar el socket.
@@ -470,5 +500,34 @@ void loop() {
     if (play_ready) {
         play_ready = false;
         reproducirRespuesta();
+        return;
+    }
+
+    // ── Wake word: acumulacion continua del microfono ─────────────────────────
+    // Solo corre si la inferencia inicio y hay buffer disponible.
+    if (!inference || !s_wake_buf) return;
+
+    int16_t tmp[Microphone::BLOCK_SIZE];
+    if (!mic->leer(tmp)) return;
+
+    int espacio = MFCC_AUDIO_SAMPLES - s_wake_pos;
+    int n       = (Microphone::BLOCK_SIZE < espacio) ? Microphone::BLOCK_SIZE : espacio;
+    memcpy(s_wake_buf + s_wake_pos, tmp, n * sizeof(int16_t));
+    s_wake_pos += n;
+
+    // Ventana completa (1.5 s): ejecutar inferencia
+    if (s_wake_pos >= MFCC_AUDIO_SAMPLES) {
+        s_wake_pos = 0;
+
+        Comando cmd = inference->clasificar(s_wake_buf, MFCC_AUDIO_SAMPLES);
+        if (cmd == Comando::HOLA_NEO) {
+            s_conf_count++;
+            if (s_conf_count >= CONF_MINIMAS) {
+                s_conf_count = 0;
+                dispatcher->despachar(Comando::HOLA_NEO);
+            }
+        } else {
+            s_conf_count = 0;
+        }
     }
 }
