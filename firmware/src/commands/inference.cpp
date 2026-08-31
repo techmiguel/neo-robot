@@ -5,7 +5,7 @@
  *   Input  [1, 148, 40, 1] int8  — MFCC cuantizado
  *   Output [1, 3]          int8  — scores: [hola_neo, desconocido, silencio]
  *
- * Cuantizacion de entrada:  int8_val = clamp(round(float_val / 0.2054) + 28, -128, 127)
+ * Cuantizacion de entrada:  int8_val = clamp(round(float_val / 0.5497) + 97, -128, 127)
  * Descuantizacion de salida: prob    = (int8_val + 128) / 256.0
  */
 
@@ -22,8 +22,8 @@
 #include "tensorflow/lite/schema/schema_generated.h"
 
 // ── Cuantizacion del modelo (obtenida con TF Lite Inspector) ──────────────────
-static const float kInputScale     = 0.2054051161f;
-static const int   kInputZeroPoint = 28;
+static const float kInputScale     = 0.5496608615f;
+static const int   kInputZeroPoint = 97;
 
 // ── Tamano de la arena TFLite ─────────────────────────────────────────────────
 // Conv2D (1,148,40,16) domina: ~94 KB de activaciones.
