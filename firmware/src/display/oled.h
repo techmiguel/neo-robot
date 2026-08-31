@@ -37,6 +37,16 @@ public:
     // Limpia la pantalla.
     void limpiar();
 
+    // Apaga el panel (SSD1306 DISPLAYOFF) para ahorrar energía en reposo.
+    void apagar();
+
+    // Enciende el panel; las funciones mostrar()/mostrarEstado() lo hacen solas.
+    void encender();
+
+    // Muestra barra de volumen + estado para depuración del wake word.
+    // rms_norm: 0.0 = silencio, 1.0 = nivel umbral de activación.
+    void mostrarVolumen(float rms_norm, const char* estado);
+
     // Acceso directo al display para módulos de animación (Face, etc.).
     Adafruit_SSD1306& rawDisplay() { return _display; }
 
