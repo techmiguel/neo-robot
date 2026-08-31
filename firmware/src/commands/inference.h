@@ -23,14 +23,24 @@ public:
     // Retorna HOLA_NEO si el score supera UMBRAL, DESCONOCIDO en otro caso.
     Comando clasificar(const int16_t* muestras, size_t n_muestras);
 
-    // Score de la ultima clasificacion (probabilidad de hola_neo, 0..1).
-    float ultimoScore() const { return _score; }
+    // Score de hola_neo (índice 0) — compatibilidad con dispatcher.
+    float ultimoScore() const { return _scores[0]; }
+
+    // Score de cualquier clase: 0=hola_neo, 1=desconocido, 2=silencio.
+    float ultimoScoreClase(int idx) const {
+        if (idx < 0 || idx > 2) return 0.0f;
+        return _scores[idx];
+    }
+
+    // Índice de la clase con mayor probabilidad tras la última inferencia.
+    int ultimaClaseTop() const { return _clase_top; }
 
     bool iniciado() const { return _iniciado; }
 
 private:
-    bool  _iniciado = false;
-    float _score    = 0.0f;
+    bool  _iniciado  = false;
+    float _scores[3] = {0.0f, 0.0f, 0.0f};  // [hola_neo, desconocido, silencio]
+    int   _clase_top = 1;                     // default: desconocido
 
     // Punteros opacos (tipos completos solo en inference.cpp)
     void*    _interpreter = nullptr;

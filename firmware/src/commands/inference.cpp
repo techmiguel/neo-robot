@@ -106,7 +106,8 @@ bool Inference::begin() {
 // ── clasificar() ─────────────────────────────────────────────────────────────
 
 Comando Inference::clasificar(const int16_t* muestras, size_t n_muestras) {
-    _score = 0.0f;
+    _scores[0] = _scores[1] = _scores[2] = 0.0f;
+    _clase_top = 1;
     if (!_iniciado) return Comando::DESCONOCIDO;
 
     // 1. Extraer MFCC (148 frames × 40 coefs)
@@ -149,9 +150,16 @@ Comando Inference::clasificar(const int16_t* muestras, size_t n_muestras) {
     float prob_desc   = (out_data[1] - kOutZeroPoint) * kOutScale;
     float prob_silen  = (out_data[2] - kOutZeroPoint) * kOutScale;
 
-    _score = prob_hola;
-    Serial.printf("[INF] hola=%.3f  desc=%.3f  sil=%.3f\n",
-                  prob_hola, prob_desc, prob_silen);
+    _scores[0] = prob_hola;
+    _scores[1] = prob_desc;
+    _scores[2] = prob_silen;
+
+    _clase_top = 0;
+    if (_scores[1] > _scores[_clase_top]) _clase_top = 1;
+    if (_scores[2] > _scores[_clase_top]) _clase_top = 2;
+
+    Serial.printf("[INF] hola=%.3f  desc=%.3f  sil=%.3f  top=%d\n",
+                  prob_hola, prob_desc, prob_silen, _clase_top);
 
     return (prob_hola >= UMBRAL) ? Comando::HOLA_NEO : Comando::DESCONOCIDO;
 }

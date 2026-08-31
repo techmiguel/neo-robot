@@ -35,7 +35,8 @@ public:
                std::function<void()> cbGrabar);
 
     // Ejecuta la acción correspondiente al comando reconocido.
-    void despachar(Comando cmd);
+    // confianza_wake: probabilidad 0..1 del modelo (solo HOLA_NEO); si es < 0, no se muestra.
+    void despachar(Comando cmd, float confianza_wake = -1.0f);
 
 private:
     Oled*                            _oled;

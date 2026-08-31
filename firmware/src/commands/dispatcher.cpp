@@ -23,12 +23,21 @@ void Dispatcher::_grabar(const char* label) {
     _cbGrabar();
 }
 
-void Dispatcher::despachar(Comando cmd) {
+void Dispatcher::despachar(Comando cmd, float confianza_wake) {
     switch (cmd) {
 
     case Comando::HOLA_NEO:
         Serial.println("[CMD] HOLA_NEO");
-        _oled->mostrar("NEO", "Saludos!");
+        if (confianza_wake >= 0.0f) {
+            int pct = (int)(confianza_wake * 100.0f + 0.5f);
+            if (pct > 100) pct = 100;
+            if (pct < 0) pct = 0;
+            char linea2[8];
+            snprintf(linea2, sizeof(linea2), "%d%%", pct);
+            _oled->mostrar("Hola NEO", linea2);
+        } else {
+            _oled->mostrar("NEO", "Saludos!");
+        }
         _cbEnviarTexto(R"({"cmd":"consulta","tipo":"hola"})");
         break;
 
