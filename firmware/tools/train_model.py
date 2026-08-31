@@ -22,7 +22,8 @@ import numpy as np
 import tensorflow as tf
 from pathlib import Path
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import (confusion_matrix, classification_report,
+                             roc_curve, auc)
 from sklearn.utils.class_weight import compute_class_weight
 import matplotlib
 matplotlib.use("Agg")   # sin ventana gráfica; guarda PNG
@@ -125,13 +126,99 @@ def aumentar(audio: np.ndarray) -> list:
     return variantes   # 7 variantes por muestra original
 
 
+def aumentar_desconocido(audio: np.ndarray) -> list:
+    """
+    15 variantes para la clase desconocido (vs 7 de hola_neo).
+    Más diversidad para compensar el menor tamaño de la clase.
+    """
+    n = len(audio)
+    variantes = aumentar(audio)   # 7 base
+
+    # Ruido muy suave (SNR=30) y muy fuerte (SNR=6)
+    for snr_db in (30, 6):
+        p_s = np.mean(audio ** 2) + 1e-9
+        p_r = p_s / (10 ** (snr_db / 10))
+        variantes.append(np.clip(audio + np.random.randn(n).astype(np.float32) * np.sqrt(p_r), -1, 1))
+
+    # Desplazamiento temporal ±300 ms
+    shift300 = int(0.30 * SR)
+    variantes.append(np.roll(audio,  shift300).astype(np.float32))
+    variantes.append(np.roll(audio, -shift300).astype(np.float32))
+
+    # Volumen más extremo
+    for factor in (0.5, 1.5):
+        variantes.append(np.clip(audio * factor, -1, 1).astype(np.float32))
+
+    # Combinadas: ruido SNR=15 + shift
+    p_s = np.mean(audio ** 2) + 1e-9
+    r15 = np.random.randn(n).astype(np.float32) * np.sqrt(p_s / (10 ** (15 / 10)))
+    variantes.append(np.clip(np.roll(audio + r15, int(0.10 * SR)), -1, 1).astype(np.float32))
+
+    # Combinada: ruido SNR=10 + volumen reducido
+    r10 = np.random.randn(n).astype(np.float32) * np.sqrt(p_s / (10 ** (10 / 10)))
+    variantes.append(np.clip((audio + r10) * 0.9, -1, 1).astype(np.float32))
+
+    return variantes   # 15 variantes
+
+
+def aumentar_silencio(audio: np.ndarray) -> list:
+    """
+    10 variantes para la clase silencio.
+    """
+    n = len(audio)
+    variantes = aumentar(audio)   # 7 base
+
+    # Ruido muy suave (SNR=30)
+    p_s = np.mean(audio ** 2) + 1e-9
+    r30 = np.random.randn(n).astype(np.float32) * np.sqrt(p_s / (10 ** (30 / 10)))
+    variantes.append(np.clip(audio + r30, -1, 1))
+
+    # Volumen reducido
+    variantes.append(np.clip(audio * 0.6, -1, 1).astype(np.float32))
+
+    # Desplazamiento +200 ms
+    variantes.append(np.roll(audio, int(0.20 * SR)).astype(np.float32))
+
+    return variantes   # 10 variantes
+
+
+def spec_augment(mfcc: np.ndarray,
+                 T_max: int = 25,
+                 F_max: int = 10,
+                 n_T: int = 2,
+                 n_F: int = 2) -> np.ndarray:
+    """
+    SpecAugment sobre una matriz MFCC (frames, coefs).
+    Aplica n_T máscaras temporales y n_F máscaras de frecuencia con la media
+    como valor de relleno. Solo se llama sobre muestras de entrenamiento.
+    """
+    out = mfcc.copy()
+    media = out.mean()
+    num_frames, num_coefs = out.shape
+
+    for _ in range(n_T):
+        t = np.random.randint(0, max(1, T_max))
+        t0 = np.random.randint(0, max(1, num_frames - t))
+        out[t0:t0 + t, :] = media
+
+    for _ in range(n_F):
+        f = np.random.randint(0, max(1, F_max))
+        f0 = np.random.randint(0, max(1, num_coefs - f))
+        out[:, f0:f0 + f] = media
+
+    return out
+
+
 # ── Modelo ────────────────────────────────────────────────────────────────────
 
 def construir_modelo(input_shape: tuple, num_clases: int) -> tf.keras.Model:
     """
     CNN pequeña (~28 K parámetros → ~28 KB en int8).
     Arquitectura: 3× [Conv2D → BN → ReLU → MaxPool] → GAP → Dense → Softmax
+    L2 en Dense(64) penaliza overfitting sin aumentar el tamaño del modelo.
     """
+    reg = tf.keras.regularizers.L2(1e-4)
+
     entradas = tf.keras.Input(shape=input_shape)
     x = entradas
 
@@ -142,8 +229,8 @@ def construir_modelo(input_shape: tuple, num_clases: int) -> tf.keras.Model:
         x = tf.keras.layers.MaxPooling2D((2, 2))(x)
 
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
-    x = tf.keras.layers.Dense(64, activation="relu")(x)
-    x = tf.keras.layers.Dropout(0.30)(x)
+    x = tf.keras.layers.Dense(64, activation="relu", kernel_regularizer=reg)(x)
+    x = tf.keras.layers.Dropout(0.50)(x)
     salidas = tf.keras.layers.Dense(num_clases, activation="softmax")(x)
 
     return tf.keras.Model(entradas, salidas, name="neo_wake_word")
@@ -196,8 +283,8 @@ def main():
     parser = argparse.ArgumentParser(description="Entrena el wake word model de NEO")
     parser.add_argument("--dataset", default="dataset",
                         help="Directorio raíz del dataset (default: dataset/)")
-    parser.add_argument("--epocas",  type=int, default=40,
-                        help="Épocas máximas de entrenamiento (default: 40)")
+    parser.add_argument("--epocas",  type=int, default=80,
+                        help="Épocas máximas de entrenamiento (default: 80)")
     parser.add_argument("--output",  default="models",
                         help="Directorio de salida para modelos y gráficas (default: models/)")
     parser.add_argument("--sin-augment", dest="augment",
@@ -230,7 +317,7 @@ def main():
     todas = [len(a) for audios in audios_por_clase.values() for a in audios]
     longitud = int(np.median(todas))
     print(f"\n  Longitud fija   : {longitud} muestras  ({longitud/SR:.2f} s)")
-    print(f"  Augmentation    : {'sí (×7)' if args.augment else 'no'}")
+    print(f"  Augmentation    : {'sí (hola×14, desc×30, sil×20 + SpecAugment)' if args.augment else 'no'}")
 
     # ── 2. Split sobre originales (ANTES de augmentación) ───────────────────
     # Crítico: si se augmenta primero y se splitea después, versiones del mismo
@@ -245,22 +332,35 @@ def main():
             labels_flat.append(idx_clase)
 
     a_tv, a_test, l_tv, l_test = train_test_split(
-        audios_flat, labels_flat, test_size=0.15, stratify=labels_flat, random_state=42)
+        audios_flat, labels_flat, test_size=0.20, stratify=labels_flat, random_state=42)
     a_train, a_val, l_train, l_val = train_test_split(
-        a_tv, l_tv, test_size=0.15, stratify=l_tv, random_state=42)
+        a_tv, l_tv, test_size=0.20, stratify=l_tv, random_state=42)
 
-    print(f"  Originales  →  Train: {len(a_train)}  Val: {len(a_val)}  Test: {len(a_test)}")
+    print(f"  Originales  ->  Train: {len(a_train)}  Val: {len(a_val)}  Test: {len(a_test)}")
 
     # ── 3. Extraer MFCC (augmentación solo en train) ─────────────────────────
     print(f"\n[3/5] Extrayendo MFCC (frame={FRAME_LENGTH}, fft={FFT_LENGTH}, mel={NUM_MEL_BINS})...")
 
     def preparar(audios, labels, aumentar_datos: bool) -> tuple:
+        """
+        Extrae MFCC con augmentación por clase:
+          hola_neo (0)    →  7 variantes de audio
+          desconocido (1) → 15 variantes de audio
+          silencio (2)    → 10 variantes de audio
+        Cada variante también genera una copia con SpecAugment,
+        duplicando el conjunto sin añadir más audio grabado.
+        """
+        _aug_fn = [aumentar, aumentar_desconocido, aumentar_silencio]
         X, y = [], []
         for audio, label in zip(audios, labels):
-            variantes = aumentar(audio) if aumentar_datos else [audio]
-            for v in variantes:
-                X.append(extraer_mfcc(ajustar_longitud(v, longitud)))
+            fn = _aug_fn[label] if aumentar_datos else (lambda a: [a])
+            for v in fn(audio):
+                mfcc = extraer_mfcc(ajustar_longitud(v, longitud))
+                X.append(mfcc)
                 y.append(label)
+                if aumentar_datos:
+                    X.append(spec_augment(mfcc))
+                    y.append(label)
         return (np.array(X, dtype=np.float32)[..., np.newaxis],
                 np.array(y, dtype=np.int32))
 
@@ -268,7 +368,7 @@ def main():
     X_val,   y_val   = preparar(a_val,   l_val,   aumentar_datos=False)
     X_test,  y_test  = preparar(a_test,  l_test,  aumentar_datos=False)
 
-    print(f"  Tras augmentation →  Train: {len(X_train)}  Val: {len(X_val)}  Test: {len(X_test)}")
+    print(f"  Tras augmentation ->  Train: {len(X_train)}  Val: {len(X_val)}  Test: {len(X_test)}")
     for i, clase in enumerate(CLASES):
         print(f"  {clase:<20}: {(y_train == i).sum():>4} en train  "
               f"{(y_test == i).sum():>4} en test")
@@ -293,9 +393,12 @@ def main():
 
     callbacks = [
         tf.keras.callbacks.EarlyStopping(
-            monitor="val_accuracy", patience=10, restore_best_weights=True),
+            monitor="val_loss",          # más estable que val_accuracy con val pequeño
+            patience=15,                 # era 10; da margen para escapar de mínimos locales
+            min_delta=0.005,
+            restore_best_weights=True),
         tf.keras.callbacks.ReduceLROnPlateau(
-            monitor="val_loss", factor=0.5, patience=5, min_lr=1e-5, verbose=1),
+            monitor="val_loss", factor=0.3, patience=7, min_lr=1e-5, verbose=1),
     ]
 
     historial = modelo.fit(
@@ -326,6 +429,19 @@ def main():
 
     print("\n" + classification_report(y_test, y_pred, target_names=CLASES,
                                        digits=3, zero_division=0))
+
+    # ── Umbral óptimo para hola_neo (criterio de Youden sobre el val set) ───────
+    y_val_bin  = (np.array(l_val) == 0).astype(int)
+    scores_val = modelo.predict(X_val, verbose=0)[:, 0]
+    fpr, tpr, thresholds_roc = roc_curve(y_val_bin, scores_val)
+    J       = tpr - fpr
+    idx_opt = int(np.argmax(J))
+    thr_opt = float(thresholds_roc[idx_opt])
+    roc_auc = auc(fpr, tpr)
+    print(f"\n  AUC hola_neo (val)     : {roc_auc:.3f}")
+    print(f"  Umbral óptimo sugerido : {thr_opt:.3f}  "
+          f"(FPR={fpr[idx_opt]*100:.1f}%  TPR={tpr[idx_opt]*100:.1f}%)")
+    print(f"  -> inference.h : static constexpr float UMBRAL = {thr_opt:.3f}f;")
 
     # Gráficas
     output_dir.mkdir(parents=True, exist_ok=True)
