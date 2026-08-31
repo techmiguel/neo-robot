@@ -6,6 +6,7 @@ CLAUDE.md
 
 # Artefactos de entorno local
 .vscode/
+*.code-workspace
 
 # Datasheets y documentos de terceros (referenciar externamente)
 docs/*.pdf
