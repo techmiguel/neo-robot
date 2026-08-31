@@ -1,12 +1,14 @@
 /*
  * NEO — Firmware principal
- * Módulo 3.3 + 3.4 + FreeRTOS (Core 0):
+ * Módulo 3.3 + 3.4 + FreeRTOS (Core 0 y Core 1):
  *
- *   Core 0 (WiFi + tareaWs): mantiene el socket vivo y envía audio.
- *   Core 1 (loop principal): graba, activa trigger, reproduce TTS.
+ *   Core 0: tareaWs  — mantiene el socket vivo y envía audio.
+ *   Core 0: tareaInf — inferencia TFLite (no bloquea el mic ni el OLED).
+ *   Core 1: loop()   — mic, VAD wake word, trigger, reproducción TTS, OLED.
  *
- * El envío de audio en Core 0 elimina la contención CPU que antes
- * impedía que el stack TCP procesara ACKs durante el streaming.
+ * La inferencia corre en Core 0 junto a tareaWs (prioridad menor).
+ * Mientras el modelo procesa, loop() sigue drenando el I2S y actualizando
+ * el OLED con la barra de volumen — sin cuelgues.
  */
 
 #include <Arduino.h>
@@ -51,10 +53,26 @@ static Inference*   inference  = nullptr;
 static bool         wifiOk     = false;
 
 // ── Wake word — buffer y estado ───────────────────────────────────────────────
-static int16_t* s_wake_buf    = nullptr;
-static int      s_wake_pos    = 0;
-static uint8_t  s_conf_count  = 0;
+static int16_t* s_wake_buf   = nullptr;
+static int      s_wake_pos   = 0;
+static uint8_t  s_conf_count = 0;
 static const uint8_t CONF_MINIMAS = 2;  // detecciones consecutivas antes de activar
+
+// VAD para wake word (pipeline nuevo: activación por umbral de volumen)
+enum class WakeState : uint8_t { OYENDO, CAPTANDO };
+static WakeState s_wake_state   = WakeState::OYENDO;
+static float     s_wake_noise   = 300.0f;  // noise floor (promedio móvil)
+static bool      s_wake_en_sil  = false;   // en período de silencio tras voz
+static uint32_t  s_wake_sil_ms  = 0;       // inicio del silencio actual
+static uint32_t  s_wake_ini_ms  = 0;       // inicio de la captura actual
+static uint32_t  s_oled_vol_ms  = 0;       // rate-limit actualizaciones OLED
+static uint32_t  s_oled_res_ms  = 0;       // mostrar resultado N ms antes de volver a barra
+
+static const float    WAKE_FACTOR_INICIO = 4.0f;   // RMS > noise×4 → empieza captura
+static const float    WAKE_FACTOR_FIN    = 2.0f;   // RMS < noise×2 → cuenta silencio
+static const uint32_t WAKE_SILENCIO_MS   = 700;    // ms de silencio para cortar captura
+static const uint32_t WAKE_MAX_MS        = 2500;   // duración máxima de captura
+static const uint32_t WAKE_RESULTADO_MS  = 1500;   // ms que se muestra el resultado
 
 // volatile: escritos por tareaWs (Core 0), leídos por loop (Core 1).
 static volatile size_t play_bytes = 0;
@@ -72,6 +90,18 @@ struct PedidoEnvio {
     char       texto[128];  // PEDIDO_TEXTO: JSON a enviar
 };
 
+// ── Inferencia asíncrona (Core 0 → Core 1) ───────────────────────────────────
+// loop() señaliza tareaInf cuando termina la captura VAD.
+// tareaInf corre clasificar() y devuelve el resultado por queue.
+struct InfResultado {
+    Comando cmd;
+    int     clase_top;
+    float   scores[3];
+};
+static SemaphoreHandle_t xSemInf    = nullptr;  // loop da, tareaInf toma
+static QueueHandle_t     xColaInf   = nullptr;  // tareaInf publica, loop consume
+static volatile bool     s_inf_busy = false;    // true mientras tareaInf procesa
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 static bool _wsConectar() {
 #ifdef NEO_SERVIDOR_LOCAL
@@ -81,10 +111,19 @@ static bool _wsConectar() {
 #endif
 }
 
+// Tras "Listo", deja la OLED encendida para mostrar el feedback de inferencia.
+static void neoListoYReposoOled() {
+    oled->mostrar("NEO", "Listo");
+    // OLED permanece encendida; el bucle de wake word actualiza cada ~1.5 s.
+}
+
 // ── Reproducción ──────────────────────────────────────────────────────────────
 void reproducirRespuesta() {
     s_wake_pos   = 0;
     s_conf_count = 0;
+    s_wake_state = WakeState::OYENDO;
+    s_inf_busy   = false;
+    InfResultado _descarte; xQueueReceive(xColaInf, &_descarte, 0);  // descartar resultado pendiente
     oled->mostrar("NEO", "Hablando...");
     Serial.printf("[NEO] Reproduciendo: %u bytes (%.2fs)\n",
                   (unsigned)play_bytes, play_bytes / (16000.0f * 2));
@@ -95,7 +134,7 @@ void reproducirRespuesta() {
     }
 
     play_bytes = 0;
-    oled->mostrar("NEO", "Listo");
+    neoListoYReposoOled();
     Serial.println("[NEO] Reproducción completa");
 }
 
@@ -132,6 +171,9 @@ void consultarToque() {
 void grabarYEnviar() {
     s_wake_pos   = 0;
     s_conf_count = 0;
+    s_wake_state = WakeState::OYENDO;
+    s_inf_busy   = false;
+    InfResultado _descarte; xQueueReceive(xColaInf, &_descarte, 0);  // descartar resultado pendiente
     play_bytes = 0;
     play_ready = false;
 
@@ -172,7 +214,7 @@ void grabarYEnviar() {
     }
 
     if (!voz_detectada) {
-        oled->mostrar("NEO", "Listo");
+        neoListoYReposoOled();
         Serial.println("[VAD] Timeout — sin voz detectada");
         return;
     }
@@ -227,7 +269,7 @@ void grabarYEnviar() {
     const uint32_t duracion_ms = (offset * 1000) / 16000;
 
     if (duracion_ms < VAD_MIN_GRAB_MS) {
-        oled->mostrar("NEO", "Listo");
+        neoListoYReposoOled();
         Serial.printf("[VAD] Grabación muy corta (%ums) — descartada\n", duracion_ms);
         return;
     }
@@ -252,36 +294,116 @@ void grabarYEnviar() {
     ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(35000));
 }
 
+// ── Tarea de inferencia — Core 0, prioridad baja ─────────────────────────────
+// Espera que loop() llene s_wake_buf y libere xSemInf.
+// Corre clasificar() (200–400 ms) sin bloquear el mic ni el OLED.
+static void tareaInferencia(void* /*pvParam*/) {
+    while (true) {
+        xSemaphoreTake(xSemInf, portMAX_DELAY);
+
+        InfResultado res;
+        res.cmd       = inference->clasificar(s_wake_buf, MFCC_AUDIO_SAMPLES);
+        res.clase_top = inference->ultimaClaseTop();
+        for (int i = 0; i < 3; i++) res.scores[i] = inference->ultimoScoreClase(i);
+
+        xQueueSend(xColaInf, &res, 0);   // loop() consume en su próximo ciclo
+        s_inf_busy = false;
+    }
+}
+
+// ── Reconexión WiFi — helper usado por tareaWs ───────────────────────────────
+// Intenta reconectar WiFi: primero rápido, luego full reset desde NVS.
+// Devuelve true si quedó conectado.
+static bool _wifiReconectar() {
+    // Paso 1: reconexión rápida (reutiliza credenciales del begin() inicial)
+    Serial.println("[WIFI] Intento rápido (WiFi.reconnect)...");
+    WiFi.reconnect();
+    for (int i = 0; i < 20; i++) {          // hasta 10 s
+        if (WiFi.status() == WL_CONNECTED) return true;
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
+
+    // Paso 2: reset completo del stack + releer NVS
+    Serial.println("[WIFI] Reconexión rápida fallida — reset completo");
+    oled->mostrar("NEO", "Reset WiFi...");
+    WiFi.disconnect(true);
+    vTaskDelay(pdMS_TO_TICKS(1500));
+
+    wifiOk = wifi->begin(*oled);            // bloquea hasta conectar o timeout
+    if (!wifiOk) return false;
+
+    // Restaurar DNS fijo (evita resoluciones lentas del carrier)
+    WiFi.config(WiFi.localIP(), WiFi.gatewayIP(), WiFi.subnetMask(),
+                IPAddress(8, 8, 8, 8), IPAddress(1, 1, 1, 1));
+    vTaskDelay(pdMS_TO_TICKS(300));
+    return WiFi.status() == WL_CONNECTED;
+}
+
 // ── Tarea WebSocket — corre en Core 0 junto al stack WiFi/TCP ─────────────────
 static void tareaWs(void* /* pvParam */) {
+    uint8_t fallos_ws = 0;   // fallos WS consecutivos (sin WiFi de por medio)
+
     while (true) {
-        // Reconexión automática antes de cualquier operación
+
+        // ── 1. Verificar WiFi ─────────────────────────────────────────────────
+        // Si cae el WiFi, ninguna operación WS tiene sentido: reconectar primero.
+        if (WiFi.status() != WL_CONNECTED) {
+            ws->desconectar();
+            Serial.println("[WS-TASK] WiFi perdido — intentando reconectar");
+            oled->mostrar("NEO", "Sin WiFi...");
+
+            if (!_wifiReconectar()) {
+                oled->mostrar("NEO", "Sin WiFi...");
+                vTaskDelay(pdMS_TO_TICKS(15000));
+                continue;
+            }
+            Serial.printf("[WS-TASK] WiFi OK: %s\n", WiFi.localIP().toString().c_str());
+            fallos_ws = 0;
+            continue;   // volver al inicio para conectar WS con WiFi ya activo
+        }
+
+        // ── 2. Verificar/reconectar WebSocket ────────────────────────────────
         if (!ws->conectado()) {
-            Serial.println("[WS-TASK] Desconectado — reconectando...");
+            Serial.printf("[WS-TASK] WS caído (fallos=%d)\n", fallos_ws);
+            oled->mostrar("NEO", "Reconect...");
+
+            // Cada 4 fallos WS consecutivos el stack lwIP acumula sockets
+            // huérfanos de TLS — resetear WiFi limpia los descriptores.
+            if (fallos_ws > 0 && fallos_ws % 4 == 0) {
+                Serial.println("[WS-TASK] Múltiples fallos WS — reset WiFi");
+                if (!_wifiReconectar()) {
+                    vTaskDelay(pdMS_TO_TICKS(5000));
+                    continue;
+                }
+            }
+
             if (!_wsConectar()) {
+                fallos_ws++;
+                char buf[24];
+                snprintf(buf, sizeof(buf), "WS fallo #%u", (unsigned)fallos_ws);
+                oled->mostrar("NEO", buf);
                 vTaskDelay(pdMS_TO_TICKS(5000));
                 continue;
             }
-            Serial.println("[WS-TASK] Reconexión OK");
-        
+
+            Serial.println("[WS-TASK] WS reconectado OK");
+            fallos_ws = 0;
+            neoListoYReposoOled();
         }
 
-        // Procesa ACKs, pings y datos entrantes (callbacks onTexto/onBinario).
+        // ── 3. Tick normal + cola de envío ────────────────────────────────────
         ws->tick();
 
-        // ¿Hay un pedido pendiente?
         PedidoEnvio pedido;
         if (xQueueReceive(xColaEnvio, &pedido, 0) == pdTRUE) {
 
             if (pedido.tipo == PEDIDO_TEXTO) {
                 ws->enviarTexto(pedido.texto);
                 Serial.printf("[WS-TASK] Texto enviado: %s\n", pedido.texto);
-            
 
             } else {
-                // PEDIDO_AUDIO: enviar en chunks con vTaskDelay entre cada uno.
-                // vTaskDelay(10) cede Core 0 al stack WiFi para que procese los
-                // ACKs TCP antes de enviar el siguiente chunk.
+                // PEDIDO_AUDIO: chunks con vTaskDelay para que el stack TCP
+                // procese los ACKs entre envíos.
                 const uint8_t* ptr   = reinterpret_cast<const uint8_t*>(audio_buf);
                 const size_t   total = pedido.bytes;
                 const size_t   CHUNK = 4096;
@@ -296,18 +418,15 @@ static void tareaWs(void* /* pvParam */) {
                 }
 
                 if (ok && ws->conectado()) {
-                    // Pausa para drenar los buffers TCP antes del cierre lógico.
                     vTaskDelay(pdMS_TO_TICKS(200));
                     ws->enviarTexto("{\"cmd\":\"fin_grabacion\"}");
                     Serial.println("[WS-TASK] fin_grabacion enviado");
                     oled->mostrar("NEO", "Procesando...");
-                
                 } else {
                     Serial.println("[WS-TASK] Corte durante envío de audio");
                     oled->mostrarEstado("WS perdido");
                 }
 
-                // Desbloquea grabarYEnviar() en Core 1.
                 xTaskNotifyGive(hTareaPrincipal);
             }
         }
@@ -373,7 +492,7 @@ void setup() {
     ws->onTexto([](const String& msg) {
         Serial.printf("[WS] %s\n", msg.c_str());
     
-        if      (msg.indexOf("listo")         >= 0) oled->mostrar("NEO", "Listo");
+        if      (msg.indexOf("listo")         >= 0) neoListoYReposoOled();
         else if (msg.indexOf("procesando")    >= 0) oled->mostrar("NEO", "Procesando...");
         else if (msg.indexOf("fin_respuesta") >= 0) play_ready = true;
         else if (msg.indexOf("error")         >= 0) oled->mostrarEstado("Error servidor");
@@ -484,9 +603,12 @@ void setup() {
     // cuando ambas están listas, garantizando latencia baja al procesar el socket.
     hTareaPrincipal = xTaskGetCurrentTaskHandle();
     xColaEnvio      = xQueueCreate(1, sizeof(PedidoEnvio));
-    xTaskCreatePinnedToCore(tareaWs, "ws_task", 16384, nullptr, 5, nullptr, 0);
+    xSemInf         = xSemaphoreCreateBinary();
+    xColaInf        = xQueueCreate(1, sizeof(InfResultado));
+    xTaskCreatePinnedToCore(tareaWs,         "ws_task",  16384, nullptr, 5, nullptr, 0);
+    xTaskCreatePinnedToCore(tareaInferencia, "inf_task",  8192, nullptr, 2, nullptr, 0);
 
-    oled->mostrar("NEO", "Listo");
+    neoListoYReposoOled();
     Serial.println("[NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque");
 
 }
@@ -503,31 +625,110 @@ void loop() {
         return;
     }
 
-    // ── Wake word: acumulacion continua del microfono ─────────────────────────
-    // Solo corre si la inferencia inicio y hay buffer disponible.
+    // ── Wake word: VAD-triggered + inferencia en Core 0 ──────────────────────
+    // loop() (Core 1) solo captura audio y actualiza el OLED.
+    // tareaInferencia (Core 0) corre clasificar() sin bloquear este hilo.
     if (!inference || !s_wake_buf) return;
 
-    int16_t tmp[Microphone::BLOCK_SIZE];
-    if (!mic->leer(tmp)) return;
+    int16_t bloque[Microphone::BLOCK_SIZE];
+    if (!mic->leer(bloque)) return;
 
-    int espacio = MFCC_AUDIO_SAMPLES - s_wake_pos;
-    int n       = (Microphone::BLOCK_SIZE < espacio) ? Microphone::BLOCK_SIZE : espacio;
-    memcpy(s_wake_buf + s_wake_pos, tmp, n * sizeof(int16_t));
-    s_wake_pos += n;
+    float rms = (float)Microphone::rms(bloque);
 
-    // Ventana completa (1.5 s): ejecutar inferencia
-    if (s_wake_pos >= MFCC_AUDIO_SAMPLES) {
-        s_wake_pos = 0;
+    // ── Consumir resultado de inferencia si está listo ────────────────────────
+    InfResultado inf_res;
+    if (xQueueReceive(xColaInf, &inf_res, 0) == pdTRUE) {
+        static const char* const ETIQUETAS[3] = {"HolaNEO", "Desc", "Silencio"};
+        int  pct = (int)(inf_res.scores[inf_res.clase_top] * 100.0f + 0.5f);
+        if (pct > 100) pct = 100;
+        char pctStr[8];
+        snprintf(pctStr, sizeof(pctStr), "%d%%", pct);
+        oled->mostrar(ETIQUETAS[inf_res.clase_top], pctStr);
+        s_oled_res_ms = millis() + WAKE_RESULTADO_MS;
+        Serial.printf("[WW] Resultado: clase=%d  score=%.3f\n",
+                      inf_res.clase_top, inf_res.scores[inf_res.clase_top]);
 
-        Comando cmd = inference->clasificar(s_wake_buf, MFCC_AUDIO_SAMPLES);
-        if (cmd == Comando::HOLA_NEO) {
+        if (inf_res.cmd == Comando::HOLA_NEO) {
             s_conf_count++;
             if (s_conf_count >= CONF_MINIMAS) {
                 s_conf_count = 0;
-                dispatcher->despachar(Comando::HOLA_NEO);
+                dispatcher->despachar(Comando::HOLA_NEO, inf_res.scores[0]);
             }
         } else {
             s_conf_count = 0;
+        }
+    }
+
+    // ── Estado OYENDO ─────────────────────────────────────────────────────────
+    if (s_wake_state == WakeState::OYENDO) {
+        // Actualizar noise floor solo cuando no hay inferencia activa
+        if (!s_inf_busy) {
+            s_wake_noise = s_wake_noise * 0.98f + rms * 0.02f;
+        }
+
+        // Barra de volumen en OLED (máx ~10 Hz, no sobreescribir el resultado)
+        if (millis() - s_oled_vol_ms >= 100 && millis() > s_oled_res_ms) {
+            s_oled_vol_ms = millis();
+            float norm = rms / (s_wake_noise * WAKE_FACTOR_INICIO);
+            if (norm > 1.0f) norm = 1.0f;
+            const char* estado = s_inf_busy ? "Procesando..." : "Oyendo...";
+            oled->mostrarVolumen(norm, estado);
+        }
+
+        // Iniciar captura solo si la inferencia anterior ya terminó
+        if (!s_inf_busy && rms > s_wake_noise * WAKE_FACTOR_INICIO) {
+            s_wake_pos    = 0;
+            s_wake_en_sil = false;
+            s_wake_ini_ms = millis();
+            s_wake_state  = WakeState::CAPTANDO;
+            Serial.printf("[WW] Captando: rms=%.0f  noise=%.0f\n", rms, s_wake_noise);
+        }
+
+    // ── Estado CAPTANDO ───────────────────────────────────────────────────────
+    } else {
+        // Acumular muestras en el buffer de wake word
+        int n = Microphone::BLOCK_SIZE;
+        if (s_wake_pos + n > (int)MFCC_AUDIO_SAMPLES)
+            n = (int)MFCC_AUDIO_SAMPLES - s_wake_pos;
+        if (n > 0) {
+            memcpy(s_wake_buf + s_wake_pos, bloque, n * sizeof(int16_t));
+            s_wake_pos += n;
+        }
+
+        // Barra de volumen durante la captura (máx ~12 Hz)
+        if (millis() - s_oled_vol_ms >= 80) {
+            s_oled_vol_ms = millis();
+            float norm = rms / (s_wake_noise * WAKE_FACTOR_INICIO);
+            if (norm > 1.0f) norm = 1.0f;
+            oled->mostrarVolumen(norm, "Captando...");
+        }
+
+        // Detectar silencio para cortar la captura
+        if (rms < s_wake_noise * WAKE_FACTOR_FIN) {
+            if (!s_wake_en_sil) { s_wake_en_sil = true; s_wake_sil_ms = millis(); }
+        } else {
+            s_wake_en_sil = false;
+        }
+
+        bool fin_sil = s_wake_en_sil && (millis() - s_wake_sil_ms >= WAKE_SILENCIO_MS);
+        bool fin_max = (s_wake_pos >= (int)MFCC_AUDIO_SAMPLES) ||
+                       (millis() - s_wake_ini_ms >= WAKE_MAX_MS);
+
+        if (fin_sil || fin_max) {
+            // Rellenar con ceros hasta completar la ventana del modelo
+            if (s_wake_pos < (int)MFCC_AUDIO_SAMPLES) {
+                memset(s_wake_buf + s_wake_pos, 0,
+                       ((int)MFCC_AUDIO_SAMPLES - s_wake_pos) * sizeof(int16_t));
+            }
+            Serial.printf("[WW] Captura lista: %d muestras (%.2fs) [%s] → tareaInf\n",
+                          s_wake_pos, s_wake_pos / 16000.0f,
+                          fin_sil ? "silencio" : "max");
+            s_wake_pos   = 0;
+            s_wake_state = WakeState::OYENDO;
+
+            // Señalizar a tareaInferencia (Core 0) — no bloquea este hilo
+            s_inf_busy = true;
+            xSemaphoreGive(xSemInf);
         }
     }
 }
