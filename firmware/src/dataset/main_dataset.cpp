@@ -32,8 +32,8 @@
 
 // ── Constantes ────────────────────────────────────────────────────────────────
 static const size_t SAMPLE_RATE  = 16000;                          // Hz
-static const size_t SAMPLE_COUNT = SAMPLE_RATE;                    // 1 segundo
-static const size_t AUDIO_BYTES  = SAMPLE_COUNT * sizeof(int16_t); // 32 000 bytes
+static const size_t SAMPLE_COUNT = SAMPLE_RATE * 3 / 2;           // 1.5 segundos = 24 000 muestras
+static const size_t AUDIO_BYTES  = SAMPLE_COUNT * sizeof(int16_t); // 48 000 bytes
 
 static const char* CLASES[]  = { "hola_neo", "desconocido", "silencio" };
 static const uint8_t N_CLASES = 3;

@@ -30,9 +30,13 @@ CLASES       = ["hola_neo", "desconocido", "silencio"]
 # ── Utilidades de terminal ────────────────────────────────────────────────────
 
 def getch() -> str:
-    """Lee un carácter del teclado sin necesitar Enter."""
+    """Lee un carácter del teclado sin necesitar Enter.
+    Vacía el buffer antes de leer para evitar que el autorepeat
+    de Windows dispare grabaciones en cadena."""
     try:
         import msvcrt                           # Windows
+        while msvcrt.kbhit():                  # descartar teclas acumuladas
+            msvcrt.getch()
         ch = msvcrt.getch()
         return ch.decode("utf-8", errors="ignore")
     except ImportError:
