@@ -1,0 +1,23 @@
+
+**HOLA NEO** — Wake word de activación. El ESP32 monitorea audio continuamente en bajo consumo. Al detectar la frase, activa el pipeline completo, enciende el OLED, reproduce un tono o confirmación breve por TTS, y queda en escucha esperando el siguiente comando. No llama a ninguna API externa.
+
+**CLIMA** — Sin parámetros. Al detectar el intent, el ESP32 llama a OpenWeatherMap con coordenadas fijas configuradas en firmware. Parsea la respuesta JSON extrayendo temperatura, descripción y humedad. Construye una frase en español y la envía a Groq TTS para narración. Muestra temperatura en OLED.
+
+**NOTICIAS** — Sin parámetros. Llama a un feed RSS o API de noticias (NewsAPI) con categoría y país configurados en firmware. Extrae el primer titular y su descripción breve. Los envía al LLM con prompt que los resume en máximo dos oraciones en español. TTS narra el resultado.
+
+**ELTOQUE** — Sin parámetros. Llama a la API de El Toque para obtener las tasas de cambio informales del CUP. Extrae los valores de USD, EUR y MLC. Construye la frase localmente sin pasar por LLM y la envía directamente a Groq TTS. Muestra valores en OLED.
+
+**TEMPORIZADOR** — Híbrido. El ESP32 detecta el intent y envía el audio completo a Groq STT. El texto transcrito va al LLM con prompt acotado que extrae únicamente la duración en segundos como entero JSON. El ESP32 ejecuta el countdown localmente, muestra el tiempo restante en OLED y dispara alerta de audio al finalizar. TTS confirma el inicio.
+
+**BUSCAR** — Híbrido. STT transcribe la query completa. El LLM reformula la query como búsqueda limpia y concisa. Se llama a DuckDuckGo Instant Answer API o Wikipedia summary API. El resultado crudo pasa por el LLM con prompt que lo resume en dos o tres oraciones máximo para respuesta por voz. TTS narra.
+
+**TRADUCIR** — Híbrido. STT transcribe el fragmento completo incluyendo el texto a traducir. El LLM recibe un prompt acotado con instrucción de devolver únicamente la traducción al español, sin explicaciones ni contexto adicional. TTS narra la traducción. Sin llamada a API externa de traducción; el LLM es suficiente.
+
+**RECORDATORIO** — Híbrido. STT transcribe la frase completa. El LLM extrae dos campos como JSON: el mensaje del recordatorio y la hora objetivo en formato HH:MM. El ESP32 persiste ese JSON en SPIFFS. Un proceso en background monitorea la hora del sistema RTC y cuando coincide reproduce el mensaje vía TTS y activa alerta visual en OLED.
+
+**CALCULAR** — Híbrido. STT transcribe la expresión en lenguaje natural. El LLM la convierte en una expresión matemática evaluable como string JSON, sin calcular el resultado. El ESP32 evalúa la expresión localmente. TTS narra el resultado y lo muestra en OLED. Si la expresión es inválida, TTS informa el error.
+
+**TRIVIA** — Híbrido de dos turnos. STT transcribe el tema indicado por el usuario. El LLM genera una pregunta de trivia sobre ese tema y su respuesta correcta, devueltos como JSON con dos campos separados. TTS narra la pregunta. El ESP32 queda en escucha esperando la respuesta del usuario. STT transcribe la respuesta. El LLM evalúa si es correcta. TTS revela la respuesta correcta y confirma si el usuario acertó.
+
+**DADO** — Sin parámetros. STT no es necesario. El ESP32 genera un entero aleatorio entre 1 y 6 localmente con `random()`. TTS narra el resultado. Muestra el valor en OLED. Opcionalmente puede soportar "lanza dos dados" como variante que requiere STT para extraer la cantidad.
+
