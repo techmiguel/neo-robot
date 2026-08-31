@@ -43,6 +43,12 @@ NUM_MFCC     = 40
 FREQ_MIN     = 20.0   # Hz
 FREQ_MAX     = 8000.0 # Hz
 
+# Parámetros del VAD — deben coincidir con main.cpp / microphone.h del firmware.
+# Se usan para alinear el audio de entrenamiento al onset de voz igual que la
+# captura en inferencia (evita el desajuste posición-en-la-ventana).
+VAD_BLOCK        = 256    # Microphone::BLOCK_SIZE
+VAD_FACTOR_INICIO = 4.0   # WAKE_FACTOR_INICIO en main.cpp (rms > noise × factor)
+
 
 # ── Carga de audio ────────────────────────────────────────────────────────────
 
@@ -60,6 +66,44 @@ def ajustar_longitud(audio: np.ndarray, n: int) -> np.ndarray:
     if len(audio) >= n:
         return audio[:n]
     return np.pad(audio, (0, n - len(audio)))
+
+
+def _rms_bloques(audio: np.ndarray, block: int = VAD_BLOCK) -> np.ndarray:
+    """RMS por bloque de `block` muestras, replicando Microphone::rms() (C++).
+    El audio llega normalizado a [-1, 1]; el RMS relativo basta para el umbral."""
+    n = (len(audio) // block) * block
+    if n == 0:
+        return np.zeros(0, dtype=np.float32)
+    x = audio[:n].reshape(-1, block).astype(np.float64)
+    return np.sqrt((x ** 2).mean(axis=1)).astype(np.float32)
+
+
+def recortar_a_onset(audio: np.ndarray, n: int,
+                     factor: float = VAD_FACTOR_INICIO,
+                     block: int = VAD_BLOCK) -> np.ndarray:
+    """
+    Alinea la palabra al inicio del buffer replicando el VAD de inferencia
+    (main.cpp): la captura arranca cuando el RMS de un bloque supera
+    noise_floor × factor, y el resto se rellena con ceros.
+
+    Esto elimina el desajuste train/inferencia: en el firmware la palabra
+    empieza pegada a la muestra 0, así que el entrenamiento debe verla igual.
+
+    Si no se detecta onset (clase silencio, o audio demasiado plano) se cae de
+    vuelta a ajustar_longitud() sin desplazar nada.
+    """
+    rms = _rms_bloques(audio, block)
+    if len(rms) == 0:
+        return ajustar_longitud(audio, n)
+
+    # Noise floor = percentil bajo del RMS del clip (zonas sin voz).
+    noise    = max(float(np.percentile(rms, 20)), 1e-6)
+    supera   = rms > noise * factor
+    if not supera.any():
+        return ajustar_longitud(audio, n)      # sin voz clara → sin recorte
+
+    onset = int(np.argmax(supera)) * block     # inicio del primer bloque activo
+    return ajustar_longitud(audio[onset:], n)
 
 
 # ── Extracción de features ────────────────────────────────────────────────────
@@ -290,6 +334,9 @@ def main():
     parser.add_argument("--sin-augment", dest="augment",
                         action="store_false", default=True,
                         help="Desactivar data augmentation")
+    parser.add_argument("--sin-alinear", dest="alinear",
+                        action="store_false", default=True,
+                        help="No alinear al onset de voz (usar relleno simple)")
     args = parser.parse_args()
 
     dataset_dir = Path(args.dataset)
@@ -313,10 +360,17 @@ def main():
         print("\nERROR: no se encontraron archivos WAV en el dataset.")
         return
 
-    # Longitud fija = mediana de todas las muestras
-    todas = [len(a) for audios in audios_por_clase.values() for a in audios]
-    longitud = int(np.median(todas))
-    print(f"\n  Longitud fija   : {longitud} muestras  ({longitud/SR:.2f} s)")
+    # Longitud fija = ventana del modelo en el firmware (MFCC_AUDIO_SAMPLES).
+    # NO se usa la mediana: si se mezclan clips de 1 s y 1.5 s, la mediana daría
+    # un nº de frames distinto de 148 y el modelo no cargaría en el ESP32.
+    longitud = SR * 3 // 2   # 24000 muestras = 1.5 s  (== MFCC_AUDIO_SAMPLES)
+    todas    = [len(a) for audios in audios_por_clase.values() for a in audios]
+    mediana  = int(np.median(todas))
+    print(f"\n  Longitud fija   : {longitud} muestras  ({longitud/SR:.2f} s)  [mediana dataset: {mediana}]")
+    if mediana < longitud * 0.8:
+        print(f"  AVISO: la mediana ({mediana}) es mucho menor que {longitud}; "
+              f"¿hay grabaciones viejas de 1 s? Considera re-grabarlas.")
+    print(f"  Alineación      : {'sí (onset de voz, igual que el VAD)' if args.alinear else 'no (relleno simple)'}")
     print(f"  Augmentation    : {'sí (hola×14, desc×30, sil×20 + SpecAugment)' if args.augment else 'no'}")
 
     # ── 2. Split sobre originales (ANTES de augmentación) ───────────────────
@@ -325,10 +379,11 @@ def main():
     # generalizar (data leakage → accuracy artificialmente alto).
     print(f"\n[2/5] Dividiendo originales en train / val / test ...")
 
+    normalizar = recortar_a_onset if args.alinear else ajustar_longitud
     audios_flat, labels_flat = [], []
     for idx_clase, clase in enumerate(CLASES):
         for audio in audios_por_clase[clase]:
-            audios_flat.append(ajustar_longitud(audio, longitud))
+            audios_flat.append(normalizar(audio, longitud))
             labels_flat.append(idx_clase)
 
     a_tv, a_test, l_tv, l_test = train_test_split(
