@@ -436,11 +436,59 @@ static void tareaWs(void* /* pvParam */) {
 }
 
 // ── Setup ─────────────────────────────────────────────────────────────────────
+#ifdef NEO_TEST_WAKE_OFFLINE
+// ── Modo TEST: wake word sin WiFi ni servidor ────────────────────────────────
+// Inicializa solo lo imprescindible para validar la inferencia con el micrófono.
+// Se activa con -DNEO_TEST_WAKE_OFFLINE en platformio.ini. QUITAR tras validar.
+static void setupWakeWordOffline() {
+    Serial.println("[TEST] Modo wake word OFFLINE — sin WiFi ni servidor");
+
+    static Microphone mic_instance;
+    mic = &mic_instance;
+    if (!mic->begin()) {
+        oled->mostrarEstado("Error: mic");
+        while (true) delay(1000);
+    }
+
+    s_wake_buf = (int16_t*)heap_caps_malloc(
+        MFCC_AUDIO_SAMPLES * sizeof(int16_t), MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+    if (!s_wake_buf) s_wake_buf = (int16_t*)malloc(MFCC_AUDIO_SAMPLES * sizeof(int16_t));
+    if (!s_wake_buf) Serial.println("[TEST] Sin memoria para wake_buf");
+
+    static Inference inf_instance;
+    inference = &inf_instance;
+    if (!inference->begin()) {
+        Serial.println("[TEST] inference->begin() FALLO");
+        inference = nullptr;
+    } else {
+        Serial.printf("[DIAG] inference->begin() OK  |  wake_buf=%s  |  PSRAM libre: %u bytes\n",
+                      s_wake_buf ? "ok" : "NULL", (unsigned)ESP.getFreePsram());
+    }
+
+    static Dispatcher disp_instance(oled,
+        [](const char* json) { Serial.printf("[TEST] (offline) accion: %s\n", json); },
+        []() { Serial.println("[TEST] (offline) grabar ignorado"); });
+    dispatcher = &disp_instance;
+
+    xSemInf  = xSemaphoreCreateBinary();
+    xColaInf = xQueueCreate(1, sizeof(InfResultado));
+    xTaskCreatePinnedToCore(tareaInferencia, "inf_task", 8192, nullptr, 2, nullptr, 0);
+
+    oled->mostrar("NEO", "TEST WW");
+    Serial.println("[TEST] Listo — di 'Hola NEO' cerca del microfono");
+}
+#endif
+
 void setup() {
     Serial.begin(115200);
     delay(500);
     Serial.println("\n\n=== NEO BOOT ===");
     Serial.println("[NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1");
+
+    // [DIAG] Confirmación de PSRAM — quitar tras validar el primer arranque.
+    Serial.printf("[DIAG] PSRAM total: %u bytes (%.1f MB)  libre: %u bytes\n",
+                  (unsigned)ESP.getPsramSize(), ESP.getPsramSize() / (1024.0f * 1024.0f),
+                  (unsigned)ESP.getFreePsram());
 
     audio_buf = (int16_t*)heap_caps_malloc(PLAY_MUESTRAS * sizeof(int16_t),
                                             MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
@@ -459,6 +507,11 @@ void setup() {
         Serial.println("[NEO] Error: OLED");
         while (true) delay(1000);
     }
+
+#ifdef NEO_TEST_WAKE_OFFLINE
+    setupWakeWordOffline();
+    return;   // salta toda la inicialización de WiFi/WS/tareaWs
+#endif
 
     static WifiManager wifi_instance;
     wifi   = &wifi_instance;
@@ -596,6 +649,10 @@ void setup() {
     if (!inference->begin()) {
         Serial.println("[NEO] Advertencia: inferencia no disponible — solo modo botón");
         inference = nullptr;
+    } else {
+        // [DIAG] Confirmación de carga del modelo — quitar tras validar.
+        Serial.printf("[DIAG] inference->begin() OK  |  wake_buf=%s  |  PSRAM libre: %u bytes\n",
+                      s_wake_buf ? "ok" : "NULL", (unsigned)ESP.getFreePsram());
     }
 
     // A partir de aquí toda la E/S WebSocket ocurre en tareaWs.
@@ -614,6 +671,7 @@ void setup() {
 }
 
 void loop() {
+#ifndef NEO_TEST_WAKE_OFFLINE
     if (!wifiOk) { wifi->tick(); return; }
 
     // ws->tick() y reconexión los maneja tareaWs en Core 0.
@@ -624,6 +682,7 @@ void loop() {
         reproducirRespuesta();
         return;
     }
+#endif
 
     // ── Wake word: VAD-triggered + inferencia en Core 0 ──────────────────────
     // loop() (Core 1) solo captura audio y actualiza el OLED.
