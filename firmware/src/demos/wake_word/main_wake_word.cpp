@@ -41,12 +41,18 @@ static uint32_t  resultado_ms    = 0;  // mostrar resultado N ms
 static uint8_t conf_count        = 0;
 static const uint8_t CONF_MINIMAS = 2;
 
-// Umbrales VAD (mismos del main original)
-static const float   WAKE_FACTOR_INICIO = 4.0f;
-static const float   WAKE_FACTOR_FIN    = 2.0f;
-static const uint32_t WAKE_SILENCIO_MS  = 700;
-static const uint32_t WAKE_MAX_MS       = 2500;
-static const uint32_t RESULTADO_MS      = 1500;
+// Umbrales VAD
+static const float   WAKE_FACTOR_INICIO  = 4.0f;   // RMS > noise×4 → empieza captura
+static const float   WAKE_FACTOR_FIN     = 2.0f;   // RMS < noise×2 → posible silencio
+static const float   PICO_FACTOR_FIN     = 0.25f;  // RMS < pico×0.25 → posible silencio
+// Durante CAPTANDO se corta cuando RMS cae bajo el MAYOR de los dos umbrales
+// (ruido relativo y fracción del pico) durante WAKE_SILENCIO_MS.
+static const uint32_t WAKE_SILENCIO_MS   = 350;
+static const uint32_t WAKE_MAX_MS        = 2500;
+static const uint32_t RESULTADO_MS       = 1500;
+
+// Pico de RMS durante la captura (para endpointing por energía de voz)
+static float pico_rms = 0.0f;
 
 // ── setup() ───────────────────────────────────────────────────────────────────
 
@@ -117,7 +123,7 @@ void setup() {
 
     oled->mostrar("NEO", "Listo — WW min");
     Serial.println("[BOOT] Listo — di 'Hola NEO' cerca del microfono");
-    Serial.println("[BOOT] Umbral: RMS > noise×4 inicia | RMS < noise×2 por 700ms corta");
+    Serial.println("[BOOT] Umbral: RMS > noise×4 inicia | RMS < max(noise×2, pico×0.25) por 350ms corta");
 }
 
 // ── loop() — captura + inferencia sincrónica ──────────────────────────────────
@@ -162,6 +168,7 @@ void loop() {
             wake_pos     = 0;
             en_silencio  = false;
             captura_ini  = millis();
+            pico_rms     = rms;
             wake_state   = WakeState::CAPTANDO;
             Serial.printf("[WW] Captando: rms=%.0f  noise=%.0f\n", rms, noise_floor);
         }
@@ -185,8 +192,18 @@ void loop() {
             oled->mostrarVolumen(norm, "Captando...");
         }
 
+        // Actualizar pico de RMS para endpointing por energía
+        if (rms > pico_rms) pico_rms = rms;
+
+        // Umbral de fin = el mayor entre ruido×FIN y pico×PICO_FIN.
+        // Evita cortar cuando el ruido de fondo sube durante la captura,
+        // y evita cortar en pausas breves del habla (fracción del pico).
+        float umbral_fin = noise_floor * WAKE_FACTOR_FIN;
+        float umbral_pico = pico_rms * PICO_FACTOR_FIN;
+        if (umbral_pico > umbral_fin) umbral_fin = umbral_pico;
+
         // Cortar por silencio o por máximo
-        if (rms < noise_floor * WAKE_FACTOR_FIN) {
+        if (rms < umbral_fin) {
             if (!en_silencio) { en_silencio = true; silencio_ini = millis(); }
         } else {
             en_silencio = false;
@@ -202,9 +219,10 @@ void loop() {
                 memset(wake_buf + wake_pos, 0,
                        ((int)MFCC_AUDIO_SAMPLES - wake_pos) * sizeof(int16_t));
             }
-            Serial.printf("[WW] Captura lista: %d muestras (%.2fs) [%s] → clasificar\n",
+            Serial.printf("[WW] Captura lista: %d muestras (%.2fs) [%s]  pico=%.0f  umbral_fin=%.0f → clasificar\n",
                           wake_pos, wake_pos / 16000.0f,
-                          fin_sil ? "silencio" : "max");
+                          fin_sil ? "silencio" : "max",
+                          pico_rms, umbral_fin);
             wake_pos   = 0;
             wake_state = WakeState::OYENDO;
 
