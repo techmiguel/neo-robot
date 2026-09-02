@@ -1,36 +1,48 @@
 #!/usr/bin/env python3
 """
-train_model.py — Entrena el modelo de wake word "hola_neo" para NEO
+train_model.py — Entrena el modelo de comandos de voz locales de NEO
+
+Las clases provienen de tools/vocabulario.json (fuente única de verdad
+compartida con el firmware de captura y la inferencia en ESP32).
 
 Pipeline:
-  1. Carga WAVs del dataset (hola_neo / desconocido / silencio)
+  1. Carga WAVs del dataset (una subcarpeta por clase)
   2. Extrae características MFCC con tensorflow.signal
-  3. Aplica data augmentation (ruido, shift temporal, volumen)
+  3. Aplica data augmentation (ruido, shift temporal, volumen, SpecAugment)
   4. Entrena una CNN pequeña (<40 KB en int8)
-  5. Muestra accuracy, matriz de confusión y curvas de entrenamiento
-  6. Exporta models/modelo_float.tflite y models/modelo_int8.tflite
+  5. Muestra accuracy, matriz de confusión, umbral óptimo POR CLASE
+  6. Exporta models/modelo_float.tflite, models/modelo_int8.tflite y
+     models/umbrales.json
 
 Uso:
     cd firmware/
     python tools/train_model.py
     python tools/train_model.py --dataset ruta/dataset --epocas 50
+
+Tras entrenar, regenerar el header del firmware:
+    python tools/gen_vocabulario.py --umbrales models/umbrales.json
 """
 
 import argparse
+import json
 import wave
 import numpy as np
 import tensorflow as tf
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (confusion_matrix, classification_report,
-                             roc_curve, auc)
+                             roc_curve)
 from sklearn.utils.class_weight import compute_class_weight
 import matplotlib
 matplotlib.use("Agg")   # sin ventana gráfica; guarda PNG
 import matplotlib.pyplot as plt
 
 # ── Configuración ─────────────────────────────────────────────────────────────
-CLASES = ["hola_neo", "desconocido", "silencio"]
+VOCAB_RUTA = Path(__file__).resolve().parent / "vocabulario.json"
+_vocab     = json.loads(VOCAB_RUTA.read_text(encoding="utf-8"))
+CLASES     = [c["nombre"] for c in _vocab["clases"]]
+# Clases que son comandos accionables (vs. desconocido/silencio, que no se despachan)
+ES_COMANDO = {c["nombre"]: c.get("comando") is not None for c in _vocab["clases"]}
 SR     = 16000   # Hz — debe coincidir con el firmware de captura
 
 # Parámetros MFCC — deben ser idénticos a la implementación C++ en el ESP32
@@ -370,8 +382,9 @@ def main():
     if mediana < longitud * 0.8:
         print(f"  AVISO: la mediana ({mediana}) es mucho menor que {longitud}; "
               f"¿hay grabaciones viejas de 1 s? Considera re-grabarlas.")
+    print(f"  Clases          : {len(CLASES)}  {CLASES}")
     print(f"  Alineación      : {'sí (onset de voz, igual que el VAD)' if args.alinear else 'no (relleno simple)'}")
-    print(f"  Augmentation    : {'sí (hola×14, desc×30, sil×20 + SpecAugment)' if args.augment else 'no'}")
+    print(f"  Augmentation    : {'sí (comandos×7, desc×15, sil×10 + SpecAugment)' if args.augment else 'no'}")
 
     # ── 2. Split sobre originales (ANTES de augmentación) ───────────────────
     # Crítico: si se augmenta primero y se splitea después, versiones del mismo
@@ -398,17 +411,21 @@ def main():
 
     def preparar(audios, labels, aumentar_datos: bool) -> tuple:
         """
-        Extrae MFCC con augmentación por clase:
-          hola_neo (0)    →  7 variantes de audio
-          desconocido (1) → 15 variantes de audio
-          silencio (2)    → 10 variantes de audio
+        Extrae MFCC con augmentación según el tipo de clase:
+          desconocido → 15 variantes de audio (máxima diversidad)
+          silencio    → 10 variantes de audio
+          comandos    →  7 variantes de audio
         Cada variante también genera una copia con SpecAugment,
         duplicando el conjunto sin añadir más audio grabado.
         """
-        _aug_fn = [aumentar, aumentar_desconocido, aumentar_silencio]
+        _aug_por_nombre = {"desconocido": aumentar_desconocido,
+                           "silencio":    aumentar_silencio}
         X, y = [], []
         for audio, label in zip(audios, labels):
-            fn = _aug_fn[label] if aumentar_datos else (lambda a: [a])
+            if not aumentar_datos:
+                fn = lambda a: [a]
+            else:
+                fn = _aug_por_nombre.get(CLASES[label], aumentar)
             for v in fn(audio):
                 mfcc = extraer_mfcc(ajustar_longitud(v, longitud))
                 X.append(mfcc)
@@ -485,18 +502,39 @@ def main():
     print("\n" + classification_report(y_test, y_pred, target_names=CLASES,
                                        digits=3, zero_division=0))
 
-    # ── Umbral óptimo para hola_neo (criterio de Youden sobre el val set) ───────
-    y_val_bin  = (np.array(l_val) == 0).astype(int)
-    scores_val = modelo.predict(X_val, verbose=0)[:, 0]
-    fpr, tpr, thresholds_roc = roc_curve(y_val_bin, scores_val)
-    J       = tpr - fpr
-    idx_opt = int(np.argmax(J))
-    thr_opt = float(thresholds_roc[idx_opt])
-    roc_auc = auc(fpr, tpr)
-    print(f"\n  AUC hola_neo (val)     : {roc_auc:.3f}")
-    print(f"  Umbral óptimo sugerido : {thr_opt:.3f}  "
-          f"(FPR={fpr[idx_opt]*100:.1f}%  TPR={tpr[idx_opt]*100:.1f}%)")
-    print(f"  -> inference.h : static constexpr float UMBRAL = {thr_opt:.3f}f;")
+    # ── Umbral óptimo POR CLASE (criterio de Youden sobre el val set) ─────────
+    # Solo tiene sentido para clases accionables (comandos), no para
+    # desconocido/silencio. Se guarda en models/umbrales.json para que
+    # gen_vocabulario.py lo inyecte en el firmware.
+    print("\n  Umbrales óptimos por comando (criterio de Youden):")
+    y_val_arr = np.array(l_val)
+    probs_val = modelo.predict(X_val, verbose=0)
+    umbrales = {}
+    for i, clase in enumerate(CLASES):
+        if not ES_COMANDO.get(clase, False):
+            continue
+        y_bin  = (y_val_arr == i).astype(int)
+        scores = probs_val[:, i]
+        if y_bin.sum() == 0 or y_bin.sum() == len(y_bin):
+            # clase ausente o única en val → sin curva ROC válida
+            print(f"    {clase:<12}: sin muestra suficiente en val (se omite)")
+            continue
+        fpr, tpr, thresholds_roc = roc_curve(y_bin, scores)
+        J       = tpr - fpr
+        idx_opt = int(np.argmax(J))
+        thr_opt = float(thresholds_roc[idx_opt])
+        umbrales[clase] = round(thr_opt, 4)
+        print(f"    {clase:<12}: {thr_opt:.3f}  "
+              f"(FPR={fpr[idx_opt]*100:.1f}%  TPR={tpr[idx_opt]*100:.1f}%)")
+
+    # Escribir umbrales.json (merge con defecto para las no computadas)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    ruta_umbrales = output_dir / "umbrales.json"
+    ruta_umbrales.write_text(json.dumps(umbrales, indent=2, ensure_ascii=False),
+                             encoding="utf-8")
+    print(f"\n  Umbrales guardados: {ruta_umbrales}")
+    print("  Regenera el header del firmware:")
+    print(f"    python tools/gen_vocabulario.py --umbrales {ruta_umbrales}")
 
     # Gráficas
     output_dir.mkdir(parents=True, exist_ok=True)
