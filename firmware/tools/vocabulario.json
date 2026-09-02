@@ -1,0 +1,15 @@
+{
+  "descripcion": "Vocabulario del modelo de comandos locales de NEO. El orden define el indice de clase del modelo TFLite. Regenerar src/models/vocabulario.h con: python tools/gen_vocabulario.py",
+  "muestreo_hz": 16000,
+  "umbral_defecto": 0.85,
+  "clases": [
+    { "nombre": "hola_neo",    "frase": "Hola NEO",              "objetivo": 170, "comando": "HOLA_NEO" },
+    { "nombre": "clima",       "frase": "Clima",                 "objetivo": 80,  "comando": "CLIMA" },
+    { "nombre": "noticias",    "frase": "Noticias",              "objetivo": 80,  "comando": "NOTICIAS" },
+    { "nombre": "el_toque",    "frase": "El Toque",              "objetivo": 80,  "comando": "ELTOQUE" },
+    { "nombre": "cripto",      "frase": "Cripto",                "objetivo": 80,  "comando": "CRIPTO" },
+    { "nombre": "dado",        "frase": "Dado",                  "objetivo": 80,  "comando": "DADO" },
+    { "nombre": "desconocido", "frase": "otras palabras o voces", "objetivo": 120, "comando": null },
+    { "nombre": "silencio",    "frase": "solo ruido ambiente",    "objetivo": 60,  "comando": null }
+  ]
+}
