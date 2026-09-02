@@ -106,10 +106,10 @@ No se avanza al módulo N+1 sin tener el N verificado en hardware o entorno real
 **Estado: COMPLETADO** (modelo re-entrenado con onset alignment)
 
 ### Módulo 4.3 — Inferencia TFLite en ESP32
-**Prueba actual:** pronunciar comando → OLED muestra nombre y score  
-**Estado: EN CURSO**  
+**Prueba:** pronunciar comando → OLED muestra nombre y score  
+**Estado: COMPLETADO**  
 
-**Decisión (2026-09-01):** tras problemas de arranque en el firmware completo, se crea la rama `test/wake-word-minimo` con environment `wake_word_test` que aísla mic + OLED + inferencia (sin WiFi, WS, speaker ni tareas FreeRTOS extra). El objetivo es validar la detección del wake word en hardware con el mínimo de dependencias antes de reintegrarlo al pipeline principal.
+Validado en hardware en la rama `test/wake-word-minimo` (ver Decisiones de arquitectura). La detección de "Hola NEO" funciona con score alto y endpointing ajustado. Próximo paso: reintegrar al pipeline principal (`main`).
 
 ### Módulo 4.4 — Dispatcher de comandos
 **Estado: PENDIENTE** (espera validación de 4.3 en hardware)
