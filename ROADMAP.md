@@ -170,6 +170,7 @@ Construir solo cuando haya una necesidad concreta. No antes.
 - Optimizaciones (streaming en tiempo real, wake word, compresión de audio) van después de tener la versión funcional del Módulo 3.4.
 - La latencia inicial del loop conversacional puede ser 5-10 segundos. Es aceptable como punto de partida.
 - Llevar bitácora en docs/bitacora/ por cada módulo completado.
+- **Boot loop sin output de app** (rst TG0WDT/RTCWDT, Saved PC en ROM): sospechar de la alimentación ANTES que del código. La PSRAM octal exige un pico de corriente al bootloader; un cable/puerto malo hunde la línea 3V3 y cuelga la init. Diagnóstico por eliminación: `pio run -e boot_probe -t upload` (demo sin PSRAM). Si ese arranca y los demás no → problema eléctrico.
 
 ---
 
