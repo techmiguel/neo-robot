@@ -234,20 +234,27 @@ void loop() {
             char pctStr[8];
             snprintf(pctStr, sizeof(pctStr), "%d%%", pct);
 
-            static const char* const ETIQUETAS[3] = {"HolaNEO", "Desc", "Silencio"};
-            oled->mostrar(ETIQUETAS[clase], pctStr);
+            // Etiqueta corta de la clase detectada (vocabulario dinámico)
+            oled->mostrar(VOCAB_CLASES[clase], pctStr);
             resultado_ms = millis() + RESULTADO_MS;
-            Serial.printf("[WW] Resultado: clase=%d  score=%.3f\n",
-                          clase, inference->ultimoScoreClase(clase));
+            Serial.printf("[WW] Resultado: clase=%d (%s)  score=%.3f  cmd=%d\n",
+                          clase, VOCAB_CLASES[clase],
+                          inference->ultimoScoreClase(clase), (int)cmd);
 
             if (cmd == Comando::HOLA_NEO) {
+                // Wake word: exige CONF_MINIMAS detecciones seguidas para reducir
+                // falsos positivos (es la puerta de entrada al sistema).
                 conf_count++;
                 if (conf_count >= CONF_MINIMAS) {
                     conf_count = 0;
                     Serial.println("[WW] WAKE CONFIRMADO");
-                    oled->mostrar("NEO", "WAKE!");
                     dispatcher->despachar(Comando::HOLA_NEO, inference->ultimoScore());
                 }
+            } else if (cmd != Comando::DESCONOCIDO) {
+                // Comando intencional: se despacha de inmediato (sin confirmación doble).
+                conf_count = 0;
+                Serial.printf("[WW] COMANDO → %d\n", (int)cmd);
+                dispatcher->despachar(cmd, inference->ultimoScore());
             } else {
                 conf_count = 0;
             }

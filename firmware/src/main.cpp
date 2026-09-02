@@ -96,7 +96,7 @@ struct PedidoEnvio {
 struct InfResultado {
     Comando cmd;
     int     clase_top;
-    float   scores[3];
+    float   scores[VOCAB_N_CLASES];
 };
 static SemaphoreHandle_t xSemInf    = nullptr;  // loop da, tareaInf toma
 static QueueHandle_t     xColaInf   = nullptr;  // tareaInf publica, loop consume
@@ -304,7 +304,7 @@ static void tareaInferencia(void* /*pvParam*/) {
         InfResultado res;
         res.cmd       = inference->clasificar(s_wake_buf, MFCC_AUDIO_SAMPLES);
         res.clase_top = inference->ultimaClaseTop();
-        for (int i = 0; i < 3; i++) res.scores[i] = inference->ultimoScoreClase(i);
+        for (int i = 0; i < VOCAB_N_CLASES; i++) res.scores[i] = inference->ultimoScoreClase(i);
 
         xQueueSend(xColaInf, &res, 0);   // loop() consume en su próximo ciclo
         s_inf_busy = false;
@@ -697,22 +697,27 @@ void loop() {
     // ── Consumir resultado de inferencia si está listo ────────────────────────
     InfResultado inf_res;
     if (xQueueReceive(xColaInf, &inf_res, 0) == pdTRUE) {
-        static const char* const ETIQUETAS[3] = {"HolaNEO", "Desc", "Silencio"};
         int  pct = (int)(inf_res.scores[inf_res.clase_top] * 100.0f + 0.5f);
         if (pct > 100) pct = 100;
         char pctStr[8];
         snprintf(pctStr, sizeof(pctStr), "%d%%", pct);
-        oled->mostrar(ETIQUETAS[inf_res.clase_top], pctStr);
+        oled->mostrar(VOCAB_CLASES[inf_res.clase_top], pctStr);
         s_oled_res_ms = millis() + WAKE_RESULTADO_MS;
-        Serial.printf("[WW] Resultado: clase=%d  score=%.3f\n",
-                      inf_res.clase_top, inf_res.scores[inf_res.clase_top]);
+        Serial.printf("[WW] Resultado: clase=%d (%s)  score=%.3f  cmd=%d\n",
+                      inf_res.clase_top, VOCAB_CLASES[inf_res.clase_top],
+                      inf_res.scores[inf_res.clase_top], (int)inf_res.cmd);
 
         if (inf_res.cmd == Comando::HOLA_NEO) {
+            // Wake word: doble confirmación para reducir falsos positivos.
             s_conf_count++;
             if (s_conf_count >= CONF_MINIMAS) {
                 s_conf_count = 0;
                 dispatcher->despachar(Comando::HOLA_NEO, inf_res.scores[0]);
             }
+        } else if (inf_res.cmd != Comando::DESCONOCIDO) {
+            // Comando intencional: despacho inmediato.
+            s_conf_count = 0;
+            dispatcher->despachar(inf_res.cmd, inf_res.scores[inf_res.clase_top]);
         } else {
             s_conf_count = 0;
         }
