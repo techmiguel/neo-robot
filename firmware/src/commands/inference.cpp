@@ -92,7 +92,16 @@ bool Inference::begin() {
 
     // ── Verificar coherencia modelo ↔ vocabulario ─────────────────────────────
     TfLiteTensor* out = s_interpreter->output(0);
-    int n_modelo = (out->dims->size >= 2) ? out->dims->data[out->dims->size - 1] : 0;
+    if (out == nullptr) {
+        Serial.println("[INF] Error: output tensor es null");
+        return false;
+    }
+    if (out->dims == nullptr || out->dims->size < 2) {
+        Serial.printf("[INF] Error: output tensor dims invalid (size=%d)\n",
+                      out->dims ? out->dims->size : 0);
+        return false;
+    }
+    int n_modelo = out->dims->data[out->dims->size - 1];
     _n_clases_modelo = n_modelo;
     if (n_modelo != VOCAB_N_CLASES) {
         Serial.printf("[INF] ADVERTENCIA: modelo con %d clases, vocabulario con %d.\n",
@@ -102,6 +111,10 @@ bool Inference::begin() {
 
     // Cuantización de entrada (leida del tensor, no hardcodeada)
     TfLiteTensor* in = s_interpreter->input(0);
+    if (in == nullptr) {
+        Serial.println("[INF] Error: input tensor es null");
+        return false;
+    }
     Serial.printf("[INF] Entrada  scale=%.7f  zero_point=%d\n",
                   in->params.scale, (int)in->params.zero_point);
     Serial.printf("[INF] Salida   scale=%.7f  zero_point=%d  clases=%d\n",
