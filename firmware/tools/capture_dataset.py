@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """
-capture_dataset.py — Captura de dataset de audio para wake word NEO
+capture_dataset.py — Captura de dataset de audio para comandos de voz NEO
 
-Recibe muestras de 1 segundo desde el ESP32 y las guarda como WAV.
-Cada pulsación de tecla inicia una grabación en la clase elegida.
+Recibe muestras de 1.5 s desde el ESP32 y las guarda como WAV.
+Las clases, frases guía y objetivos provienen de tools/vocabulario.json
+(fuente única de verdad compartida con el firmware y train_model.py).
 
 Uso:
     python capture_dataset.py --port COM3
     python capture_dataset.py --port /dev/ttyUSB0
+
+Teclas:
+    [1..8]  Grabar una muestra de esa clase
+    [q]     Salir
 """
 
 import argparse
+import json
 import os
 import serial
 import sys
@@ -24,7 +30,13 @@ SAMPLE_RATE  = 16000
 CHANNELS     = 1
 SAMPLE_WIDTH = 2        # int16 → 2 bytes por muestra
 DATASET_DIR  = Path("dataset")
-CLASES       = ["hola_neo", "desconocido", "silencio"]
+
+# Vocabulario — se carga desde el JSON compartido
+VOCAB_RUTA = Path(__file__).resolve().parent / "vocabulario.json"
+_vocab     = json.loads(VOCAB_RUTA.read_text(encoding="utf-8"))
+CLASES     = [c["nombre"] for c in _vocab["clases"]]
+OBJETIVOS  = {c["nombre"]: c["objetivo"] for c in _vocab["clases"]}
+FRASES     = {c["nombre"]: c["frase"] for c in _vocab["clases"]}
 
 
 # ── Utilidades de terminal ────────────────────────────────────────────────────
@@ -167,21 +179,20 @@ def grabar(ser: serial.Serial, clase: str) -> Path:
 
 def mostrar_menu(conteos: dict, clase_actual: str):
     limpiar_pantalla()
-    print("╔══════════════════════════════════════════════╗")
-    print("║       NEO — Captura de Dataset Wake Word     ║")
-    print("╠══════════════════════════════════════════════╣")
-    print("║  Muestras recolectadas:                      ║")
+    print("╔════════════════════════════════════════════════════════════╗")
+    print("║          NEO — Captura de Dataset de Comandos Voz          ║")
+    print("╠════════════════════════════════════════════════════════════╣")
+    print("║  Muestras (actual/objetivo):                               ║")
     for i, clase in enumerate(CLASES):
-        marca = " ◄ activa" if clase == clase_actual else ""
-        linea = f"  [{i+1}] {clase:<17} {conteos[clase]:>4}{marca}"
-        print(f"║  {linea:<44}║")
-    print("╠══════════════════════════════════════════════╣")
-    print("║  Controles:                                  ║")
-    print("║    [1] Grabar hola_neo                       ║")
-    print("║    [2] Grabar desconocido                    ║")
-    print("║    [3] Grabar silencio                       ║")
-    print("║    [q] Salir                                 ║")
-    print("╚══════════════════════════════════════════════╝")
+        marca  = " ◄" if clase == clase_actual else "  "
+        obj    = OBJETIVOS[clase]
+        n      = conteos[clase]
+        llena  = "✓" if n >= obj else " "
+        linea  = f"  [{i+1}]{marca} {clase:<12} {n:>4}/{obj:<4} {llena}"
+        print(f"║  {linea:<56}║")
+    print("╠════════════════════════════════════════════════════════════╣")
+    print(f"║  [1-{len(CLASES)}] Grabar clase   ·   [q] Salir                     ║")
+    print("╚════════════════════════════════════════════════════════════╝")
     print(f"\n  Clase activa: {clase_actual}")
     print("  Esperando tecla...")
 
@@ -243,15 +254,23 @@ def main():
 
             if key == "q":
                 break
-            elif key in ("1", "2", "3"):
+            elif key.isdigit() and 1 <= int(key) <= len(CLASES):
                 clase = CLASES[int(key) - 1]
                 clase_actual = clase
                 idx = conteos[clase] + 1
-                print(f"\n  → Grabando {clase} #{idx:04d}...")
+                print(f"\n  → Prepara: «{FRASES[clase]}»  (muestra #{idx:04d})")
+                # Cuenta atrás breve para que el usuario se posicione y hable
+                # justo cuando el ESP32 empieza a capturar los 1.5 s.
+                for rest in (3, 2, 1):
+                    print(f"    {rest}...", end="\r", flush=True)
+                    time.sleep(0.4)
+                print("    ¡Di ahora!      ")
                 try:
                     ruta = grabar(ser, clase)
                     conteos[clase] += 1
-                    print(f"  ✓ Guardado: {ruta}")
+                    obj = OBJETIVOS[clase]
+                    check = "  ✓ completo" if conteos[clase] >= obj else ""
+                    print(f"  ✓ Guardado: {ruta}  [{conteos[clase]}/{obj}]{check}")
                     time.sleep(0.3)
                 except (TimeoutError, RuntimeError, serial.SerialException) as e:
                     print(f"  ✗ Error: {e}")
@@ -268,7 +287,9 @@ def main():
     for clase in CLASES:
         n = conteos[clase]
         total += n
-        print(f"  {clase:<20} {n:>4} muestras")
+        falta = max(0, OBJETIVOS[clase] - n)
+        estado = "✓" if falta == 0 else f"faltan {falta}"
+        print(f"  {clase:<20} {n:>4}/{OBJETIVOS[clase]:<4} {estado}")
     print(f"  {'TOTAL':<20} {total:>4} muestras")
     print(f"  Guardadas en: {DATASET_DIR.resolve()}")
 

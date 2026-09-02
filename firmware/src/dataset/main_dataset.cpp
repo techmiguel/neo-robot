@@ -1,10 +1,11 @@
 /*
- * main_dataset.cpp — Firmware de captura de audio para entrenar wake word
+ * main_dataset.cpp — Firmware de captura de audio para entrenar comandos de voz
  *
- * Graba muestras de 1 segundo (16 kHz, mono, 16-bit PCM) y las envía al PC
+ * Graba muestras de 1.5 segundos (16 kHz, mono, 16-bit PCM) y las envía al PC
  * por Serial para que el script capture_dataset.py las guarde como archivos WAV.
  *
- * Clases disponibles: "hola_neo", "desconocido", "silencio"
+ * Clases disponibles: definidas en src/models/vocabulario.h
+ * (generado desde tools/vocabulario.json — NO editar aquí).
  *
  * ── Protocolo Serial (115200 baud) ───────────────────────────────────────────
  *  PC → ESP32:
@@ -21,7 +22,7 @@
  *
  * ── Botón BOOT (GPIO0) ────────────────────────────────────────────────────────
  *  Pulsación corta (<1.5s):  graba la clase actualmente seleccionada
- *  Pulsación larga (≥1.5s):  avanza a la siguiente clase (ciclo de 3)
+ *  Pulsación larga (≥1.5s):  avanza a la siguiente clase (ciclo de N_CLASES)
  */
 
 #include <Arduino.h>
@@ -29,14 +30,12 @@
 #include "audio/microphone.h"
 #include "display/oled.h"
 #include "input/trigger.h"
+#include "models/vocabulario.h"
 
 // ── Constantes ────────────────────────────────────────────────────────────────
 static const size_t SAMPLE_RATE  = 16000;                          // Hz
 static const size_t SAMPLE_COUNT = SAMPLE_RATE * 3 / 2;           // 1.5 segundos = 24 000 muestras
 static const size_t AUDIO_BYTES  = SAMPLE_COUNT * sizeof(int16_t); // 48 000 bytes
-
-static const char* CLASES[]  = { "hola_neo", "desconocido", "silencio" };
-static const uint8_t N_CLASES = 3;
 
 // ── Objetos de hardware ───────────────────────────────────────────────────────
 static Microphone mic;
@@ -45,7 +44,7 @@ static Trigger    trigger;
 
 // ── Estado global ─────────────────────────────────────────────────────────────
 static uint8_t  clase_actual  = 0;
-static uint16_t conteos[N_CLASES] = {};
+static uint16_t conteos[VOCAB_N_CLASES] = {};
 static int16_t* audio_buf     = nullptr;
 
 // Buffer para acumular una línea de Serial sin bloquear
@@ -59,16 +58,18 @@ static void actualizarOled(const char* estado = nullptr) {
     if (estado) {
         snprintf(l2, sizeof(l2), "%s", estado);
     } else {
-        snprintf(l2, sizeof(l2), "N:%03u  BOOT=grabar", conteos[clase_actual]);
+        snprintf(l2, sizeof(l2), "%u/%u BOOT=grabar",
+                 (unsigned)conteos[clase_actual],
+                 (unsigned)VOCAB_OBJETIVOS[clase_actual]);
     }
-    oled.mostrar(CLASES[clase_actual], l2);
+    oled.mostrar(VOCAB_CLASES[clase_actual], l2);
 }
 
 // ── Grabación y envío ─────────────────────────────────────────────────────────
 
 static void grabar() {
-    oled.mostrar(CLASES[clase_actual], "Grabando...");
-    Serial.printf("RECORDING:%s\r\n", CLASES[clase_actual]);
+    oled.mostrar(VOCAB_CLASES[clase_actual], "Grabando...");
+    Serial.printf("RECORDING:%s\r\n", VOCAB_CLASES[clase_actual]);
 
     // Capturar SAMPLE_COUNT muestras en bloques de BLOCK_SIZE
     for (size_t offset = 0; offset < SAMPLE_COUNT; ) {
@@ -81,7 +82,7 @@ static void grabar() {
     }
 
     // Encabezado de inicio → Python sabe cuántos bytes leer
-    oled.mostrar(CLASES[clase_actual], "Enviando...");
+    oled.mostrar(VOCAB_CLASES[clase_actual], "Enviando...");
     Serial.printf("START_AUDIO:%u\r\n", (unsigned)AUDIO_BYTES);
 
     // PCM crudo: 32 000 bytes a 460800 baud ≈ 0.7 s de transferencia
@@ -91,7 +92,7 @@ static void grabar() {
     Serial.print("END_AUDIO\r\n");
 
     conteos[clase_actual]++;
-    Serial.printf("STATUS:%s:%u\r\n", CLASES[clase_actual], conteos[clase_actual]);
+    Serial.printf("STATUS:%s:%u\r\n", VOCAB_CLASES[clase_actual], conteos[clase_actual]);
 
     actualizarOled();
 }
@@ -99,8 +100,8 @@ static void grabar() {
 // ── Cambio de clase ───────────────────────────────────────────────────────────
 
 static void siguienteClase() {
-    clase_actual = (clase_actual + 1) % N_CLASES;
-    Serial.printf("CLASS:%s\r\n", CLASES[clase_actual]);
+    clase_actual = (clase_actual + 1) % VOCAB_N_CLASES;
+    Serial.printf("CLASS:%s\r\n", VOCAB_CLASES[clase_actual]);
     actualizarOled();
 }
 
@@ -132,8 +133,8 @@ static void procesarSerial() {
 
     if (strncmp(linea, "RECORD:", 7) == 0) {
         const char* clase_pedida = linea + 7;
-        for (uint8_t i = 0; i < N_CLASES; i++) {
-            if (strcmp(clase_pedida, CLASES[i]) == 0) {
+        for (uint8_t i = 0; i < VOCAB_N_CLASES; i++) {
+            if (strcmp(clase_pedida, VOCAB_CLASES[i]) == 0) {
                 clase_actual = i;
                 actualizarOled();
                 break;
@@ -142,7 +143,7 @@ static void procesarSerial() {
         grabar();
 
     } else if (strcmp(linea, "STATUS") == 0) {
-        Serial.printf("STATUS:%s:%u\r\n", CLASES[clase_actual], conteos[clase_actual]);
+        Serial.printf("STATUS:%s:%u\r\n", VOCAB_CLASES[clase_actual], conteos[clase_actual]);
     }
 }
 
@@ -152,7 +153,7 @@ void setup() {
     Serial.begin(115200);
     delay(500);
     Serial.println("=== NEO DATASET CAPTURE ===");
-    Serial.println("Clases: hola_neo | desconocido | silencio");
+    Serial.printf("Clases: %d (ver tools/vocabulario.json)\n", VOCAB_N_CLASES);
     Serial.println("Protocolo: RECORD:{clase} / STATUS");
 
     audio_buf = (int16_t*)malloc(AUDIO_BYTES);
@@ -177,7 +178,7 @@ void setup() {
     trigger.onActivado(grabar);
     trigger.onPulsacionLarga(siguienteClase);
 
-    Serial.printf("STATUS:%s:%u\r\n", CLASES[clase_actual], conteos[clase_actual]);
+    Serial.printf("STATUS:%s:%u\r\n", VOCAB_CLASES[clase_actual], conteos[clase_actual]);
     actualizarOled();
 }
 
