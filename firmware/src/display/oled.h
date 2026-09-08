@@ -1,7 +1,7 @@
 #pragma once
 /*
  * oled.h — Wrapper para pantalla OLED SSD1306 vía I2C
- * SDA→8, SCL→9, dirección I2C 0x3C
+ * SDA→46, SCL→42, dirección I2C 0x3C
  * Módulo 1.1 (Fase 1)
  *
  * Librería: Adafruit SSD1306 + Adafruit GFX
@@ -14,8 +14,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-static const int OLED_SDA     = 8;
-static const int OLED_SCL     = 9;
+static const int OLED_SDA     = 46;
+static const int OLED_SCL     = 42;
 static const int OLED_WIDTH   = 128;
 static const int OLED_HEIGHT  = 64;
 static const uint8_t OLED_ADDR = 0x3C;

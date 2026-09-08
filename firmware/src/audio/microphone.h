@@ -1,7 +1,7 @@
 #pragma once
 /*
  * microphone.h — Captura de audio via I2S con micrófono INMP441
- * I2S_NUM_0: WS→GPIO15, SCK→GPIO16, SD→GPIO17
+ * I2S_NUM_0: WS→GPIO1, SCK→GPIO3, SD→GPIO14
  * INMP441 con L/R a GND → salida en el slot I2S LEFT (modo ONLY_LEFT).
  * Módulo 1.2 (Fase 1)
  */
@@ -9,9 +9,9 @@
 #include <Arduino.h>
 #include <driver/i2s.h>
 
-static const int MIC_WS  = 15;
-static const int MIC_SCK = 16;
-static const int MIC_SD  = 17;
+static const int MIC_WS  = 1;
+static const int MIC_SCK = 3;
+static const int MIC_SD  = 14;
 
 class Microphone {
 public:

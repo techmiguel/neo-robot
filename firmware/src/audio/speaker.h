@@ -1,16 +1,16 @@
 #pragma once
 /*
  * speaker.h — Reproducción de audio via I2S hacia PM5100A + PAM8403
- * I2S_NUM_1: BCLK→GPIO38, LRCK→GPIO39, DOUT→GPIO40
+ * I2S_NUM_1: BCLK→GPIO21, LRCK→GPIO47, DOUT→GPIO41
  * Módulo 1.3 (Fase 1)
  */
 
 #include <Arduino.h>
 #include <driver/i2s.h>
 
-static const int SPK_BCLK = 38;
-static const int SPK_LRCK = 39;
-static const int SPK_DIN  = 40;
+static const int SPK_BCLK = 21;
+static const int SPK_LRCK = 47;
+static const int SPK_DIN  = 41;
 
 class Speaker {
 public:
