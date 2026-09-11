@@ -22,8 +22,19 @@ async def _sintetizar_mp3(texto: str, voz: str) -> bytes:
 
 
 async def synthesize(texto: str, voz: str = VOZ_DEFAULT) -> bytes:
-    """Convierte texto en PCM crudo (16 kHz, mono, 16-bit, little-endian)."""
+    """Convierte texto en PCM crudo (16 kHz, mono, 16-bit, little-endian).
+
+    Defensivo: si el texto viene vacío o edge-tts no devuelve MP3, se retorna
+    silencio corto en vez de reventar en miniaudio ("failed to decode data").
+    Así el pipeline siempre emite un fin_respuesta válido al ESP32.
+    """
+    if not texto or not texto.strip():
+        return b"\x00" * (SAMPLE_RATE // 5 * 2)   # 200 ms de silencio
+
     mp3 = await _sintetizar_mp3(texto, voz)
+    if not mp3:
+        return b"\x00" * (SAMPLE_RATE // 5 * 2)
+
     decoded = miniaudio.decode(
         mp3,
         output_format=miniaudio.SampleFormat.SIGNED16,

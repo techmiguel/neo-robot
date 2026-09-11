@@ -26,10 +26,23 @@ def _preguntar_groq(prompt: str) -> str:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user",   "content": prompt},
         ],
-        max_tokens=60,
+        # gpt-oss / qwen3 son modelos de razonamiento: emiten "thinking" antes de
+        # la respuesta. Con max_tokens bajo (60) agotan el presupuesto pensando y
+        # devuelven content vacío → el TTS crasheaba. 512 deja margen para ambos.
+        max_tokens=512,
         temperature=0.7,
     )
-    return resp.choices[0].message.content.strip()
+    msg = resp.choices[0].message
+    texto = (msg.content or "").strip()
+    # Algunos modelos ponen la respuesta solo en el campo de razonamiento si el
+    # content viene vacío; si sigue vacío, devolvemos un mensaje neutro para que
+    # el TTS nunca reciba cadena vacía.
+    if not texto:
+        reasoning = getattr(msg, "reasoning", None) or ""
+        texto = reasoning.strip()
+    if not texto:
+        texto = "No tengo una respuesta clara para eso."
+    return texto
 
 
 def _preguntar_ollama(prompt: str) -> str:
