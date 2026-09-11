@@ -30,11 +30,16 @@ public:
     // Muestra cara de asombro según nivel (0=normal, 1=sorprendido, 2=impactado).
     void mostrarAsombro(int nivel);
 
+    // Texto pequeño y persistente en la línea superior (estado de conexión, etc.).
+    // Se redibuja en cada frame de la animación, así no lo borra el parpadeo.
+    void setEstado(const char* estado);
+
 private:
     Adafruit_SSD1306& _dsp;
     AnimState         _state;
     unsigned long     _nextAction;
     int               _blinkFrame;
+    char              _estado[24] = "";
 
     // Geometría de los ojos (píxeles)
     static constexpr int EYE_L_X  = 30;

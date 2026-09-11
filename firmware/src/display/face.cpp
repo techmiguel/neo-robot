@@ -16,6 +16,10 @@ void Face::begin() {
     Serial.println("[FACE] _render() completado");
 }
 
+void Face::setEstado(const char* estado) {
+    snprintf(_estado, sizeof(_estado), "%s", estado ? estado : "");
+}
+
 void Face::update(unsigned long now) {
     if (now < _nextAction) return;
 
@@ -120,6 +124,12 @@ void Face::mostrarAsombro(int nivel) {
             _drawEye(EYE_R_X, EYE_Y, 0, 0, 0, false);
             break;
     }
+    if (_estado[0]) {
+        _dsp.setTextSize(1);
+        _dsp.setTextColor(SSD1306_WHITE);
+        _dsp.setCursor(0, 0);
+        _dsp.print(_estado);
+    }
     _dsp.display();
 }
 
@@ -133,5 +143,11 @@ void Face::_render(int pupilOx, int pupilOy, int blinkLevel, bool happy) {
     _dsp.clearDisplay();
     _drawEye(EYE_L_X, EYE_Y, pupilOx, pupilOy, blinkLevel, happy);
     _drawEye(EYE_R_X, EYE_Y, pupilOx, pupilOy, blinkLevel, happy);
+    if (_estado[0]) {
+        _dsp.setTextSize(1);
+        _dsp.setTextColor(SSD1306_WHITE);
+        _dsp.setCursor(0, 0);
+        _dsp.print(_estado);
+    }
     _dsp.display();
 }

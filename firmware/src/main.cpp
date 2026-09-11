@@ -17,6 +17,7 @@
 #include <esp_task_wdt.h>
 #include <WiFi.h>
 #include "display/oled.h"
+#include "display/face.h"
 #include "network/wifi_manager.h"
 #include "network/ws_client.h"
 #include "audio/microphone.h"
@@ -47,6 +48,7 @@ static int16_t* audio_buf     = nullptr;
 static size_t   audio_buf_cap = 0;
 
 static Oled*        oled    = nullptr;
+static Face*        face    = nullptr;
 static WifiManager* wifi    = nullptr;
 static WsClient*    ws      = nullptr;
 static Microphone*  mic     = nullptr;
@@ -64,11 +66,16 @@ static uint8_t  s_conf_count = 0;
 // Doble confirmación obligaba a decir "Hola NEO" dos veces → parecía no funcionar.
 static const uint8_t CONF_MINIMAS = 1;
 
-// Guard de conversación: tras despertar, NEO graba y espera respuesta. Mientras
-// hay una consulta en vuelo no se re-dispara el wake word.
-static bool     s_en_conversacion = false;
-static uint32_t s_conversacion_t0 = 0;
-static const uint32_t CONVERSACION_TIMEOUT_MS = 40000;  // si no llega respuesta, soltar
+// ── Máquina de estados del sistema ────────────────────────────────────────────
+// REPOSO:            solo wake word (VAD + inferencia), bajo consumo.
+// CONVERSACION:      NEO despierto; graba una consulta y la envía.
+// ESPERA_RESPUESTA:  consulta enviada; esperando el audio de respuesta del servidor.
+// Tras SILENCIO_REPOSO_MS sin voz en CONVERSACION → vuelve a REPOSO (pide wake word).
+enum class Fase : uint8_t { REPOSO, CONVERSACION, ESPERA_RESPUESTA };
+static Fase     s_fase        = Fase::REPOSO;
+static uint32_t s_espera_t0   = 0;
+static const uint32_t CONVERSACION_ESCUCHA_MS   = 10000;  // silencio que devuelve al reposo
+static const uint32_t ESPERA_RESPUESTA_TIMEOUT_MS = 40000; // servidor mudo → soltar
 
 // VAD para wake word (pipeline nuevo: activación por umbral de volumen)
 enum class WakeState : uint8_t { OYENDO, CAPTANDO };
@@ -131,10 +138,30 @@ static bool _wsConectar() {
     return false;
 }
 
-// Tras "Listo", deja la OLED encendida para mostrar el feedback de inferencia.
+// Estado de conexión para la línea superior del OLED.
+static const char* estadoConexionStr() {
+    switch (s_servidor) {
+        case ServidorActivo::LOCAL: return "LAN";
+        case ServidorActivo::NUBE:  return "NUBE";
+        default:                    return "OFF";
+    }
+}
+
+// Dibuja los ojos animados + línea de estado. activity: texto breve ("Oyendo",
+// "Grabando", "Pensando"...). Se llama en CONVERSACION/ESPERA y dentro de la
+// grabación para que la cara no se congele.
+static void pintarCara(const char* actividad) {
+    if (!face) return;
+    char buf[24];
+    snprintf(buf, sizeof(buf), "%s %s", estadoConexionStr(),
+             actividad ? actividad : "");
+    face->setEstado(buf);
+    face->update(millis());
+}
+
+// Reposo: OLED apagada para ahorrar. NEO queda solo escuchando el wake word.
 static void neoListoYReposoOled() {
-    oled->mostrar("NEO", "Listo");
-    // OLED permanece encendida; el bucle de wake word actualiza cada ~1.5 s.
+    if (oled) oled->apagar();
 }
 
 // ── Reproducción ──────────────────────────────────────────────────────────────
@@ -160,19 +187,20 @@ void reproducirRespuesta() {
     s_conf_count = 0;
     s_wake_state = WakeState::OYENDO;
     s_inf_busy   = false;
-    s_en_conversacion = false;   // conversación terminada → vuelve al reposo
     InfResultado _descarte; xQueueReceive(xColaInf, &_descarte, 0);  // descartar resultado pendiente
-    oled->mostrar("NEO", "Hablando...");
+    pintarCara("Hablando");
     Serial.printf("[NEO] Reproduciendo: %u bytes (%.2fs)\n",
                   (unsigned)play_bytes, play_bytes / (16000.0f * 2));
 
     const size_t muestras = play_bytes / sizeof(int16_t);
     for (size_t i = 0; i + Speaker::BLOCK_SIZE <= muestras; i += Speaker::BLOCK_SIZE) {
         spk->reproducir(audio_buf + i);
+        pintarCara("Hablando");   // ojos vivos mientras habla
     }
 
     play_bytes = 0;
-    neoListoYReposoOled();
+    // NO se apaga la pantalla aquí: seguimos en conversación (escuchando otra
+    // pregunta). El apagado ocurre al volver a REPOSO por silencio/timeout.
     Serial.println("[NEO] Reproducción completa");
 }
 
@@ -206,8 +234,9 @@ void consultarToque() {
 }
 
 // ── Grabación y envío ─────────────────────────────────────────────────────────
+// escucha_ms: cuánto esperar a que empiece la voz antes de darse por vencido.
 // Devuelve true solo si se grabó y encoló audio para el servidor (habrá respuesta).
-bool grabarYEnviar() {
+bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     s_wake_pos   = 0;
     s_conf_count = 0;
     s_wake_state = WakeState::OYENDO;
@@ -219,7 +248,7 @@ bool grabarYEnviar() {
     int16_t tmp[Microphone::BLOCK_SIZE];
 
     // ── Fase 1: calibración del ruido de fondo ───────────────────────────────
-    oled->mostrar("NEO", "Escuchando...");
+    pintarCara("Escuchando");
     Serial.println("[VAD] Calibrando ruido de fondo...");
 
     float suma_cal = 0;
@@ -238,8 +267,9 @@ bool grabarYEnviar() {
     bool voz_detectada = false;
     uint8_t bloques_consecutivos = 0;
 
-    while (millis() - t_espera < VAD_TIMEOUT_MS) {
+    while (millis() - t_espera < escucha_ms) {
         if (!mic->leer(tmp)) continue;
+        pintarCara("Escuchando");   // mantiene los ojos vivos mientras espera
 
         if (Microphone::rms(tmp) > umbral_inicio) {
             if (bloques_consecutivos < 255) bloques_consecutivos++;
@@ -253,13 +283,12 @@ bool grabarYEnviar() {
     }
 
     if (!voz_detectada) {
-        neoListoYReposoOled();
         Serial.println("[VAD] Timeout — sin voz detectada");
         return false;
     }
 
     // ── Fase 3: grabación con detección de fin por silencio ──────────────────
-    oled->mostrar("NEO", "Grabando...");
+    pintarCara("Grabando");
     Serial.println("[VAD] Voz detectada — grabando");
 
     size_t offset = Microphone::BLOCK_SIZE;
@@ -273,6 +302,7 @@ bool grabarYEnviar() {
 
     while (offset + Microphone::BLOCK_SIZE <= max_muestras) {
         if (!mic->leer(tmp)) continue;
+        pintarCara("Grabando");   // ojos vivos durante la captura
 
         memcpy(audio_buf + offset, tmp, Microphone::BLOCK_SIZE * sizeof(int16_t));
         offset += Microphone::BLOCK_SIZE;
@@ -308,7 +338,6 @@ bool grabarYEnviar() {
     const uint32_t duracion_ms = (offset * 1000) / 16000;
 
     if (duracion_ms < VAD_MIN_GRAB_MS) {
-        neoListoYReposoOled();
         Serial.printf("[VAD] Grabación muy corta (%ums) — descartada\n", duracion_ms);
         return false;
     }
@@ -318,7 +347,7 @@ bool grabarYEnviar() {
     // ── Fase 4: encolar pedido → tareaWs (Core 0) lo envía ───────────────────
     // El loop principal se bloquea aquí. El scheduler cede Core 1,
     // tareaWs corre sin competencia y hace yield al WiFi entre chunks.
-    oled->mostrar("NEO", "Enviando...");
+    pintarCara("Enviando");
     PedidoEnvio pedido{};
     pedido.tipo  = PEDIDO_AUDIO;
     pedido.bytes = offset * sizeof(int16_t);
@@ -563,6 +592,11 @@ void setup() {
         while (true) delay(1000);
     }
 
+    // Cara (ojos animados). Se dibuja solo al despertar; en REPOSO la pantalla está apagada.
+    static Face face_instance(oled->rawDisplay());
+    face = &face_instance;
+    oled->apagar();   // arrancamos en reposo con la pantalla apagada
+
 #ifdef NEO_TEST_WAKE_OFFLINE
     setupWakeWordOffline();
     return;   // salta toda la inicialización de WiFi/WS/tareaWs
@@ -605,7 +639,7 @@ void setup() {
         else if (msg.indexOf("fin_respuesta") >= 0) play_ready = true;
         else if (msg.indexOf("error")         >= 0) {
             oled->mostrarEstado("Error servidor");
-            s_en_conversacion = false;   // liberar guard: no llegará audio de respuesta
+            s_fase = Fase::REPOSO;   // liberar espera: no llegará audio de respuesta
         }
     });
     ws->onBinario([](const uint8_t* data, size_t len) {
@@ -664,7 +698,13 @@ void setup() {
     static Trigger trigger_instance;
     trigger = &trigger_instance;
     trigger->begin();
-    trigger->onActivado(grabarYEnviar);
+    // BOOT corto: despierta y entra en conversación igual que el wake word (sin ack).
+    trigger->onActivado([]() {
+        if (s_fase == Fase::REPOSO) {
+            Serial.println("[NEO] Botón — entro en conversación");
+            s_fase = Fase::CONVERSACION;
+        }
+    });
     trigger->onPulsacionLarga(consultarToque);
 
     static Dispatcher disp_instance(oled,
@@ -674,7 +714,7 @@ void setup() {
             strncpy(p.texto, json, sizeof(p.texto) - 1);
             xQueueSend(xColaEnvio, &p, pdMS_TO_TICKS(200));
         },
-        grabarYEnviar
+        []() { s_fase = Fase::CONVERSACION; }   // cbGrabar: iniciar conversación
     );
     dispatcher = &disp_instance;
 
@@ -726,27 +766,43 @@ void loop() {
     if (play_ready) {
         play_ready = false;
         reproducirRespuesta();
+        // Tras responder, seguimos despiertos: escuchar la siguiente pregunta.
+        if (s_fase == Fase::ESPERA_RESPUESTA) s_fase = Fase::CONVERSACION;
         return;
     }
 #endif
 
-    // ── Wake word: VAD-triggered + inferencia en Core 0 ──────────────────────
-    // loop() (Core 1) solo captura audio y actualiza el OLED.
-    // tareaInferencia (Core 0) corre clasificar() sin bloquear este hilo.
     if (!inference || !s_wake_buf) return;
 
-    // Guard de conversación: mientras NEO grabó y espera/recibe respuesta, no se
-    // re-dispara el wake word. Se libera al reproducir la respuesta, en error, o
-    // por timeout por si el servidor nunca contesta.
-    if (s_en_conversacion) {
-        if (millis() - s_conversacion_t0 > CONVERSACION_TIMEOUT_MS) {
-            Serial.println("[NEO] Timeout de respuesta — vuelvo al reposo");
-            s_en_conversacion = false;
+    // ── CONVERSACIÓN: NEO despierto, graba consultas en modo manos libres ──────
+    // Cada vuelta graba una pregunta y la envía. Si pasan CONVERSACION_ESCUCHA_MS
+    // sin voz, se asume que terminó y vuelve al REPOSO (requiere wake word otra vez).
+    if (s_fase == Fase::CONVERSACION) {
+        bool enviado = grabarYEnviar(CONVERSACION_ESCUCHA_MS);
+        if (enviado) {
+            s_fase = Fase::ESPERA_RESPUESTA;
+            s_espera_t0 = millis();
+        } else {
+            Serial.println("[NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')");
+            s_fase = Fase::REPOSO;
             neoListoYReposoOled();
         }
         return;
     }
 
+    // ── ESPERA_RESPUESTA: consulta enviada; la respuesta llega por play_ready ─
+    if (s_fase == Fase::ESPERA_RESPUESTA) {
+        pintarCara("Pensando");   // ojos vivos mientras el servidor procesa
+        if (millis() - s_espera_t0 > ESPERA_RESPUESTA_TIMEOUT_MS) {
+            Serial.println("[NEO] Sin respuesta del servidor — vuelvo al reposo");
+            s_fase = Fase::REPOSO;
+            neoListoYReposoOled();
+        }
+        delay(20);
+        return;
+    }
+
+    // ── REPOSO: detección de wake word (VAD + inferencia en Core 0) ───────────
     int16_t bloque[Microphone::BLOCK_SIZE];
     if (!mic->leer(bloque)) return;
 
@@ -759,32 +815,28 @@ void loop() {
         if (pct > 100) pct = 100;
         char pctStr[8];
         snprintf(pctStr, sizeof(pctStr), "%d%%", pct);
-        oled->mostrar(VOCAB_CLASES[inf_res.clase_top], pctStr);
-        s_oled_res_ms = millis() + WAKE_RESULTADO_MS;
+        (void)pct; (void)pctStr;   // en REPOSO la pantalla está apagada; solo se loguea
         Serial.printf("[WW] Resultado: clase=%d (%s)  score=%.3f  cmd=%d\n",
                       inf_res.clase_top, VOCAB_CLASES[inf_res.clase_top],
                       inf_res.scores[inf_res.clase_top], (int)inf_res.cmd);
 
         // El modelo local SOLO detecta el wake word. Al confirmarse, NEO sale del
-        // reposo, saluda ("¡Hola!") y graba la consulta libre; el servidor transcribe
-        // y deduce la intención.
+        // reposo, saluda ("¡Hola!") y entra en conversación (la primera grabación la
+        // hace el propio estado CONVERSACION en el siguiente ciclo de loop).
         if (inf_res.cmd == Comando::HOLA_NEO) {
             s_conf_count++;
             if (s_conf_count >= CONF_MINIMAS) {
                 s_conf_count = 0;
-                Serial.println("[WW] Wake word confirmado — despierto, saludo y escucho");
-                oled->mostrar("NEO", "¡Hola!");
-                reproducirAck();
-                s_en_conversacion = true;
-                s_conversacion_t0 = millis();
-                if (!grabarYEnviar()) {
-                    // No hubo voz o no se envió → no vendrá respuesta: vuelvo al reposo.
-                    s_en_conversacion = false;
-                }
+                Serial.println("[WW] Wake word confirmado — enciendo pantalla, saludo y converso");
+                oled->encender();
+                if (face) face->begin();   // primeros ojos
+                reproducirAck();           // "¡Hola!"
+                s_fase = Fase::CONVERSACION;
             }
         } else {
             s_conf_count = 0;
         }
+        return;
     }
 
     // ── Estado OYENDO ─────────────────────────────────────────────────────────
@@ -794,14 +846,8 @@ void loop() {
             s_wake_noise = s_wake_noise * 0.98f + rms * 0.02f;
         }
 
-        // Barra de volumen en OLED (máx ~10 Hz, no sobreescribir el resultado)
-        if (millis() - s_oled_vol_ms >= 100 && millis() > s_oled_res_ms) {
-            s_oled_vol_ms = millis();
-            float norm = rms / (s_wake_noise * WAKE_FACTOR_INICIO);
-            if (norm > 1.0f) norm = 1.0f;
-            const char* estado = s_inf_busy ? "Procesando..." : "Oyendo...";
-            oled->mostrarVolumen(norm, estado);
-        }
+        // En REPOSO la pantalla está apagada (ahorro): no se dibuja la barra de
+        // volumen. El feedback de despertar es el "¡Hola!" de audio.
 
         // Iniciar captura solo si la inferencia anterior ya terminó
         if (!s_inf_busy && rms > s_wake_noise * WAKE_FACTOR_INICIO) {
@@ -823,13 +869,7 @@ void loop() {
             s_wake_pos += n;
         }
 
-        // Barra de volumen durante la captura (máx ~12 Hz)
-        if (millis() - s_oled_vol_ms >= 80) {
-            s_oled_vol_ms = millis();
-            float norm = rms / (s_wake_noise * WAKE_FACTOR_INICIO);
-            if (norm > 1.0f) norm = 1.0f;
-            oled->mostrarVolumen(norm, "Captando...");
-        }
+        // (Pantalla apagada en REPOSO: sin barra de volumen durante la captura.)
 
         // Detectar silencio para cortar la captura
         if (rms < s_wake_noise * WAKE_FACTOR_FIN) {
