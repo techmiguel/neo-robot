@@ -48,6 +48,11 @@ CHUNK = 4096   # bytes por chunk al enviar audio de vuelta (~85 ms a 24 kHz)
 # "pipeline": STT → LLM → TTS (modo producción)
 MODO = os.getenv("WS_MODO", "pipeline")
 
+# — Tipo de servidor (para métricas de latencia) ————————————————————————————————
+# "local": servidor en LAN (PC del desarrollador)
+# "nube": servidor en HuggingFace Spaces
+SERVER_TYPE = os.getenv("SERVER_TYPE", "local")
+
 
 async def _enviar_json(ws, data: dict):
     await ws.send(json.dumps(data, ensure_ascii=False))
@@ -115,6 +120,7 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
     timer = get_timer()
     timer.mark("pipeline_start")
     timer.set_metadata("longitud_audio_bytes", len(buffer))
+    timer.set_metadata("tipo_servidor", SERVER_TYPE)
 
     await _enviar_json(ws, {"cmd": "procesando"})
     ka = await _iniciar_keepalive(ws)
