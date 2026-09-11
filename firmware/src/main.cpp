@@ -20,6 +20,7 @@
 #include "network/ws_client.h"
 #include "audio/microphone.h"
 #include "audio/speaker.h"
+#include "audio/ack.h"
 #include "input/trigger.h"
 #include "commands/dispatcher.h"
 #include "commands/inference.h"
@@ -58,7 +59,15 @@ static bool         wifiOk     = false;
 static int16_t* s_wake_buf   = nullptr;
 static int      s_wake_pos   = 0;
 static uint8_t  s_conf_count = 0;
-static const uint8_t CONF_MINIMAS = 2;  // detecciones consecutivas antes de activar
+// Una sola detección basta: el umbral del modelo (0.49) ya filtra falsos positivos.
+// Doble confirmación obligaba a decir "Hola NEO" dos veces → parecía no funcionar.
+static const uint8_t CONF_MINIMAS = 1;
+
+// Guard de conversación: tras despertar, NEO graba y espera respuesta. Mientras
+// hay una consulta en vuelo no se re-dispara el wake word.
+static bool     s_en_conversacion = false;
+static uint32_t s_conversacion_t0 = 0;
+static const uint32_t CONVERSACION_TIMEOUT_MS = 40000;  // si no llega respuesta, soltar
 
 // VAD para wake word (pipeline nuevo: activación por umbral de volumen)
 enum class WakeState : uint8_t { OYENDO, CAPTANDO };
@@ -128,11 +137,29 @@ static void neoListoYReposoOled() {
 }
 
 // ── Reproducción ──────────────────────────────────────────────────────────────
+// Acuse de wake word: NEO dice "¡Hola!" localmente al salir del reposo,
+// antes de empezar a grabar la consulta libre.
+void reproducirAck() {
+    Serial.printf("[NEO] Ack wake: %u muestras (%.2fs)\n",
+                  (unsigned)ACK_MUESTRAS, ACK_MUESTRAS / 16000.0f);
+    for (size_t i = 0; i + Speaker::BLOCK_SIZE <= ACK_MUESTRAS; i += Speaker::BLOCK_SIZE) {
+        spk->reproducir(ACK_AUDIO + i);
+    }
+    // Cola parcial final, rellena de silencio hasta el bloque completo.
+    const size_t resto = ACK_MUESTRAS % Speaker::BLOCK_SIZE;
+    if (resto) {
+        int16_t tail[Speaker::BLOCK_SIZE] = {};
+        memcpy(tail, ACK_AUDIO + (ACK_MUESTRAS - resto), resto * sizeof(int16_t));
+        spk->reproducir(tail);
+    }
+}
+
 void reproducirRespuesta() {
     s_wake_pos   = 0;
     s_conf_count = 0;
     s_wake_state = WakeState::OYENDO;
     s_inf_busy   = false;
+    s_en_conversacion = false;   // conversación terminada → vuelve al reposo
     InfResultado _descarte; xQueueReceive(xColaInf, &_descarte, 0);  // descartar resultado pendiente
     oled->mostrar("NEO", "Hablando...");
     Serial.printf("[NEO] Reproduciendo: %u bytes (%.2fs)\n",
@@ -178,7 +205,8 @@ void consultarToque() {
 }
 
 // ── Grabación y envío ─────────────────────────────────────────────────────────
-void grabarYEnviar() {
+// Devuelve true solo si se grabó y encoló audio para el servidor (habrá respuesta).
+bool grabarYEnviar() {
     s_wake_pos   = 0;
     s_conf_count = 0;
     s_wake_state = WakeState::OYENDO;
@@ -226,7 +254,7 @@ void grabarYEnviar() {
     if (!voz_detectada) {
         neoListoYReposoOled();
         Serial.println("[VAD] Timeout — sin voz detectada");
-        return;
+        return false;
     }
 
     // ── Fase 3: grabación con detección de fin por silencio ──────────────────
@@ -281,7 +309,7 @@ void grabarYEnviar() {
     if (duracion_ms < VAD_MIN_GRAB_MS) {
         neoListoYReposoOled();
         Serial.printf("[VAD] Grabación muy corta (%ums) — descartada\n", duracion_ms);
-        return;
+        return false;
     }
 
     Serial.printf("[NEO] Grabado: %u muestras (%.2fs)\n", (unsigned)offset, offset / 16000.0f);
@@ -297,11 +325,12 @@ void grabarYEnviar() {
     if (xQueueSend(xColaEnvio, &pedido, pdMS_TO_TICKS(500)) != pdTRUE) {
         Serial.println("[NEO] Cola de envío ocupada");
         oled->mostrarEstado("Error: cola llena");
-        return;
+        return false;
     }
 
     // Bloquear hasta que tareaWs confirme que el envío terminó.
     ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(35000));
+    return true;
 }
 
 // ── Tarea de inferencia — Core 0, prioridad baja ─────────────────────────────
@@ -558,7 +587,10 @@ void setup() {
         if      (msg.indexOf("listo")         >= 0) neoListoYReposoOled();
         else if (msg.indexOf("procesando")    >= 0) oled->mostrar("NEO", "Procesando...");
         else if (msg.indexOf("fin_respuesta") >= 0) play_ready = true;
-        else if (msg.indexOf("error")         >= 0) oled->mostrarEstado("Error servidor");
+        else if (msg.indexOf("error")         >= 0) {
+            oled->mostrarEstado("Error servidor");
+            s_en_conversacion = false;   // liberar guard: no llegará audio de respuesta
+        }
     });
     ws->onBinario([](const uint8_t* data, size_t len) {
     
@@ -687,6 +719,18 @@ void loop() {
     // tareaInferencia (Core 0) corre clasificar() sin bloquear este hilo.
     if (!inference || !s_wake_buf) return;
 
+    // Guard de conversación: mientras NEO grabó y espera/recibe respuesta, no se
+    // re-dispara el wake word. Se libera al reproducir la respuesta, en error, o
+    // por timeout por si el servidor nunca contesta.
+    if (s_en_conversacion) {
+        if (millis() - s_conversacion_t0 > CONVERSACION_TIMEOUT_MS) {
+            Serial.println("[NEO] Timeout de respuesta — vuelvo al reposo");
+            s_en_conversacion = false;
+            neoListoYReposoOled();
+        }
+        return;
+    }
+
     int16_t bloque[Microphone::BLOCK_SIZE];
     if (!mic->leer(bloque)) return;
 
@@ -705,15 +749,22 @@ void loop() {
                       inf_res.clase_top, VOCAB_CLASES[inf_res.clase_top],
                       inf_res.scores[inf_res.clase_top], (int)inf_res.cmd);
 
-        // El modelo local SOLO detecta el wake word. Al confirmarse (doble
-        // detección para evitar falsos positivos), Neo despierta y graba la
-        // consulta libre; el servidor transcribe y deduce la intención.
+        // El modelo local SOLO detecta el wake word. Al confirmarse, NEO sale del
+        // reposo, saluda ("¡Hola!") y graba la consulta libre; el servidor transcribe
+        // y deduce la intención.
         if (inf_res.cmd == Comando::HOLA_NEO) {
             s_conf_count++;
             if (s_conf_count >= CONF_MINIMAS) {
                 s_conf_count = 0;
-                Serial.println("[WW] Wake word confirmado — grabando consulta...");
-                grabarYEnviar();
+                Serial.println("[WW] Wake word confirmado — despierto, saludo y escucho");
+                oled->mostrar("NEO", "¡Hola!");
+                reproducirAck();
+                s_en_conversacion = true;
+                s_conversacion_t0 = millis();
+                if (!grabarYEnviar()) {
+                    // No hubo voz o no se envió → no vendrá respuesta: vuelvo al reposo.
+                    s_en_conversacion = false;
+                }
             }
         } else {
             s_conf_count = 0;
