@@ -19,7 +19,7 @@ SYSTEM_PROMPT = (
 def _preguntar_groq(prompt: str) -> str:
     from groq import Groq
     cliente = Groq(api_key=os.environ["GROQ_API_KEY"])
-    modelo  = os.getenv("GROQ_LLM_MODEL", "llama-3.1-8b-instant")
+    modelo  = os.getenv("GROQ_LLM_MODEL", "openai/gpt-oss-20b")
     resp = cliente.chat.completions.create(
         model=modelo,
         messages=[
