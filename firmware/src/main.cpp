@@ -189,6 +189,7 @@ void reproducirRespuesta() {
     s_inf_busy   = false;
     InfResultado _descarte; xQueueReceive(xColaInf, &_descarte, 0);  // descartar resultado pendiente
     pintarCara("Hablando");
+    Serial.printf("[TIMING] playback_inicio %lu\n", (unsigned long)millis());
     Serial.printf("[NEO] Reproduciendo: %u bytes (%.2fs)\n",
                   (unsigned)play_bytes, play_bytes / (16000.0f * 2));
 
@@ -201,6 +202,7 @@ void reproducirRespuesta() {
     play_bytes = 0;
     // NO se apaga la pantalla aquí: seguimos en conversación (escuchando otra
     // pregunta). El apagado ocurre al volver a REPOSO por silencio/timeout.
+    Serial.printf("[TIMING] playback_fin %lu\n", (unsigned long)millis());
     Serial.println("[NEO] Reproducción completa");
 }
 
@@ -289,6 +291,7 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
 
     // ── Fase 3: grabación con detección de fin por silencio ──────────────────
     pintarCara("Grabando");
+    Serial.printf("[TIMING] grabacion_inicio %lu\n", (unsigned long)millis());
     Serial.println("[VAD] Voz detectada — grabando");
 
     size_t offset = Microphone::BLOCK_SIZE;
@@ -311,6 +314,7 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
         const uint32_t grabado_ms = ahora - t_inicio;
 
         if (grabado_ms >= VAD_MAX_GRAB_MS) {
+            Serial.printf("[TIMING] grabacion_fin %lu\n", (unsigned long)millis());
             Serial.println("[VAD] Límite de 30s alcanzado");
             break;
         }
@@ -320,6 +324,7 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
         if (rms_suavizado > umbral_inicio) {
             t_ultima_voz_fuerte = ahora;
         } else if (grabado_ms >= 1200 && (ahora - t_ultima_voz_fuerte) >= VAD_SIN_VOZ_MS) {
+            Serial.printf("[TIMING] grabacion_fin %lu\n", (unsigned long)millis());
             Serial.println("[VAD] Sin voz útil — fin de grabación");
             break;
         }
@@ -327,6 +332,7 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
         if (rms_suavizado < umbral_fin) {
             if (t_silencio == 0) t_silencio = ahora;
             if (ahora - t_silencio >= VAD_HOLD_MS) {
+                Serial.printf("[TIMING] grabacion_fin %lu\n", (unsigned long)millis());
                 Serial.println("[VAD] Silencio prolongado — fin de grabación");
                 break;
             }
@@ -499,6 +505,7 @@ static void tareaWs(void* /* pvParam */) {
                 if (ok && ws->conectado()) {
                     vTaskDelay(pdMS_TO_TICKS(200));
                     ws->enviarTexto("{\"cmd\":\"fin_grabacion\"}");
+                    Serial.printf("[TIMING] envio_ws_fin %lu\n", (unsigned long)millis());
                     Serial.println("[WS-TASK] fin_grabacion enviado");
                     oled->mostrar("NEO", "Procesando...");
                 } else {
@@ -643,7 +650,10 @@ void setup() {
         }
     });
     ws->onBinario([](const uint8_t* data, size_t len) {
-    
+        if (play_bytes == 0) {
+            Serial.printf("[TIMING] primer_chunk_recibido %lu\n", (unsigned long)millis());
+        }
+
         size_t espacio = audio_buf_cap - play_bytes;
         size_t n = (len < espacio) ? len : espacio;
         memcpy(reinterpret_cast<uint8_t*>(audio_buf) + play_bytes, data, n);
@@ -827,6 +837,7 @@ void loop() {
             s_conf_count++;
             if (s_conf_count >= CONF_MINIMAS) {
                 s_conf_count = 0;
+                Serial.printf("[TIMING] wake_detectado %lu\n", (unsigned long)millis());
                 Serial.println("[WW] Wake word confirmado — enciendo pantalla, saludo y converso");
                 oled->encender();
                 if (face) face->begin();   // primeros ojos

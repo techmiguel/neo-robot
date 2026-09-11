@@ -26,6 +26,7 @@ servidor/__pycache__/
 servidor/**/__pycache__/
 servidor/*.pyc
 servidor/.env
+servidor/logs/
 
 # Credenciales y configuración local
 *.env
