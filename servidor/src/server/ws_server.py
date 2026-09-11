@@ -235,7 +235,7 @@ async def handler(ws):
 
 
 async def _health(connection, request):
-    """Health check para Hugging Face Spaces y proxies inversos.
+    """Health check y endpoints HTTP para Hugging Face Spaces.
 
     Solo responde HTTP GET planos. Los WebSocket upgrades tienen el header
     'Upgrade: websocket' y deben pasar al handler normal para recibir 101.
@@ -245,6 +245,24 @@ async def _health(connection, request):
     if request.path in ("/", "/health"):
         if request.headers.get("Upgrade", "").lower() != "websocket":
             return connection.respond(http.HTTPStatus.OK, "NEO OK\n")
+
+    # Endpoint para descargar logs de latencia
+    if request.path == "/logs":
+        if request.headers.get("Upgrade", "").lower() != "websocket":
+            from src.server.timing import LOG_FILE
+            if LOG_FILE.exists():
+                with open(LOG_FILE, "r", encoding="utf-8") as f:
+                    content = f.read()
+                return connection.respond(
+                    http.HTTPStatus.OK,
+                    content,
+                    headers={"Content-Type": "text/plain; charset=utf-8"}
+                )
+            else:
+                return connection.respond(
+                    http.HTTPStatus.NOT_FOUND,
+                    "No hay logs disponibles aún\n"
+                )
 
 
 async def main():

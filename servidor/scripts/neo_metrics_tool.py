@@ -6,12 +6,13 @@ separadas por tipo de servidor (local vs nube).
 
 Uso:
     cd servidor
-    python scripts/neo_metrics_tool.py
+    python scripts/neo_metrics_tool.py [archivo1.jsonl] [archivo2.jsonl] ...
 
-El script lee logs/pipeline_timing.jsonl y genera un JSON en logs/metrics/
+Si no se especifican archivos, lee logs/pipeline_timing.jsonl por defecto.
 """
 
 import json
+import sys
 from pathlib import Path
 from datetime import datetime
 
@@ -54,30 +55,50 @@ def calculate_stats(latencies: list) -> dict:
     }
 
 
-def main():
-    if not LOG_FILE.exists():
-        print(f"Error: {LOG_FILE} no existe. Ejecuta el servidor primero.")
-        return
+def read_log_file(filepath: Path) -> list:
+    """Lee un archivo de log JSONL y retorna lista de registros."""
+    if not filepath.exists():
+        print(f"Advertencia: {filepath} no existe")
+        return []
 
-    # Leer todos los logs
-    latencies_local = []
-    latencies_nube = []
-
-    with open(LOG_FILE, "r", encoding="utf-8") as f:
+    records = []
+    with open(filepath, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
             try:
-                data = json.loads(line)
-                server_type = data.get("metadata", {}).get("tipo_servidor", "local")
-                if server_type == "nube":
-                    latencies_nube.append(data)
-                else:
-                    latencies_local.append(data)
+                records.append(json.loads(line))
             except json.JSONDecodeError:
                 continue
+    return records
 
+
+def main():
+    # Determinar archivos de log a leer
+    if len(sys.argv) > 1:
+        log_files = [Path(arg) for arg in sys.argv[1:]]
+    else:
+        log_files = [LOG_FILE]
+
+    print(f"Leyendo {len(log_files)} archivo(s) de log...")
+
+    # Leer todos los logs
+    latencies_local = []
+    latencies_nube = []
+
+    for log_file in log_files:
+        records = read_log_file(log_file)
+        print(f"  {log_file}: {len(records)} registros")
+
+        for data in records:
+            server_type = data.get("metadata", {}).get("tipo_servidor", "local")
+            if server_type == "nube":
+                latencies_nube.append(data)
+            else:
+                latencies_local.append(data)
+
+    print()
     print(f"Latencias encontradas:")
     print(f"  LOCAL: {len(latencies_local)}")
     print(f"  NUBE:  {len(latencies_nube)}")
