@@ -1,7 +1,7 @@
 """
 Handler de clima — OpenWeatherMap API.
 Requiere: OPENWEATHER_API_KEY en .env
-Opcional: CLIMA_CIUDAD_DEFAULT (default: "Ciudad de México")
+Opcional: CLIMA_CIUDAD_DEFAULT (default: "La Habana")
 """
 
 import asyncio

@@ -165,6 +165,26 @@ Construir solo cuando haya una necesidad concreta. No antes.
 
 ---
 
+## Estado honesto por rama (corte 2026-09-11)
+
+### Rama `main`
+- Firmware completo: wake word + WebSocket + audio streaming + conversación manos libres.
+- **No validado end-to-end en hardware reciente.** El último commit relevante (`docs: add project README`) es de documentación; el código funciona pero el wake word en el firmware completo tiene un issue conocido con el task watchdog durante la extracción MFCC (ver "Siguiente" abajo).
+- Servidor: pipeline completo STT → intención → handler/LLM → TTS, funcionando.
+
+### Rama `test/wake-word-minimo` (rama actual de desarrollo)
+- Firmware mínimo: solo micrófono + OLED + MFCC + inferencia TFLite. Sin WiFi, sin WebSocket, sin altavoz.
+- Wake word validado en hardware: detección de "Hola NEO" con score alto y endpointing ajustado.
+- Issue del task watchdog resuelto en esta rama (inferencia síncrona, sin concurrencia).
+- **Pendiente:** reintegrar la inferencia validada al firmware completo (`main`).
+
+### Próximos pasos críticos
+1. Reintegrar wake word validado al firmware completo (resolver WDT MFCC-SRAM).
+2. Validar flujo end-to-end: wake word → grabación → servidor → respuesta → playback.
+3. Una vez validado, merge de `test/wake-word-minimo` a `main`.
+
+---
+
 ## Notas de desarrollo
 
 - Optimizaciones (streaming en tiempo real, wake word, compresión de audio) van después de tener la versión funcional del Módulo 3.4.

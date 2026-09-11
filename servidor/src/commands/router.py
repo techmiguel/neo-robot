@@ -84,7 +84,7 @@ class CommandRouter:
 
     @staticmethod
     def _extraer_args(tipo: str, t: str) -> dict:
-        """Infere args (moneda) del texto cuando aplica."""
+        """Infere args (moneda, ciudad) del texto cuando aplica."""
         if tipo == "cripto":
             for kw, coin_id in _CRIPTO_IDS.items():
                 if re.search(rf"\b{kw}\b", t):
@@ -94,6 +94,16 @@ class CommandRouter:
             for kw, codigo in _TOQUE_CODIGOS.items():
                 if kw in t:
                     return {"moneda": codigo}
+            return {}
+        if tipo == "clima":
+            # Extraer ciudad: patrones como "en La Habana", "en Santiago", "en Madrid"
+            # Captura 1-3 palabras después de "en"
+            match = re.search(r"\ben\s+([a-záéíóúñ\s]+?)(?:\s+(?:hoy|mañana|pasado|ahora|esta|este|el|la))?(?:\?|$|\.)", t)
+            if match:
+                ciudad = match.group(1).strip()
+                # Capitalizar palabras
+                ciudad = " ".join(word.capitalize() for word in ciudad.split())
+                return {"ciudad": ciudad}
             return {}
         return {}
 

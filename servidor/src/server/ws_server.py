@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import time
+import uuid
 
 import websockets
 from dotenv import load_dotenv
@@ -29,6 +30,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from src.commands.router import CommandRouter
+from src.server.timing import get_timer
+from src.server.memory import memory
 _router = CommandRouter()
 
 MIC_SAMPLE_RATE = 16000  # rate del INMP441 en el ESP32
@@ -95,7 +98,7 @@ async def _modo_consulta(ws, tipo: str, args: dict):
         await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
 
 
-async def _modo_pipeline(ws, buffer: bytearray):
+async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
     """Corre STT → (intención | LLM libre) → TTS y envía el audio resultante.
 
     Tras transcribir, se intenta deducir una intención de comando por keywords.
@@ -106,27 +109,53 @@ async def _modo_pipeline(ws, buffer: bytearray):
     congelar el event loop (keepalives y pings deben seguir saliendo).
     """
     from src.stt.transcriber import transcribe
-    from src.llm.client      import ask
+    from src.llm.client      import ask, SYSTEM_PROMPT
     from src.tts.synthesizer import synthesize
 
+    timer = get_timer()
+    timer.mark("pipeline_start")
+    timer.set_metadata("longitud_audio_bytes", len(buffer))
+
     await _enviar_json(ws, {"cmd": "procesando"})
-    t0 = time.time()
     ka = await _iniciar_keepalive(ws)
 
     try:
+        timer.mark("stt_start")
         transcripcion = await asyncio.to_thread(transcribe, bytes(buffer), MIC_SAMPLE_RATE)
-        log.info(f"[STT] {time.time()-t0:.2f}s → \"{transcripcion}\"")
+        timer.mark("stt_end")
+        log.info(f"[STT] {timer.duration('stt_start', 'stt_end'):.2f}s → \"{transcripcion}\"")
 
+        timer.mark("intencion_start")
         tipo, args = _router.detectar_intencion(transcripcion)
-        if tipo:
-            log.info(f"[intención] keyword → tipo={tipo} args={args}")
-            respuesta = await _router.handle(tipo, args)
-        else:
-            respuesta = await asyncio.to_thread(ask, transcripcion)
-            log.info(f"[LLM] {time.time()-t0:.2f}s → \"{respuesta}\"")
+        timer.mark("intencion_end")
 
+        if tipo:
+            timer.set_metadata("tipo_consulta", "keyword")
+            timer.set_metadata("tipo_intencion", tipo)
+            log.info(f"[intención] keyword → tipo={tipo} args={args}")
+            timer.mark("handler_start")
+            respuesta = await _router.handle(tipo, args)
+            timer.mark("handler_end")
+        else:
+            timer.set_metadata("tipo_consulta", "llm_libre")
+            timer.mark("llm_start")
+            # Construir mensajes con historial conversacional
+            mensajes = memory.build_messages(session_id, SYSTEM_PROMPT, transcripcion)
+            respuesta = await asyncio.to_thread(ask, transcripcion, mensajes)
+            timer.mark("llm_end")
+            log.info(f"[LLM] {timer.duration('llm_start', 'llm_end'):.2f}s → \"{respuesta}\"")
+
+        timer.set_metadata("longitud_respuesta_texto", len(respuesta))
+        timer.mark("tts_start")
         pcm_salida = await synthesize(respuesta)
-        log.info(f"[TTS] {time.time()-t0:.2f}s → {len(pcm_salida)//2} muestras")
+        timer.mark("tts_end")
+        timer.set_metadata("longitud_respuesta_pcm", len(pcm_salida))
+        log.info(f"[TTS] {timer.duration('tts_start', 'tts_end'):.2f}s → {len(pcm_salida)//2} muestras")
+
+        # Agregar turnos al historial de memoria (solo si fue LLM libre, no handlers)
+        if not tipo:
+            memory.add_turno(session_id, "user", transcripcion)
+            memory.add_turno(session_id, "assistant", respuesta)
 
         ka.cancel()
 
@@ -134,17 +163,23 @@ async def _modo_pipeline(ws, buffer: bytearray):
             await ws.send(pcm_salida[i:i + CHUNK])
 
         await _enviar_json(ws, {"cmd": "fin_respuesta"})
-        log.info(f"[pipeline] latencia total: {time.time()-t0:.2f}s")
+        timer.mark("pipeline_end")
+        log.info(f"[pipeline] latencia total: {timer.duration('pipeline_start', 'pipeline_end'):.2f}s")
+        timer.save()
 
     except Exception as e:
         ka.cancel()
+        timer.mark("pipeline_end")
+        timer.set_metadata("error", str(e))
+        timer.save()
         log.error(f"[pipeline] error: {e}")
         await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
 
 
 async def handler(ws):
     remote = ws.remote_address
-    log.info(f"Conexión desde {remote}")
+    session_id = str(uuid.uuid4())[:8]
+    log.info(f"Conexión desde {remote} (session={session_id})")
     await _enviar_json(ws, {"cmd": "listo"})
 
     buffer = bytearray()
@@ -165,7 +200,7 @@ async def handler(ws):
                         if MODO == "echo":
                             await _modo_echo(ws, buffer)
                         else:
-                            await _modo_pipeline(ws, buffer)
+                            await _modo_pipeline(ws, buffer, session_id)
                     except Exception as e:
                         log.error(f"[fin_grabacion] excepción no capturada: {e}", exc_info=True)
                         await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
@@ -186,6 +221,9 @@ async def handler(ws):
 
     except websockets.exceptions.ConnectionClosed as e:
         log.info(f"Conexión cerrada: {e}")
+    finally:
+        memory.clear_session(session_id)
+        log.info(f"[memoria] sesión {session_id} limpiada")
 
     log.info(f"Sesión terminada — {remote}")
 
@@ -205,7 +243,17 @@ async def _health(connection, request):
 
 async def main():
     log.info(f"Servidor NEO WebSocket en ws://{HOST}:{PORT}  modo={MODO}")
-    async with websockets.serve(handler, HOST, PORT, process_request=_health):
+    # ping_interval y ping_timeout ajustados para HuggingFace Spaces:
+    # - ping_interval=20: enviar ping cada 20s (el proxy de HF cierra conexiones inactivas)
+    # - ping_timeout=20: esperar 20s respuesta (el ESP32 puede tardar por el proxy)
+    # - close_timeout=5: cerrar rápidamente si no hay respuesta
+    async with websockets.serve(
+        handler, HOST, PORT,
+        process_request=_health,
+        ping_interval=20,
+        ping_timeout=20,
+        close_timeout=5
+    ):
         await asyncio.Future()  # corre indefinidamente
 
 
