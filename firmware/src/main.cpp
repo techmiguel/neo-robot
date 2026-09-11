@@ -369,12 +369,17 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     return true;
 }
 
-// ── Tarea de inferencia — Core 0, prioridad baja ─────────────────────────────
+// ── Tarea de inferencia — Core 1, prioridad baja ─────────────────────────────
 // Espera que loop() llene s_wake_buf y libere xSemInf.
 // Corre clasificar() (200–400 ms) sin bloquear el mic ni el OLED.
 static void tareaInferencia(void* /*pvParam*/) {
     while (true) {
+        Serial.println("[INF] tareaInf: esperando semáforo...");
         xSemaphoreTake(xSemInf, portMAX_DELAY);
+        Serial.println("[INF] tareaInf: semáforo recibido");
+
+        Serial.printf("[INF] tareaInf: wake_buf=%p  inference=%p  heap=%u\n",
+                      s_wake_buf, inference, heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
 
         const uint32_t t0 = millis();
         Serial.println("[INF] tareaInf: clasificando...");
@@ -507,7 +512,6 @@ static void tareaWs(void* /* pvParam */) {
                     ws->enviarTexto("{\"cmd\":\"fin_grabacion\"}");
                     Serial.printf("[TIMING] envio_ws_fin %lu\n", (unsigned long)millis());
                     Serial.println("[WS-TASK] fin_grabacion enviado");
-                    oled->mostrar("NEO", "Procesando...");
                 } else {
                     Serial.println("[WS-TASK] Corte durante envío de audio");
                     oled->mostrarEstado("WS perdido");
@@ -642,7 +646,6 @@ void setup() {
         Serial.printf("[WS] %s\n", msg.c_str());
     
         if      (msg.indexOf("listo")         >= 0) neoListoYReposoOled();
-        else if (msg.indexOf("procesando")    >= 0) oled->mostrar("NEO", "Procesando...");
         else if (msg.indexOf("fin_respuesta") >= 0) play_ready = true;
         else if (msg.indexOf("error")         >= 0) {
             oled->mostrarEstado("Error servidor");
@@ -662,13 +665,15 @@ void setup() {
 
     // Conexión inicial: bloqueante, ocurre antes de crear tareaWs.
     oled->mostrarEstado("Conectando WS...");
+    Serial.println("[NEO] Iniciando conexión WebSocket...");
     delay(1000);
 
     int intento = 0;
     while (true) {
         intento++;
-        Serial.printf("[NEO] Intento WS #%d  heap DRAM: %u\n",
-                      intento, heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
+        Serial.printf("[NEO] Intento WS #%d  heap DRAM: %u  PSRAM libre: %u\n",
+                      intento, heap_caps_get_free_size(MALLOC_CAP_INTERNAL),
+                      (unsigned)ESP.getFreePsram());
 
         // Demasiados fallos seguidos: reiniciar WiFi para limpiar sockets huérfanos.
         // El stack lwIP acumula descriptores si los intentos TLS fallan sin cerrar bien.
@@ -694,16 +699,36 @@ void setup() {
 
         // Local First: _wsConectar() intenta LAN y luego nube; un fallo de DNS
         // en la nube solo hace fallar ese intento, no bloquea el local.
+        Serial.println("[NEO] Intentando conectar a servidor local...");
         if (_wsConectar()) {
-            Serial.println("[NEO] WS conectado");
+            Serial.println("[NEO] WS conectado exitosamente");
+            Serial.printf("[NEO] Servidor activo: %s  heap: %u\n",
+                          estadoConexionStr(), heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
             break;
         }
 
+        Serial.println("[NEO] Fallo al conectar, reintentando en 3s...");
         char buf[24];
         snprintf(buf, sizeof(buf), "WS reintento %d", intento);
         oled->mostrar("NEO", buf);
         delay(3000);
     }
+
+    // CREAR TAREAS ANTES DE CARGAR EL MODELO DE INFERENCIA
+    // El modelo consume ~173K de heap, dejando muy poco para las tareas.
+    // Al crear las tareas primero, aseguramos que tengan el stack necesario.
+    hTareaPrincipal = xTaskGetCurrentTaskHandle();
+    xColaEnvio      = xQueueCreate(1, sizeof(PedidoEnvio));
+    xSemInf         = xSemaphoreCreateBinary();
+    xColaInf        = xQueueCreate(1, sizeof(InfResultado));
+    
+    Serial.println("[DIAG] Creando tareas FreeRTOS...");
+    BaseType_t ws_ok = xTaskCreatePinnedToCore(tareaWs,         "ws_task",  16384, nullptr, 5, nullptr, 0);
+    Serial.printf("[DIAG] tareaWs creada: %s\n", ws_ok == pdPASS ? "OK" : "FALLO");
+    
+    BaseType_t inf_ok = xTaskCreatePinnedToCore(tareaInferencia, "inf_task", 16384, nullptr, 2, nullptr, 1);
+    Serial.printf("[DIAG] tareaInf creada: %s\n", inf_ok == pdPASS ? "OK" : "FALLO");
+    Serial.printf("[DIAG] heap después de crear tareas: %u\n", heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
 
     static Trigger trigger_instance;
     trigger = &trigger_instance;
@@ -739,7 +764,7 @@ void setup() {
         Serial.println("[NEO] Advertencia: sin memoria para wake word buffer");
     }
 
-    // Inferencia TFLite Micro
+    // Inferencia TFLite Micro — CARGAR DESPUÉS DE CREAR TAREAS
     static Inference inf_instance;
     inference = &inf_instance;
     if (!inference->begin()) {
@@ -750,16 +775,6 @@ void setup() {
         Serial.printf("[DIAG] inference->begin() OK  |  wake_buf=%s  |  PSRAM libre: %u bytes\n",
                       s_wake_buf ? "ok" : "NULL", (unsigned)ESP.getFreePsram());
     }
-
-    // A partir de aquí toda la E/S WebSocket ocurre en tareaWs.
-    // Prioridad 5 > loop (prioridad 1): el scheduler la elige antes que loop
-    // cuando ambas están listas, garantizando latencia baja al procesar el socket.
-    hTareaPrincipal = xTaskGetCurrentTaskHandle();
-    xColaEnvio      = xQueueCreate(1, sizeof(PedidoEnvio));
-    xSemInf         = xSemaphoreCreateBinary();
-    xColaInf        = xQueueCreate(1, sizeof(InfResultado));
-    xTaskCreatePinnedToCore(tareaWs,         "ws_task",  16384, nullptr, 5, nullptr, 0);
-    xTaskCreatePinnedToCore(tareaInferencia, "inf_task",  8192, nullptr, 2, nullptr, 0);
 
     neoListoYReposoOled();
     Serial.println("[NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque");
@@ -905,9 +920,11 @@ void loop() {
             s_wake_pos   = 0;
             s_wake_state = WakeState::OYENDO;
 
-            // Señalizar a tareaInferencia (Core 0) — no bloquea este hilo
+            // Señalizar a tareaInferencia (Core 1) — no bloquea este hilo
             s_inf_busy = true;
+            Serial.println("[WW] Dando semáforo a tareaInf...");
             xSemaphoreGive(xSemInf);
+            Serial.println("[WW] Semáforo dado, esperando resultado...");
         }
     }
 }
