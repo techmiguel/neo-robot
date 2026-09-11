@@ -5,3 +5,5 @@ __pycache__/
 *.wav
 respuesta.wav
 CLAUDE.md
+server.log
+server.err

@@ -96,12 +96,14 @@ async def _modo_consulta(ws, tipo: str, args: dict):
 
 
 async def _modo_pipeline(ws, buffer: bytearray):
-    """Corre STT → LLM → TTS y envía el audio resultante.
+    """Corre STT → (intención | LLM libre) → TTS y envía el audio resultante.
 
-    transcribe() y ask() son funciones síncronas (bloquean el hilo).
-    Se ejecutan en un thread separado con asyncio.to_thread() para no
-    bloquear el event loop: si el loop se bloquea, los keepalives y los
-    pings WebSocket no se pueden enviar y el proxy móvil cierra la conexión.
+    Tras transcribir, se intenta deducir una intención de comando por keywords.
+    Si hay match, se ejecuta el handler correspondiente (clima, cripto, noticias,
+    toque, hola). Si no, se trata como consulta libre y responde el LLM.
+
+    transcribe(), ask() y router.handle() son bloqueantes → to_thread para no
+    congelar el event loop (keepalives y pings deben seguir saliendo).
     """
     from src.stt.transcriber import transcribe
     from src.llm.client      import ask
@@ -115,8 +117,13 @@ async def _modo_pipeline(ws, buffer: bytearray):
         transcripcion = await asyncio.to_thread(transcribe, bytes(buffer), MIC_SAMPLE_RATE)
         log.info(f"[STT] {time.time()-t0:.2f}s → \"{transcripcion}\"")
 
-        respuesta = await asyncio.to_thread(ask, transcripcion)
-        log.info(f"[LLM] {time.time()-t0:.2f}s → \"{respuesta}\"")
+        tipo, args = _router.detectar_intencion(transcripcion)
+        if tipo:
+            log.info(f"[intención] keyword → tipo={tipo} args={args}")
+            respuesta = await _router.handle(tipo, args)
+        else:
+            respuesta = await asyncio.to_thread(ask, transcripcion)
+            log.info(f"[LLM] {time.time()-t0:.2f}s → \"{respuesta}\"")
 
         pcm_salida = await synthesize(respuesta)
         log.info(f"[TTS] {time.time()-t0:.2f}s → {len(pcm_salida)//2} muestras")
