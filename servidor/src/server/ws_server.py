@@ -244,7 +244,7 @@ async def _health(connection, request):
     """
     if request.path in ("/", "/health"):
         if request.headers.get("Upgrade", "").lower() != "websocket":
-            return connection.respond(http.HTTPStatus.OK, "NEO OK\n")
+            return http.HTTPStatus.OK, [], b"NEO OK\n"
 
     # Endpoint para descargar logs de latencia
     if request.path == "/logs":
@@ -253,16 +253,9 @@ async def _health(connection, request):
             if LOG_FILE.exists():
                 with open(LOG_FILE, "r", encoding="utf-8") as f:
                     content = f.read()
-                return connection.respond(
-                    http.HTTPStatus.OK,
-                    content,
-                    headers={"Content-Type": "text/plain; charset=utf-8"}
-                )
+                return http.HTTPStatus.OK, [("Content-Type", "text/plain; charset=utf-8")], content.encode("utf-8")
             else:
-                return connection.respond(
-                    http.HTTPStatus.NOT_FOUND,
-                    "No hay logs disponibles aún\n"
-                )
+                return http.HTTPStatus.NOT_FOUND, [], b"No hay logs disponibles a\xc3\xban\n"
 
 
 async def main():
