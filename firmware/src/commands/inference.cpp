@@ -39,12 +39,18 @@ static tflite::MicroInterpreter* s_interpreter = nullptr;
 bool Inference::begin() {
     if (_iniciado) return true;
 
-    // Buffer MFCC en PSRAM (148 frames * 40 coefs * 4 bytes = 23.7 KB)
+    // Buffer MFCC (148 frames * 40 coefs * 4 bytes = 23.7 KB).
+    // CRÍTICO: en SRAM INTERNA, no PSRAM. mfcc_extract() escribe/lee por
+    // acceso aleatorio cada frame; sobre PSRAM con el stack WiFi activo la
+    // contención de bus multiplica el tiempo y dispara el task watchdog.
     _mfcc_buf = (float*)heap_caps_malloc(
         MFCC_NUM_FRAMES * MFCC_NUM_COEFFS * sizeof(float),
-        MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+        MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
     if (!_mfcc_buf) {
-        _mfcc_buf = (float*)malloc(MFCC_NUM_FRAMES * MFCC_NUM_COEFFS * sizeof(float));
+        // Fallback a PSRAM solo si la SRAM está agotada.
+        _mfcc_buf = (float*)heap_caps_malloc(
+            MFCC_NUM_FRAMES * MFCC_NUM_COEFFS * sizeof(float),
+            MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
     }
     if (!_mfcc_buf) {
         Serial.println("[INF] Error: sin memoria para buffer MFCC");

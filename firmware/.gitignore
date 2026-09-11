@@ -6,3 +6,6 @@ src/demos/bocina/frase.h
 build_output.txt
 ffmpeg/
 models/train_*.log
+models/train_*.err
+build_*.log
+build_*.err

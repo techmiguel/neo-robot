@@ -26,14 +26,16 @@
 #include "audio/mfcc.h"
 
 // ── Configuración del servidor ────────────────────────────────────────────────
-// Modo desarrollo (PC local):
-static const char*    SERVIDOR_HOST   = "172.20.10.8";
+// Estrategia Local First: se intenta primero el servidor de la PC en la LAN;
+// si no responde en ~6 s, se cae a la nube (HuggingFace Spaces).
+static const char*    SERVIDOR_HOST   = "172.20.10.8";   // IP de la PC en la LAN
 static const uint16_t SERVIDOR_PORT   = 8765;
-// #define NEO_SERVIDOR_LOCAL  // descomentar para volver al servidor local
 
-// Modo producción (Hugging Face Spaces):
 static const char*    SERVIDOR_HOST_NUBE = "techmigue-neo-servidor.hf.space";
 static const uint16_t SERVIDOR_PORT_NUBE = 443;
+
+enum class ServidorActivo : uint8_t { NINGUNO, LOCAL, NUBE };
+static ServidorActivo s_servidor = ServidorActivo::NINGUNO;
 
 static const size_t PLAY_MUESTRAS    = 30 * 16000;  // 480000 (30s, PSRAM)
 static const size_t PLAY_MUESTRAS_FB = 5  * 16000;  // 80000  (5s,  SRAM fallback)
@@ -103,12 +105,20 @@ static QueueHandle_t     xColaInf   = nullptr;  // tareaInf publica, loop consum
 static volatile bool     s_inf_busy = false;    // true mientras tareaInf procesa
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+// Local First: PC en la LAN primero; si no responde, nube (HF).
 static bool _wsConectar() {
-#ifdef NEO_SERVIDOR_LOCAL
-    return ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/ws");
-#else
-    return ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/ws");
-#endif
+    if (ws->conectar(SERVIDOR_HOST, SERVIDOR_PORT, "/ws")) {
+        s_servidor = ServidorActivo::LOCAL;
+        Serial.println("[WS] Conectado al servidor LOCAL (LAN)");
+        return true;
+    }
+    if (ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/ws")) {
+        s_servidor = ServidorActivo::NUBE;
+        Serial.println("[WS] Servidor local no disponible — conectado a la NUBE (HF)");
+        return true;
+    }
+    s_servidor = ServidorActivo::NINGUNO;
+    return false;
 }
 
 // Tras "Listo", deja la OLED encendida para mostrar el feedback de inferencia.
@@ -590,20 +600,8 @@ void setup() {
             ESP.restart();
         }
 
-#ifndef NEO_SERVIDOR_LOCAL
-        {
-            IPAddress ip;
-            bool dns_ok = WiFi.hostByName(SERVIDOR_HOST_NUBE, ip);
-            Serial.printf("[DNS] %s → %s\n", SERVIDOR_HOST_NUBE,
-                          dns_ok ? ip.toString().c_str() : "FALLO");
-            if (!dns_ok) {
-                oled->mostrar("NEO", "DNS: error");
-                delay(5000);
-                continue;
-            }
-        }
-#endif
-
+        // Local First: _wsConectar() intenta LAN y luego nube; un fallo de DNS
+        // en la nube solo hace fallar ese intento, no bloquea el local.
         if (_wsConectar()) {
             Serial.println("[NEO] WS conectado");
             break;
@@ -707,17 +705,16 @@ void loop() {
                       inf_res.clase_top, VOCAB_CLASES[inf_res.clase_top],
                       inf_res.scores[inf_res.clase_top], (int)inf_res.cmd);
 
+        // El modelo local SOLO detecta el wake word. Al confirmarse (doble
+        // detección para evitar falsos positivos), Neo despierta y graba la
+        // consulta libre; el servidor transcribe y deduce la intención.
         if (inf_res.cmd == Comando::HOLA_NEO) {
-            // Wake word: doble confirmación para reducir falsos positivos.
             s_conf_count++;
             if (s_conf_count >= CONF_MINIMAS) {
                 s_conf_count = 0;
-                dispatcher->despachar(Comando::HOLA_NEO, inf_res.scores[0]);
+                Serial.println("[WW] Wake word confirmado — grabando consulta...");
+                grabarYEnviar();
             }
-        } else if (inf_res.cmd != Comando::DESCONOCIDO) {
-            // Comando intencional: despacho inmediato.
-            s_conf_count = 0;
-            dispatcher->despachar(inf_res.cmd, inf_res.scores[inf_res.clase_top]);
         } else {
             s_conf_count = 0;
         }
