@@ -14,6 +14,7 @@
 #include <Arduino.h>
 #include <cstring>
 #include <esp_heap_caps.h>
+#include <esp_task_wdt.h>
 #include <WiFi.h>
 #include "display/oled.h"
 #include "network/wifi_manager.h"
@@ -340,12 +341,22 @@ static void tareaInferencia(void* /*pvParam*/) {
     while (true) {
         xSemaphoreTake(xSemInf, portMAX_DELAY);
 
+        const uint32_t t0 = millis();
+        Serial.println("[INF] tareaInf: clasificando...");
+
         InfResultado res;
         res.cmd       = inference->clasificar(s_wake_buf, MFCC_AUDIO_SAMPLES);
         res.clase_top = inference->ultimaClaseTop();
         for (int i = 0; i < VOCAB_N_CLASES; i++) res.scores[i] = inference->ultimoScoreClase(i);
 
-        xQueueSend(xColaInf, &res, 0);   // loop() consume en su próximo ciclo
+        Serial.printf("[INF] tareaInf: listo en %lums  cmd=%d  scores=[",
+                      (unsigned long)(millis() - t0), (int)res.cmd);
+        for (int i = 0; i < VOCAB_N_CLASES; i++)
+            Serial.printf("%s%.3f", i ? ", " : "", res.scores[i]);
+        Serial.println("]");
+
+        BaseType_t ok = xQueueSend(xColaInf, &res, 0);   // loop() consume en su próximo ciclo
+        if (ok != pdTRUE) Serial.println("[INF] tareaInf: cola INF LLENA, resultado descartado");
         s_inf_busy = false;
     }
 }
@@ -523,6 +534,11 @@ void setup() {
     delay(500);
     Serial.println("\n\n=== NEO BOOT ===");
     Serial.println("[NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1");
+
+    // La inferencia TFLite es un pico de CPU que estrella el IDLE del core y el
+    // task watchdog (5 s) abortaba el sistema. En este prototipo se desactiva el
+    // TWDT; la seguridad la aporta que la inferencia sea breve (modelo reducido).
+    esp_task_wdt_deinit();
 
     // [DIAG] Confirmación de PSRAM — quitar tras validar el primer arranque.
     Serial.printf("[DIAG] PSRAM total: %u bytes (%.1f MB)  libre: %u bytes\n",

@@ -278,14 +278,17 @@ def construir_modelo(input_shape: tuple, num_clases: int) -> tf.keras.Model:
     entradas = tf.keras.Input(shape=input_shape)
     x = entradas
 
-    for filtros in (16, 32, 64):
+    # Canales reducidos: la entrada 148×40 hace cara la 1ª conv con kernels de
+    # referencia (ESP-NN no activo en este build). (8,16,32) ≈ 4.4M MACs → la
+    # inferencia en el ESP32-S3 baja de varios segundos a ~1 s y no estrella IDLE0.
+    for filtros in (8, 16, 32):
         x = tf.keras.layers.Conv2D(filtros, (3, 3), padding="same")(x)
         x = tf.keras.layers.BatchNormalization()(x)
         x = tf.keras.layers.ReLU()(x)
         x = tf.keras.layers.MaxPooling2D((2, 2))(x)
 
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
-    x = tf.keras.layers.Dense(64, activation="relu", kernel_regularizer=reg)(x)
+    x = tf.keras.layers.Dense(32, activation="relu", kernel_regularizer=reg)(x)
     x = tf.keras.layers.Dropout(0.50)(x)
     salidas = tf.keras.layers.Dense(num_clases, activation="softmax")(x)
 
