@@ -10,7 +10,8 @@ RUN pip install --no-cache-dir \
     "miniaudio>=1.58" \
     "requests>=2.31.0" \
     "websockets>=12.0" \
-    "python-dotenv>=1.0.0"
+    "python-dotenv>=1.0.0" \
+    "aiohttp>=3.9.0"
 
 # Copia el código fuente (las API keys vienen de HF Secrets, no del .env)
 COPY src/ ./src/
@@ -19,4 +20,4 @@ COPY src/ ./src/
 ENV WS_PORT=7860
 EXPOSE 7860
 
-CMD ["python", "-m", "src.server.ws_server"]
+CMD ["python", "-m", "src.server.ws_server_aiohttp"]
