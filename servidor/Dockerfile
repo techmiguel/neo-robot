@@ -20,4 +20,4 @@ COPY src/ ./src/
 ENV WS_PORT=7860
 EXPOSE 7860
 
-CMD ["python", "-m", "src.server.ws_server_aiohttp"]
+CMD ["python", "-m", "src.server.ws_server"]
