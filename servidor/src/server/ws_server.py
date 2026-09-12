@@ -250,14 +250,14 @@ async def _health(connection, request):
 async def main():
     log.info(f"Servidor NEO WebSocket en ws://{HOST}:{PORT}  modo={MODO}")
     # ping_interval y ping_timeout ajustados para HuggingFace Spaces:
-    # - ping_interval=20: enviar ping cada 20s (el proxy de HF cierra conexiones inactivas)
-    # - ping_timeout=20: esperar 20s respuesta (el ESP32 puede tardar por el proxy)
+    # - ping_interval=10: enviar ping cada 10s (el proxy de HF cierra conexiones inactivas)
+    # - ping_timeout=10: esperar 10s respuesta (el ESP32 puede tardar por el proxy)
     # - close_timeout=5: cerrar rápidamente si no hay respuesta
     async with websockets.serve(
         handler, HOST, PORT,
         process_request=_health,
-        ping_interval=20,
-        ping_timeout=20,
+        ping_interval=10,
+        ping_timeout=10,
         close_timeout=5
     ):
         await asyncio.Future()  # corre indefinidamente
