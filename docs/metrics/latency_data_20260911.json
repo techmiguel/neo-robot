@@ -1,0 +1,184 @@
+{
+  "metadata": {
+    "title": "Métricas de Latencia NEO",
+    "date": "2026-09-11",
+    "version": "1.0",
+    "hardware": {
+      "board": "Freenove ESP32-S3 WROOM CAM (FNK0085)",
+      "chip": "ESP32-S3-WROOM-1-N16R8",
+      "psram": "8MB octal",
+      "flash": "16MB",
+      "cpu_freq_mhz": 240,
+      "microphone": "INMP441 (I2S_NUM_0)",
+      "speaker": "PCM5100A + PAM8403 (I2S_NUM_1)",
+      "oled": "SSD1306 (I2C)"
+    },
+    "environment": {
+      "location": "Habitación residencial, ambiente controlado",
+      "noise_level": "Bajo (<40 dB)",
+      "microphone_distance_cm": 30,
+      "speaker": "Un hablante, voz normal en español",
+      "network": "WiFi 2.4GHz, LAN local",
+      "server": "PC local (Windows 10, Python 3.10)"
+    }
+  },
+  "group_1_inference_local": {
+    "description": "Inferencia local del wake word en ESP32",
+    "priority": "HIGH",
+    "model": {
+      "type": "CNN (TensorFlow Lite Micro)",
+      "classes": 3,
+      "quantization": "int8",
+      "size_kb": 15,
+      "arena_kb": 150,
+      "buffer_location": "SRAM interna (no PSRAM)",
+      "core": "Core 1",
+      "reason": "PSRAM causa conflictos con WiFi stack durante inferencia"
+    },
+    "measurements": {
+      "samples": 3,
+      "times_ms": [2567, 2573, 2567],
+      "avg_ms": 2569,
+      "min_ms": 2567,
+      "max_ms": 2573,
+      "p50_ms": 2567,
+      "p95_ms": 2573,
+      "std_dev_ms": 3.5
+    },
+    "context": "Mediciones tomadas durante prueba de conexión exitosa con servidor nube (HF). El wake word 'Hola NEO' fue pronunciado 3 veces a ~30cm del micrófono.",
+    "limitations": [
+      "Solo 3 muestras - insuficiente para análisis estadístico robusto",
+      "Condiciones ideales (ambiente silencioso, un solo hablante)",
+      "No se midieron falsos positivos (ruido ambiente, otras palabras)",
+      "No se midió variabilidad con diferentes hablantes o distancias"
+    ],
+    "utility": "Demuestra que la inferencia local es viable en ESP32-S3 con tiempo de respuesta consistente (~2.57s). Base para optimización futura."
+  },
+  "group_2_server_latency_local": {
+    "description": "Latencia del pipeline en servidor local (LAN)",
+    "priority": "MEDIUM",
+    "server": {
+      "location": "PC local (172.20.10.8:8765)",
+      "stt": "Groq Whisper large-v3-turbo (API cloud)",
+      "llm": "Groq openai/gpt-oss-20b (API cloud)",
+      "tts": "edge-tts (Microsoft, local)",
+      "memory": "Conversacional (últimos 10 turnos)"
+    },
+    "measurements": {
+      "samples": 48,
+      "stt": {
+        "avg_s": 11.70,
+        "p50_s": 5.83,
+        "p95_s": 0.37,
+        "note": "Alta variabilidad por timeouts de Groq"
+      },
+      "llm": {
+        "avg_s": 2.96,
+        "p50_s": 1.40,
+        "p95_s": 0.33,
+        "note": "Respuestas cortas (1-2 oraciones)"
+      },
+      "tts": {
+        "avg_s": 5.22,
+        "p50_s": 3.02,
+        "p95_s": 0.46,
+        "note": "Síntesis local, dependiente de longitud de texto"
+      },
+      "pipeline_total": {
+        "avg_s": 18.82,
+        "p50_s": 9.17,
+        "p95_s": 69.65,
+        "note": "P95 alto por timeouts esporádicos de Groq"
+      }
+    },
+    "context": "48 conversaciones completas con NEO, mezclando comandos (clima, noticias, crypto) y consultas libres. Mediciones tomadas entre 19:00-20:30 del 2026-09-11.",
+    "limitations": [
+      "Dependencia de APIs externas (Groq) - latencia no controlable",
+      "Alta variabilidad (P95: 69.65s) por timeouts de red",
+      "No se midió latencia de red ESP32→servidor",
+      "No se midió latencia de reproducción de audio en ESP32",
+      "Condiciones de red no controladas (WiFi residencial)"
+    ],
+    "utility": "Establece baseline de latencia del pipeline completo. Permite identificar cuellos de botella (STT es el más lento). Útil para comparar con futuras optimizaciones."
+  },
+  "group_3_server_latency_cloud": {
+    "description": "Latencia del pipeline en servidor nube (HuggingFace Spaces)",
+    "priority": "LOW",
+    "status": "NOT_MEASURED",
+    "reason": "Proxy WebSocket de HuggingFace cierra conexiones prematuramente",
+    "attempts": [
+      {
+        "date": "2026-09-11",
+        "issue": "ESP32 recibe primer chunk de audio pero conexión se cierra antes de completar",
+        "error": "WebSocket connection closed unexpectedly",
+        "workaround_attempted": "Ajustar ping_interval de 20s a 10s"
+      }
+    ],
+    "expected_vs_local": {
+      "stt": "Similar a local (mismo backend Groq)",
+      "llm": "Similar a local (mismo backend Groq)",
+      "tts": "Similar a local (mismo edge-tts)",
+      "network_latency": "Mayor por routing internet + proxy HF",
+      "total_expected": "12-15s (P50), vs 9.17s local"
+    },
+    "limitations": [
+      "No se pudo medir - problema de infraestructura HF",
+      "Proxy WebSocket de HF no compatible con WebSocketsClient de ESP32",
+      "Requiere migrar a servicio diferente (Railway, Render, VPS) para medición válida"
+    ],
+    "utility": "Documenta limitación actual de despliegue en HF Spaces. Justifica necesidad de alternativa para medición de latencia nube."
+  },
+  "group_4_intent_accuracy": {
+    "description": "Precisión de enrutamiento de intenciones",
+    "priority": "LOW",
+    "status": "NOT_MEASURED",
+    "reason": "Depende de servicios externos (Whisper + LLM), no es métrica de ingeniería local",
+    "expected_performance": {
+      "keyword_routing": ">95% (regex determinista)",
+      "llm_fallback": "Dependiente de calidad de Groq LLM",
+      "note": "No es objetivo de este proyecto medir calidad de APIs externas"
+    },
+    "limitations": [
+      "Métrica dependiente de terceros",
+      "No controlamos calidad de STT ni LLM",
+      "Fuera del scope del proyecto (enfocado en inferencia local)"
+    ],
+    "utility": "Define scope del proyecto: medimos lo que controlamos (inferencia local, latencia de pipeline), no lo que dependemos (calidad de APIs externas)."
+  },
+  "reproducibility": {
+    "hardware_setup": "Freenove ESP32-S3 + INMP441 + PCM5100A + SSD1306",
+    "firmware_version": "Branch: feature/latency-tool-and-memory-design, Commit: d45a707",
+    "server_version": "Branch: feature/latency-tool-and-memory-design, Commit: d45a707",
+    "test_duration_minutes": 90,
+    "total_conversations": 48,
+    "wake_word_attempts": 3,
+    "data_collection_method": "Automated (scripts/extract_inference_latency.py, scripts/neo_metrics_tool.py)",
+    "data_files": [
+      "servidor/logs/metrics/latency_report_20260911_205107.json",
+      "servidor/logs/pipeline_timing.jsonl",
+      "servidor/logs/esp32_serial.log"
+    ]
+  },
+  "analysis": {
+    "key_findings": [
+      "Inferencia local viable en ESP32-S3: 2.57s consistente",
+      "Pipeline completo (local): 9.17s P50, aceptable para asistente de voz",
+      "STT es el cuello de botella principal (5.83s P50)",
+      "Alta variabilidad en latencia por dependencia de APIs externas",
+      "Despliegue en HF Spaces no viable para WebSocket con ESP32"
+    ],
+    "recommendations": [
+      "Aumentar muestras de inferencia local a 50+ para análisis estadístico",
+      "Medir falsos positivos del wake word en ambiente ruidoso",
+      "Optimizar STT (considerar modelo más rápido o streaming)",
+      "Migrar servidor nube a plataforma con mejor soporte WebSocket",
+      "Implementar medición de latencia end-to-end (wake word → audio response)"
+    ],
+    "next_steps": [
+      "Capturar más datos de inferencia con diferentes hablantes y distancias",
+      "Medir consumo de batería durante inferencia y conversación",
+      "Comparar latencia con/sin memoria conversacional",
+      "Evaluar modelos TFLite más pequeños para reducir tiempo de inferencia"
+    ]
+  }
+}
