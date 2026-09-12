@@ -5,7 +5,7 @@ Uso:
     cd servidor
     python scripts/download_hf_logs.py
 
-Descarga pipeline_timing.jsonl de HF via endpoint /logs y lo guarda en logs/nube_timing.jsonl
+Descarga pipeline_timing.jsonl de HF via endpoint /logs (puerto 8766) y lo guarda en logs/nube_timing.jsonl
 """
 
 import requests
@@ -13,12 +13,14 @@ from pathlib import Path
 
 
 SPACE_URL = "https://techmigue-neo-servidor.hf.space"
+LOGS_PORT = 8766
 OUTPUT_FILE = Path("logs/nube_timing.jsonl")
 
 
 def download_log():
     """Descarga el archivo de log desde HF Spaces via endpoint /logs."""
-    logs_url = f"{SPACE_URL}/logs"
+    # HF Spaces expone el puerto 8766 como un subdominio
+    logs_url = f"https://techmigue-neo-servidor-logs.hf.space/logs"
 
     print(f"Descargando log desde: {logs_url}")
 
