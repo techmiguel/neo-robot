@@ -45,7 +45,7 @@ SERVER_TYPE = os.getenv("SERVER_TYPE", "local")
 
 
 async def _enviar_json(ws, data: dict):
-    await ws.send(json.dumps(data, ensure_ascii=False))
+    await ws.send_str(json.dumps(data, ensure_ascii=False))
 
 
 async def _iniciar_keepalive(ws, intervalo: int = 2) -> asyncio.Task:
@@ -63,7 +63,7 @@ async def _iniciar_keepalive(ws, intervalo: int = 2) -> asyncio.Task:
 async def _modo_echo(ws, buffer: bytearray):
     log.info(f"[echo] devolviendo {len(buffer)} bytes en chunks de {CHUNK}")
     for i in range(0, len(buffer), CHUNK):
-        await ws.send(bytes(buffer[i:i + CHUNK]))
+        await ws.send_bytes(bytes(buffer[i:i + CHUNK]))
     await _enviar_json(ws, {"cmd": "fin_respuesta"})
 
 
@@ -78,7 +78,7 @@ async def _modo_consulta(ws, tipo: str, args: dict):
         pcm = await synthesize(texto)
         ka.cancel()
         for i in range(0, len(pcm), CHUNK):
-            await ws.send(pcm[i:i + CHUNK])
+            await ws.send_bytes(pcm[i:i + CHUNK])
         await _enviar_json(ws, {"cmd": "fin_respuesta"})
     except Exception as e:
         ka.cancel()
@@ -138,7 +138,7 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
         ka.cancel()
 
         for i in range(0, len(pcm_salida), CHUNK):
-            await ws.send(pcm_salida[i:i + CHUNK])
+            await ws.send_bytes(pcm_salida[i:i + CHUNK])
 
         await _enviar_json(ws, {"cmd": "fin_respuesta"})
         timer.mark("pipeline_end")
