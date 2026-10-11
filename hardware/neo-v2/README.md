@@ -27,10 +27,12 @@ partir de la fase 3.
 | Fase | Contenido | Estado |
 |---|---|---|
 | 1 | Lectura del diseño original | Entregada: `docs/fase1-lectura-diseno-original.md` |
-| 2 | Propuesta de bloques nuevos | Pendiente de decisiones abiertas |
+| 2 | Propuesta de bloques nuevos | Entregada: `docs/fase2-propuesta-bloques-nuevos.md` |
 | 3–6 | Esquemático, colocación, ruteo, fabricación | Pendiente |
 
 ## Herramientas
 
 `tools/extract_voicepe.py` extrae del `.kicad_pcb` original la netlist resuelta,
 la tabla de pines del ESP32-S3 y los puntos de prueba (`docs/data/`).
+`tools/calc_power_v2.py` reproduce todos los cálculos de la fase 2 (elevador,
+cargador, protección, multiplexor, bus I2C y autonomía).
