@@ -8,6 +8,107 @@
 		(comment 1 "Licensed under CERN-OHL-P v2")
 	)
 	(lib_symbols
+		(symbol "power:PWR_FLAG"
+			(power)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#FLG"
+				(at 0 1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "PWR_FLAG"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Special symbol for telling ERC where power comes from"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "flag power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "PWR_FLAG_0_0"
+				(pin power_out line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "0_Seeed_Misc:TEST-POINT"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -26276,4 +26377,14 @@
 			)
 		)
 	)
+	(symbol (lib_id "power:PWR_FLAG") (at 275.59 151.13 180) (unit 1) (exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "5fac7ae0-ec1a-5e53-9fc1-2a0120fc9f52")
+		(property "Reference" "#FLG908" (at 275.59 151.13 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "PWR_FLAG" (at 275.59 154.94 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "" (at 275.59 151.13 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "" (at 275.59 151.13 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "NEO v2 fase 5: anotación de ERC (#PWR0199)" (at 275.59 151.13 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "588a9a28-c4ee-5887-9443-cb95fc3957be"))
+		(instances (project "NEO_v2" (path "/349ed1f3-025e-4f39-9714-d91e135a7151/a7f78799-685f-4ce7-bb9e-2518ac1a1bda" (reference "#FLG908") (unit 1))))
+	)
+	(no_connect (at 35.56 82.55) (uuid "c60b5688-4cde-5778-85c2-4a56fef8b5f7"))
 )

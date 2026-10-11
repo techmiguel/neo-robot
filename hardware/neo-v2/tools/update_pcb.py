@@ -39,16 +39,18 @@ PLACEMENT = {
     "BT201": (166.75, 28.20, 180, "B"),
     # ---- franja, cara F, extremo + (izquierda): polaridad
     "Q203": (171.0, 32.0, 0, "F"), "R201": (172.5, 35.5, 90, "F"), "TP201": (162.9, 20.0, 0, "B"),
-    # ---- elevador (centro izquierda), lejos de micrófonos y DAC
+    # ---- elevador (centro izquierda), lejos de micrófonos y DAC. Lazo caliente mínimo (fase 5):
+    #      COUT (C207-C209, C210) en fila justo bajo VOUT/GND de U202; L201 a la izquierda sobre SW;
+    #      divisor FB a la derecha; bypass de VIN, MODE y EN encima; C205 de entrada bajo L201.1
     "L201": (184.0, 22.5, 0, "F"), "U202": (191.0, 24.0, 0, "F"),
-    "C205": (184.5, 28.5, 0, "F"), "C206": (187.5, 28.0, 90, "F"),
-    "C207": (195.5, 20.5, 90, "F"), "C208": (198.0, 20.5, 90, "F"), "C209": (200.5, 20.5, 90, "F"),
-    "C210": (195.0, 24.5, 90, "F"),
-    "R209": (192.5, 28.5, 0, "F"), "R210": (192.5, 30.0, 0, "F"),
-    "R211": (188.5, 31.0, 0, "F"), "R212": (188.5, 32.5, 0, "F"), "R213": (188.5, 34.0, 0, "F"),
-    "R214": (203.5, 23.0, 90, "F"),
+    "C205": (181.0, 27.9, 270, "F"), "C206": (193.6, 22.2, 0, "F"),
+    "C207": (190.4, 27.1, 270, "F"), "C208": (192.6, 27.1, 270, "F"), "C209": (194.8, 27.1, 270, "F"),
+    "C210": (196.7, 27.1, 270, "F"),
+    "R209": (195.3, 23.3, 180, "F"), "R210": (195.3, 24.7, 0, "F"),
+    "R211": (197.8, 21.4, 0, "F"), "R212": (197.8, 20.0, 0, "F"), "R213": (197.8, 18.6, 0, "F"),
+    "R214": (200.5, 25.9, 0, "F"),
     # ---- diodo ideal hacia +5V (salida por vías a la zona +5V de In1)
-    "U206": (208.0, 24.0, 0, "F"), "C212": (205.5, 28.0, 90, "F"),
+    "U206": (208.0, 24.0, 0, "F"), "C212": (205.3, 25.2, 270, "F"),
     "C218": (211.5, 21.0, 90, "F"), "C219": (211.5, 26.5, 90, "F"),
     # ---- cargador y NTC (NTC bajo el centro de la celda)
     "U203": (221.0, 25.0, 0, "F"), "C202": (217.5, 21.5, 90, "F"), "C203": (224.5, 21.5, 90, "F"),
@@ -155,8 +157,10 @@ def outline_segments():
          ("line", (166.4, 66.76), (166.4, 49.55)), ("line", (166.4, 49.55), (161.2, 49.55)),
          ("line", (161.2, 49.55), (161.2, 16.2))]
     # ranura frente a SW3 (selector USB ESP/XMOS), recortada en la franja
-    slot = [("line", (176.4, 42.0), (185.8, 42.0)), ("line", (185.8, 42.0), (185.8, 46.2)),
-            ("line", (185.8, 46.2), (176.4, 46.2)), ("line", (176.4, 46.2), (176.4, 42.0))]
+    # (x 178,4-183,8: 5,4 mm centrados en el actuador; deja 0,5 mm a los pads de anclaje
+    # P1/P4, que en el original quedaban a 0,13 mm del borde, error de DRC heredado)
+    slot = [("line", (178.4, 42.0), (183.8, 42.0)), ("line", (183.8, 42.0), (183.8, 46.2)),
+            ("line", (183.8, 46.2), (178.4, 46.2)), ("line", (178.4, 46.2), (178.4, 42.0))]
     return L + slot
 
 
@@ -243,6 +247,12 @@ def update_zones(board, net_of):
             bb = z.GetBoundingBox()
             if pcbnew.ToMM(bb.GetWidth()) > 70:          # zonas GND de placa completa
                 set_rect(z, 160.7, 15.7, 245.7, 109.2)
+    # el original tiene dos zonas de la misma neta (antena ANT2, pad 2) solapadas con la misma
+    # prioridad (error zones_intersect); se sube la menor un nivel: el cobre resultante no cambia
+    ant = [z for z in board.Zones() if z.GetNetname() == "unconnected-(ANT2-Pad2)" and not z.GetIsRuleArea()]
+    if len(ant) == 2 and ant[0].GetAssignedPriority() == ant[1].GetAssignedPriority():
+        small = min(ant, key=lambda z: z.GetBoundingBox().GetArea())
+        small.SetAssignedPriority(small.GetAssignedPriority() + 1)
     # prolongación de +5V en In1 hasta U206 (se funde con la zona +5V existente al rellenar)
     z = pcbnew.ZONE(board)
     z.SetLayer(pcbnew.In1_Cu)
@@ -490,7 +500,32 @@ def main(pcb_in, netlist, pcb_out):
                 _KEEP.append(z)
                 dropped_items += 1
 
-    # 3a. cabos de pistas de netas vivas que acababan en pads de huellas retiradas (en cadena)
+    # 3a. regiones de rehacer
+    def inside(x, y, r):
+        return r[0] <= x <= r[2] and r[1] <= y <= r[3]
+    reworked = 0
+    for rect, rnets in REWORK:
+        for t in list(board.GetTracks()):
+            # solo B.Cu (cara del TPS2121) y vías; el cobre de F.Cu e internas que cruza por
+            # encima sigue sirviendo a otras piezas (p. ej. VBUS hacia Q10/R58)
+            on_b = t.Type() == pcbnew.PCB_VIA_T or t.GetLayer() == pcbnew.B_Cu
+            if on_b and t.GetNetname() in rnets and any(
+                    inside(pcbnew.ToMM(p.x), pcbnew.ToMM(p.y), rect) for p in (t.GetStart(), t.GetEnd())):
+                if t.Type() == pcbnew.PCB_VIA_T:      # sus cabos en otras capas se limpian en 3a
+                    x, y = pcbnew.ToMM(t.GetPosition().x), pcbnew.ToMM(t.GetPosition().y)
+                    removed_pads.append((x - 0.01, y - 0.01, x + 0.01, y + 0.01))
+                board.Remove(t)
+                _KEEP.append(t)
+                reworked += 1
+        for z in list(board.Zones()):
+            if z.IsTeardropArea() and z.GetNetname() in rnets and z.GetLayer() == pcbnew.B_Cu:
+                c = z.GetBoundingBox().GetCenter()
+                if inside(pcbnew.ToMM(c.x), pcbnew.ToMM(c.y), rect):
+                    board.Remove(z)
+                    _KEEP.append(z)
+                    reworked += 1
+
+    # 3b. cabos de pistas de netas vivas que acababan en pads de huellas retiradas (en cadena)
     def on_removed_pad(pt):
         x, y = pcbnew.ToMM(pt.x), pcbnew.ToMM(pt.y)
         return any(a <= x <= c and b <= y <= d for a, b, c, d in removed_pads)
@@ -521,25 +556,6 @@ def main(pcb_in, netlist, pcb_out):
             for pt in (t.GetStart(), t.GetEnd()):
                 x, y = pcbnew.ToMM(pt.x), pcbnew.ToMM(pt.y)
                 removed_pads.append((x - 0.01, y - 0.01, x + 0.01, y + 0.01))
-
-    # 3b. regiones de rehacer
-    def inside(x, y, r):
-        return r[0] <= x <= r[2] and r[1] <= y <= r[3]
-    reworked = 0
-    for rect, rnets in REWORK:
-        for t in list(board.GetTracks()):
-            if t.GetNetname() in rnets and any(
-                    inside(pcbnew.ToMM(p.x), pcbnew.ToMM(p.y), rect) for p in (t.GetStart(), t.GetEnd())):
-                board.Remove(t)
-                _KEEP.append(t)
-                reworked += 1
-        for z in list(board.Zones()):
-            if z.IsTeardropArea() and z.GetNetname() in rnets:
-                c = z.GetBoundingBox().GetCenter()
-                if inside(pcbnew.ToMM(c.x), pcbnew.ToMM(c.y), rect):
-                    board.Remove(z)
-                    _KEEP.append(z)
-                    reworked += 1
 
     # 4. huellas nuevas
     added = []
@@ -626,7 +642,7 @@ BOTTOM_XY = {  # cara B, sitio del antiguo U13; patios comprobados con la DRC (f
     # U201 girado 90°: IN1 (7) y OUT (8) miran arriba, hacia la zona VBUS de B.Cu (izquierda)
     # y el campo de vías +5V heredado (derecha); columna izquierda OV1/OV2/CP2/PR1, derecha
     # ST/ILIM/SS/GND.
-    "C211": (203.0, 99.85, 0), "C214": (205.0, 99.85, 0), "R220": (203.0, 98.4, 0),
+    "C211": (203.0, 99.5, 90), "C214": (205.0, 99.85, 0), "R220": (203.0, 97.7, 0),
     "R221": (204.6, 103.6, 0), "R222": (206.55, 103.6, 0),
     "R215": (204.6, 104.55, 0), "C215": (206.55, 104.55, 0),
 }

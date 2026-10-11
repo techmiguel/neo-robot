@@ -158,9 +158,12 @@ class Sheet:
 
     def insert_before_end(self, block):
         """Inserta elementos nuevos antes de (sheet_instances ...) o (embedded_fonts ...)."""
-        for key in ("\t(sheet_instances", "\t(embedded_fonts"):
+        # solo elementos de primer nivel: línea que empieza con un único tabulador (en hojas sin
+        # embedded_fonts de primer nivel, la subcadena aparece dentro de los símbolos de biblioteca)
+        for key in ("\n\t(sheet_instances", "\n\t(embedded_fonts"):
             i = self.text.rfind(key)
             if i >= 0:
+                i += 1
                 self.text = self.text[:i] + block + self.text[i:]
                 return
         i = self.text.rstrip().rfind(")")
