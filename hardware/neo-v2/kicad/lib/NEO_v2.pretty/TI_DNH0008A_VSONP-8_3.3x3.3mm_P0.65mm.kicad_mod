@@ -1,0 +1,141 @@
+(footprint "TI_DNH0008A_VSONP-8_3.3x3.3mm_P0.65mm"
+	(version 20241229)
+	(generator "neo_v2_gen_footprints")
+	(generator_version "1.0")
+	(layer "F.Cu")
+	(descr "CSD25402Q3A DNH0008A VSONP, TI land pattern example 4222499/C 02/2025")
+	(tags "NEO v2")
+	(property "Reference" "REF**"
+		(at 0.0000 -2.7500 0)
+		(layer "F.SilkS")
+		(uuid "530db60c-5c18-4557-83e8-a81629d64b18")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(property "Value" "TI_DNH0008A_VSONP-8_3.3x3.3mm_P0.65mm"
+		(at 0.0000 2.7500 0)
+		(layer "F.Fab")
+		(uuid "588d1678-2dcd-4c7b-89bc-4d430cb7bdf1")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(attr smd)
+	(fp_rect
+		(start -1.6500 -1.6500)
+		(end 1.6500 1.6500)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "ce23e44e-01a2-4020-bbbe-2f2f3d99fe61")
+	)
+	(fp_rect
+		(start -2.2000 -1.9500)
+		(end 2.2000 1.9500)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "b1991581-ddd7-4c2e-883e-39b04fd90ab1")
+	)
+	(fp_circle
+		(center -2.1000 -1.4000)
+		(end -2.0000 -1.4000)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.SilkS")
+		(uuid "ad75370a-6bc5-4c65-8e6e-5a7a8838f0ad")
+	)
+	(pad "1" smd roundrect
+		(at -1.5500 -0.9750)
+		(size 0.6000 0.3000)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.15)
+		(uuid "3faacee7-9c91-481a-9e15-405c52dcf9e2")
+	)
+	(pad "2" smd roundrect
+		(at -1.5500 -0.3250)
+		(size 0.6000 0.3000)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.15)
+		(uuid "11b82fd3-7178-4b61-bbd2-69cff7c9469a")
+	)
+	(pad "3" smd roundrect
+		(at -1.5500 0.3250)
+		(size 0.6000 0.3000)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.15)
+		(uuid "9919b02b-b6ae-4585-981f-9a742e0a5132")
+	)
+	(pad "4" smd roundrect
+		(at -1.5500 0.9750)
+		(size 0.6000 0.3000)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.15)
+		(uuid "72276228-ed3f-4bcc-8c92-4c7bbd45cc04")
+	)
+	(pad "5" smd custom
+		(at 0.3275 0.0000)
+		(size 1.7750 2.4500)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(options
+			(clearance outline)
+			(anchor rect)
+		)
+		(primitives
+			(gr_rect
+				(start 0.8375 -1.1250)
+				(end 1.5225 -0.8250)
+				(stroke
+					(width 0)
+					(type solid)
+				)
+				(fill yes)
+			)
+			(gr_rect
+				(start 0.8375 -0.4750)
+				(end 1.5225 -0.1750)
+				(stroke
+					(width 0)
+					(type solid)
+				)
+				(fill yes)
+			)
+			(gr_rect
+				(start 0.8375 0.1750)
+				(end 1.5225 0.4750)
+				(stroke
+					(width 0)
+					(type solid)
+				)
+				(fill yes)
+			)
+			(gr_rect
+				(start 0.8375 0.8250)
+				(end 1.5225 1.1250)
+				(stroke
+					(width 0)
+					(type solid)
+				)
+				(fill yes)
+			)
+		)
+		(uuid "504d267d-d06f-446f-a0e8-804f518c8966")
+	)
+	(embedded_fonts no)
+)

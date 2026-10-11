@@ -7321,40 +7321,16 @@
 		(uuid "00458c51-49e1-4218-9ecd-94d306216a92")
 	)
 	(junction
-		(at 143.51 149.86)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0c145cda-9def-4f9b-91e7-1691cac217f5")
-	)
-	(junction
 		(at 175.26 43.18)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "13fbcc07-51d5-477d-b1c3-63a07cd506df")
 	)
 	(junction
-		(at 73.66 144.78)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "16523c76-a50e-49e9-991d-0e1d2438814a")
-	)
-	(junction
 		(at 386.08 30.48)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "16ba3a21-206a-48c8-8827-a618a388581d")
-	)
-	(junction
-		(at 50.8 177.8)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "16e34e86-829d-4585-abb7-302ff32b5920")
-	)
-	(junction
-		(at 125.73 149.86)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "1c088dfa-c903-4c70-b40b-e67d327af37b")
 	)
 	(junction
 		(at 154.94 195.58)
@@ -7367,12 +7343,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "20bcc4fa-dce1-477a-af27-2f3771859f86")
-	)
-	(junction
-		(at 181.61 175.26)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2475c5bc-6a1e-4df0-a54c-824bc163546e")
 	)
 	(junction
 		(at 256.54 83.82)
@@ -7405,12 +7375,6 @@
 		(uuid "3261d292-2091-42e3-869f-8a3fe658216c")
 	)
 	(junction
-		(at 63.5 161.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "35cb5153-e85a-4b0c-9ec3-1b2ba9bc2eb0")
-	)
-	(junction
 		(at 40.64 144.78)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7433,12 +7397,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "41c27f05-8d9b-4a89-82e9-cf347da5ce7c")
-	)
-	(junction
-		(at 180.34 144.78)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "45f284b8-1e5f-4a59-80c7-4a27218dc90c")
 	)
 	(junction
 		(at 233.68 148.59)
@@ -7495,22 +7453,10 @@
 		(uuid "5f84e19f-1b9e-438e-9d88-f00be12faeaf")
 	)
 	(junction
-		(at 114.3 180.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5f904c05-b4e9-4b1a-a0f4-036ea2ba7bd6")
-	)
-	(junction
 		(at 121.92 246.38)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "67aa5365-3beb-4668-a28a-3a52ebc46e3b")
-	)
-	(junction
-		(at 125.73 180.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6949f52f-cd0c-4385-9a47-a283a9141d98")
 	)
 	(junction
 		(at 40.64 36.83)
@@ -7531,24 +7477,6 @@
 		(uuid "782a09c8-4652-4d01-b316-74915792c92e")
 	)
 	(junction
-		(at 152.4 144.78)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "78b90bd5-f87e-4e7a-ab4b-88d5aa573b54")
-	)
-	(junction
-		(at 181.61 177.8)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "79bb69f9-56c4-4f41-ae1b-73ea0f2870be")
-	)
-	(junction
-		(at 144.78 180.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "84b10efe-b04d-4c34-8f66-716387bdbb82")
-	)
-	(junction
 		(at 50.8 36.83)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7559,12 +7487,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8c904afe-b81c-4629-b676-ddc51e964270")
-	)
-	(junction
-		(at 161.29 158.75)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "951061ab-65dc-468a-9be4-af645ea40f05")
 	)
 	(junction
 		(at 369.57 148.59)
@@ -7603,12 +7525,6 @@
 		(uuid "a26fb9e1-9b34-4a4a-9022-32a013754586")
 	)
 	(junction
-		(at 154.94 177.8)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a4006221-8630-4e7f-8636-4bb8fc293aa9")
-	)
-	(junction
 		(at 144.78 195.58)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7625,18 +7541,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b39ba8ec-ba17-41b3-854a-6be176f2fdd9")
-	)
-	(junction
-		(at 161.29 177.8)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b4d2aa3f-c0c0-4cc6-a5a1-70f6721e0f54")
-	)
-	(junction
-		(at 50.8 161.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b7ff711a-860b-47a0-9423-5dc9012498e3")
 	)
 	(junction
 		(at 69.85 246.38)
@@ -7667,12 +7571,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ce15a294-0f95-4d3a-b2b3-98874b23b9b0")
-	)
-	(junction
-		(at 175.26 175.26)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "cf68396f-d75b-4458-946c-9a878864c284")
 	)
 	(junction
 		(at 63.5 73.66)
@@ -7729,12 +7627,6 @@
 		(uuid "eb610fb9-c4ba-45fa-a183-d371a9f9e205")
 	)
 	(junction
-		(at 187.96 180.34)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "fbcf5d43-cf0a-4519-a623-4e622766cd9b")
-	)
-	(junction
 		(at 201.93 149.86)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7776,36 +7668,6 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 175.26) (xy 163.83 186.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0390c300-a749-4e15-8f4b-d267c481016e")
-	)
-	(wire
-		(pts
-			(xy 114.3 187.96) (xy 114.3 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "049948a3-41ab-42b5-86be-c8820de99c19")
-	)
-	(wire
-		(pts
-			(xy 205.74 171.45) (xy 205.74 170.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "050d50af-ab69-48f1-b3dd-0b2f1a966f5c")
-	)
-	(wire
-		(pts
 			(xy 127 44.45) (xy 127 57.15)
 		)
 		(stroke
@@ -7813,16 +7675,6 @@
 			(type default)
 		)
 		(uuid "0633731d-5e4b-4459-ba63-157023e44c05")
-	)
-	(wire
-		(pts
-			(xy 198.12 147.32) (xy 198.12 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "069a083a-7d2f-4670-b882-6c70217a7706")
 	)
 	(wire
 		(pts
@@ -7863,16 +7715,6 @@
 			(type default)
 		)
 		(uuid "074adee9-ab52-4830-8f80-497991886a3b")
-	)
-	(wire
-		(pts
-			(xy 205.74 186.69) (xy 205.74 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "08db3c48-5c88-4359-ba0c-5cf3d90e0a46")
 	)
 	(wire
 		(pts
@@ -7936,26 +7778,6 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 161.29) (xy 63.5 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0f4f2356-de07-4554-8fb1-f4f970114462")
-	)
-	(wire
-		(pts
-			(xy 199.39 182.88) (xy 199.39 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1003455c-56e2-4823-8e05-1509b05477f4")
-	)
-	(wire
-		(pts
 			(xy 245.11 158.75) (xy 245.11 160.02)
 		)
 		(stroke
@@ -7973,26 +7795,6 @@
 			(type default)
 		)
 		(uuid "120ef690-4b15-42ff-818c-92100c51c211")
-	)
-	(wire
-		(pts
-			(xy 161.29 158.75) (xy 175.26 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "13f4a860-ee14-4c37-8532-f361b48dea93")
-	)
-	(wire
-		(pts
-			(xy 181.61 175.26) (xy 175.26 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "13fe8be1-1589-4c88-90d3-69ce27a11aa6")
 	)
 	(wire
 		(pts
@@ -8023,26 +7825,6 @@
 			(type default)
 		)
 		(uuid "15378cfd-4cef-40f5-8922-61ad21f051f2")
-	)
-	(wire
-		(pts
-			(xy 73.66 151.13) (xy 68.58 151.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "157e5851-c69c-4739-8e7b-4cc6fb011c6f")
-	)
-	(wire
-		(pts
-			(xy 175.26 194.31) (xy 175.26 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "159f4c9b-2ccb-45ed-896b-3dcb16f04aef")
 	)
 	(wire
 		(pts
@@ -8126,16 +7908,6 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 195.58) (xy 114.3 198.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1c68e1a4-d7e6-4a34-91c8-15ee07af8b3d")
-	)
-	(wire
-		(pts
 			(xy 218.44 43.18) (xy 228.6 43.18)
 		)
 		(stroke
@@ -8153,16 +7925,6 @@
 			(type default)
 		)
 		(uuid "1cda5901-af25-447a-b53b-bb31c4387d81")
-	)
-	(wire
-		(pts
-			(xy 180.34 132.08) (xy 180.34 134.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1d51ae46-19a3-4525-94bc-5ba33b2aa92c")
 	)
 	(wire
 		(pts
@@ -8213,16 +7975,6 @@
 			(type default)
 		)
 		(uuid "1fdc8f76-cf7a-485b-abf9-e7f61a342d78")
-	)
-	(wire
-		(pts
-			(xy 50.8 177.8) (xy 58.42 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "202bc6a0-ccb5-4ed0-a9e4-b844a8cdde28")
 	)
 	(wire
 		(pts
@@ -8286,16 +8038,6 @@
 	)
 	(wire
 		(pts
-			(xy 175.26 163.83) (xy 175.26 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "23070bf8-377a-4daa-b6d2-26e68737cb1d")
-	)
-	(wire
-		(pts
 			(xy 205.74 101.6) (xy 218.44 101.6)
 		)
 		(stroke
@@ -8333,16 +8075,6 @@
 			(type default)
 		)
 		(uuid "27635820-e674-46a9-aade-b59823b32e8e")
-	)
-	(wire
-		(pts
-			(xy 154.94 194.31) (xy 154.94 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "281ace30-d2f4-4b04-af97-f9e0191bfc6b")
 	)
 	(wire
 		(pts
@@ -8403,16 +8135,6 @@
 			(type default)
 		)
 		(uuid "2eb332d4-0964-4869-a3bb-350379c21d79")
-	)
-	(wire
-		(pts
-			(xy 154.94 177.8) (xy 154.94 186.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2f159670-f008-473e-ba26-13bdf18ca581")
 	)
 	(wire
 		(pts
@@ -8536,16 +8258,6 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 147.32) (xy 157.48 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3a1643b5-cccf-4e59-a264-8fe1a9301679")
-	)
-	(wire
-		(pts
 			(xy 208.28 43.18) (xy 208.28 30.48)
 		)
 		(stroke
@@ -8563,16 +8275,6 @@
 			(type default)
 		)
 		(uuid "3ca0ada8-2a8e-40bd-9246-01875e4a739a")
-	)
-	(wire
-		(pts
-			(xy 138.43 180.34) (xy 144.78 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3d070096-093e-42bf-9477-7aa85989af18")
 	)
 	(wire
 		(pts
@@ -8686,16 +8388,6 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 177.8) (xy 114.3 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "47276560-5432-4070-8865-91212f151501")
-	)
-	(wire
-		(pts
 			(xy 177.8 246.38) (xy 185.42 246.38)
 		)
 		(stroke
@@ -8726,26 +8418,6 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 144.78) (xy 180.34 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "48448e2c-ebd2-4686-9992-150c826b3313")
-	)
-	(wire
-		(pts
-			(xy 40.64 161.29) (xy 50.8 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4b5f6668-9ac5-4afe-b450-ce04f0d6d239")
-	)
-	(wire
-		(pts
 			(xy 337.82 30.48) (xy 342.9 30.48)
 		)
 		(stroke
@@ -8753,16 +8425,6 @@
 			(type default)
 		)
 		(uuid "4b8867e0-b907-473a-9cdb-a96e6fc87a9d")
-	)
-	(wire
-		(pts
-			(xy 187.96 194.31) (xy 187.96 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4c201279-09fb-45c8-b2e9-0e08ab6d0116")
 	)
 	(wire
 		(pts
@@ -8823,16 +8485,6 @@
 			(type default)
 		)
 		(uuid "507ab357-cbbe-4e7c-ad3c-32648c746fbf")
-	)
-	(wire
-		(pts
-			(xy 63.5 170.18) (xy 63.5 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "50f21c27-afa0-40e8-8221-924296239e3c")
 	)
 	(wire
 		(pts
@@ -8926,16 +8578,6 @@
 	)
 	(wire
 		(pts
-			(xy 125.73 195.58) (xy 125.73 198.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "54438f0d-98ae-4253-b627-dc1d46d2bdbd")
-	)
-	(wire
-		(pts
 			(xy 256.54 30.48) (xy 256.54 31.75)
 		)
 		(stroke
@@ -8976,16 +8618,6 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 152.4) (xy 181.61 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "57335c49-3f30-4d26-afac-ef41e6334059")
-	)
-	(wire
-		(pts
 			(xy 201.93 133.35) (xy 201.93 139.7)
 		)
 		(stroke
@@ -9013,26 +8645,6 @@
 			(type default)
 		)
 		(uuid "5842f1e9-bb84-4067-b3e0-77e668a0eb35")
-	)
-	(wire
-		(pts
-			(xy 205.74 170.18) (xy 209.55 170.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "58f68405-eb18-456f-9a70-7578b3cb9fcf")
-	)
-	(wire
-		(pts
-			(xy 144.78 194.31) (xy 144.78 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5920dfd0-2ec4-45f4-aa15-28620df3bb0f")
 	)
 	(wire
 		(pts
@@ -9086,16 +8698,6 @@
 	)
 	(wire
 		(pts
-			(xy 143.51 158.75) (xy 143.51 149.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5ce8f8fd-8f9f-4e8b-a3b7-4fb61efff7df")
-	)
-	(wire
-		(pts
 			(xy 386.08 27.94) (xy 386.08 30.48)
 		)
 		(stroke
@@ -9103,16 +8705,6 @@
 			(type default)
 		)
 		(uuid "5d5a0283-7e47-46bc-aa5d-b76b79fd68d8")
-	)
-	(wire
-		(pts
-			(xy 143.51 158.75) (xy 161.29 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5dcc8e95-83f8-4eb9-93bf-53ab7019bd2b")
 	)
 	(wire
 		(pts
@@ -9166,16 +8758,6 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 187.96) (xy 63.5 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "600f0582-2d86-4b2f-9b72-f299de36512b")
-	)
-	(wire
-		(pts
 			(xy 63.5 41.91) (xy 63.5 46.99)
 		)
 		(stroke
@@ -9183,16 +8765,6 @@
 			(type default)
 		)
 		(uuid "6186fc18-54dd-4955-83c6-0f0712e7a5cf")
-	)
-	(wire
-		(pts
-			(xy 181.61 186.69) (xy 181.61 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "618b2d20-f5bc-4177-9d47-ffd1c7b5b3a6")
 	)
 	(wire
 		(pts
@@ -9226,16 +8798,6 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 149.86) (xy 201.93 149.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "66106f6a-1f7b-4c2f-850c-7f2360156f79")
-	)
-	(wire
-		(pts
 			(xy 389.89 148.59) (xy 382.27 148.59)
 		)
 		(stroke
@@ -9256,16 +8818,6 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 142.24) (xy 152.4 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "68eb7202-3dc6-4577-81fd-196bad3b9846")
-	)
-	(wire
-		(pts
 			(xy 261.62 43.18) (xy 271.78 43.18)
 		)
 		(stroke
@@ -9276,36 +8828,6 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 171.45) (xy 161.29 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6a3fa0dc-8963-40be-9d5c-52e79ee4a4d2")
-	)
-	(wire
-		(pts
-			(xy 143.51 149.86) (xy 157.48 149.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6ad4f356-9ea6-436c-8609-5ad1e563aa49")
-	)
-	(wire
-		(pts
-			(xy 154.94 152.4) (xy 154.94 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6c34ea26-5885-428e-96cc-ed61e2dccfce")
-	)
-	(wire
-		(pts
 			(xy 205.74 96.52) (xy 208.28 96.52)
 		)
 		(stroke
@@ -9313,16 +8835,6 @@
 			(type default)
 		)
 		(uuid "6c3783fe-45f4-4f6c-9c6a-ba72b44339a8")
-	)
-	(wire
-		(pts
-			(xy 209.55 170.18) (xy 209.55 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6c43bbdb-fe3d-44b9-bea7-fd38ecd8eded")
 	)
 	(wire
 		(pts
@@ -9343,26 +8855,6 @@
 			(type default)
 		)
 		(uuid "6d34f285-537b-4d63-9596-1838d345fdcc")
-	)
-	(wire
-		(pts
-			(xy 180.34 142.24) (xy 180.34 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6d49ddb9-cfac-45be-8d14-348424b09875")
-	)
-	(wire
-		(pts
-			(xy 125.73 148.59) (xy 125.73 149.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6f2ba736-2a4f-483c-942c-1e2190828965")
 	)
 	(wire
 		(pts
@@ -9393,16 +8885,6 @@
 			(type default)
 		)
 		(uuid "6ff8860f-3ab4-47e7-97cd-47b63ef6bb44")
-	)
-	(wire
-		(pts
-			(xy 73.66 144.78) (xy 73.66 151.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "70ef3596-5e4b-41a1-bb16-3dd8048c85c8")
 	)
 	(wire
 		(pts
@@ -9486,16 +8968,6 @@
 	)
 	(wire
 		(pts
-			(xy 144.78 180.34) (xy 187.96 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7485cb9f-13e5-4a61-b947-817e1f111585")
-	)
-	(wire
-		(pts
 			(xy 304.8 48.26) (xy 304.8 43.18)
 		)
 		(stroke
@@ -9553,36 +9025,6 @@
 			(type default)
 		)
 		(uuid "770bc0a1-440d-4fad-b13b-5bb7b44bc005")
-	)
-	(wire
-		(pts
-			(xy 187.96 195.58) (xy 181.61 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7788f5b0-a336-457b-93e9-2d0e24061b18")
-	)
-	(wire
-		(pts
-			(xy 161.29 177.8) (xy 181.61 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "795e5f6a-c9cb-49e9-a6b1-f606f5cca44f")
-	)
-	(wire
-		(pts
-			(xy 187.96 180.34) (xy 187.96 186.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7a687764-2808-4042-9a25-e74281a161cd")
 	)
 	(wire
 		(pts
@@ -9726,16 +9168,6 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 177.8) (xy 200.66 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "85c03239-4e29-4c5b-8184-3cf9d0e4196b")
-	)
-	(wire
-		(pts
 			(xy 144.78 195.58) (xy 144.78 198.12)
 		)
 		(stroke
@@ -9816,46 +9248,6 @@
 	)
 	(wire
 		(pts
-			(xy 40.64 160.02) (xy 40.64 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8b9b1e84-8a92-4e36-b4d8-5723189ec877")
-	)
-	(wire
-		(pts
-			(xy 63.5 182.88) (xy 63.5 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8c2c8de3-6520-468b-8ea7-9f4d659f21d7")
-	)
-	(wire
-		(pts
-			(xy 180.34 144.78) (xy 185.42 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8c305666-9dd1-4065-9e1b-e27120e1c76b")
-	)
-	(wire
-		(pts
-			(xy 175.26 171.45) (xy 175.26 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8d3c7d8a-394d-4d74-9e94-5d81357902df")
-	)
-	(wire
-		(pts
 			(xy 377.19 107.95) (xy 393.7 107.95)
 		)
 		(stroke
@@ -9933,16 +9325,6 @@
 			(type default)
 		)
 		(uuid "913d428c-36b3-4b40-a7b9-5eea33385182")
-	)
-	(wire
-		(pts
-			(xy 181.61 194.31) (xy 181.61 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "915182a2-d999-4999-978b-fed6e9b28a58")
 	)
 	(wire
 		(pts
@@ -10036,16 +9418,6 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 163.83) (xy 161.29 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "95cbe07c-0185-4492-8250-82c129da6abf")
-	)
-	(wire
-		(pts
 			(xy 378.46 48.26) (xy 386.08 48.26)
 		)
 		(stroke
@@ -10066,16 +9438,6 @@
 	)
 	(wire
 		(pts
-			(xy 175.26 175.26) (xy 175.26 186.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "96fd6619-7bdb-425f-a537-a256a9ba2b82")
-	)
-	(wire
-		(pts
 			(xy 175.26 43.18) (xy 185.42 43.18)
 		)
 		(stroke
@@ -10083,36 +9445,6 @@
 			(type default)
 		)
 		(uuid "9706bfbc-d49d-49d5-892f-86959048e81b")
-	)
-	(wire
-		(pts
-			(xy 50.8 186.69) (xy 50.8 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "98423a35-166d-4efa-a0c7-cf020d4fd8f8")
-	)
-	(wire
-		(pts
-			(xy 73.66 144.78) (xy 76.2 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "98fe973f-c07b-4491-bb0e-90d1463762ed")
-	)
-	(wire
-		(pts
-			(xy 50.8 160.02) (xy 50.8 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9b21d91c-24b1-4776-8809-4ff9d6f565be")
 	)
 	(wire
 		(pts
@@ -10156,16 +9488,6 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 161.29) (xy 63.5 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9f4f8a2d-20cd-4b5a-92f6-3da18adc9884")
-	)
-	(wire
-		(pts
 			(xy 57.15 270.51) (xy 170.18 270.51)
 		)
 		(stroke
@@ -10173,16 +9495,6 @@
 			(type default)
 		)
 		(uuid "9fae5e8b-0930-4b13-85b7-fb3745a6a4e9")
-	)
-	(wire
-		(pts
-			(xy 163.83 194.31) (xy 163.83 195.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9fcd9358-9be2-453b-a38f-ee88e39372ae")
 	)
 	(wire
 		(pts
@@ -10203,26 +9515,6 @@
 			(type default)
 		)
 		(uuid "a118e7dd-2087-4e63-b842-9e350b6aa9cf")
-	)
-	(wire
-		(pts
-			(xy 152.4 132.08) (xy 180.34 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a1a6c75d-48be-409e-84b4-14ea348eb1f9")
-	)
-	(wire
-		(pts
-			(xy 67.31 144.78) (xy 73.66 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a1bc274d-7c85-4b5e-96ed-2e51e3ac698e")
 	)
 	(wire
 		(pts
@@ -10263,16 +9555,6 @@
 			(type default)
 		)
 		(uuid "a3ff0cfb-818a-4e00-ae38-86ff29fc298a")
-	)
-	(wire
-		(pts
-			(xy 50.8 177.8) (xy 50.8 179.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a4a0ba5b-02a6-4dbb-bf19-ec6d490a96d6")
 	)
 	(wire
 		(pts
@@ -10386,16 +9668,6 @@
 	)
 	(wire
 		(pts
-			(xy 40.64 151.13) (xy 40.64 152.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ae6afddf-80c7-40de-a7ea-84def8b91a71")
-	)
-	(wire
-		(pts
 			(xy 127 236.22) (xy 127 237.49)
 		)
 		(stroke
@@ -10443,16 +9715,6 @@
 			(type default)
 		)
 		(uuid "b209b54f-7103-4aa0-adf4-0a51fa9bb173")
-	)
-	(wire
-		(pts
-			(xy 205.74 187.96) (xy 209.55 187.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b21bb0fa-6932-4954-a53c-00296a67567d")
 	)
 	(wire
 		(pts
@@ -10533,16 +9795,6 @@
 			(type default)
 		)
 		(uuid "b9b2fb65-a90c-4253-b21d-4d64cdd29650")
-	)
-	(wire
-		(pts
-			(xy 63.5 156.21) (xy 63.5 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bb31673e-9db5-46ae-a236-9a9e806b8567")
 	)
 	(wire
 		(pts
@@ -10696,16 +9948,6 @@
 	)
 	(wire
 		(pts
-			(xy 125.73 187.96) (xy 125.73 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c79ef5c8-effa-4279-af98-5d6490d0299d")
-	)
-	(wire
-		(pts
 			(xy 347.98 43.18) (xy 358.14 43.18)
 		)
 		(stroke
@@ -10713,26 +9955,6 @@
 			(type default)
 		)
 		(uuid "c9225150-2492-42af-9cef-b76ac24c3e23")
-	)
-	(wire
-		(pts
-			(xy 50.8 151.13) (xy 50.8 152.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ca4ffda9-7104-447d-a636-ce1aaee424b3")
-	)
-	(wire
-		(pts
-			(xy 163.83 175.26) (xy 175.26 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cada7717-fd6c-40a2-a6cd-7ef7e0d6a04b")
 	)
 	(wire
 		(pts
@@ -10816,16 +10038,6 @@
 	)
 	(wire
 		(pts
-			(xy 35.56 177.8) (xy 39.37 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d037aef8-450c-4fdf-b74a-66fd0c9d8f69")
-	)
-	(wire
-		(pts
 			(xy 378.46 96.52) (xy 383.54 96.52)
 		)
 		(stroke
@@ -10906,16 +10118,6 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 151.13) (xy 58.42 151.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d65771d3-dc85-4248-b30b-0a2f8f7cf4ad")
-	)
-	(wire
-		(pts
 			(xy 50.8 46.99) (xy 63.5 46.99)
 		)
 		(stroke
@@ -10923,16 +10125,6 @@
 			(type default)
 		)
 		(uuid "d837348c-1e47-4552-8821-ebfcc1ba2a78")
-	)
-	(wire
-		(pts
-			(xy 144.78 180.34) (xy 144.78 186.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d8796d68-3075-44c2-87b1-a8d9bdc6a950")
 	)
 	(wire
 		(pts
@@ -10996,16 +10188,6 @@
 	)
 	(wire
 		(pts
-			(xy 125.73 149.86) (xy 143.51 149.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dad45352-e9a3-42c8-bc4f-a5f92844a15c")
-	)
-	(wire
-		(pts
 			(xy 154.94 195.58) (xy 144.78 195.58)
 		)
 		(stroke
@@ -11013,16 +10195,6 @@
 			(type default)
 		)
 		(uuid "dcdebcc6-166c-4b87-b1a8-1438526453bd")
-	)
-	(wire
-		(pts
-			(xy 114.3 180.34) (xy 125.73 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "deeeeb64-aac4-45a5-9e9f-0d6a1a47436f")
 	)
 	(wire
 		(pts
@@ -11043,26 +10215,6 @@
 			(type default)
 		)
 		(uuid "df18b02c-1537-461a-97f2-f53bf5906436")
-	)
-	(wire
-		(pts
-			(xy 73.66 140.97) (xy 73.66 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e0d5099f-edd5-4e7b-beee-902c26649ab3")
-	)
-	(wire
-		(pts
-			(xy 200.66 182.88) (xy 199.39 182.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e120dca1-5b4a-4b08-8006-5146b641bfcf")
 	)
 	(wire
 		(pts
@@ -11096,16 +10248,6 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 147.32) (xy 198.12 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e452e64f-fba7-4c22-ab93-15efa9847c78")
-	)
-	(wire
-		(pts
 			(xy 170.18 45.72) (xy 167.64 45.72)
 		)
 		(stroke
@@ -11123,16 +10265,6 @@
 			(type default)
 		)
 		(uuid "e6465b94-6ce1-4939-8128-9ef0e3c2a8ce")
-	)
-	(wire
-		(pts
-			(xy 46.99 177.8) (xy 50.8 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e7308f27-766a-4444-970a-b90382e88056")
 	)
 	(wire
 		(pts
@@ -11156,16 +10288,6 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 177.8) (xy 161.29 177.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e8f24365-68ba-4221-8bb7-5793129f5bd6")
-	)
-	(wire
-		(pts
 			(xy 77.47 236.22) (xy 77.47 237.49)
 		)
 		(stroke
@@ -11173,26 +10295,6 @@
 			(type default)
 		)
 		(uuid "e93dff92-937a-4836-93c0-7dd0cfca2c1c")
-	)
-	(wire
-		(pts
-			(xy 181.61 175.26) (xy 200.66 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e9472948-9007-4d8e-9194-5ebd9493cc52")
-	)
-	(wire
-		(pts
-			(xy 177.8 152.4) (xy 181.61 152.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e9c3d8e5-1b39-42d8-ab06-e8942bfb1dc3")
 	)
 	(wire
 		(pts
@@ -11216,16 +10318,6 @@
 	)
 	(wire
 		(pts
-			(xy 125.73 149.86) (xy 125.73 151.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ecb0904c-c660-493a-a3f6-a171c29f4b48")
-	)
-	(wire
-		(pts
 			(xy 226.06 104.14) (xy 226.06 101.6)
 		)
 		(stroke
@@ -11243,16 +10335,6 @@
 			(type default)
 		)
 		(uuid "ecb6aaf9-8894-466c-9e06-4985285dfb82")
-	)
-	(wire
-		(pts
-			(xy 157.48 152.4) (xy 154.94 152.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ed152277-f61a-46ac-b1af-d2e3ba9cd2dc")
 	)
 	(wire
 		(pts
@@ -11406,16 +10488,6 @@
 	)
 	(wire
 		(pts
-			(xy 40.64 144.78) (xy 59.69 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f4207126-1ba3-45f6-ae0b-b82b3c59ab83")
-	)
-	(wire
-		(pts
 			(xy 177.8 245.11) (xy 177.8 246.38)
 		)
 		(stroke
@@ -11423,26 +10495,6 @@
 			(type default)
 		)
 		(uuid "f4fa897b-a8a7-49e9-869f-54d5e95bb6cf")
-	)
-	(wire
-		(pts
-			(xy 187.96 180.34) (xy 200.66 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f55ec9a0-0de5-4db9-814d-b52ed7eb9ff3")
-	)
-	(wire
-		(pts
-			(xy 125.73 158.75) (xy 125.73 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f6516e3a-9922-45e0-a4a4-b734bac67ccf")
 	)
 	(wire
 		(pts
@@ -11466,16 +10518,6 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 144.78) (xy 152.4 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f7c2daa5-845e-4f27-bc6d-530cd27010d7")
-	)
-	(wire
-		(pts
 			(xy 50.8 63.5) (xy 58.42 63.5)
 		)
 		(stroke
@@ -11483,16 +10525,6 @@
 			(type default)
 		)
 		(uuid "f81116e8-7cdd-4bdf-8d13-78a9f8f38c91")
-	)
-	(wire
-		(pts
-			(xy 125.73 180.34) (xy 133.35 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f89835a7-2ead-4c24-b702-ac9eebe11c82")
 	)
 	(wire
 		(pts
@@ -11506,16 +10538,6 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 134.62) (xy 152.4 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb8d0912-592f-42b1-859f-d3e108e36444")
-	)
-	(wire
-		(pts
 			(xy 284.48 179.07) (xy 289.56 179.07)
 		)
 		(stroke
@@ -11523,16 +10545,6 @@
 			(type default)
 		)
 		(uuid "fd7974ed-b231-437c-83a5-4bf16c664df1")
-	)
-	(wire
-		(pts
-			(xy 152.4 144.78) (xy 157.48 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fd8b42fc-2ef8-49d0-bbd8-088c7ca8b436")
 	)
 	(wire
 		(pts
@@ -11606,7 +10618,7 @@
 			)
 		)
 	)
-	(global_label "GROVE_SCL"
+	(global_label "ESP_IO2"
 		(shape output)
 		(at 287.02 151.13 180)
 		(fields_autoplaced yes)
@@ -11619,28 +10631,6 @@
 		(uuid "299dfa96-df21-442a-a877-738c9404b498")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 274.8085 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "GROVE_PWR"
-		(shape input)
-		(at 149.86 147.32 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.143 1.143)
-			)
-			(justify right)
-		)
-		(uuid "2b7d9204-2def-4eac-981f-56ed0ade9d66")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 137.2131 147.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11716,7 +10706,7 @@
 			)
 		)
 	)
-	(global_label "GROVE_SDA"
+	(global_label "CHG_PG"
 		(shape bidirectional)
 		(at 287.02 153.67 180)
 		(fields_autoplaced yes)
@@ -11826,28 +10816,6 @@
 			)
 		)
 	)
-	(global_label "GROVE_PWR"
-		(shape input)
-		(at 35.56 177.8 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.143 1.143)
-			)
-			(justify right)
-		)
-		(uuid "a355af07-e640-47ca-a9c7-d47ff509fd4c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 22.9131 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "ECO_B"
 		(shape bidirectional)
 		(at 160.02 246.38 180)
@@ -11914,28 +10882,6 @@
 			)
 		)
 	)
-	(global_label "GROVE_SDA"
-		(shape bidirectional)
-		(at 149.86 144.78 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.143 1.143)
-			)
-			(justify right)
-		)
-		(uuid "c56c9682-6fe1-45b8-86c5-f1755bae0a14")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 136.594 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "ESP_BOOT"
 		(shape input)
 		(at 105.41 246.38 180)
@@ -11993,28 +10939,6 @@
 		(uuid "df5a83e2-68bf-4b79-a105-506384eb6c4f")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 351.9933 153.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "GROVE_SCL"
-		(shape output)
-		(at 185.42 144.78 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.143 1.143)
-			)
-			(justify left)
-		)
-		(uuid "e18b0592-8d63-482d-acbf-c24050d0c97b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 197.6315 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13580,159 +12504,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libadl:Ferrite Bead/303030024")
-		(at 135.89 180.34 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0ff7d9da-b578-49de-b020-5d0b288416ae")
-		(property "Reference" "FB11"
-			(at 133.096 178.816 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Value" "120R"
-			(at 140.97 178.816 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" "Inductor:L0603"
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD Ferrite Bead;120R-2A;0603"
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "Murata"
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "BLM18PG121SN1D"
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "303030024"
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "Ferrite Bead"
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" "2A"
-			(at 137.668 181.356 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 125°C"
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 135.89 180.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4a71b1fc-ca84-442e-a03d-d6d8016f6101")
-		)
-		(pin "2"
-			(uuid "1bcfb97c-23bd-4f15-9cd3-20d195e85d53")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "FB11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Seeed_libdb:Diode/304050312")
 		(at 361.95 154.94 90)
 		(unit 1)
@@ -14183,323 +12954,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Capacitors/302010049")
-		(at 154.94 190.5 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(uuid "14a539d6-739c-4220-8081-b969ff49fb10")
-		(property "Reference" "C99"
-			(at 156.464 188.722 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "12pF"
-			(at 156.464 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor:C0402"
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD CAP Ceramic 12pF-50V-5%-NPO;0402"
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CC0402JRNPO9BN120"
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "302010049"
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Dielectric" ""
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Part Type" "Ceramic"
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Voltage Rating" "50V,NPO"
-			(at 156.21 192.532 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Status" "Testo PoE"
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 125°C"
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 154.94 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "79450c5a-189c-4f83-8b1a-395e48167460")
-		)
-		(pin "2"
-			(uuid "734390f8-dcdd-4572-8b2b-c9f838556a33")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "C99")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "libdb:Misc/TP45C_SMD")
-		(at 78.74 144.78 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(uuid "165d2b96-eac0-4b9a-a453-572419a7770e")
-		(property "Reference" "TP34"
-			(at 81.28 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Test Point"
-			(at 81.28 146.0499 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Misc:TP-D45MIL"
-			(at 76.2 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Test Point;TP45C_SMD"
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "TP45C_SMD"
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "Test Point"
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 78.74 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1cd0b238-9cf6-4853-bd57-2995459c544b")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "TP34")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Seeed_libadl:Resistors/301010047")
 		(at 77.47 241.3 90)
 		(unit 1)
@@ -14675,170 +13129,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libadl:Capacitors/302010024")
-		(at 125.73 191.77 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "18c6b24d-2033-4873-8d9a-102e6ea4b867")
-		(property "Reference" "C85"
-			(at 127.635 189.23 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100nF"
-			(at 127.635 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor:C0402"
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD CAP Ceramic 100nF-25V-10%-X7R;0402"
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CC0402KRX7R8BB104"
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "302010024"
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Dielectric" ""
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Part Type" "Ceramic"
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Voltage Rating" "25V,X7R"
-			(at 127.635 194.31 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 125°C"
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 125.73 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "eba616da-244a-438f-9f5b-2a481acbf6ae")
-		)
-		(pin "2"
-			(uuid "be2346c1-a7c0-4602-bcc9-ad49c43db6a4")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "C85")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+5V")
 		(at 389.89 143.51 0)
 		(unit 1)
@@ -14898,165 +13188,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "#PWR0258")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libadl:Mosfet/305031542")
-		(at 63.5 177.8 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "1c2538f0-0a69-49ce-9432-aba3df3c1a70")
-		(property "Reference" "Q7"
-			(at 66.04 175.26 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "LBSS138WT1G"
-			(at 66.04 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Mosfet:SOT-323"
-			(at 66.04 175.26 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD MOSFET N-CH 50V-200mA;SOT-323-3"
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "LRC"
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "LBSS138WT1G"
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "305031542"
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "NMOS"
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" "200mA"
-			(at 66.04 180.3401 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Status" ""
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 150°C"
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 63.5 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "16c2a63f-b805-483f-8168-5bd2021f493a")
-		)
-		(pin "2"
-			(uuid "ac8d9768-37d1-4e9a-9ba9-1e3c9cda3793")
-		)
-		(pin "3"
-			(uuid "4b45d8bd-7e38-469a-a8f8-af6cf4cfd5f3")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "Q7")
 					(unit 1)
 				)
 			)
@@ -15351,170 +13482,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "#PWR0261")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libadl:Capacitors/302010024")
-		(at 125.73 154.94 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "2163a2a5-6eea-4ba1-83ac-d3bcf2d5f093")
-		(property "Reference" "C118"
-			(at 127.635 152.4 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100nF"
-			(at 127.635 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor:C0402"
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD CAP Ceramic 100nF-25V-10%-X7R;0402"
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CC0402KRX7R8BB104"
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "302010024"
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Dielectric" ""
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Part Type" "Ceramic"
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Voltage Rating" "25V,X7R"
-			(at 127.635 157.48 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 125°C"
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 125.73 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b6a263d9-497e-4c86-9c08-08da8b20da3e")
-		)
-		(pin "2"
-			(uuid "fc083dd4-cfdd-451b-8575-5db0fe458667")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "C118")
 					(unit 1)
 				)
 			)
@@ -15953,177 +13920,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010292")
-		(at 63.5 144.78 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(uuid "2a92012b-b610-47bd-bdbf-339d456f82e6")
-		(property "Reference" "R118"
-			(at 56.896 143.002 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Value" "0R"
-			(at 68.58 143.002 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" "Resistor:R0603"
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 0R-5%-1/10W;0603"
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0603JR-070RL"
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010292"
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "0R"
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "5%"
-			(at 63.5 146.558 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" ""
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 63.5 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "056062db-1f4a-493d-93dd-576d237e61ed")
-		)
-		(pin "1"
-			(uuid "af3c2761-8158-4a19-9675-e64e1f5534f9")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R118")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 63.5 76.2 0)
 		(unit 1)
@@ -16260,7 +14056,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "31f9b272-7224-46fe-85e3-e3329006bbef")
 		(property "Reference" "R135"
 			(at 311.15 182.88 0)
@@ -16580,170 +14376,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "LED6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libadl:Capacitors/302010024")
-		(at 144.78 190.5 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "37a94430-b994-45c1-9f04-b0b9f58f698d")
-		(property "Reference" "C100"
-			(at 146.304 188.722 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100nF"
-			(at 146.304 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor:C0402"
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD CAP Ceramic 100nF-25V-10%-X7R;0402"
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CC0402KRX7R8BB104"
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "302010024"
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Dielectric" ""
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Part Type" "Ceramic"
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Voltage Rating" "25V,X7R"
-			(at 146.304 192.532 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 125°C"
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 144.78 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "af81d425-1036-406e-9082-2eec4826f4f5")
-		)
-		(pin "2"
-			(uuid "3312ee1f-0ee1-40be-974e-3356679df0b6")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "C100")
 					(unit 1)
 				)
 			)
@@ -17311,163 +14943,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "#PWR0293")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libadl:Mosfet/305030010")
-		(at 63.5 151.13 270)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "4678afd3-7853-4ed2-b565-6fc7a56d80cb")
-		(property "Reference" "Q5"
-			(at 68.58 153.67 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Value" "CJ3407"
-			(at 68.58 155.702 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" "Mosfet:SOT23"
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD MOSFET P-CH 30V-4.3A;SOT-23"
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "CJ"
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CJ3407"
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "305030010"
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "PMOS"
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" "30V;4.3A"
-			(at 68.58 157.48 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" "Sensor Hub"
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 150°C"
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 63.5 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d7b0dde1-d3be-4f65-b776-28c52161a06d")
-		)
-		(pin "2"
-			(uuid "b7590965-0547-48c0-950b-6fc5473b8795")
-		)
-		(pin "3"
-			(uuid "e48c881d-5f00-485a-b8d9-35fa431a9b41")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "Q5")
 					(unit 1)
 				)
 			)
@@ -19255,71 +16730,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+5VA")
-		(at 73.66 140.97 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "6d963482-b9c2-4bc5-8cf7-67178031cc9e")
-		(property "Reference" "#PWR0297"
-			(at 73.66 144.78 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Grove_5V"
-			(at 73.66 137.414 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 73.66 140.97 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 73.66 140.97 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5VA\""
-			(at 73.66 140.97 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "280704c7-aef2-415c-aafc-1d1b6c4f385d")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "#PWR0297")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Seeed_libdb:Connector/320020029")
 		(at 297.18 182.88 0)
 		(unit 1)
@@ -19803,7 +17213,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "7066138a-c741-4b50-9844-c1592dde924d")
 		(property "Reference" "R91"
 			(at 274.32 177.8 0)
@@ -20285,71 +17695,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 125.73 198.12 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "77029fb4-a44f-40df-ade4-8ac6711336ca")
-		(property "Reference" "#PWR0244"
-			(at 125.73 204.47 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 125.73 201.676 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 125.73 198.12 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 125.73 198.12 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 125.73 198.12 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "10956c49-cee0-4000-b646-436a36adec3a")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "#PWR0244")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "libdb:Misc/TP45C_SMD")
 		(at 78.74 30.48 0)
 		(unit 1)
@@ -20698,177 +18043,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010010")
-		(at 43.18 177.8 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "7cab534c-c52f-4508-8a70-3acc291fa054")
-		(property "Reference" "R67"
-			(at 39.37 175.26 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Value" "4.7K"
-			(at 46.99 175.26 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" "Resistor:R0402"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 4.7K-5%-1/16W;0402"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402JR-074K7L"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010010"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "4.7K"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "5%"
-			(at 43.18 179.578 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 43.18 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0ba52fc2-5d40-49fa-9f8b-5b50668d48ed")
-		)
-		(pin "2"
-			(uuid "db5440b9-e93f-482d-be11-3fba244efd26")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R67")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 30.48 270.51 0)
 		(unit 1)
@@ -21100,71 +18274,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "R134")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 114.3 198.12 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "7f0a314e-fcd5-4a8e-a446-6441945191fc")
-		(property "Reference" "#PWR0183"
-			(at 114.3 204.47 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 114.3 201.676 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 114.3 198.12 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 114.3 198.12 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 114.3 198.12 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "b0506efe-344d-49f2-a912-b8f18a66c5f3")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "#PWR0183")
 					(unit 1)
 				)
 			)
@@ -22669,352 +19778,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010010")
-		(at 175.26 167.64 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "92c1f215-5b57-4429-9ee5-d5d55e2912c8")
-		(property "Reference" "R145"
-			(at 176.53 165.0999 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "4.7K"
-			(at 176.53 167.6399 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor:R0402"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 4.7K-5%-1/16W;0402"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402JR-074K7L"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010010"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "4.7K"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "5%"
-			(at 176.53 170.1799 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 175.26 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "04c8065f-a9f3-43a8-a9ea-0958d655f0e1")
-		)
-		(pin "2"
-			(uuid "fb031e4c-5cbd-4133-be62-ba7c9f240779")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R145")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libdb:Ic/310050070")
-		(at 167.64 149.86 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "939fb94d-4cc5-4f4f-a9c4-37b56c61ee9a")
-		(property "Reference" "U20"
-			(at 167.64 139.192 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Value" "TXS0102DCUR"
-			(at 167.64 141.224 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" "Ic:VSSOP8-0.5-2.3X2X0.9MM"
-			(at 175.26 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 175.26 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD IC Logic;VFSOP-8"
-			(at 175.26 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "TI"
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "TXS0102DCUR"
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "310050070"
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "IC"
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" ""
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" "HA Voice Kit"
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-40°C to 85°C"
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 167.64 149.86 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5fc6fd43-fce9-4a96-9369-a5375a876c0c")
-		)
-		(pin "2"
-			(uuid "6dcb22ca-be4b-4364-821c-771012541cb5")
-		)
-		(pin "3"
-			(uuid "8539038f-cada-44ff-994b-c7c95837a06a")
-		)
-		(pin "4"
-			(uuid "8905af08-0ae8-42bc-9925-cc206cfef972")
-		)
-		(pin "5"
-			(uuid "404d22a5-aab8-4b1e-9834-49b2836c2d6f")
-		)
-		(pin "6"
-			(uuid "46593c1f-23a7-4e17-9077-62e52562e890")
-		)
-		(pin "7"
-			(uuid "db8299fd-de74-4812-bd92-2be81f9d3cf7")
-		)
-		(pin "8"
-			(uuid "ee6dbde1-f042-430e-8dde-c40af0a4eb44")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "U20")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 96.52 104.14 0)
 		(unit 1)
@@ -23876,7 +20639,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "9918d9dc-554f-4565-bf22-11f537d53897")
 		(property "Reference" "R84"
 			(at 289.56 152.4 0)
@@ -24725,181 +21488,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010010")
-		(at 152.4 138.43 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "9d79db68-3df2-4ad1-9f19-2de82c5410ef")
-		(property "Reference" "R140"
-			(at 153.67 135.8899 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "4.7K"
-			(at 153.67 138.4299 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor:R0402"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 4.7K-5%-1/16W;0402"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402JR-074K7L"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010010"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "4.7K"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "5%"
-			(at 153.67 140.9699 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 152.4 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c2e8bb99-a6c4-4dec-b9d4-10b64c408c24")
-		)
-		(pin "2"
-			(uuid "9ae73408-75b6-4e64-8ce1-fb5ece71c816")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R140")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 226.06 104.14 0)
 		(unit 1)
@@ -25266,161 +21854,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Diode/304060074")
-		(at 175.26 190.5 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "a34f3a12-297a-4aff-849f-3231ce65eab7")
-		(property "Reference" "D15"
-			(at 177.038 188.214 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "ESDPSA0402V05"
-			(at 168.148 197.612 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode:ESD-0402"
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD Diode ESD 0.05pF;0402"
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "SEMITEL"
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "ESDPSA0402V05"
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "304060074"
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "ESD"
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" ""
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" ""
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" ""
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 175.26 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "cf7ea3cb-f30c-465c-a6b0-16b4b9a2093c")
-		)
-		(pin "2"
-			(uuid "42aa384f-4f74-4dc8-af80-90dbc655a544")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "D15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Seeed_libadl:Mosfet/305030010")
 		(at 63.5 36.83 270)
 		(mirror x)
@@ -25578,170 +22011,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Capacitors/302010049")
-		(at 163.83 190.5 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(uuid "aa1e8c8a-5008-44db-b873-ce9b43860c41")
-		(property "Reference" "C98"
-			(at 165.354 188.722 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "12pF"
-			(at 165.354 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor:C0402"
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD CAP Ceramic 12pF-50V-5%-NPO;0402"
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CC0402JRNPO9BN120"
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "302010049"
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Dielectric" ""
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Part Type" "Ceramic"
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Voltage Rating" "50V,NPO"
-			(at 165.1 192.532 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Status" "Testo PoE"
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 125°C"
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 163.83 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8b69592a-ec1e-4877-adac-9d98b1dd54c1")
-		)
-		(pin "2"
-			(uuid "df792e15-d6bf-47dd-8aef-d0842a2bbbf1")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "C98")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 299.72 95.25 0)
 		(unit 1)
@@ -25872,162 +22141,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Diode/304050312")
-		(at 187.96 190.5 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "ae93befb-d595-48ff-a07e-cc1bfa85cf28")
-		(property "Reference" "D21"
-			(at 188.468 187.96 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "TPD1E10B06DPYR"
-			(at 188.214 195.58 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode:ESD-0402"
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD Diode ESD 5.5V-6V-12pF-30KV-30KV;X1SON(2)"
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "TI"
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "TPD1E10B06DPYR"
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "304050312"
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "ESD"
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" "5.5V"
-			(at 189.992 190.5 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Status" ""
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-40°C to 125°C"
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 187.96 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fa703f64-962a-4511-b748-88f1c1b23fd5")
-		)
-		(pin "2"
-			(uuid "85c611bf-b99c-4871-bb22-d6b722d67dcf")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "D21")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 355.6 50.8 0)
 		(unit 1)
@@ -26152,71 +22265,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "#PWR0267")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 125.73 161.29 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "b019ddb1-533d-4997-b475-9caeab66833d")
-		(property "Reference" "#PWR0305"
-			(at 125.73 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 125.73 164.846 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 125.73 161.29 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 125.73 161.29 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 125.73 161.29 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "fe806c9f-92f4-40ac-b5f5-75e3d069b9ce")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "#PWR0305")
 					(unit 1)
 				)
 			)
@@ -27308,173 +23356,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Connector/320110030")
-		(at 204.47 179.07 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c1c50c9e-ed41-4a37-8c5e-bd0112cab0e7")
-		(property "Reference" "J4"
-			(at 204.978 189.738 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "PHS-4P"
-			(at 204.978 192.278 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector:HW4-SMD-2.0"
-			(at 203.2 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 203.2 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD Grove Female Header-Beige;4P-2.0"
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "SITUOZHAN"
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "PHS-4P"
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "320110030"
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "Connectors"
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" ""
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" ""
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" ""
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 204.47 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "4"
-			(uuid "9681300c-22cf-4a5e-af35-b7be7067a84e")
-		)
-		(pin "1"
-			(uuid "f6ea276b-b808-4376-bbae-cf0c376e41fa")
-		)
-		(pin "3"
-			(uuid "a9086e87-d2fe-4451-ba61-0a379e5e9e66")
-		)
-		(pin "5"
-			(uuid "008078af-76bd-4e19-94e7-84b9a2a7faf3")
-		)
-		(pin "6"
-			(uuid "25ee68c1-4849-4dbf-959c-b8fad6bed146")
-		)
-		(pin "2"
-			(uuid "3248091d-0089-4e73-9892-1ac935d0d9f7")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "J4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "libdb:Misc/TP45C_SMD")
 		(at 74.93 73.66 0)
 		(unit 1)
@@ -27622,346 +23503,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "TP32")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libdb:Capacitors/302010054")
-		(at 114.3 191.77 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c7be95e4-e690-4605-9f71-af45966506c3")
-		(property "Reference" "C84"
-			(at 116.84 189.2299 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "2.2uF"
-			(at 116.84 191.7699 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor:C0603"
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD CAP Ceramic 2.2uF-10V-10%-X7R;0603"
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CC0603KRX7R6BB225"
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "302010054"
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Dielectric" ""
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Part Type" "Ceramic"
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Voltage Rating" "10V,X7R"
-			(at 116.84 194.3099 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Status" "Sensecap Gateway V1"
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 125°C"
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 114.3 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "65b0b64a-3cfd-4a1e-9f89-b4dc1bd77f0f")
-		)
-		(pin "2"
-			(uuid "25cc32ee-2cbd-44bd-b935-66196c700571")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "C84")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010028")
-		(at 63.5 166.37 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c85e8334-c911-4dfd-8b3e-2aac2a38656b")
-		(property "Reference" "R137"
-			(at 64.77 163.8299 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "100R"
-			(at 64.77 166.3699 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor:R0402"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 100R-5%-1/16W;0402"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402JR-07100RL"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010028"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "100R"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "5%"
-			(at 64.77 168.9099 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 63.5 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8d8b3172-5147-4ed3-a70f-2fe33b7140a4")
-		)
-		(pin "2"
-			(uuid "dbe95162-ccb8-4ff0-9267-576bab609b96")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R137")
 					(unit 1)
 				)
 			)
@@ -28409,181 +23950,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "TP27")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010010")
-		(at 180.34 138.43 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "cfee47b8-4002-4ddd-a1d1-7672bca58e29")
-		(property "Reference" "R141"
-			(at 181.61 135.8899 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "4.7K"
-			(at 181.61 138.4299 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor:R0402"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 4.7K-5%-1/16W;0402"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402JR-074K7L"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010010"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "4.7K"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "5%"
-			(at 181.61 140.9699 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 180.34 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "af3967e8-2381-4b3f-8330-ca55ce969083")
-		)
-		(pin "2"
-			(uuid "bd9e3220-674a-4ed3-be50-9446dd1f4746")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R141")
 					(unit 1)
 				)
 			)
@@ -29323,181 +24689,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010069")
-		(at 40.64 156.21 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d88e7217-847b-42aa-8a0e-ce95901a8605")
-		(property "Reference" "R40"
-			(at 41.91 153.6699 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "470K"
-			(at 41.91 156.2099 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor:R0402"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 470K-1%-1/16W;0402"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402FR-07470KL"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010069"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "470K"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "1%"
-			(at 41.91 158.7499 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Status" "Combox Pro"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 40.64 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "fd234545-025c-4ce0-9548-bfc1ecd1c02f")
-		)
-		(pin "1"
-			(uuid "0b6c3ce6-e88f-4e15-915b-11bda739c782")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R40")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Seeed_Libdb:Diode/304091547")
 		(at 281.94 99.06 0)
 		(unit 1)
@@ -29652,71 +24843,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "LED10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5VA")
-		(at 114.3 177.8 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "dbb58a66-f2f9-4c71-8d4c-16b9fc103e64")
-		(property "Reference" "#PWR0295"
-			(at 114.3 181.61 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Grove_5V"
-			(at 114.3 174.244 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 114.3 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 114.3 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5VA\""
-			(at 114.3 177.8 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "711fcf8b-d962-4fe2-abe6-987b1951b8d0")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "#PWR0295")
 					(unit 1)
 				)
 			)
@@ -29942,71 +25068,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "LED4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5VA")
-		(at 125.73 148.59 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "e1e41b0b-33d1-4e0e-b800-54df6a2895d1")
-		(property "Reference" "#PWR0306"
-			(at 125.73 152.4 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Grove_5V"
-			(at 125.73 145.034 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 125.73 148.59 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 125.73 148.59 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5VA\""
-			(at 125.73 148.59 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4804aecf-bae8-491e-b8ef-00a4ec64732b")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "#PWR0306")
 					(unit 1)
 				)
 			)
@@ -30977,162 +26038,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Seeed_libdb:Diode/304060074")
-		(at 181.61 190.5 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "eeed284c-d3a9-44a4-80a0-d2128d0c5460")
-		(property "Reference" "D17"
-			(at 183.134 187.96 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "ESDPSA0402V05"
-			(at 168.148 192.786 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Diode:ESD-0402"
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD Diode ESD 0.05pF;0402"
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "SEMITEL"
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "ESDPSA0402V05"
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "304060074"
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "ESD"
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Rating" ""
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Status" ""
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" ""
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 181.61 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "895ec4c2-3fd9-4ff7-9c5c-27b7fcc724aa")
-		)
-		(pin "2"
-			(uuid "18d16e77-0e48-48a7-8805-ce90ea2c1088")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "D17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "libdb:Misc/TP45C_SMD")
 		(at 187.96 246.38 0)
 		(unit 1)
@@ -31280,181 +26185,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "TP30")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010069")
-		(at 50.8 182.88 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f1c85bce-071a-4f9b-ad20-85fff87059c9")
-		(property "Reference" "R117"
-			(at 52.07 180.3399 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "470K"
-			(at 52.07 182.8799 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor:R0402"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 470K-1%-1/16W;0402"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402FR-07470KL"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010069"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "470K"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "1%"
-			(at 52.07 185.4199 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Status" "Combox Pro"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 50.8 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "095dedd8-f187-4339-871f-f610598a2097")
-		)
-		(pin "1"
-			(uuid "8098ff4a-7f46-49c5-8338-375b6f8ca780")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R117")
 					(unit 1)
 				)
 			)
@@ -31611,345 +26341,6 @@
 			(project "NEO_v2"
 				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
 					(reference "D16")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libadl:Capacitors/302010006")
-		(at 50.8 156.21 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "f72f401d-4294-451c-987e-7c624823dfc1")
-		(property "Reference" "C32"
-			(at 52.324 153.67 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10nF"
-			(at 52.324 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor:C0402"
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD CAP Ceramic 10nF-50V-10%-X7R;0402"
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "CC0402KRX7R9BB103"
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "302010006"
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Dielectric" ""
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-			)
-		)
-		(property "Part Type" "Ceramic"
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Voltage Rating" "50V,X7R"
-			(at 52.324 158.75 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify left)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 125°C"
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 50.8 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0b691f99-3422-4b23-8488-9ed07aa9231d")
-		)
-		(pin "2"
-			(uuid "8a4159e2-e26c-4949-a82c-278027cc6712")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "C32")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Seeed_libdb:Resistors/301010010")
-		(at 161.29 167.64 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "f7f0b7fe-b0d1-4329-af56-b6126125c814")
-		(property "Reference" "R144"
-			(at 162.56 165.0999 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "4.7K"
-			(at 162.56 167.6399 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor:R0402"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "SMD RES 4.7K-5%-1/16W;0402"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "YAGEO"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "RC0402JR-074K7L"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "SKU" "301010010"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Resistance" "4.7K"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Tolerance" ""
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Type" "RES"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Power Rating" "5%"
-			(at 162.56 170.1799 90)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(justify right)
-			)
-		)
-		(property "Status" "BeagleBone Carrier Board"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "Temperature" "-55°C to 155°C"
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.143 1.143)
-				)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" ""
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "PARTREV" ""
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "STANDARD" ""
-			(at 161.29 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1511ce83-116f-4728-ab44-240c8a32c50b")
-		)
-		(pin "2"
-			(uuid "cce84eee-c536-4136-8bda-bbd36fdcf027")
-		)
-		(instances
-			(project "NEO_v2"
-				(path "/349ed1f3-025e-4f39-9714-d91e135a7151/b2f39dc0-ac44-4186-8be9-d62f5b177e00"
-					(reference "R144")
 					(unit 1)
 				)
 			)
@@ -32960,7 +27351,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "fefd179e-46af-4b09-af40-3c60ce853919")
 		(property "Reference" "R83"
 			(at 289.56 149.86 0)

@@ -1,0 +1,107 @@
+(footprint "BatteryHolder_MPD_BH-18650-PC_slot"
+	(version 20241229)
+	(generator "neo_v2_gen_footprints")
+	(generator_version "1.0")
+	(layer "F.Cu")
+	(descr "Portapilas 18650 MPD BH-18650-PC, plano rev. G; agujeros rasgados 1.38x2.40 segun PCB LAYOUT")
+	(tags "NEO v2 18650")
+	(property "Reference" "REF**"
+		(at -36.4500 -12.0000 0)
+		(layer "F.SilkS")
+		(uuid "64842c59-cc36-4ed5-8cb6-a974394569ff")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(property "Value" "BatteryHolder_MPD_BH-18650-PC_slot"
+		(at -36.4500 12.0000 0)
+		(layer "F.Fab")
+		(uuid "02835825-94f5-4a6b-8459-a01b6794cc5f")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_rect
+		(start -75.3000 -10.4500)
+		(end 2.4000 10.4500)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "e02e681f-35c5-44bf-a516-b3de00718584")
+	)
+	(fp_rect
+		(start -75.5500 -10.7000)
+		(end 2.6500 10.7000)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "ac99a284-7566-477f-8c5b-74ee25d9d770")
+	)
+	(pad "1" thru_hole roundrect
+		(at 0.0000 0.0000)
+		(size 2.4000 3.4000)
+		(drill oval 1.3800 2.4000)
+		(layers "*.Cu" "*.Mask")
+		(roundrect_rratio 0.25)
+		(remove_unused_layers no)
+		(uuid "710653e4-6eec-4bfd-90b1-90689bd69795")
+	)
+	(pad "2" thru_hole oval
+		(at -72.9000 0.0000)
+		(size 2.4000 3.4000)
+		(drill oval 1.3800 2.4000)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "e1ec1860-103d-4345-b946-affdb8759184")
+	)
+	(pad "" np_thru_hole circle
+		(at -64.6200 0.0000)
+		(size 3.2000 3.2000)
+		(drill 3.2000)
+		(layers "*.Cu" "*.Mask")
+		(uuid "973c304d-14f5-4525-936f-54bcf55a338e")
+	)
+	(pad "" np_thru_hole circle
+		(at -9.0100 0.0000)
+		(size 3.2000 3.2000)
+		(drill 3.2000)
+		(layers "*.Cu" "*.Mask")
+		(uuid "9ef76c63-27dd-49b8-9dfa-4875d8152468")
+	)
+	(fp_text user "+"
+		(at -3.2 0 0)
+		(layer "F.SilkS")
+		(uuid "5689b4f5-4c4f-464f-aec1-2047ec4335bb")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.25)
+			)
+		)
+	)
+	(fp_text user "-"
+		(at -69.7 0 0)
+		(layer "F.SilkS")
+		(uuid "af62e5c7-2933-4199-888c-c6a598695864")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.25)
+			)
+		)
+	)
+	(embedded_fonts no)
+)

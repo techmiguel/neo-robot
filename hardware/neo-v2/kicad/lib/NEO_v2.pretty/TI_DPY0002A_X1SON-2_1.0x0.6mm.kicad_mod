@@ -1,0 +1,68 @@
+(footprint "TI_DPY0002A_X1SON-2_1.0x0.6mm"
+	(version 20241229)
+	(generator "neo_v2_gen_footprints")
+	(generator_version "1.0")
+	(layer "F.Cu")
+	(descr "TPD1E04U04 DPY0002A X1SON-2, TI land pattern example 4224561/C")
+	(tags "NEO v2")
+	(property "Reference" "REF**"
+		(at 0.0000 -1.3000 0)
+		(layer "F.SilkS")
+		(uuid "4233b75d-e103-4077-80c5-c67b180c5777")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(property "Value" "TI_DPY0002A_X1SON-2_1.0x0.6mm"
+		(at 0.0000 1.3000 0)
+		(layer "F.Fab")
+		(uuid "46199156-1a5c-403d-9da9-86a511ddb188")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(attr smd)
+	(fp_rect
+		(start -0.5000 -0.3000)
+		(end 0.5000 0.3000)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "1c78cf55-052a-4b2a-adf8-41c3863f34cb")
+	)
+	(fp_rect
+		(start -0.7000 -0.5000)
+		(end 0.7000 0.5000)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "50e859ff-4280-4c2b-9f7a-3c48b4843077")
+	)
+	(pad "1" smd roundrect
+		(at -0.3500 0.0000)
+		(size 0.3000 0.5000)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.1)
+		(uuid "2682946f-b253-4000-a86f-fe7ce3af0407")
+	)
+	(pad "2" smd roundrect
+		(at 0.3500 0.0000)
+		(size 0.3000 0.5000)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.1)
+		(uuid "3acd3425-4fcc-4bbd-9782-e77c9adc56d6")
+	)
+	(embedded_fonts no)
+)

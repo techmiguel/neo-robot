@@ -11078,7 +11078,7 @@
 		)
 		(uuid "f497d986-4a49-4dc0-888b-cdefa1a055aa")
 	)
-	(global_label "GROVE_PWR"
+	(global_label "ESP_IO46"
 		(shape output)
 		(at 220.98 90.17 90)
 		(fields_autoplaced yes)
@@ -11210,7 +11210,7 @@
 			)
 		)
 	)
-	(global_label "GROVE_SDA"
+	(global_label "CHG_PG"
 		(shape bidirectional)
 		(at 160.02 124.46 180)
 		(fields_autoplaced yes)
@@ -11496,7 +11496,7 @@
 			)
 		)
 	)
-	(global_label "GROVE_SCL"
+	(global_label "ESP_IO2"
 		(shape output)
 		(at 160.02 127 180)
 		(fields_autoplaced yes)

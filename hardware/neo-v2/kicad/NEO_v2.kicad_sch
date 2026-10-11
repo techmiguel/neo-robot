@@ -280,6 +280,49 @@
 			)
 		)
 	)
+	(sheet
+		(at 165.1 43.18)
+		(size 38.1 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill (color 0 0 0 0.0000))
+		(uuid "200eccfb-2dce-4f41-a6eb-ed1e22e291e6")
+		(property "Sheetname" "Alimentacion" (at 165.1 42.48 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+		(property "Sheetfile" "Alimentacion.kicad_sch" (at 165.1 58.980000000000004 0) (effects (font (size 1.143 1.143)) (justify left top)))
+		(instances
+			(project "NEO_v2"
+				(path "/349ed1f3-025e-4f39-9714-d91e135a7151"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 165.1 68.58)
+		(size 38.1 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke (width 0.1524) (type solid))
+		(fill (color 0 0 0 0.0000))
+		(uuid "8a988e92-e643-41bd-b99c-e832936c74a2")
+		(property "Sheetname" "Expansion" (at 165.1 67.88 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+		(property "Sheetfile" "Expansion.kicad_sch" (at 165.1 84.38 0) (effects (font (size 1.143 1.143)) (justify left top)))
+		(instances
+			(project "NEO_v2"
+				(path "/349ed1f3-025e-4f39-9714-d91e135a7151"
+					(page "9")
+				)
+			)
+		)
+	)
+	(text "NEO v2 (techmiguel), diseño derivado de Home Assistant Voice Preview Edition (Nabu Casa, CERN-OHL-P v2).\nHojas de Nabu Casa: Block, ESP32, XMOS, DAC, Power, LED & Connector (cambios mínimos documentados en\nhardware/neo-v2/docs/fase3-esquematico.md). Hojas propias de NEO v2: Alimentacion y Expansion." (exclude_from_sim no) (at 86.36 165.1 0) (effects (font (size 1.27 1.27)) (justify left)) (uuid "2db6a5be-7d5b-4605-8765-6e0cecf1b368"))
 	(sheet_instances
 		(path "/"
 			(page "1")

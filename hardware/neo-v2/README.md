@@ -17,10 +17,9 @@ software de NEO, no este directorio.
 | Bloque | Autor |
 |---|---|
 | ESP32-S3 + flash + PSRAM, XU316 + flash + reloj, micrófonos e interruptor de silencio, AIC3204, amplificador TPA6211A1, jack 3,5 mm, LED, dial, USB | Nabu Casa, Inc. (sin modificar) |
-| OLED, gestión de batería, power path, medidor de carga, interruptor de encendido, puntos de prueba añadidos | techmiguel (NEO v2) |
+| OLED, gestión de batería, power path, medidor de carga, interruptor de encendido, puntos de prueba añadidos (hojas `Alimentacion` y `Expansion`, referencias 201–235) | techmiguel (NEO v2) |
 
-La lista exacta de cambios respecto al original se mantendrá en `CHANGES.md` a
-partir de la fase 3.
+La lista exacta de cambios respecto al original está en `CHANGES.md`.
 
 ## Estado
 
@@ -28,7 +27,8 @@ partir de la fase 3.
 |---|---|---|
 | 1 | Lectura del diseño original | Entregada: `docs/fase1-lectura-diseno-original.md` |
 | 2 | Propuesta de bloques nuevos | Entregada: `docs/fase2-propuesta-bloques-nuevos.md` |
-| 3–6 | Esquemático, colocación, ruteo, fabricación | Pendiente |
+| 3 | Esquemático de bloques nuevos e integración | Entregada: `docs/fase3-esquematico.md`, proyecto en `kicad/` |
+| 4–6 | Colocación, ruteo, fabricación | Pendiente |
 
 ## Herramientas
 
@@ -36,3 +36,9 @@ partir de la fase 3.
 la tabla de pines del ESP32-S3 y los puntos de prueba (`docs/data/`).
 `tools/calc_power_v2.py` reproduce todos los cálculos de la fase 2 (elevador,
 cargador, protección, multiplexor, bus I2C y autonomía).
+
+Generación y verificación del esquemático (fase 3): `gen_footprints.py`, `gen_symbols.py`,
+`apply_inherited_edits.py`, `clean_dangling.py`, `gen_sheets.py`, `verify_netlist.py`,
+`verify_footprints.py` (orden y uso en `docs/fase3-esquematico.md` §2).
+
+Requisitos: KiCad 9 (`kicad-cli`) y Python 3 con `sexpdata`.
