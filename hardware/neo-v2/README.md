@@ -28,7 +28,8 @@ La lista exacta de cambios respecto al original está en `CHANGES.md`.
 | 1 | Lectura del diseño original | Entregada: `docs/fase1-lectura-diseno-original.md` |
 | 2 | Propuesta de bloques nuevos | Entregada: `docs/fase2-propuesta-bloques-nuevos.md` |
 | 3 | Esquemático de bloques nuevos e integración | Entregada: `docs/fase3-esquematico.md`, proyecto en `kicad/` |
-| 4–6 | Colocación, ruteo, fabricación | Pendiente |
+| 4 | Colocación y plan de layout | Entregada: `docs/fase4-colocacion.md`, PCB en `kicad/NEO_v2.kicad_pcb` (sin rutear lo nuevo) |
+| 5–6 | Ruteo, fabricación | Pendiente |
 
 ## Herramientas
 
@@ -40,5 +41,9 @@ cargador, protección, multiplexor, bus I2C y autonomía).
 Generación y verificación del esquemático (fase 3): `gen_footprints.py`, `gen_symbols.py`,
 `apply_inherited_edits.py`, `clean_dangling.py`, `gen_sheets.py`, `verify_netlist.py`,
 `verify_footprints.py` (orden y uso en `docs/fase3-esquematico.md` §2).
+
+PCB (fase 4): `update_pcb.py` (PCB original + netlist → PCB de NEO v2), `export_inherited_fps.py`
+(bibliotecas de huellas heredadas) y `corridor.py` (análisis de corredores); uso en
+`docs/fase4-colocacion.md`. Requieren el `python3.12` con el módulo `pcbnew` de KiCad 9.
 
 Requisitos: KiCad 9 (`kicad-cli`) y Python 3 con `sexpdata`.

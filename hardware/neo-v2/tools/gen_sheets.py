@@ -51,7 +51,7 @@ RES = {  # valor -> (LCSC, descripción)
     "4.7k": ("C25900", "0402WGF4701TCE"), "10k": ("C25744", "0402WGF1002TCE"),
     "100k": ("C25741", "0402WGF1003TCE"), "1M": ("C26083", "0402WGF1004TCE"),
     "604 1%": ("C8369", "0402WGF6040TCE"), "27k 1%": ("C25771", "0402WGF2702TCE"),
-    "732k 1%": ("C27016", "0402WGF7323TCE"), "100k 1%": ("C25741", "0402WGF1003TCE"),
+    "732k 1%": ("C27016", "0402WGF7323TCE"), "665k 1%": ("C56583", "0402WGF6653TCE"), "100k 1%": ("C25741", "0402WGF1003TCE"),
     "44.2k 1%": ("C25895", "0402WGF4422TCE"), "2.2M": ("C11490", "0402WGF2204TCE"),
     "36.5k 1%": ("C25887", "0402WGF3652TCE"), "31.6k 1%": ("C11463", "0402WGF3162TCE"),
     "43.2k 1%": ("C25894", "0402WGF4322TCE"), "10k 1%": ("C25744", "0402WGF1002TCE"),
@@ -62,8 +62,19 @@ CAP = {  # valor -> (LCSC, huella)
 }
 
 
+_NS = uuid.UUID("5d0c6b4e-2f1a-4c55-9b0e-6e656f763200")   # espacio de nombres fijo de NEO v2
+_COUNT = {"n": 0, "scope": "root"}
+
+
 def U():
-    return str(uuid.uuid4())
+    """UUID determinista: misma descripción -> mismos UUID en cada regeneración (enlace estable con el PCB)."""
+    _COUNT["n"] += 1
+    return str(uuid.uuid5(_NS, f'{_COUNT["scope"]}-{_COUNT["n"]}'))
+
+
+def U_scope(name):
+    _COUNT["scope"] = name
+    _COUNT["n"] = 0
 
 
 class SheetGen:
@@ -416,7 +427,7 @@ def sheet_power(kdir, sheet_uuid):
     for i, ref in enumerate(("C207", "C208", "C209")):
         g.C(ref, "22uF 25V", 320.04 + 10.16 * i, 76.2, "BOOST_5V_RAW", "GND")
     g.C("C210", "100nF", 350.52, 76.2, "BOOST_5V_RAW", "GND")
-    g.R("R209", "732k 1%", 309.88, 88.9, "BOOST_5V_RAW", "BOOST_FB")
+    g.R("R209", "665k 1%", 309.88, 88.9, "BOOST_5V_RAW", "BOOST_FB")
     g.R("R210", "100k 1%", 309.88, 101.6, "BOOST_FB", "GND")
     g.R("R211", "0", 259.08, 76.2, "PACK_P", "BOOST_MODE")
     g.R("R212", "0", 259.08, 91.44, "BOOST_MODE", "GND", dnp=True)
@@ -438,53 +449,47 @@ def sheet_power(kdir, sheet_uuid):
     # (radia); se mide en el pad de L201.
     g.text(248.92, 160.02,
            "ELEVADOR TPS61022 (SLVSDX7D, fase 2 §4.2)\n"
-           "VOUT = 0,6 V x (1 + 732k/100k) = 4,992 V. MODE alto = PWM forzado (R211 0 Ohm; R212 DNP = PFM).\n"
+           "VOUT = 0,6 V x (1 + 665k/100k) = 4,59 V (fase 4: por debajo de USB para el diodo ideal U206). MODE alto = PWM forzado (R211 0 Ohm; R212 DNP = PFM).\n"
            "L201 1 uH: IL pico 5,26 A a 2,7 V y 2 A < Isat 12 A; valle 3,44 A < ILIM mín. 6,5 A.\n"
            "COUT 3x22 uF (~30 uF efectivos): eq. 8 pide 21,6 uF para 50 mV pp.\n"
            "R214: puente 1206 de 0 Ohm; huella prevista para ferrita si la medida lo pide.\n\n"
            "INTERRUPTOR SW201 (señal): OFF = EN a GND y OV1 forzado desde VBUS (corta USB y batería);\n"
            "el cargador sigue cargando. ON = EN a PACK+. R213 fija EN durante el recorrido.")
 
-    # ---- Bloque 4: multiplexor (x 340-410) ----
+    # ---- Bloque 4: unión de fuentes (fase 4: diodo ideal arriba + TPS2121 abajo) ----
+    # U201 (abajo, sitio del antiguo U13): VBUS -> +5V con límite de corriente, OVP y bloqueo inverso.
     g.part(f"{NEO}:TPS2121", "U201", "TPS2121RUXR", 375.92, 50.8,
-           {"7": "VBUS", "2": "BOOST_5V", "6": "MUX_PR1", "3": "MUX_CP2", "5": "MUX_OV1", "4": "GND",
-            "1": "+5V", "8": "+5V", "9": "MUX_ST", "10": "MUX_ILIM", "11": "MUX_SS", "12": "GND"},
-           desc="Multiplexor con prioridad a VBUS")
+           {"7": "VBUS", "2": "GND", "6": "GND", "3": "GND", "5": "MUX_OV1", "4": "GND",
+            "1": "+5V", "8": "+5V", "9": "NC", "10": "MUX_ILIM", "11": "MUX_SS", "12": "GND"},
+           desc="Interruptor VBUS -> +5V con límite de corriente y OVP (sustituye a U13); entrada única")
     g.C("C211", "1uF 25V", 345.44, 30.48, "VBUS", "GND")
-    g.C("C212", "1uF 25V", 355.6, 30.48, "BOOST_5V", "GND")
     g.C("C213", "22uF 25V", 403.86, 30.48, "+5V", "GND")
     g.C("C214", "100nF", 411.48, 30.48, "+5V", "GND")
-    g.R("R216", "100k 1%", 345.44, 91.44, "VBUS", "MUX_PR1")
-    g.R("R217", "36.5k 1%", 345.44, 104.14, "MUX_PR1", "GND")
-    g.R("R218", "100k 1%", 355.6, 91.44, "BOOST_5V", "MUX_CP2")
-    g.R("R219", "31.6k 1%", 355.6, 104.14, "MUX_CP2", "GND")
     g.R("R220", "43.2k 1%", 365.76, 91.44, "VBUS", "MUX_OV1")
     g.R("R221", "10k 1%", 365.76, 104.14, "MUX_OV1", "GND")
     g.R("R222", "44.2k 1%", 398.78, 76.2, "MUX_ILIM", "GND")
     g.C("C215", "100nF", 408.94, 76.2, "MUX_SS", "GND")
-    g.R("R223", "10k", 398.78, 99.06, "+3V3", "MUX_ST")
-    g.R("R224", "2.2M", 375.92, 99.06, "MUX_ST", "MUX_PR1")
+    # U206 (arriba, en la franja): salida del elevador -> +5V como diodo ideal (prioridad por tensión)
+    g.part(f"{NEO}:LM66200", "U206", "LM66200DRLR", 375.92, 137.16,
+           {"3": "BOOST_5V", "6": "GND", "4": "GND", "2": "+5V", "7": "+5V", "8": "NC", "1": "GND", "5": "GND"},
+           desc="Diodo ideal BOOST_5V -> +5V; bloquea cuando +5V > BOOST_5V + 42-70 mV (USB presente)")
+    g.C("C212", "1uF 25V", 345.44, 129.54, "BOOST_5V", "GND")
+    g.C("C218", "22uF 25V", 403.86, 129.54, "+5V", "GND")
+    g.C("C219", "100nF", 411.48, 129.54, "+5V", "GND")
     g.flag("VBUS", 330.2, 116.84)
     g.flag("BOOST_5V", 340.36, 116.84)
     g.flag("CELL_N", 30.48, 96.52)
     g.flag("DW_VCC", 60.96, 106.68)
-    g.TP("TP211", "VBUS", 330.2, 129.54)
-    g.TP("TP212", "MUX_ST", 398.78, 116.84)
-    g.TP("TP213", "MUX_OV1", 388.62, 116.84)
+    g.flag("GND", 30.48, 220.98)
+    g.TP("TP211", "VBUS", 330.2, 106.68)
+    # Sin TP213 (MUX_OV1): no cabe junto a U201 (fase 4); OV1 se mide en el pad 1 de R221.
     g.TP("TP214", "GND", 408.94, 116.84)
     g.text(340.36, 160.02,
-           "MULTIPLEXOR TPS2121 (SLVSEA3F, fase 2 §4.1). Sustituye a U13 (SGM2594B).\n"
-           "Modo XREF: IN1 (VBUS) si PR1 > CP2. CP2 = 4,992 x 31,6/131,6 = 1,199 V (> VREF máx. 1,10 V).\n"
-           "PR1 100k/36,5k + 2,2 M desde ST: a batería con VBUS < 4,39 V, vuelve con VBUS > 4,54 V.\n"
-           "OV1 43,2k/10k: corte a 5,64 V. ILIM 44,2 k: 2,0-3,0 A. SS 100 nF: 780 V/s.\n"
-           "Error evitado: PR1 y CP2 con el mismo divisor = VBUS frente a VBOOST, sin prioridad real.")
-    for i, net in enumerate(("GND", "+3V3")):
-        g.flag(net, 30.48 + 20.32 * i, 220.98)
-    g.text(20.32, 238.76,
-           "PWR_FLAG de GND y +3V3: en las bibliotecas de Seeed la fuente de estos carriles es un pin pasivo\n"
-           "(conector USB, bobina del buck), así que el ERC no sabe que están alimentados. No cambian ninguna neta.\n"
-           "Los demás carriles heredados se marcan en su propia hoja (fase 5): KiCad no cuenta un PWR_FLAG\n"
-           "como conexión si en la hoja no hay otro pin real del carril.")
+           "UNIÓN DE FUENTES (fase 4, docs/fase4-colocacion.md §2). Sustituye al multiplexor único de la fase 2:\n"
+           "entre la franja (batería) y el sitio de U13 (USB) no cabe una pista de 1,5-2 A en la placa heredada.\n"
+           "U201 abajo: VBUS -> +5V, ILIM 44,2 k (2,0-3,0 A), OV1 43,2k/10k (5,64 V), SS 100 nF. Entrada única.\n"
+           "U206 arriba: BOOST_5V (4,59 V) -> +5V. Con USB, +5V (~4,8-5,0 V) > BOOST_5V + 70 mV: bloquea.\n"
+           "Sin USB conduce sin umbral ni histéresis. El plano +5V de In1 une ambos extremos.")
     g.text(20.32, 20.32, "NEO v2 — bloque nuevo (diseño propio). Cálculos: tools/calc_power_v2.py; "
            "decisiones: docs/fase2-propuesta-bloques-nuevos.md", size=2.0)
     return g
@@ -513,6 +518,7 @@ def sheet_expansion(kdir, sheet_uuid):
     g.R("R227", "4.7k", 104.14, 76.2, "ESP_3V3", "I2C_SDA")
     g.R("R228", "4.7k", 114.3, 76.2, "ESP_3V3", "I2C_SCL")
     g.TP("TP215", "OLED_3V3", 66.04, 38.1)
+    g.flag("+3V3", 25.4, 30.48)
     g.text(20.32, 119.38,
            "CONECTOR OLED (fase 2 §4.7)\n"
            "Pines en el orden más común de los módulos SSD1306: GND, VCC, SCL, SDA.\n"
@@ -520,7 +526,7 @@ def sheet_expansion(kdir, sheet_uuid):
            "llega a ~112 pF: 4,7 k solos dan tr = 446 ns (> 300 ns); con 2,35 k, 223 ns.\n"
            "D201/D202: 0,5 pF para no consumir el margen de capacidad.")
     nets = [("TP216", "I2C_SDA"), ("TP217", "I2C_SCL"), ("TP218", "I2C2_SDA"), ("TP219", "I2C2_SCL"),
-            ("TP220", "I2S_MCLK"), ("TP221", "I2S_BCLK"), ("TP222", "I2S_LRCK"), ("TP223", "I2S_DIN_SEC"),
+            ("TP220", "I2S_MCLK"), ("TP222", "I2S_LRCK"), ("TP223", "I2S_DIN_SEC"),
             ("TP224", "I2S_DIN_ESP"), ("TP225", "I2S2_BCLK"), ("TP226", "I2S2_LRCLK"), ("TP227", "I2S2_DATA"),
             ("TP228", "XU316_RST"), ("TP229", "ESP_IO40"), ("TP230", "ESP_IO41"), ("TP231", "ESP_IO2"),
             ("TP232", "ESP_IO46"), ("TP233", "GND"), ("TP234", "GND"), ("TP235", "GND")]
@@ -528,9 +534,10 @@ def sheet_expansion(kdir, sheet_uuid):
         col, row = divmod(i, 10)
         g.TP(ref, net, 170.18 + 60.96 * col, 38.1 + 12.7 * row)
     g.text(165.1, 172.72,
-           "PUNTOS DE PRUEBA (fase 2 §4.8): pad SMD Ø1,0 mm sobre la propia pista, sin derivación.\n"
-           "I2S: ~0,3 pF por pad, despreciable incluso para MCLK de 24,576 MHz.\n"
-           "Si en la fase 4 no cabe un pad, el acceso será el pad de la R serie de 0 Ohm existente.")
+           "PUNTOS DE PRUEBA (fase 2 §4.8): pad SMD Ø1,0 mm sobre la pista o con tramo corto (fase 4).\n"
+           "I2S: ~0,3 pF por pad y < 1 pF por tramo, despreciable incluso para MCLK de 24,576 MHz.\n"
+           "I2S_BCLK no tiene PT: su pista corre en el haz del bus sin hueco para un pad en ninguna cara\n"
+           "(fase 4); se mide en el pad 2 de R71 o en el pad 1 de C128 (cara B).")
     g.text(20.32, 20.32, "NEO v2 — bloque nuevo (diseño propio)", size=2.0)
     return g
 
@@ -562,9 +569,11 @@ def main(kdir):
     if "Alimentacion.kicad_sch" in root_txt:
         raise SystemExit("las hojas ya están enlazadas en la raíz; restaure la raíz antes de regenerar")
     LIBPATH["NEO_v2"] = os.path.join(kdir, "lib", "NEO_v2.kicad_sym")
-    s1, s2 = U(), U()
+    s1 = str(uuid.uuid5(_NS, "sheet-Alimentacion"))
+    s2 = str(uuid.uuid5(_NS, "sheet-Expansion"))
     intent = {}
     for gen, sid, fname in ((sheet_power, s1, "Alimentacion.kicad_sch"), (sheet_expansion, s2, "Expansion.kicad_sch")):
+        U_scope(fname)
         g = gen(kdir, sid)
         if g.errors:
             raise SystemExit("colisiones de conexión en " + fname + ":\n  " + "\n  ".join(g.errors))
@@ -576,6 +585,7 @@ def main(kdir):
     import json
     json.dump(intent, open(os.path.join(kdir, "..", "docs", "data", "intent_new_sheets.json"), "w"),
               indent=1, sort_keys=True, ensure_ascii=False)
+    U_scope("root")
     add_sheets_to_root(kdir, [("Alimentacion", "Alimentacion.kicad_sch", s1, 8),
                               ("Expansion", "Expansion.kicad_sch", s2, 9)])
     print("raíz actualizada")

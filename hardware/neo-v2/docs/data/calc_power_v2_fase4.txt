@@ -1,0 +1,81 @@
+
+## 1. Pico de corriente en +5V (altavoz 8 Ω)
+
+Amplificador: Vpico = 4.66 V, Ipico = 0.583 A, I media (seno a 1 % THD) = 0.375 A
+Disipación máxima del TPA6211A1: 0.63 W
+Ganancia: 40 kΩ / 15 kΩ = 2.67 V/V (8.5 dB) por entrada
+- ESP32-S3 TX 802.11b 21 dBm: 340 mA @ 3.3 V → 255 mA en +5V  [ESP32-S3 datasheet, tabla RF: 340 mA pico]
+- XU316 núcleo (típ.): 300 mA @ 0.9 V → 66 mA en +5V  [XU316 datasheet §14.6: I(VDD) 300 mA típ.]
+- XU316 E/S, flash, USB, 1V8: 40 mA @ 3.3 V → 30 mA en +5V  [estimación]
+- AIC3204 + OLED + resto 3V3: 40 mA @ 3.3 V → 30 mA en +5V  [estimación]
+- Micrófonos (LDO desde 5 V): 2 mA @ 5.0 V → 2 mA en +5V  [estimación]
+- 12 × WS2812B-2020 blanco 100 %: 432 mA @ 5.0 V → 432 mA en +5V  [WS2812B-2020: 36 mA blanco]
+- Amplificador (pico): 583 mA @ 5.0 V → 583 mA en +5V  [cálculo anterior]
+**Pico simultáneo en +5V: 1.40 A** (Grove eliminado)
+Corriente de diseño del elevador: 2.0 A (43 % de margen)
+
+## 2. Elevador TPS61022 (SLVSDX7D)
+
+R1 = 665 kΩ (E96), R2 = 100 kΩ → VOUT = 4.590 V (4.48–4.70 V con VREF ±2,5 %)
+VIN 2.7 V: D = 0.500, IL(DC) = 4.00 A, ΔIL = 1.69 A pp, IL(pico) = 4.84 A, valle = 3.16 A (< 6,5 A mín.), IOUT máx. por límite = 3.67 A
+VIN 3.0 V: D = 0.444, IL(DC) = 3.60 A, ΔIL = 1.67 A pp, IL(pico) = 4.43 A, valle = 2.77 A (< 6,5 A mín.), IOUT máx. por límite = 4.07 A
+VIN 3.6 V: D = 0.294, IL(DC) = 2.83 A, ΔIL = 1.32 A pp, IL(pico) = 3.50 A, valle = 2.17 A (< 6,5 A mín.), IOUT máx. por límite = 5.06 A
+VIN 4.2 V: D = 0.176, IL(DC) = 2.43 A, ΔIL = 0.93 A pp, IL(pico) = 2.89 A, valle = 1.97 A (< 6,5 A mín.), IOUT máx. por límite = 5.73 A
+COUT mínima (eq. 8, 50 mV pp): 20.0 µF efectivos; rango estable 20–1000 µF (7.3)
+Elegido: 3 × 22 µF 0805 10 V X5R (~10 µF efectivos c/u a 5 V) + 10 µF entrada
+
+## 3. Corriente de batería y protección DW01A + FS8205A
+
+VBAT 2.7 V: I batería a 1.40 A en +5V = 2.80 A
+VBAT 3.0 V: I batería a 1.40 A en +5V = 2.52 A
+VBAT 3.6 V: I batería a 1.40 A en +5V = 1.98 A
+1 × FS8205A: disparo sobrecorriente mín. = 2.03 A, típ. = 3.57 A  (I batería peor caso 2.80 A)
+2 × FS8205A: disparo sobrecorriente mín. = 4.06 A, típ. = 7.14 A  (I batería peor caso 2.80 A)
+CSD25402Q3A a 2.80 A, 13,3 mΩ: 104 mW
+2×FS8205A en serie-paralelo (2 × 10,5 mΩ): 164 mW
+
+## 4. Cargador BQ25170 (SLUSDJ8A)
+
+RISET = 600 Ω → E96 604 Ω; ICHG = 497 mA (447–546 mA); precarga 20 % = 99 mA; terminación 10 % = 50 mA
+RVSET = 27 kΩ → 4,20 V (tabla 8-x)
+Disipación a VBUS 5,0 V y VBAT 3.0 V: 1.00 W
+Disipación a VBUS 5,0 V y VBAT 3.6 V: 0.70 W
+Disipación a VBUS 5,0 V y VBAT 4.0 V: 0.50 W
+RθJA = 75,2 °C/W (JEDEC) → a 1,0 W, ΔT = 75 °C: entra en regulación térmica (125 °C)
+NTC a 0 °C: 28.22 kΩ → VTS = 1.073 V (umbral VCOLD = 1.04 V)
+NTC a 45 °C: 4.90 kΩ → VTS = 0.186 V (umbral VHOT = 0.188 V)
+Tiempo de carga aprox. de una celda de 3.0 Ah a 0.5 A: 6.9 h
+
+## 5. Unión de fuentes: TPS2121 de entrada única (SLVSEA3F) + diodo ideal LM66200 (SLVSG04)
+
+RILM = 44.2 kΩ → 44,2 kΩ (tabla: 2,0–3,0 A); IOCP = 2,4 × ILM = 6.0 A
+OV1: 43.2 k / 10 k → corte por sobretensión en 5.64 V (tolerancia 5.37–5.85 V)
+Interruptor en OFF (R215 10 k a VBUS) con VBUS 4.0 V: OV1 = 2.21 V (≥ 1,10 V y ≤ 5,5 V)
+Interruptor en OFF (R215 10 k a VBUS) con VBUS 5.0 V: OV1 = 2.76 V (≥ 1,10 V y ≤ 5,5 V)
+Interruptor en OFF (R215 10 k a VBUS) con VBUS 5.5 V: OV1 = 3.04 V (≥ 1,10 V y ≤ 5,5 V)
+VBUS 5.25 V, 1.40 A: +5V = 5.16 V; elevador típ. 4.59 V → margen de bloqueo +531 mV
+    peor caso (elevador máx.): +417 mV
+VBUS 5.00 V, 1.40 A: +5V = 4.91 V; elevador típ. 4.59 V → margen de bloqueo +281 mV
+    peor caso (elevador máx.): +167 mV
+VBUS 4.75 V, 1.40 A: +5V = 4.66 V; elevador típ. 4.59 V → margen de bloqueo +31 mV
+    peor caso (elevador máx.): -83 mV  ← reparto de carga USB/batería
+VBUS 4.50 V, 1.40 A: +5V = 4.41 V; elevador típ. 4.59 V → margen de bloqueo -219 mV
+    peor caso (elevador máx.): -333 mV  ← reparto de carga USB/batería
+Con margen negativo ambos caminos alimentan +5V a la vez: no es peligroso (el cargador sigue limitado a 0,5 A), pero la batería se descarga en paralelo. Se mide en el prototipo; si ocurre, subir R210 a 102 k (4,51 V).
+Caída en U206 a 1.40 A (batería): 56 mV; +5V con batería ≈ 4.53 V
+Desenchufar USB: U201 deja de conducir y U206 toma la carga sin conmutación activa; el hueco es la respuesta del elevador (que ya está en marcha en PWM forzado sin carga).
+
+## 6. Bus I2C interno con OLED y MAX17048
+
+Capacidad estimada del bus: 112 pF ({'ESP32-S3': 5, 'XU316': 5, 'AIC3204': 10, 'MAX17048 (CB,IN máx.)': 60, 'pistas ~100 mm': 12, 'conector + 10 cm de cable': 10, 'módulo OLED': 10})
+4,7 k de placa: tr = 446 ns (máx. 300 ns), I sumidero = 0.62 mA (máx. 3 mA)
+4,7 k ‖ 4,7 k nuevas: tr = 223 ns (máx. 300 ns), I sumidero = 1.23 mA (máx. 3 mA)
+4,7 k ‖ 4,7 k ‖ 4,7 k módulo OLED: tr = 149 ns (máx. 300 ns), I sumidero = 1.85 mA (máx. 3 mA)
+
+## 7. Autonomía estimada con 18650
+
+Reposo escuchando (Wi-Fi conectado, XMOS activo, LED apagados): 1.00 W en +5V, 1.11 W en batería
+Celda 2.5 Ah (9.0 Wh, 90 % útil): 7.3 h en reposo; 5.4 h con 0,4 W medios de audio/LED
+Celda 3.0 Ah (10.8 Wh, 90 % útil): 8.7 h en reposo; 6.4 h con 0,4 W medios de audio/LED
+Celda 3.5 Ah (12.6 Wh, 90 % útil): 10.2 h en reposo; 7.5 h con 0,4 W medios de audio/LED
+Consumo con el interruptor en OFF: ~4.9 µA → 69 años (domina la autodescarga)

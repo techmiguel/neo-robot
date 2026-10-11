@@ -67,10 +67,12 @@ print(f"Corriente de diseño del elevador: {I5_DESIGN:.1f} A ({I5_DESIGN/I5_PEAK
 h("2. Elevador TPS61022 (SLVSDX7D)")
 VREF = 0.600          # 7.5, PWM mode
 R2 = 100e3            # < 300 kΩ (8.2.2.1)
-R1 = (5.0 / VREF - 1) * R2
-R1s = 732e3
+# Fase 4: la salida baja a 4,59 V para que el diodo ideal U206 bloquee con USB presente
+# (+5V desde USB > BOOST_5V + umbral de bloqueo); ver sección 5.
+R1s = 665e3
 vout = VREF * (1 + R1s / R2)
-print(f"R1 calculada = {R1/1e3:.1f} kΩ → E96 {R1s/1e3:.0f} kΩ; VOUT = {vout:.3f} V (±2,5 % de VREF)")
+print(f"R1 = 665 kΩ (E96), R2 = 100 kΩ → VOUT = {vout:.3f} V "
+      f"({0.585*(1+R1s/R2):.2f}–{0.615*(1+R1s/R2):.2f} V con VREF ±2,5 %)")
 fsw = 1e6
 L = 1.0e-6
 Lmin = L * 0.8        # FAUL0630-1R0MT: ±20 %
@@ -123,45 +125,43 @@ for t, vth, name in ((0, 1.04, "VCOLD"), (45, 0.188, "VHOT")):
 cap = 3.0
 print(f"Tiempo de carga aprox. de una celda de {cap:.1f} Ah a {ICHG} A: {cap/ICHG*1.15:.1f} h")
 
-# ---------------------------------------------------------------- 5. Multiplexor TPS2121
-h("5. Multiplexor de prioridad TPS2121 (SLVSEA3F)")
+# ---------------------------------------------------------------- 5. Unión de fuentes (fase 4)
+h("5. Unión de fuentes: TPS2121 de entrada única (SLVSEA3F) + diodo ideal LM66200 (SLVSG04)")
+# U201 TPS2121 (abajo): IN1 = VBUS; IN2, PR1, CP2 y OV2 a GND. Tabla 9-3: IN2 <= UV la hace
+# inválida, así que la salida la alimenta IN1 ("Invalid Input"); con OV1 >= VREF ninguna es
+# válida y la salida queda en alta impedancia (función OFF del interruptor).
 ILM = 2.5
 rilm = (65.2 / ILM) ** (1 / 0.861) * 1e3                       # eq. 2
 print(f"RILM = {rilm/1e3:.1f} kΩ → 44,2 kΩ (tabla: 2,0–3,0 A); IOCP = 2,4 × ILM = {2.4*ILM:.1f} A")
-# Modo XREF (10.2.3): IN1 si PR1 > CP2; CP2 ≥ VREF habilita la conmutación rápida.
-# Error a evitar: si PR1 y CP2 usan el mismo divisor, la decisión es VBUS > VBOOST
-# (≈5,0 V frente a ≈5,0 V) y no hay prioridad real. CP2 se fija más bajo.
-ct, cb = 100e3, 31.6e3
-vcp2 = vout * cb / (ct + cb)
-print(f"CP2: {ct/1e3:.0f} k / {cb/1e3:.1f} k desde IN2 → {vcp2:.3f} V "
-      f"(> VREF máx. 1,10 V: conmutación rápida garantizada)")
-rt, rb = 100e3, 36.5e3
-rpu, rh, vst = 10e3, 2.2e6, 3.3       # ST: pull-up 10 k a +3V3 (6–20 k), R de histéresis a PR1
-
-
-def vbus_thr(st_high):
-    # PR1 = (VBUS/rt + vst_eff/(rh+rpu)) / (1/rt + 1/rb + 1/(rh+rpu))  = vcp2 → VBUS
-    g = 1 / rt + 1 / rb + 1 / (rh + rpu)
-    vs = vst if st_high else 0.0
-    return (vcp2 * g - vs / (rh + rpu)) * rt
-
-
-print(f"PR1: {rt/1e3:.0f} k / {rb/1e3:.1f} k desde VBUS, histéresis {rh/1e6:.1f} MΩ desde ST:")
-print(f"  pasa a batería (ST alto, en IN1) con VBUS < {vbus_thr(True):.2f} V")
-print(f"  vuelve a USB (ST bajo, en IN2) con VBUS > {vbus_thr(False):.2f} V "
-      f"(histéresis {1000*(vbus_thr(False)-vbus_thr(True)):.0f} mV + offset del comparador 5–40 mV)")
-print(f"  con VBUS = 5,0 V: PR1 = {5.0*rb/(rt+rb):.3f} V > CP2 {vcp2:.3f} V → IN1")
 ot, ob = 43.2e3, 10e3
 print(f"OV1: {ot/1e3:.1f} k / {ob/1e3:.0f} k → corte por sobretensión en "
       f"{1.06*(ot+ob)/ob:.2f} V (tolerancia {1.01*(ot+ob)/ob:.2f}–{1.10*(ot+ob)/ob:.2f} V)")
 for vb in (4.0, 5.0, 5.5):
     vov = vb * (1 / ot + 1 / 10e3) / (1 / ot + 1 / ob + 1 / 10e3)
-    print(f"Interruptor en OFF (10 k a VBUS) con VBUS {vb} V: OV1 = {vov:.2f} V (≥ 1,10 V y ≤ 5,5 V)")
-c5 = 47e-6 * 0.5 + 40e-6
-for tsw, modo in ((5e-6, "tFSW típ., CP2 ≥ VREF"), (100e-6, "tSW máx., CP2 < VREF: NO usar")):
-    print(f"Caída en conmutación (eq. 4) con {tsw*1e6:.0f} µs ({modo}), {I5_PEAK:.2f} A, "
-          f"{c5*1e6:.0f} µF efectivos: {tsw*I5_PEAK/c5:.2f} V → +5V mínimo ≈ "
-          f"{vbus_thr(True) - tsw*I5_PEAK/c5:.2f} V")
+    print(f"Interruptor en OFF (R215 10 k a VBUS) con VBUS {vb} V: OV1 = {vov:.2f} V (≥ 1,10 V y ≤ 5,5 V)")
+RON_MUX = 0.062            # TPS2121 RON máx. a 5 V (tabla 8.5, 85 °C) — conservador
+# U206 LM66200 (arriba): VIN1 = BOOST_5V, VOUT = +5V. Bloquea cuando VOUT > VIN1 + VRCB
+# (umbral de bloqueo inverso 42–70 mV, tabla 6.5), y conduce sin umbral cuando VIN1 > VOUT.
+VRCB_MIN = 0.042
+for vbus in (5.25, 5.0, 4.75, 4.5):
+    v5 = vbus - I5_PEAK * RON_MUX
+    for vb, tag in ((0.585 * (1 + R1s / R2), "mín."), (vout, "típ."), (0.615 * (1 + R1s / R2), "máx.")):
+        margin = v5 - (vb + VRCB_MIN)
+        if vb == vout:
+            print(f"VBUS {vbus:.2f} V, {I5_PEAK:.2f} A: +5V = {v5:.2f} V; elevador {tag} {vb:.2f} V "
+                  f"→ margen de bloqueo {margin*1000:+.0f} mV")
+    worst = v5 - (0.615 * (1 + R1s / R2) + VRCB_MIN)
+    print(f"    peor caso (elevador máx.): {worst*1000:+.0f} mV"
+          f"{'  ← reparto de carga USB/batería' if worst < 0 else ''}")
+print("Con margen negativo ambos caminos alimentan +5V a la vez: no es peligroso (el cargador sigue"
+      " limitado a 0,5 A), pero la batería se descarga en paralelo. Se mide en el prototipo; si ocurre,"
+      " subir R210 a 102 k (4,51 V).")
+RON_LM = 0.040             # LM66200 RON típ. 40 mΩ a 5 V
+print(f"Caída en U206 a {I5_PEAK:.2f} A (batería): {I5_PEAK*RON_LM*1000:.0f} mV; "
+      f"+5V con batería ≈ {vout - I5_PEAK*RON_LM:.2f} V")
+c5 = 22e-6 * 0.5 * 2 + 40e-6
+print(f"Desenchufar USB: U201 deja de conducir y U206 toma la carga sin conmutación activa; el hueco"
+      f" es la respuesta del elevador (que ya está en marcha en PWM forzado sin carga).")
 
 # ---------------------------------------------------------------- 6. I2C
 h("6. Bus I2C interno con OLED y MAX17048")

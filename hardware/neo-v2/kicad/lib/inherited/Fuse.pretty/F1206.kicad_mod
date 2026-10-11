@@ -1,0 +1,261 @@
+(footprint "F1206"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -1.4732 -0.0254 0)
+		(layer "F.Fab")
+		(uuid "a2265522-c831-4847-9389-5765963399fd")
+		(effects
+			(font
+				(size 0.254 0.254)
+				(thickness 0.127)
+			)
+			(justify left bottom)
+		)
+	)
+	(property "Value" "F1206"
+		(at 0 -0.254 0)
+		(layer "User.2")
+		(uuid "be1687cd-094e-485b-834b-1e787cad0e27")
+		(effects
+			(font
+				(size 0.542544 0.542544)
+				(thickness 0.067056)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "5c5137a0-35cb-4f6d-99d5-731e387a37e3")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "SMD PPTC 2A-6V;1206"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "939d09db-f4a2-4ff3-a7e1-ae1d1acf5697")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "SKU" "MF-NSMF200-2"
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c1b89980-5a78-484c-8da6-147f7cd4d852")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Part Type" "Fuse"
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "a2f26553-894f-4a2d-ade2-383f594940e0")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Rating" "DC6V"
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f112b057-16ba-4991-bc9e-c45128d15968")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Status" "Voice Kit"
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ad69dfd5-8e86-4706-9534-78771bfa1451")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Temperature" "-40°C to 85°C"
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c2e36c98-2659-4d20-906d-034b504b2659")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Priority" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "19add3d3-3ce4-4d29-8dc9-5978e3df6e64")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "MANUFACTURER" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7163bb05-08e0-461f-b8e0-88cac3bb9378")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "PARTREV" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "823cd178-25d5-4df7-8d0f-026d201534ab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "STANDARD" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f1207609-8143-4bd9-ba2f-3a85cefe6921")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_line
+		(start -2.159 -1.016)
+		(end 2.159 -1.016)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "5e9167b1-5ddc-4ac9-a419-6a225e50a47e")
+	)
+	(fp_line
+		(start -2.159 1.016)
+		(end -2.159 -1.016)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "c5aa0d9d-70bf-4bb3-a3c7-e459f214e1dd")
+	)
+	(fp_line
+		(start 2.159 -1.016)
+		(end 2.159 1.016)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "de79d5bb-3609-4bba-adfc-9df3997049b9")
+	)
+	(fp_line
+		(start 2.159 1.016)
+		(end -2.159 1.016)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "7b5bf212-067e-4eb5-8748-3ff9e0c13525")
+	)
+	(fp_rect
+		(start -2.15 -1.05)
+		(end 2.15 1.05)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "82ee2037-f583-4f23-bd49-bf6f69e3c73d")
+	)
+	(fp_rect
+		(start -2.1082 -0.9652)
+		(end 2.1336 0.9906)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "bd83d6bd-c4d5-471d-8d0b-fc12339ff92f")
+	)
+	(pad "1" smd rect
+		(at -1.397 0)
+		(size 1.27 1.778)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(thermal_bridge_angle 45)
+		(uuid "d991bee4-188a-42fd-a336-292b96dbb823")
+	)
+	(pad "2" smd rect
+		(at 1.397 0)
+		(size 1.27 1.778)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(thermal_bridge_angle 45)
+		(uuid "12fad51f-332f-4807-8381-34b72c2424da")
+	)
+	(embedded_fonts no)
+	(model "Y:/01_Cadence_Library/02_PCB_Library/3D/FUSE_1206.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

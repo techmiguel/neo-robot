@@ -6,6 +6,7 @@ bibliotecas estándar de KiCad 9. Patillaje transcrito de la tabla de pines de c
   TPS2121 (RUX)   SLVSEA3F, tabla 'Pin Functions' (VQFN-HR)
   BQ25170 (DSG)   SLUSDJ8A, tabla 5-1
   MAX17048 (TDFN) Maxim 19-6171 rev. 7, 'Pin/Bump Descriptions'
+  LM66200 (DRL)   SLVSG04, tabla 5-1
   FS8205A         Fuxinsemi Ver2.1, 'Marking' (1 S1, 2 D, 3 S2, 4 G2, 5 D, 6 G1)
 Uso: python3 gen_symbols.py <salida.kicad_sym>
 """
@@ -44,6 +45,15 @@ SYMBOLS = {
         "left": [("3", "VDD", "power_in"), ("2", "CELL", "input"), ("1", "CTG", "passive"),
                  ("6", "QSTRT", "input"), ("4", "GND", "power_in"), ("9", "EP", "passive")],
         "right": [("8", "SDA", "bidirectional"), ("7", "SCL", "input"), ("5", "~{ALRT}", "open_collector")],
+    },
+    "LM66200": {
+        "ref": "U", "fp": "Package_TO_SOT_SMD:SOT-583-8",
+        "ds": "https://www.ti.com/lit/ds/symlink/lm66200.pdf",
+        "desc": "Doble diodo ideal 1,6-5,5 V, 2,5 A por canal, bloqueo inverso por tensión (TI LM66200DRLR)",
+        "lcsc": "C3235556", "w": 20.32,
+        "left": [("3", "VIN1", "power_in"), ("6", "VIN2", "power_in"), ("4", "~{ON}", "input")],
+        "right": [("2", "VOUT", "passive"), ("7", "VOUT", "passive"), ("8", "ST", "open_collector"),
+                  ("1", "GND", "power_in"), ("5", "GND", "passive")],
     },
     "FS8205A": {
         "ref": "Q", "fp": "Package_TO_SOT_SMD:SOT-23-6",

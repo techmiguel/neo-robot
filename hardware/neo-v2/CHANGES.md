@@ -26,6 +26,23 @@ ninguna neta se parte ni se renombra, salvo los tres renombres declarados.
 Hojas `Alimentacion.kicad_sch` y `Expansion.kicad_sch`; referencias del rango 201-235.
 El detalle está en `docs/fase3-esquematico.md`.
 
-## PCB
+## Esquemático (fase 4)
 
-Sin cambios todavía (fase 4).
+| Hoja | Cambio | Motivo |
+|---|---|---|
+| Alimentacion | Unión de fuentes: U201 TPS2121 de entrada única + U206 LM66200 (diodo ideal); elevador a 4,59 V (R209 665 k) | No cabe una pista de 1,5–2 A entre la franja y el sitio de U13 (`docs/fase4-colocacion.md` §2) |
+| Alimentacion | Retirado TP213 (MUX_OV1) | Sin sitio junto a U201 |
+| Expansion | Retirado TP221 (I2S_BCLK) | Sin hueco junto al haz del bus I2S |
+
+## PCB (fase 4, `tools/update_pcb.py`)
+
+| Cambio | Detalle |
+|---|---|
+| Contorno | 78 × 59 → 84 × 89 mm: franja superior de 30 mm, borde izquierdo +3 mm, entrante de SW1, ranura de SW3; se conservan la muesca del jack, la esquina inferior izquierda, el borde junto a la antena y los recortes interiores |
+| Huellas retiradas | Las 30 del esquemático (U13, Grove...), con el cobre de sus netas extinguidas (155 elementos) y 49 cabos de pista que solo servían a sus pads |
+| Sitio de U13 | Borrados 14 elementos de cobre heredado de VBUS/+5V/GND que chocaban con el TPS2121; se vuelven a trazar en la fase 5 |
+| Zonas | Las zonas GND de placa completa se amplían al contorno nuevo; nueva zona +5V en la capa de potencia (203–216 × 19–51) |
+| Valor y "no montar" | Sincronizados con el esquemático: R32, R33, R44 (el original ya no coincidía), R83, R84, R91, R135 y los PT marcados DNP en el esquemático original |
+| Serigrafía | La tabla de apilado y las notas que el original dibuja fuera de su borde se suben 30 mm; se borran los rótulos GROVE/SCL/SDA/5V/GND de la cara B |
+| Huellas nuevas | 89, colocadas según `docs/fase4-colocacion.md` §4; taladros H163 y H243 |
+| Bibliotecas | `kicad/lib/inherited/`: huellas heredadas extraídas del PCB original (sus bibliotecas Seeed no son públicas) |

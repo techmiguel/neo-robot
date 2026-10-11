@@ -1,0 +1,254 @@
+(footprint "L0805"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "5bbe24e2-9fad-4a86-be9b-0638b4f1e152")
+		(effects
+			(font
+				(size 0.254 0.254)
+				(thickness 0.127)
+			)
+		)
+	)
+	(property "Value" "L0805"
+		(at 0 0.254 0)
+		(layer "User.2")
+		(uuid "5cd73015-eb65-4c1e-8975-363a10c06911")
+		(effects
+			(font
+				(size 0.33 0.33)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "dca9014c-b3a5-4034-89b8-7f2a4a6f6e86")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "SMD Innductor 0.47uH-20%;L2.0*W1.6*H1.0mm"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "5c6a5ce7-86c8-4cfc-b83c-608a7348aea7")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Part Type" "Inductor"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3d5e2d79-bead-4809-a0b2-ad792662578b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Rating" "5.2A"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ed71b7dc-441c-437f-8239-a1e22fcf4558")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "SKU" "303010172"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3b469b12-4321-4f89-a7d3-37db9f6d46b2")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Status" "BeagleBone Carrier Board"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2bf81d2a-3139-435b-8d33-edf57c918c96")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Temperature" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "1a0c1553-a1d6-42b7-a9eb-4327e8fe0a18")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "MANUFACTURER" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "916f19fd-9c42-4b8a-a366-9ddceb49e057")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "PARTREV" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f730e6d0-a102-4191-b0ce-9808f674b04e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "STANDARD" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "b50d69f0-d7de-4518-b959-cf3cd6dfb093")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -1.651 -0.889)
+		(end -1.651 0.889)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e37cf8b2-f8f1-4363-a827-d5f476df82cd")
+	)
+	(fp_line
+		(start -1.651 0.889)
+		(end 1.651 0.889)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "7594ebc6-229f-4bff-9cc4-d8f3d83c8677")
+	)
+	(fp_line
+		(start 1.651 -0.889)
+		(end -1.651 -0.889)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "99837377-f209-4dce-8b71-af86d73083a8")
+	)
+	(fp_line
+		(start 1.651 0.889)
+		(end 1.651 -0.889)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "9072f939-4ffb-41d9-820e-33984f309880")
+	)
+	(fp_rect
+		(start 1.6256 0.9144)
+		(end -1.6256 -0.9144)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "a9f31b9d-e019-4aa0-9253-d90869496d5a")
+	)
+	(pad "1" smd roundrect
+		(at -0.889 0)
+		(size 1.016 1.397)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.17)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "fb99c194-a3e6-4455-8878-983fe214791d")
+	)
+	(pad "2" smd roundrect
+		(at 0.889 0)
+		(size 1.016 1.397)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.17)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "e764a2ea-3514-4e8d-8406-bd194741bfd1")
+	)
+	(embedded_fonts no)
+	(model "${KICAD7_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_0805_2012Metric.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

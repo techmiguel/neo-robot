@@ -1,0 +1,361 @@
+(footprint "SOD-523"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "<b>0603<b><p>")
+	(property "Reference" "REF**"
+		(at -0.9906 0 180)
+		(layer "F.Fab")
+		(uuid "75e1390c-ee37-4542-bcfe-b51db69fba56")
+		(effects
+			(font
+				(size 0.254 0.254)
+				(thickness 0.127)
+			)
+		)
+	)
+	(property "Value" "SOD-523"
+		(at 0 1.016 180)
+		(layer "User.2")
+		(uuid "6f591847-547a-4243-b4b7-aed8a3b7c536")
+		(effects
+			(font
+				(size 0.48 0.48)
+				(thickness 0.12)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "6fd0cf76-f931-4a0b-8c44-f743f78a968a")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "SMD Diode Schottky 30V-200mA;SOD-523"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "42f9f8ce-a556-4d63-8384-6cc7d7e4da13")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "SKU" "304011072"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "070c4b24-02a5-48f5-a039-cb99175048b8")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Part Type" "Schottky Diode"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "06887ed4-34e1-40ea-b1c4-4c5affb37f9c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Rating" "30V,200mA"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "27aa3216-10a1-4b39-8b6c-16ea9e74ab81")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Status" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "59c4d60f-44e7-4b42-87a7-b377beedd947")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Temperature" " -40°C to 125°C"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ff8f60c1-1c4b-47a0-99cd-e39e33809d5b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "MANUFACTURER" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4d4533cc-70cf-46f7-bec6-2592c9716929")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "PARTREV" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "dbd27266-5098-4e46-9d01-db3d89d92e62")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "STANDARD" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "da840758-159f-4b79-b871-d2a465e4de17")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -1.7399 -0.2794)
+		(end -1.7399 0.2794)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "3e246576-6928-4f24-82d8-1067dc018857")
+	)
+	(fp_line
+		(start -1.7399 0.2794)
+		(end -1.4859 0.5334)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "3195af63-a3f7-41c2-96af-941755f342e0")
+	)
+	(fp_line
+		(start -1.4859 -0.5334)
+		(end -1.7399 -0.2794)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "eed3177e-a6a7-4ee5-a982-85ab2740c4f2")
+	)
+	(fp_line
+		(start -0.6 0.5334)
+		(end 0.6 0.5334)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "9919ec06-7ba6-44a3-8836-81e70a71bf9c")
+	)
+	(fp_line
+		(start 1.3462 -0.5334)
+		(end -1.4859 -0.5334)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "b73dd332-9425-4e36-a3bb-1145c1c680e0")
+	)
+	(fp_line
+		(start 1.3462 -0.5334)
+		(end 1.3462 0.5334)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e174535f-e537-4da9-9aaf-5ec234015d96")
+	)
+	(fp_line
+		(start 1.3462 0.5334)
+		(end -1.4859 0.5334)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "3c8cade0-7b8e-4091-8616-8dcd0f60ff45")
+	)
+	(fp_rect
+		(start 1.397 0.508)
+		(end -1.778 -0.508)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "010bf017-7e3f-4c03-9a0c-2feebf542476")
+	)
+	(fp_line
+		(start -1.5748 0.381)
+		(end -1.5748 -0.381)
+		(stroke
+			(width 0.2032)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "43ec51c3-38d7-468c-abb3-4113476ceb22")
+	)
+	(fp_line
+		(start -0.1905 0)
+		(end -0.1905 -0.381)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "cc937702-4a1c-4eda-8888-6ca5dae81725")
+	)
+	(fp_line
+		(start -0.1905 0)
+		(end 0.1905 0.381)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "b59c6559-b2f0-4f9d-8cfd-c43a01443cd3")
+	)
+	(fp_line
+		(start -0.1905 0.381)
+		(end -0.1905 0)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "da496a55-cdce-4e9d-aa1d-70694223d588")
+	)
+	(fp_line
+		(start 0.1905 -0.381)
+		(end -0.1905 0)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "0717e601-c50e-48d0-a6bd-0f7be8d8e159")
+	)
+	(fp_line
+		(start 0.1905 0.381)
+		(end 0.1905 -0.381)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "3c1380f7-c89c-4327-8bc3-aa8e3d38deb0")
+	)
+	(fp_rect
+		(start 1.3462 0.5334)
+		(end -1.7526 -0.4826)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "622103c2-44dd-4329-be02-fa3e42893475")
+	)
+	(pad "1" smd roundrect
+		(at 0.8 0 180)
+		(size 0.762 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.09)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "5ada04e1-9dc1-4c3b-a1b8-c85755ecb095")
+	)
+	(pad "2" smd roundrect
+		(at -0.8 0 180)
+		(size 0.762 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.09)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "5a0e0ec1-dc62-4769-9921-9b911c257c23")
+	)
+	(embedded_fonts no)
+	(model "Y:/01_Cadence_Library/02_PCB_Library/3D/SOD-523.STEP"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)
