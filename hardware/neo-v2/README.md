@@ -29,7 +29,8 @@ La lista exacta de cambios respecto al original está en `CHANGES.md`.
 | 2 | Propuesta de bloques nuevos | Entregada: `docs/fase2-propuesta-bloques-nuevos.md` |
 | 3 | Esquemático de bloques nuevos e integración | Entregada: `docs/fase3-esquematico.md`, proyecto en `kicad/` |
 | 4 | Colocación y plan de layout | Entregada: `docs/fase4-colocacion.md`, PCB en `kicad/NEO_v2.kicad_pcb` (sin rutear lo nuevo) |
-| 5–6 | Ruteo, fabricación | Pendiente |
+| 5 | Ruteo, ERC y DRC | Entregada: `docs/fase5-ruteo.md`; ERC 0 errores, DRC 0 violaciones con paridad |
+| 6 | Fabricación (Gerber, BOM, CPL) | Pendiente |
 
 ## Herramientas
 
@@ -42,8 +43,10 @@ Generación y verificación del esquemático (fase 3): `gen_footprints.py`, `gen
 `apply_inherited_edits.py`, `clean_dangling.py`, `gen_sheets.py`, `verify_netlist.py`,
 `verify_footprints.py` (orden y uso en `docs/fase3-esquematico.md` §2).
 
-PCB (fase 4): `update_pcb.py` (PCB original + netlist → PCB de NEO v2), `export_inherited_fps.py`
-(bibliotecas de huellas heredadas) y `corridor.py` (análisis de corredores); uso en
-`docs/fase4-colocacion.md`. Requieren el `python3.12` con el módulo `pcbnew` de KiCad 9.
+PCB (fases 4 y 5): `build_pcb.sh` reconstruye el PCB desde el original con `update_pcb.py`,
+`route_power.py`, `route_signals.py`, `stitch_gnd.py` y `drc_exclusions.py`; además
+`export_inherited_fps.py` (bibliotecas heredadas), `erc_annotations.py` (anotaciones de ERC),
+`corridor.py` y `bom_new.py`. Uso en `docs/fase4-colocacion.md` y `docs/fase5-ruteo.md`.
+Requieren el `python3.12` con el módulo `pcbnew` de KiCad 9 y numpy.
 
 Requisitos: KiCad 9 (`kicad-cli`) y Python 3 con `sexpdata`.

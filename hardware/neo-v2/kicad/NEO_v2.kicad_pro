@@ -58,7 +58,68 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "courtyards_overlap|181559219|90244050|017251fd-b130-4133-a176-059dda03c243|870e1e88-0a2a-41f3-9877-c46cb685beb9",
+          "Heredado de Voice PE: solape de patios sin solape de pads; el layout del original no se toca"
+        ],
+        [
+          "courtyards_overlap|181559219|90244050|870e1e88-0a2a-41f3-9877-c46cb685beb9|017251fd-b130-4133-a176-059dda03c243",
+          "Heredado de Voice PE: solape de patios sin solape de pads; el layout del original no se toca"
+        ],
+        [
+          "courtyards_overlap|175992456|64167470|04f567bb-b107-4a85-b0b5-c5598a46bb21|929a31b1-bfd6-41a1-88ad-cb602f788fb7",
+          "Heredado de Voice PE: solape de patios sin solape de pads; el layout del original no se toca"
+        ],
+        [
+          "courtyards_overlap|175992456|64167470|929a31b1-bfd6-41a1-88ad-cb602f788fb7|04f567bb-b107-4a85-b0b5-c5598a46bb21",
+          "Heredado de Voice PE: solape de patios sin solape de pads; el layout del original no se toca"
+        ],
+        [
+          "courtyards_overlap|190697400|95138000|424ec56c-2a09-48ff-8fd2-caab1b15af03|d47ef60e-44a9-4f16-a1ed-7a9939c2bfec",
+          "Heredado de Voice PE: solape de patios sin solape de pads; el layout del original no se toca"
+        ],
+        [
+          "courtyards_overlap|190697400|95138000|d47ef60e-44a9-4f16-a1ed-7a9939c2bfec|424ec56c-2a09-48ff-8fd2-caab1b15af03",
+          "Heredado de Voice PE: solape de patios sin solape de pads; el layout del original no se toca"
+        ],
+        [
+          "courtyards_overlap|191341519|95138000|4e917b53-0f06-45b8-bc36-395d3b685aee|d47ef60e-44a9-4f16-a1ed-7a9939c2bfec",
+          "Heredado de Voice PE: solape de patios sin solape de pads; el layout del original no se toca"
+        ],
+        [
+          "courtyards_overlap|191341519|95138000|d47ef60e-44a9-4f16-a1ed-7a9939c2bfec|4e917b53-0f06-45b8-bc36-395d3b685aee",
+          "Heredado de Voice PE: solape de patios sin solape de pads; el layout del original no se toca"
+        ],
+        [
+          "shorting_items|175209568|91643897|467e3618-07b9-42d1-9406-99a150a235dc|d5be25a7-d768-4e23-a0d4-bbaaba67ee00",
+          "Heredado de Voice PE: brazo de cortocircuito a GND de la antena en F invertida (intencionado)"
+        ],
+        [
+          "shorting_items|175209568|91643897|d5be25a7-d768-4e23-a0d4-bbaaba67ee00|467e3618-07b9-42d1-9406-99a150a235dc",
+          "Heredado de Voice PE: brazo de cortocircuito a GND de la antena en F invertida (intencionado)"
+        ],
+        [
+          "shorting_items|175574128|91263472|4bb2e3cb-14b7-4ddc-879f-4dcf516d77dc|d5be25a7-d768-4e23-a0d4-bbaaba67ee00",
+          "Heredado de Voice PE: brazo de cortocircuito a GND de la antena en F invertida (intencionado)"
+        ],
+        [
+          "shorting_items|175574128|91263472|d5be25a7-d768-4e23-a0d4-bbaaba67ee00|4bb2e3cb-14b7-4ddc-879f-4dcf516d77dc",
+          "Heredado de Voice PE: brazo de cortocircuito a GND de la antena en F invertida (intencionado)"
+        ],
+        [
+          "shorting_items|175335826|91959838|7fd44ac3-a87c-4630-ab41-28ee392e0a56|d5be25a7-d768-4e23-a0d4-bbaaba67ee00",
+          "Heredado de Voice PE: brazo de cortocircuito a GND de la antena en F invertida (intencionado)"
+        ],
+        [
+          "shorting_items|175335826|91959838|d5be25a7-d768-4e23-a0d4-bbaaba67ee00|7fd44ac3-a87c-4630-ab41-28ee392e0a56",
+          "Heredado de Voice PE: brazo de cortocircuito a GND de la antena en F invertida (intencionado)"
+        ],
+        [
+          "zones_intersect|166357880|97560524|2a7b7b62-7b7e-4295-85e6-813a93c04f03|4eada568-0848-482c-999c-e32afcf8564c",
+          "Heredado de Voice PE: dos zonas de la misma neta (pad 2 de ANT2) superpuestas; mismo cobre"
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -895,7 +956,7 @@
         },
         {
           "group_by": true,
-          "label": "\u63cf\u8ff0",
+          "label": "描述",
           "name": "Description",
           "show": true
         },

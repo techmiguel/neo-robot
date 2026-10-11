@@ -52,7 +52,7 @@ restricciones del encargo prohíben. La solución usa el plano que ya existe:
    primera capa interna) une los dos extremos. Su zona se prolonga hacia la franja
    (rectángulo 203–216 × 19–51 mm).
 
-Márgenes (sección 5 de `docs/data/calc_power_v2_fase4.txt`): con VBUS de 5,0 V y 1,4 A de pico, U206
+Márgenes (sección 5 de `docs/data/calc_power_v2.txt`): con VBUS de 5,0 V y 1,4 A de pico, U206
 bloquea con 281 mV de margen típico y 167 mV en el peor caso. Con VBUS de 4,75 V el margen de peor
 caso es de −83 mV: un USB débil y la batería pueden repartirse la carga. No es peligroso, porque el
 cargador sigue limitado a 0,5 A, pero la batería se descarga en paralelo. Queda como riesgo

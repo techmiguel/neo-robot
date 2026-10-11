@@ -49,10 +49,11 @@ Tiempo de carga aprox. de una celda de 3.0 Ah a 0.5 A: 6.9 h
 ## 5. Unión de fuentes: TPS2121 de entrada única (SLVSEA3F) + diodo ideal LM66200 (SLVSG04)
 
 RILM = 44.2 kΩ → 44,2 kΩ (tabla: 2,0–3,0 A); IOCP = 2,4 × ILM = 6.0 A
-OV1: 43.2 k / 10 k → corte por sobretensión en 5.64 V (tolerancia 5.37–5.85 V)
-Interruptor en OFF (R215 10 k a VBUS) con VBUS 4.0 V: OV1 = 2.21 V (≥ 1,10 V y ≤ 5,5 V)
-Interruptor en OFF (R215 10 k a VBUS) con VBUS 5.0 V: OV1 = 2.76 V (≥ 1,10 V y ≤ 5,5 V)
-Interruptor en OFF (R215 10 k a VBUS) con VBUS 5.5 V: OV1 = 3.04 V (≥ 1,10 V y ≤ 5,5 V)
+OV1 en ON: 0 V por R221 (10 k a GND); sin OVP, igual que el U13 original (PPTC FB12 + TVS D22)
+Interruptor en OFF (R215 10 k desde VBUS) con VBUS 4.0 V: OV1 = 2.00 V (≥ VREF máx. 1,10 V; ≤ 5,5 V abs.)
+Interruptor en OFF (R215 10 k desde VBUS) con VBUS 4.5 V: OV1 = 2.25 V (≥ VREF máx. 1,10 V; ≤ 5,5 V abs.)
+Interruptor en OFF (R215 10 k desde VBUS) con VBUS 5.0 V: OV1 = 2.50 V (≥ VREF máx. 1,10 V; ≤ 5,5 V abs.)
+Interruptor en OFF (R215 10 k desde VBUS) con VBUS 5.5 V: OV1 = 2.75 V (≥ VREF máx. 1,10 V; ≤ 5,5 V abs.)
 VBUS 5.25 V, 1.40 A: +5V = 5.16 V; elevador típ. 4.59 V → margen de bloqueo +531 mV
     peor caso (elevador máx.): +417 mV
 VBUS 5.00 V, 1.40 A: +5V = 4.91 V; elevador típ. 4.59 V → margen de bloqueo +281 mV

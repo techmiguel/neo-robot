@@ -1,8 +1,8 @@
 Referencias,Valor,Huella,LCSC,Cantidad,DNP,Descripcion
 BT201,18650 Li-ion,NEO_v2:BatteryHolder_MPD_BH-18650-PC_slot,,1,,"Portapilas 18650 MPD BH-18650-PC, montaje a mano en cara B"
-"C201,C204,C206,C210,C214,C215,C217",100nF,Capacitor_SMD:C_0402_1005Metric,C1525,7,,Condensador cerámico 100nF
+"C201,C204,C206,C210,C215,C217,C219",100nF,Capacitor_SMD:C_0402_1005Metric,C1525,7,,Condensador cerámico 100nF
 "C202,C203,C211,C212",1uF 25V,Capacitor_SMD:C_0402_1005Metric,C52923,4,,Condensador cerámico 1uF 25V
-"C205,C207,C208,C209,C213",22uF 25V,Capacitor_SMD:C_0805_2012Metric,C45783,5,,Condensador cerámico 22uF 25V
+"C205,C207,C208,C209,C213,C218",22uF 25V,Capacitor_SMD:C_0805_2012Metric,C45783,6,,Condensador cerámico 22uF 25V
 C216,10uF 10V,Capacitor_SMD:C_0603_1608Metric,C19702,1,,Condensador cerámico 10uF 10V
 "D201,D202",TPD1E04U04,NEO_v2:TI_DPY0002A_X1SON-2_1.0x0.6mm,C19829541,2,,"ESD 0,5 pF, VRWM 3,6 V (pin 1 IO, pin 2 GND)"
 FB201,120R@100MHz,Inductor_SMD:L_0603_1608Metric,C14709,1,,Ferrita Murata BLM18PG121SN1D (misma familia que FB8/FB10 del original)
@@ -10,27 +10,52 @@ J201,OLED I2C,Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical,C492403
 L201,1uH 12A,NEO_v2:L_CJIANG_FAUL0630,C3040349,1,,"Bobina moldeada 1,0 uH, Isat 12 A, DCR 7,4 mOhm, CJIANG FAUL0630-1R0MT"
 "Q201,Q202",FS8205A,Package_TO_SOT_SMD:SOT-23-6,C908265,2,,"Doble N-MOSFET de protección; dos en paralelo: disparo mín. 4,06 A"
 Q203,CSD25402Q3A,NEO_v2:TI_DNH0008A_VSONP-8_3.3x3.3mm_P0.65mm,C111356,1,,"P-MOSFET -20 V 13,3 mOhm a -2,5 V: protección contra inversión de polaridad"
-"R201,R206,R207,R208,R215,R221,R223",10k,Resistor_SMD:R_0402_1005Metric,C25744,7,,Resistencia 10k 0402 UNI-ROYAL 0402WGF1002TCE
+"R201,R206,R207,R208,R215,R221",10k,Resistor_SMD:R_0402_1005Metric,C25744,6,,Resistencia 10k 0402 UNI-ROYAL 0402WGF1002TCE
 R202,100,Resistor_SMD:R_0402_1005Metric,C25076,1,,Resistencia 100 0402 UNI-ROYAL 0402WGF1000TCE
 R203,1k,Resistor_SMD:R_0402_1005Metric,C11702,1,,Resistencia 1k 0402 UNI-ROYAL 0402WGF1001TCE
 R204,604,Resistor_SMD:R_0402_1005Metric,C8369,1,,Resistencia 604 0402 UNI-ROYAL 0402WGF6040TCE
 R205,27k,Resistor_SMD:R_0402_1005Metric,C25771,1,,Resistencia 27k 0402 UNI-ROYAL 0402WGF2702TCE
-R209,732k,Resistor_SMD:R_0402_1005Metric,C27016,1,,Resistencia 732k 0402 UNI-ROYAL 0402WGF7323TCE
-"R210,R216,R218",100k,Resistor_SMD:R_0402_1005Metric,C25741,3,,Resistencia 100k 0402 UNI-ROYAL 0402WGF1003TCE
+R209,665k,Resistor_SMD:R_0402_1005Metric,C56583,1,,Resistencia 665k 0402 UNI-ROYAL 0402WGF6653TCE
+R210,100k,Resistor_SMD:R_0402_1005Metric,C25741,1,,Resistencia 100k 0402 UNI-ROYAL 0402WGF1003TCE
 R211,0,Resistor_SMD:R_0402_1005Metric,C17168,1,,Resistencia 0 0402 UNI-ROYAL 0402WGF0000TCE
+R212,0,Resistor_SMD:R_0402_1005Metric,C17168,1,DNP,Resistencia 0 0402 UNI-ROYAL 0402WGF0000TCE
 R213,1M,Resistor_SMD:R_0402_1005Metric,C26083,1,,Resistencia 1M 0402 UNI-ROYAL 0402WGF1004TCE
 R214,0,Resistor_SMD:R_1206_3216Metric,C19290,1,,Resistencia 0 1206 UNI-ROYAL 1206W4J0000T5E (puente)
-R217,36.5k,Resistor_SMD:R_0402_1005Metric,C25887,1,,Resistencia 36.5k 0402 UNI-ROYAL 0402WGF3652TCE
-R219,31.6k,Resistor_SMD:R_0402_1005Metric,C11463,1,,Resistencia 31.6k 0402 UNI-ROYAL 0402WGF3162TCE
-R220,43.2k,Resistor_SMD:R_0402_1005Metric,C25894,1,,Resistencia 43.2k 0402 UNI-ROYAL 0402WGF4322TCE
 R222,44.2k,Resistor_SMD:R_0402_1005Metric,C25895,1,,Resistencia 44.2k 0402 UNI-ROYAL 0402WGF4422TCE
-R224,2.2M,Resistor_SMD:R_0402_1005Metric,C11490,1,,Resistencia 2.2M 0402 UNI-ROYAL 0402WGF2204TCE
 "R225,R226",22,Resistor_SMD:R_0402_1005Metric,C25092,2,,Resistencia 22 0402 UNI-ROYAL 0402WGF220JTCE
 "R227,R228",4.7k,Resistor_SMD:R_0402_1005Metric,C25900,2,,Resistencia 4.7k 0402 UNI-ROYAL 0402WGF4701TCE
 RT201,10k B3380,Resistor_SMD:R_0603_1608Metric,C13564,1,,"NTC 10 k B3380 Murata NCP18XH103F03RB, junto a la celda"
 SW201,MSK-22D18G3,NEO_v2:SW_SHOUHAN_MSK-22D18G3,C7507432,1,,"Interruptor de encendido DPDT de señal (100 mA). Posición A = OFF, C = ON"
-U201,TPS2121RUXR,NEO_v2:TI_RUX0012A_VQFN-HR-12_2x2.5mm_P0.5mm,C485916,1,,Multiplexor con prioridad a VBUS
+TP201,CELL_P,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP202,CELL_N,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP203,PACK_P,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+"TP204,TP214,TP233,TP234,TP235",GND,TestPoint:TestPoint_Pad_D1.0mm,,5,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP205,CHG_STAT,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP206,CHG_PG,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP207,FG_ALRT,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP208,BOOST_5V,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP209,BOOST_EN,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP211,VBUS,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP215,OLED_3V3,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP216,I2C_SDA,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP217,I2C_SCL,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP218,I2C2_SDA,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP219,I2C2_SCL,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP220,I2S_MCLK,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP222,I2S_LRCK,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP223,I2S_DIN_SEC,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP224,I2S_DIN_ESP,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP225,I2S2_BCLK,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP226,I2S2_LRCLK,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP227,I2S2_DATA,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP228,XU316_RST,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP229,ESP_IO40,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP230,ESP_IO41,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP231,ESP_IO2,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+TP232,ESP_IO46,TestPoint:TestPoint_Pad_D1.0mm,,1,,"Punto de prueba, pad SMD Ø1,0 mm, sin montaje (cobre desnudo)"
+U201,TPS2121RUXR,NEO_v2:TI_RUX0012A_VQFN-HR-12_2x2.5mm_P0.5mm,C485916,1,,Interruptor VBUS -> +5V con límite de corriente (sustituye a U13); entrada única
 U202,TPS61022RWUT,Package_DFN_QFN:Texas_RWU0007A_VQFN-7_2x2mm_P0.5mm,C2071784,1,,"Elevador síncrono 6,5 A mín. (valle), 1 MHz, PWM forzado"
 U203,BQ25170DSGR,Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias,C5208201,1,,"Cargador lineal 0,5 A"
 U204,MAX17048G+T10,Package_DFN_QFN:TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm,C2682616,1,,Medidor de carga I2C 0x36
 U205,DW01A,Package_TO_SOT_SMD:SOT-23-6,C351410,1,,"Protector de celda Li-ion: 4,30 V / 2,50 V / 150 mV"
+U206,LM66200DRLR,Package_TO_SOT_SMD:SOT-583-8,C3235556,1,,Diodo ideal BOOST_5V -> +5V; bloquea cuando +5V > BOOST_5V + 42-70 mV (USB presente)

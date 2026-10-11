@@ -133,12 +133,14 @@ h("5. Unión de fuentes: TPS2121 de entrada única (SLVSEA3F) + diodo ideal LM66
 ILM = 2.5
 rilm = (65.2 / ILM) ** (1 / 0.861) * 1e3                       # eq. 2
 print(f"RILM = {rilm/1e3:.1f} kΩ → 44,2 kΩ (tabla: 2,0–3,0 A); IOCP = 2,4 × ILM = {2.4*ILM:.1f} A")
-ot, ob = 43.2e3, 10e3
-print(f"OV1: {ot/1e3:.1f} k / {ob/1e3:.0f} k → corte por sobretensión en "
-      f"{1.06*(ot+ob)/ob:.2f} V (tolerancia {1.01*(ot+ob)/ob:.2f}–{1.10*(ot+ob)/ob:.2f} V)")
-for vb in (4.0, 5.0, 5.5):
-    vov = vb * (1 / ot + 1 / 10e3) / (1 / ot + 1 / ob + 1 / 10e3)
-    print(f"Interruptor en OFF (R215 10 k a VBUS) con VBUS {vb} V: OV1 = {vov:.2f} V (≥ 1,10 V y ≤ 5,5 V)")
+# Fase 5: sin divisor de OVP (R220 retirada: no tenía camino en el PCB). OV1 solo lleva R221 a GND;
+# el interruptor en OFF aplica VBUS por R215. Protección de VBUS como en el original: PPTC + TVS.
+r215, r221 = 10e3, 10e3
+print("OV1 en ON: 0 V por R221 (10 k a GND); sin OVP, igual que el U13 original (PPTC FB12 + TVS D22)")
+for vb in (4.0, 4.5, 5.0, 5.5):
+    vov = vb * r221 / (r215 + r221)
+    print(f"Interruptor en OFF (R215 10 k desde VBUS) con VBUS {vb} V: OV1 = {vov:.2f} V "
+          f"({'≥' if vov >= 1.10 else '<'} VREF máx. 1,10 V; ≤ 5,5 V abs.)")
 RON_MUX = 0.062            # TPS2121 RON máx. a 5 V (tabla 8.5, 85 °C) — conservador
 # U206 LM66200 (arriba): VIN1 = BOOST_5V, VOUT = +5V. Bloquea cuando VOUT > VIN1 + VRCB
 # (umbral de bloqueo inverso 42–70 mV, tabla 6.5), y conduce sin umbral cuando VIN1 > VOUT.

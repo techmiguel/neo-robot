@@ -54,8 +54,11 @@ El detalle está en `docs/fase3-esquematico.md`.
 | XMOS, ESP32, DAC, Power, LED & Connector | Doce PWR_FLAG sobre símbolos de alimentación o pines existentes y una marca de no conexión en ANT2.2 (`tools/erc_annotations.py`) | Los 13 errores de ERC que ya tenía el original. Solo anotación: la netlist y la BOM no cambian (`verify_netlist.py` OK) |
 | PCB, sitio de U13 | La región de rehacer se limita a B.Cu y vías; se conserva el tramo VBUS de F.Cu hacia Q10/R58 | En la fase 4 se borraba también ese tramo |
 | PCB, ranura de SW3 | Se estrecha a x 178,4–183,8 | Deja 0,5 mm a los pads de anclaje P1/P4; el original los tenía a 0,13 mm del borde (error de DRC heredado) |
-| PCB, zonas de ANT2 | Una de las dos zonas `unconnected-(ANT2-Pad2)` superpuestas sube un nivel de prioridad | Error zones_intersect del original; el cobre no cambia |
 | PCB, elevador | COUT bajo VOUT/GND de U202, divisor FB, MODE/EN y bypass de VIN recolocados | Lazo caliente mínimo antes de rutear |
-| PCB, grupo de U201 | C211 girado y R220 desplazado | Dejar paso a VBUS hacia IN1 |
-| PCB | Ruteo de los bloques nuevos (`route_power.py`, `autoroute.py` con Freerouting 2.1.0, `stitch_gnd.py`) | Ver `docs/fase5-ruteo.md` |
-| Proyecto | Exclusiones de DRC comentadas para cuatro solapes de patio y el cortocircuito intencionado de la antena ANT2, todos del original (`drc_exclusions.py`) | DRC sin errores sin tocar el layout heredado |
+| PCB, grupo de U201 | C211 girado; R222 y C215 en vertical junto a ILIM y SS | Dejar paso a VBUS hacia IN1 y a los escapes de control |
+| PCB, grupo de U203 | R204 y R205 en línea con ISET y VSET | Cada pin sale por su lado |
+| Alimentacion | Retirada R220 (divisor de OVP en OV1) | Sin camino en el PCB heredado; la protección de VBUS vuelve a la del original (PPTC + TVS). El OFF del interruptor sigue funcionando |
+| Alimentacion | Retirado C214 (100 nF en OUT de U201) | Su pad de GND quedaba aislado dentro de la zona +5V heredada; C83 cumple esa función |
+| PCB, limpieza | También se quitan las vías (no GND) que solo servían a huellas retiradas (VBUS del antiguo R64) | Vía colgante heredada del U13 |
+| PCB | Ruteo de los bloques nuevos: `route_power.py` (potencia, a mano), `route_signals.py` (router A* propio), `stitch_gnd.py` (cosido) | Ver `docs/fase5-ruteo.md`. Freerouting se probó y se descartó |
+| Proyecto | Exclusiones de DRC comentadas para cuatro solapes de patio, el cortocircuito intencionado de la antena ANT2 y las dos zonas superpuestas de su pad 2, todo del original (`drc_exclusions.py`) | DRC sin errores sin tocar el layout heredado |

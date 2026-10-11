@@ -55,10 +55,14 @@ TRACKS = [
     # S2 de Q201/Q202 -> GND (PACK-) por vías
     ("GND", F, [(236.86, 32.95), (236.86, 34.0), (237.7, 34.0)], 0.6),
     ("GND", F, [(241.36, 32.95), (241.36, 34.0), (242.2, 34.0)], 0.6),
-    # --- U201 (cara B, sitio de U13): VBUS -> IN1; OUT8 <-> OUT1; C214 -> OUT8
+    # --- U201 (cara B, sitio de U13): VBUS -> IN1; OUT8 <-> OUT1 (la zona +5V de B.Cu heredada
+    #     une OUT8 con el campo de vías del plano; C83, heredado, es el desacoplo de salida)
     ("VBUS", B, [(203.0, 100.0), (203.85, 100.8)], 0.4),
-    ("+5V", B, [(204.52, 99.85), (204.55, 100.6)], 0.4),
     ("+5V", B, [(204.55, 101.08), (204.55, 102.42)], 0.4),
+    # escapes de control de U201 (señal): SS por dentro hacia C215, ILIM por fuera hacia R222
+    ("/Alimentacion/MUX_SS", B, [(205.5, 102.0), (205.95, 102.0), (205.95, 102.9), (206.3, 103.24)], 0.16),
+    ("/Alimentacion/MUX_ILIM", B, [(205.5, 101.5), (206.45, 101.5), (206.45, 102.6), (207.3, 102.6),
+                                   (207.3, 103.24)], 0.16),
 ]
 
 # (neta, x, y, diámetro, taladro)

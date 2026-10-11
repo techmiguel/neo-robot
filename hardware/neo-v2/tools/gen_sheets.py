@@ -457,15 +457,17 @@ def sheet_power(kdir, sheet_uuid):
            "el cargador sigue cargando. ON = EN a PACK+. R213 fija EN durante el recorrido.")
 
     # ---- Bloque 4: unión de fuentes (fase 4: diodo ideal arriba + TPS2121 abajo) ----
-    # U201 (abajo, sitio del antiguo U13): VBUS -> +5V con límite de corriente, OVP y bloqueo inverso.
+    # U201 (abajo, sitio del antiguo U13): VBUS -> +5V con límite de corriente y bloqueo inverso.
+    # Fase 5: sin OVP (R220 retirada). El divisor VBUS -> OV1 no tiene camino en el PCB heredado
+    # (docs/fase5-ruteo.md §5); la protección queda como en el original (PPTC FB12 + TVS D22).
     g.part(f"{NEO}:TPS2121", "U201", "TPS2121RUXR", 375.92, 50.8,
            {"7": "VBUS", "2": "GND", "6": "GND", "3": "GND", "5": "MUX_OV1", "4": "GND",
             "1": "+5V", "8": "+5V", "9": "NC", "10": "MUX_ILIM", "11": "MUX_SS", "12": "GND"},
-           desc="Interruptor VBUS -> +5V con límite de corriente y OVP (sustituye a U13); entrada única")
+           desc="Interruptor VBUS -> +5V con límite de corriente (sustituye a U13); entrada única")
     g.C("C211", "1uF 25V", 345.44, 30.48, "VBUS", "GND")
     g.C("C213", "22uF 25V", 403.86, 30.48, "+5V", "GND")
-    g.C("C214", "100nF", 411.48, 30.48, "+5V", "GND")
-    g.R("R220", "43.2k 1%", 365.76, 91.44, "VBUS", "MUX_OV1")
+    # Sin C214 (fase 5): el desacoplo de 100 nF en OUT lo da C83, heredado, a 2 mm de U201; el
+    # pad de GND de C214 quedaba aislado dentro de la zona +5V de B.Cu, sin sitio para una vía.
     g.R("R221", "10k 1%", 365.76, 104.14, "MUX_OV1", "GND")
     g.R("R222", "44.2k 1%", 398.78, 76.2, "MUX_ILIM", "GND")
     g.C("C215", "100nF", 408.94, 76.2, "MUX_SS", "GND")
@@ -487,7 +489,8 @@ def sheet_power(kdir, sheet_uuid):
     g.text(340.36, 160.02,
            "UNIÓN DE FUENTES (fase 4, docs/fase4-colocacion.md §2). Sustituye al multiplexor único de la fase 2:\n"
            "entre la franja (batería) y el sitio de U13 (USB) no cabe una pista de 1,5-2 A en la placa heredada.\n"
-           "U201 abajo: VBUS -> +5V, ILIM 44,2 k (2,0-3,0 A), OV1 43,2k/10k (5,64 V), SS 100 nF. Entrada única.\n"
+           "U201 abajo: VBUS -> +5V, ILIM 44,2 k (2,0-3,0 A), SS 100 nF. Entrada única. OV1: R221 10 k a GND;\n"
+           "OFF del interruptor: R215 10 k desde VBUS -> OV1 = VBUS/2 > VREF. Sin OVP (fase 5, sin camino para el divisor).\n"
            "U206 arriba: BOOST_5V (4,59 V) -> +5V. Con USB, +5V (~4,8-5,0 V) > BOOST_5V + 70 mV: bloquea.\n"
            "Sin USB conduce sin umbral ni histéresis. El plano +5V de In1 une ambos extremos.")
     g.text(20.32, 20.32, "NEO v2 — bloque nuevo (diseño propio). Cálculos: tools/calc_power_v2.py; "

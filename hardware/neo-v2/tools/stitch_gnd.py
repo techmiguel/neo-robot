@@ -112,6 +112,97 @@ def main(pcb):
     pcbnew.ZONE_FILLER(b2).Fill(b2.Zones())
     pcbnew.SaveBoard(pcb, b2)
     print(f"cosido GND: {added} vías")
+    fixed = pockets(pcb)
+    print(f"bolsas de GND aisladas unidas al plano: {fixed}")
+
+
+def pockets(pcb):
+    """Segunda pasada: busca grupos de cobre GND (relleno incluido) que no estén unidos al grupo
+    principal y pone en cada uno una vía de GND en el primer punto válido de una rejilla fina
+    (0,1 mm). Aquí se admite atravesar zonas internas ajenas (la vía queda rodeada de holgura;
+    no parte el plano)."""
+    import numpy as np
+    from collections import deque
+    sys.path.insert(0, __import__("os").path.dirname(__file__))
+    import route_signals as R
+    total = 0
+    for _ in range(6):
+        board = pcbnew.LoadBoard(pcb)
+        geo = R.Geo(board)
+        mine = [it for it in geo.items if it[1] == "GND"]
+        core = [R.raster([it for it in mine if it[2] != "b"], l, 1e-4) > 0 for l in R.ALL]
+        for k, l in enumerate(R.ALL):
+            core[k] |= R.raster([(ll, n, kd, g[:4]) for ll, n, kd, g in mine if kd == "b" and ll == l], l, 1e-4) > 0
+        for z in board.Zones():
+            if z.GetNetname() == "GND" and not z.GetIsRuleArea():
+                for k, l in enumerate(R.ALL):
+                    if z.IsOnLayer(l):
+                        core[k] |= R.poly_mask(z.GetFilledPolysList(l))
+        link = np.zeros((R.NY, R.NX), bool)
+        for l, n, kd, g in mine:
+            if l == pcbnew.F_Cu and (kd == "c" or (kd == "b" and len(g) == 5 and
+                                                   g[4].GetAttribute() == pcbnew.PAD_ATTRIB_PTH)):
+                link |= R.raster([(l, n, kd, g[:4])], l, 1e-4) > 0
+        lab = np.zeros((4, R.NY, R.NX), np.int32)
+        cur, sizes = 0, {}
+        for l0 in range(4):
+            ys, xs = np.nonzero(core[l0] & (lab[l0] == 0))
+            for j0, i0 in zip(ys, xs):
+                if lab[l0, j0, i0]:
+                    continue
+                cur += 1
+                q = deque([(l0, j0, i0)])
+                lab[l0, j0, i0] = cur
+                n = 0
+                while q:
+                    l, j, i = q.popleft()
+                    n += 1
+                    for dj, di in ((0, 1), (1, 0), (0, -1), (-1, 0)):
+                        jj, ii = j + dj, i + di
+                        if 0 <= jj < R.NY and 0 <= ii < R.NX and core[l][jj, ii] and not lab[l, jj, ii]:
+                            lab[l, jj, ii] = cur
+                            q.append((l, jj, ii))
+                    if link[j, i]:
+                        for l2 in range(4):
+                            if l2 != l and core[l2][j, i] and not lab[l2, j, i]:
+                                lab[l2, j, i] = cur
+                                q.append((l2, j, i))
+                sizes[cur] = n
+        if len(sizes) <= 1:
+            break
+        big = max(sizes, key=sizes.get)
+        # máscara de vía válida: cobre ajeno en las 4 capas, taladros, bordes; zonas internas sí
+        cl, gg = 0.15, 0.05
+        rv = D / 2 + cl + gg
+        via_ok = ~R.hole_mask(geo, DRILL / 2 + 0.25)
+        for k, l in enumerate(R.ALL):
+            via_ok &= (R.raster(geo.items, l, rv) - R.raster(mine, l, rv)) <= 0
+        added = 0
+        for c, n in sizes.items():
+            if c == big or n < 20:
+                continue
+            ls, js, is_ = np.nonzero(lab == c)
+            cand = [(j, i) for l, j, i in zip(ls, js, is_) if l < 2 and via_ok[j, i]]
+            if not cand:
+                print(f"  bolsa sin sitio para vía: x {is_.min() * R.S + R.X0:.1f}, y {js.min() * R.S + R.Y0:.1f}")
+                continue
+            j, i = cand[len(cand) // 2]
+            v = pcbnew.PCB_VIA(board)
+            v.SetPosition(pcbnew.VECTOR2I(MM(float(R.X0 + i * R.S)), MM(float(R.Y0 + j * R.S))))
+            v.SetWidth(MM(D))
+            v.SetDrill(MM(DRILL))
+            v.SetNet(board.FindNet("GND"))
+            board.Add(v)
+            v.thisown = 0
+            added += 1
+        if not added:
+            break
+        total += added
+        pcbnew.SaveBoard(pcb, board)
+        b2 = pcbnew.LoadBoard(pcb)
+        pcbnew.ZONE_FILLER(b2).Fill(b2.Zones())
+        pcbnew.SaveBoard(pcb, b2)
+    return total
 
 
 if __name__ == "__main__":

@@ -54,7 +54,7 @@ PLACEMENT = {
     "C218": (211.5, 21.0, 90, "F"), "C219": (211.5, 26.5, 90, "F"),
     # ---- cargador y NTC (NTC bajo el centro de la celda)
     "U203": (221.0, 25.0, 0, "F"), "C202": (217.5, 21.5, 90, "F"), "C203": (224.5, 21.5, 90, "F"),
-    "R204": (219.0, 29.0, 0, "F"), "R205": (219.0, 30.5, 0, "F"),
+    "R204": (218.5, 24.75, 180, "F"), "R205": (223.5, 24.75, 0, "F"),   # en línea con ISET (pin 2) y VSET (pin 7)
     "R206": (223.5, 29.0, 0, "F"), "R207": (223.5, 30.5, 0, "F"), "RT201": (203.2, 33.0, 0, "F"),
     # ---- medidor de carga
     "U204": (230.0, 31.6, 0, "F"), "C204": (227.0, 33.5, 90, "F"), "R208": (233.0, 34.0, 0, "F"),
@@ -83,7 +83,7 @@ PLACEMENT = {
 # propia neta en cara B (ver place_tps_on_tracks).
 AUTO_TP = ["TP216", "TP217", "TP218", "TP219", "TP220", "TP222", "TP223", "TP224", "TP225",
            "TP226", "TP227", "TP228", "TP229", "TP230", "TP231", "TP232"]
-BOTTOM_CLUSTER = ["C211", "C214", "R220", "R221", "R222", "C215", "R215"]
+BOTTOM_CLUSTER = ["C211", "R221", "R222", "C215", "R215"]
 
 # Regiones de rehacer: el cobre heredado (pistas, vías, gotas) de estas netas que servía al
 # U13 retirado choca con el patillaje del TPS2121 y se borra; se traza de nuevo en la fase 5.
@@ -247,12 +247,6 @@ def update_zones(board, net_of):
             bb = z.GetBoundingBox()
             if pcbnew.ToMM(bb.GetWidth()) > 70:          # zonas GND de placa completa
                 set_rect(z, 160.7, 15.7, 245.7, 109.2)
-    # el original tiene dos zonas de la misma neta (antena ANT2, pad 2) solapadas con la misma
-    # prioridad (error zones_intersect); se sube la menor un nivel: el cobre resultante no cambia
-    ant = [z for z in board.Zones() if z.GetNetname() == "unconnected-(ANT2-Pad2)" and not z.GetIsRuleArea()]
-    if len(ant) == 2 and ant[0].GetAssignedPriority() == ant[1].GetAssignedPriority():
-        small = min(ant, key=lambda z: z.GetBoundingBox().GetArea())
-        small.SetAssignedPriority(small.GetAssignedPriority() + 1)
     # prolongación de +5V en In1 hasta U206 (se funde con la zona +5V existente al rellenar)
     z = pcbnew.ZONE(board)
     z.SetLayer(pcbnew.In1_Cu)
@@ -545,6 +539,12 @@ def main(pcb_in, netlist, pcb_out):
                         p.HitTest(pt) for p in pad_pts if p.GetNetname() == t.GetNetname()):
                     doomed.append(t)
                     break
+        # vías que se quedan sin ninguna pista en un punto que solo servía a huellas retiradas
+        for t in board.GetTracks():
+            if t.Type() == pcbnew.PCB_VIA_T and t.GetNetname() != "GND":   # las de GND cosen planos
+                pt = t.GetPosition()
+                if on_removed_pad(pt) and len(ends.get((pt.x, pt.y), [])) == 1:
+                    doomed.append(t)
         if not doomed:
             break
         for t in doomed:
@@ -553,7 +553,7 @@ def main(pcb_in, netlist, pcb_out):
             stubs += 1
         # el extremo libre del tramo borrado pasa a ser candidato
         for t in doomed:
-            for pt in (t.GetStart(), t.GetEnd()):
+            for pt in ((t.GetPosition(),) if t.Type() == pcbnew.PCB_VIA_T else (t.GetStart(), t.GetEnd())):
                 x, y = pcbnew.ToMM(pt.x), pcbnew.ToMM(pt.y)
                 removed_pads.append((x - 0.01, y - 0.01, x + 0.01, y + 0.01))
 
@@ -642,9 +642,10 @@ BOTTOM_XY = {  # cara B, sitio del antiguo U13; patios comprobados con la DRC (f
     # U201 girado 90°: IN1 (7) y OUT (8) miran arriba, hacia la zona VBUS de B.Cu (izquierda)
     # y el campo de vías +5V heredado (derecha); columna izquierda OV1/OV2/CP2/PR1, derecha
     # ST/ILIM/SS/GND.
-    "C211": (203.0, 99.5, 90), "C214": (205.0, 99.85, 0), "R220": (203.0, 97.7, 0),
-    "R221": (204.6, 103.6, 0), "R222": (206.55, 103.6, 0),
-    "R215": (204.6, 104.55, 0), "C215": (206.55, 104.55, 0),
+    "C211": (203.0, 99.5, 90),
+    "R221": (204.6, 103.6, 0), "R215": (204.6, 104.55, 0),
+    # SS (pin 11) y ILIM (pin 10) salen apilados por la derecha: C215 dentro, R222 fuera (fase 5)
+    "C215": (206.3, 103.75, 270), "R222": (207.3, 103.75, 270),
 }
 
 if __name__ == "__main__":
