@@ -4,6 +4,7 @@
 | U202 TPS61022 | `Texas_RWU0007A_VQFN-7_2x2mm_P0.5mm` | TI SLVSDX7D p.26, RWU0007A | 0.000 mm (rot. 0°) | KiCad estándar; coincide con el dibujo de TI cota a cota |
 | U203 BQ25170 | `Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias` | TI SLUSDJ8A p.33, DSG0008A | 0.000 mm (rot. 0°) | KiCad estándar; pads 0,6 mm frente a 0,5 de TI (más largos hacia fuera) |
 | U204 MAX17048 | `TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm` | Maxim 21-0168 (T822+3) — NO accesible | 0.050 mm (rot. 270°) | Verificada solo por concordancia con LCSC; dibujo original sin consultar |
+| U206 LM66200 | `SOT-583-8` | TI SLVSG04, land pattern DRL0008A 4224486/G 11/2024 | 0.100 mm (rot. 270°) | KiCad estándar; coincide con TI (8x 0,67 x 0,3 mm, paso 0,5, filas a 1,48 mm). LCSC usa filas a 1,6 mm |
 | U205 DW01A | `SOT-23-6` | PUOLOP DW01A rev. B, SOT-23-6 | 0.012 mm (rot. 270°) | KiCad estándar |
 | Q201/Q202 FS8205A | `SOT-23-6` | Fuxinsemi FS8205A Ver2.1, SOT-23-6L | 0.213 mm (rot. 180°) | KiCad estándar; LCSC usa filas a ±1,35 frente a ±1,14 (ambas cubren el terminal) |
 | Q203 CSD25402Q3A | `TI_DNH0008A_VSONP-8_3.3x3.3mm_P0.65mm` | TI land pattern DNH0008A 4222499/C 02/2025 | 1.201 mm (rot. 270°); pads solo LCSC ['6', '7', '8', '9'] | Huella propia: la NexFET de KiCad viene de otro dibujo (CSD87334Q3D). LCSC numera 5-8 y 9 por separado; yo los uno en el pad 5 (S). Comparación manual: pads 1-4 Δ 0,05 mm, pad S Δ ≤ 0,2 mm |

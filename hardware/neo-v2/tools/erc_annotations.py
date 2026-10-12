@@ -66,7 +66,7 @@ def lib_block(kdir):
 
 
 def flag(sheet_uuid, n, x, y, rot, why):
-    ref = f"#FLG9{n:02d}"
+    ref = f"#FLG95{n:02d}"     # numeración aparte de la del generador (#FLG0401…#FLG09xx)
     vy = y - 3.81 if rot == 0 else y + 3.81
     hid = "(effects (font (size 1.27 1.27)) (hide yes))"
     return (f'\t(symbol (lib_id "power:PWR_FLAG") (at {x:.2f} {y:.2f} {rot}) (unit 1) (exclude_from_sim no) '

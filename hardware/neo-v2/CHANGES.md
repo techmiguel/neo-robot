@@ -62,3 +62,16 @@ El detalle está en `docs/fase3-esquematico.md`.
 | PCB, limpieza | También se quitan las vías (no GND) que solo servían a huellas retiradas (VBUS del antiguo R64) | Vía colgante heredada del U13 |
 | PCB | Ruteo de los bloques nuevos: `route_power.py` (potencia, a mano), `route_signals.py` (router A* propio), `stitch_gnd.py` (cosido) | Ver `docs/fase5-ruteo.md`. Freerouting se probó y se descartó |
 | Proyecto | Exclusiones de DRC comentadas para cuatro solapes de patio, el cortocircuito intencionado de la antena ANT2 y las dos zonas superpuestas de su pad 2, todo del original (`drc_exclusions.py`) | DRC sin errores sin tocar el layout heredado |
+
+## Fase 6 (fabricación)
+
+| Ámbito | Cambio | Motivo |
+|---|---|---|
+| PCB, serigrafía | Referencias de los pasivos e integrados nuevos a F.Fab/B.Fab; las de puntos de prueba, conectores, interruptores y portapilas se recolocan sin solapes (`tools/silk_cleanup.py`) | Mismo criterio que el original, que no imprime referencias |
+| PCB, serigrafía | La tabla de apilado y las notas que el original dibuja en F.Silkscreen fuera del contorno pasan a Cmts.User | Que no lleguen al Gerber de serigrafía |
+| PCB, serigrafía | Aviso de origen y licencia en la cara B | Atribución a Nabu Casa y licencia CERN-OHL-P v2 en la propia placa |
+| BOM de fabricación | 15 piezas heredadas sustituidas por equivalentes disponibles en JLCPCB y 5 consignadas (ANT2, J1, SW1, SW2, USB1); C97 y R4 cambian de código por stock (`tools/jlc_bom.py`, tabla `SUBST`) | Sin stock o sin la referencia original en JLCPCB. Las hojas de Nabu Casa no cambian: la sustitución solo existe en la BOM |
+| XMOS, ESP32, DAC, Power, LED & Connector | Referencias de las PWR_FLAG de `erc_annotations.py` renumeradas a `#FLG95xx` | Chocaban con las del generador (#FLG901 = #FLG0901) y el ERC daba un aviso de anotación |
+
+Detalle, lista de revisión previa al pedido y riesgos residuales en `docs/fase6-fabricacion.md`.
+

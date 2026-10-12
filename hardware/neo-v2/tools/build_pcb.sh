@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# build_pcb.sh — Reconstruye kicad/NEO_v2.kicad_pcb desde el PCB original de Nabu Casa (fases 4 y 5).
+# build_pcb.sh — Reconstruye kicad/NEO_v2.kicad_pcb desde el PCB original de Nabu Casa (fases 4 a 6).
 #
 #   1. update_pcb.py       PCB original + netlist -> contorno, huellas, colocación, zonas
 #   2. route_power.py      caminos de potencia y lazos críticos trazados a mano
 #   3. route_signals.py    router A* propio para las conexiones pendientes (semilla 0)
 #   4. stitch_gnd.py       cosido de GND en la franja y unión de bolsas de GND aisladas
-#   5. drc_exclusions.py   exclusiones comentadas de los errores heredados del original
-#   6. DRC con paridad de esquemático: debe terminar sin violaciones ni conexiones pendientes
+#   5. silk_cleanup.py     serigrafía de los bloques nuevos y aviso de licencia (fase 6)
+#   6. drc_exclusions.py   exclusiones comentadas de los errores heredados del original
+#   7. DRC con paridad de esquemático: debe terminar sin violaciones ni conexiones pendientes
+# Después, tools/fab_outputs.py genera el paquete de fabricación en production/.
 #
 # Todo es determinista. SaveBoard reescribe el .kicad_pro que hay junto al PCB, así que se guarda
 # una copia y se restaura antes de escribir las exclusiones.
@@ -34,6 +36,7 @@ $PY tools/route_signals.py kicad/NEO_v2.kicad_pcb "$W/drc1.json" kicad/NEO_v2.ki
 cp "$W/pro.bak" kicad/NEO_v2.kicad_pro
 $PY tools/stitch_gnd.py kicad/NEO_v2.kicad_pcb
 cp "$W/pro.bak" kicad/NEO_v2.kicad_pro
+$PY tools/silk_cleanup.py kicad/NEO_v2.kicad_pcb
 kicad-cli pcb drc --format json -o "$W/drc2.json" kicad/NEO_v2.kicad_pcb || true
 $PY tools/drc_exclusions.py kicad/NEO_v2.kicad_pcb "$W/drc2.json"
 kicad-cli pcb drc --schematic-parity --exit-code-violations -o "$W/drc_final.rpt" kicad/NEO_v2.kicad_pcb

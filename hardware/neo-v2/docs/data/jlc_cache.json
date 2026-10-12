@@ -1,0 +1,3273 @@
+{
+ "fecha": "2026-10-12",
+ "consultas": {
+  "M01-X01210U230": [],
+  "BH-18650-PC": [
+   {
+    "componentCode": "C5339083",
+    "componentModelEn": "BH-18650-PC",
+    "componentBrandEn": "MPD (Memory Protection Devices)",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "-40℃~+180℃ 18650 Battery holder - Button And Strip Battery Connector ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0402KRX7R8BB104": [
+   {
+    "componentCode": "C105883",
+    "componentModelEn": "CC0402KRX7R8BB104",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 2083916,
+    "componentSpecificationEn": "0402",
+    "describe": "100nF 25V X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0402JRNPO9BN200": [
+   {
+    "componentCode": "C107000",
+    "componentModelEn": "CC0402JRNPO9BN200",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 1921756,
+    "componentSpecificationEn": "0402",
+    "describe": "20pF 50V NP0 ±5% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0402CRNPO9BN2R4": [
+   {
+    "componentCode": "C260623",
+    "componentModelEn": "CC0402CRNPO9BN2R4",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 17497,
+    "componentSpecificationEn": "0402",
+    "describe": "2.4pF 50V NP0 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0603KRX7R6BB225": [
+   {
+    "componentCode": "C513691",
+    "componentModelEn": "CC0603KRX7R6BB225",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 385457,
+    "componentSpecificationEn": "0603",
+    "describe": "10V 2.2uF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CL10A106KP8NNNC": [
+   {
+    "componentCode": "C5137565",
+    "componentModelEn": "FCC0603X106K100CT",
+    "componentBrandEn": "FOJAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1110886,
+    "componentSpecificationEn": "0603",
+    "describe": "10V 10uF X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C19702",
+    "componentModelEn": "CL10A106KP8NNNC",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 10303382,
+    "componentSpecificationEn": "0603",
+    "describe": "10V 10uF X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900097452",
+    "componentModelEn": "CL10A106KP8NNNC",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0603",
+    "describe": "0603 New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900221729",
+    "componentModelEn": "CL10A106KP8NNNC",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0603",
+    "describe": "0603 SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C3445921",
+    "componentModelEn": "CL10A106KP8NNNC-YJLTY",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0603",
+    "describe": "0603 New Arrivals ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CL31A476MPHNNNE": [
+   {
+    "componentCode": "C96123",
+    "componentModelEn": "CL31A476MPHNNNE",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 388590,
+    "componentSpecificationEn": "1206",
+    "describe": "10V 47uF X5R ±20% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900145373",
+    "componentModelEn": "CL31A476MPHNNNE",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "1206",
+    "describe": "1206 New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C3039704",
+    "componentModelEn": "CL31A476MPHNNNE/WE",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "1206",
+    "describe": "10V 47uF X5R 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0402FRNPO9BN101": [
+   {
+    "componentCode": "C327198",
+    "componentModelEn": "CC0402FRNPO9BN101",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 242870,
+    "componentSpecificationEn": "0402",
+    "describe": "100pF 50V NP0 ±1% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CL21A226MAYNNNE": [
+   {
+    "componentCode": "C602037",
+    "componentModelEn": "CL21A226MAYNNNE",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "expand",
+    "stockCount": 557960,
+    "componentSpecificationEn": "0805",
+    "describe": "22uF 25V X5R ±20% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0603KRX7R9BB104": [
+   {
+    "componentCode": "C14663",
+    "componentModelEn": "CC0603KRX7R9BB104",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "base",
+    "stockCount": 56334567,
+    "componentSpecificationEn": "0603",
+    "describe": "100nF 50V X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900097451",
+    "componentModelEn": "CC0603KRX7R9BB104",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0603",
+    "describe": "0603 New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900299837",
+    "componentModelEn": "CC0603KRX7R9BB104",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0603",
+    "describe": "0603 SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900018395",
+    "componentModelEn": "CC0603KRX7R9BB104-YJLTY",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "C0603",
+    "describe": "R0603 SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0402KRX7R9BB103": [
+   {
+    "componentCode": "C60133",
+    "componentModelEn": "CC0402KRX7R9BB103",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 6902001,
+    "componentSpecificationEn": "0402",
+    "describe": "10nF 50V X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C327415",
+    "componentModelEn": "CC0402KRX7R9BB103P",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0402",
+    "describe": "10nF 50V X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CL10A226MQ8NRNC": [
+   {
+    "componentCode": "C59461",
+    "componentModelEn": "CL10A226MQ8NRNC",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 7591637,
+    "componentSpecificationEn": "0603",
+    "describe": "22uF 6.3V X5R ±20% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900273674",
+    "componentModelEn": "CL10A226MQ8NRNC",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0603",
+    "describe": "0603 SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CL05A105KP5NNNC": [
+   {
+    "componentCode": "C5137473",
+    "componentModelEn": "FCC0402X105K100AT",
+    "componentBrandEn": "FOJAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1649586,
+    "componentSpecificationEn": "0402",
+    "describe": "10V 1uF X5R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C14445",
+    "componentModelEn": "CL05A105KP5NNNC",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "expand",
+    "stockCount": 1141678,
+    "componentSpecificationEn": "0402",
+    "describe": "10V 1uF X5R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "LQP03TN4N3H02D": [
+   {
+    "componentCode": "C162620",
+    "componentModelEn": "LQP03TN4N3H02D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 17976,
+    "componentSpecificationEn": "0201",
+    "describe": "14@500MHz 350mA 4.3nH 400mΩ 5.3GHz Thick Film Inductor ±3% 0201 Inductors (SMD) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0402JRNPO9BN120": [
+   {
+    "componentCode": "C106201",
+    "componentModelEn": "CC0402JRNPO9BN120",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 2785180,
+    "componentSpecificationEn": "0402",
+    "describe": "12pF 50V NP0 ±5% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0402JRNPO9BN121": [
+   {
+    "componentCode": "C106996",
+    "componentModelEn": "CC0402JRNPO9BN121",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 657034,
+    "componentSpecificationEn": "0402",
+    "describe": "120pF 50V NP0 ±5% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0402JRNPO9BN220": [
+   {
+    "componentCode": "C106203",
+    "componentModelEn": "CC0402JRNPO9BN220",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 3041026,
+    "componentSpecificationEn": "0402",
+    "describe": "22pF 50V NP0 ±5% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC1206KKX7RCBB102": [
+   {
+    "componentCode": "C107191",
+    "componentModelEn": "CC1206KKX7RCBB102",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 427810,
+    "componentSpecificationEn": "1206",
+    "describe": "1kV 1nF X7R ±10% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "GRM0335C1HR80BA01D": [
+   {
+    "componentCode": "C161450",
+    "componentModelEn": "GRM0335C1HR80BA01D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 5307,
+    "componentSpecificationEn": "0201",
+    "describe": "0.8pF 50V C0G 0201 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CC0201CRNPO9BN1R2": [
+   {
+    "componentCode": "C277487",
+    "componentModelEn": "CC0201CRNPO9BN1R2",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 8,
+    "componentSpecificationEn": "0201",
+    "describe": "1.2pF 50V NP0 0201 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C1525": [
+   {
+    "componentCode": "C1525",
+    "componentModelEn": "CL05B104KO5NNNC",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 24489119,
+    "componentSpecificationEn": "0402",
+    "describe": "100nF 16V X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C3186512",
+    "componentModelEn": "UC1525BJ",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 3,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-55℃~+125℃ 100Hz~400kHz 14mA 2 8V~35V Boost、Flyback、Forward、Push-Pull、Full-Bridge、Half-Bridge Cycle-by-cycle current limiting、Frequency synchronization External Yes DIP-16 AC-DC Controllers and Regulators ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C22427536",
+    "componentModelEn": "UC1525AJ",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 5,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-55℃~+125℃ 100Hz~400kHz 2 20mA 500mA 8V~35V External Push-Pull DIP-16 DC-DC Converters ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C35849606",
+    "componentModelEn": "UC1525AL",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 6,
+    "componentSpecificationEn": "LCCC-20",
+    "describe": "LCCC-20 AC-DC Controllers and Regulators ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C22451596",
+    "componentModelEn": "UC1525AL883B",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 5,
+    "componentSpecificationEn": "LCCC-20(8.9x8.9)",
+    "describe": "-55℃~+125℃ 100Hz~400kHz 49% 8V~35V Push-Pull LCCC-20(8.9x8.9) AC-DC Controllers and Regulators ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2949389",
+    "componentModelEn": "CY7C1525V18-200BZC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 72Mbit 750mA Parallel Port (Parallel) LBGA-165 SRAM",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2949388",
+    "componentModelEn": "CY7C1525V18-200BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2949391",
+    "componentModelEn": "CY7C1525KV18-333BZC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 290mA 72Mbit 790mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2949392",
+    "componentModelEn": "CY7C1525KV18-300BZC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 72Mbit 730mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2949395",
+    "componentModelEn": "CY7C1525JV18-250BZC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2949390",
+    "componentModelEn": "CY7C1525KV18-333BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "FBGA-165(13x15)",
+    "describe": "0℃~+70℃ 1.7V~1.9V 290mA 72Mbit 790mA Parallel Port (Parallel) FBGA-165(13x15) SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2949393",
+    "componentModelEn": "CY7C1525KV18-250BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 640mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2949394",
+    "componentModelEn": "CY7C1525JV18-250BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2950628",
+    "componentModelEn": "CY7C1525KV18-300BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 280mA 72Mbit 730mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2952839",
+    "componentModelEn": "CY7C1525KV18-250BZXIT",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "FBGA-165(13x15)",
+    "describe": "-40℃~+85℃ 1.7V~1.9V 270mA 640mA 72Mbit Parallel Port (Parallel) FBGA-165(13x15) SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2955032",
+    "componentModelEn": "CY7C1525JV18-250BZCES",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "FBGA-165(15x17)",
+    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) FBGA-165(15x17) SRAM ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C20291151",
+    "componentModelEn": "DSC1525JL2A-24M00000T",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Programmable Oscillators ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C20291152",
+    "componentModelEn": "DSC1525JL2A-25M00000T",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Programmable Oscillators ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C20291153",
+    "componentModelEn": "DSC1525JL2A-27M00000T",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Programmable Oscillators ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C20291154",
+    "componentModelEn": "DSC1525JL2A-50M00000T",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Programmable Oscillators ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C52923": [
+   {
+    "componentCode": "C52923",
+    "componentModelEn": "CL05A105KA5NQNC",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 7472406,
+    "componentSpecificationEn": "0402",
+    "describe": "1uF 25V X5R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C45783": [
+   {
+    "componentCode": "C45783",
+    "componentModelEn": "CL21A226MAQNNNE",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 3684209,
+    "componentSpecificationEn": "0805",
+    "describe": "22uF 25V X5R ±20% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C19702": [
+   {
+    "componentCode": "C19702",
+    "componentModelEn": "CL10A106KP8NNNC",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 10303382,
+    "componentSpecificationEn": "0603",
+    "describe": "10V 10uF X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "ESDPSA0402V05": [
+   {
+    "componentCode": "C2875437",
+    "componentModelEn": "ESDPSA0402V05",
+    "componentBrandEn": "Semitel",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "DFN1006-2L",
+    "describe": "-55℃~+125℃ 0.05pF 1 100nA 35V 5V Bidirectional ESD DFN1006-2L ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7496591",
+    "componentModelEn": "SLESDPSA0402V05",
+    "componentBrandEn": "Slkor(SLKORMICRO Elec.)",
+    "componentLibraryType": "expand",
+    "stockCount": 11495,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+125℃ 0.05pF 1 10nA 40V 5V Bidirectional ESD IEC 61000-4-2 0402 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "TPD1E10B06DPYR": [
+   {
+    "componentCode": "C48260",
+    "componentModelEn": "TPD1E10B06DPYR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 299361,
+    "componentSpecificationEn": "X1-SON-2(0.6x1)",
+    "describe": "-40℃~+125℃ 1 100nA 12pF 14V 5.5V 6A@8/20us 6V 90W@8/20us Bidirectional ESD IEC 61000-4-2 X1-SON-2(0.6x1) ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C558445",
+    "componentModelEn": "TPD1E10B06DPYR-TP",
+    "componentBrandEn": "TECH PUBLIC",
+    "componentLibraryType": "expand",
+    "stockCount": 10326,
+    "componentSpecificationEn": "DFN1006-2",
+    "describe": "1 15pF 200nA 5V 7A@8/20us 9V 9V Bidirectional IEC 61000-4-2、IEC 61000-4-4 DFN1006-2 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C915611",
+    "componentModelEn": "FS05BDF",
+    "componentBrandEn": "FUXINSEMI",
+    "componentLibraryType": "expand",
+    "stockCount": 4596,
+    "componentSpecificationEn": "DFN1006-2",
+    "describe": "-55℃~+125℃ 1 10V 12pF 1uA 5.5A 55W 5V 8V Bidirectional ESD IEC 61000-4-2、IEC 61000-4-5 DFN1006-2 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2929226",
+    "componentModelEn": "TPD1E10B06DPYR-N",
+    "componentBrandEn": "BORN",
+    "componentLibraryType": "expand",
+    "stockCount": 5932,
+    "componentSpecificationEn": "DFN1006-2",
+    "describe": "100W@8/20us 100nA 12V 18pF 5V 6.5V 8A@8/20us Bidirectional ESD IEC 61000-4-2、IEC 61000-4-5、IEC 61000-4-4 DFN1006-2 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2937015",
+    "componentModelEn": "TPD1E10B06DPYR",
+    "componentBrandEn": "TECH PUBLIC",
+    "componentLibraryType": "expand",
+    "stockCount": 20634,
+    "componentSpecificationEn": "DFN1006-2(0402)",
+    "describe": "-55℃~+125℃ 15pF 5V 6V、10V 8.4V 80W@8/20us 80nA 8A@8/20us IEC 61000-4-2、IEC 61000-4-5 DFN1006-2(0402) ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2972450",
+    "componentModelEn": "TPD1E10B06DPYR",
+    "componentBrandEn": "Leiditech",
+    "componentLibraryType": "expand",
+    "stockCount": 7048,
+    "componentSpecificationEn": "DFN1006-2",
+    "describe": "-55℃~+125℃ 12.5V 15pF 5V 6V 6uA 80W@8/20us ESD IEC 61000-4-2、IEC 61000-4-5 DFN1006-2 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2987697",
+    "componentModelEn": "TPD1E10B06DPYR(UMW)",
+    "componentBrandEn": "UMW(Youtai Semiconductor Co., Ltd.)",
+    "componentLibraryType": "expand",
+    "stockCount": 68025,
+    "componentSpecificationEn": "X1-SON-2(0.6x1)",
+    "describe": "-40℃~+125℃ 100nA 12pF 14V 5.5V 6A@8/20us 6V 90W@8/20us ESD IEC 61000-4-2 X1-SON-2(0.6x1) ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5199245",
+    "componentModelEn": "TPD1E10B06DPYR-ES",
+    "componentBrandEn": "ElecSuper",
+    "componentLibraryType": "expand",
+    "stockCount": 3415,
+    "componentSpecificationEn": "DFN1006-2L",
+    "describe": "-40℃~+125℃ 1 10V 10pF 1uA 5V 60W 6A 6V Bidirectional ESD IEC 61000-4-2 DFN1006-2L ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5331093",
+    "componentModelEn": "TPD1E10B06DPYR-MS",
+    "componentBrandEn": "MSKSEMI",
+    "componentLibraryType": "expand",
+    "stockCount": 4866,
+    "componentSpecificationEn": "X1-SON-2",
+    "describe": "-55℃~+125℃ 12pF 15V 5.8V 5A@8/20us 5V 80W@8/20us ESD IEC 61000-4-2、IEC 61000-4-4 X1-SON-2 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "LRB520S-30T1G": [
+   {
+    "componentCode": "C83680",
+    "componentModelEn": "LRB520S-30T1G",
+    "componentBrandEn": "LRC",
+    "componentLibraryType": "expand",
+    "stockCount": 13995,
+    "componentSpecificationEn": "SOD-523",
+    "describe": "1 Independent 1A 1uA 200mA 30V 600mV SOD-523 Schottky Diodes ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C52204749",
+    "componentModelEn": "LRB520S-30T1G",
+    "componentBrandEn": "LRC",
+    "componentLibraryType": "expand",
+    "stockCount": 65806,
+    "componentSpecificationEn": "SOD-523",
+    "describe": "1 Independent 1A 1uA@10V 200mA 30V 600mV@200mA SOD-523 Schottky Diodes ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C20415729",
+    "componentModelEn": "S-LRB520S-30T1G",
+    "componentBrandEn": "LRC",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOD-523",
+    "describe": "-55℃~+125℃ 1 Independent 1A 1uA@10V 200mA 30V 600mV@200mA SOD-523 Schottky Diodes ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "SMF5.0CA": [
+   {
+    "componentCode": "C169425",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "Shandong Jingdao Microelectronics",
+    "componentLibraryType": "expand",
+    "stockCount": 91154,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 200W@10/1000us 21.7A@10/1000us 450uA 5V 7V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C283867",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "DOWO",
+    "componentLibraryType": "expand",
+    "stockCount": 6324,
+    "componentSpecificationEn": "SOD-123",
+    "describe": "-55℃~+150℃ 1kW@8/20us 21.74A 400uA 5V 6.4V 9.2V Bidirectional TVS SOD-123 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C320548",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "LGE",
+    "componentLibraryType": "expand",
+    "stockCount": 2195,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 1kW@8/20us 21.74A 400uA 5V 6.4V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C340702",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "Yangzhou Yangjie Elec Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 20273,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 200W@10/1000us 21.74A@10/1000us 400uA 5V 7.07V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C364279",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "MDD(Microdiode Semiconductor)",
+    "componentLibraryType": "expand",
+    "stockCount": 138386,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 200W 21.7A 400uA 5V 7V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C399251",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "SUNMATE Elec",
+    "componentLibraryType": "expand",
+    "stockCount": 3,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 200W@10/1000us 400uA 7V 8V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C435453",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "AnBon",
+    "componentLibraryType": "expand",
+    "stockCount": 46913,
+    "componentSpecificationEn": "SOD-123",
+    "describe": "-55℃~+150℃ 1 200W@10/1000us 21.7A 5V 6.4V 800uA 9.2V Bidirectional TVS SOD-123 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C726939",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "TWGMC",
+    "componentLibraryType": "expand",
+    "stockCount": 42298,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 1 200W@10/1000us 200uA 21.7A@10/1000us 5V 7V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C908214",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "FUXINSEMI",
+    "componentLibraryType": "expand",
+    "stockCount": 165377,
+    "componentSpecificationEn": "SOD-123",
+    "describe": "-55℃~+150℃ 1 200W@10/1000us 21.7A 5V 6.4V 800uA 9.2V Bidirectional IEC 61000-4-2 TVS SOD-123 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C908370",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "SEMIWARE",
+    "componentLibraryType": "expand",
+    "stockCount": 34,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 200W@10/1000us 21.7A@10/1000us 5V 7V 800uA 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C914432",
+    "componentModelEn": "SMF5.0CA-TP",
+    "componentBrandEn": "MCC(Micro Commercial Components)",
+    "componentLibraryType": "expand",
+    "stockCount": 31700,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-65℃~+175℃ 1 200W 21.7A 400uA 5V 6.4V 9.2V Bidirectional IEC 61000-4-2 TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C920175",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "Slkor(SLKORMICRO Elec.)",
+    "componentLibraryType": "expand",
+    "stockCount": 9799,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "200W@10/1000us 21.7A 400uA 5V 7V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C1509576",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+    "componentLibraryType": "expand",
+    "stockCount": 29035,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "200W@10/1000us 21.7A@10/1000us 5V 7V 800uA 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C1851363",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "Littelfuse",
+    "componentLibraryType": "expand",
+    "stockCount": 3760,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-65℃~+150℃ 1kW@8/20us 21.7V 400A@10/1000us 400uA 5V 7V Bidirectional IEC 61000-4-2、IEC 61000-4-4 TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2683628",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "ZHIDE",
+    "componentLibraryType": "expand",
+    "stockCount": 706,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 10V 225W@10/1000us 24.5A@10/1000us 5V 7V 800uA Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2759875",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "Leiditech",
+    "componentLibraryType": "expand",
+    "stockCount": 1285,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+125℃ 150uA 21.7A 5V 6.4V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2857315",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "JSMSEMI",
+    "componentLibraryType": "expand",
+    "stockCount": 60949,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 1 200W@10/1000us 200uA 21.7A 5V 7V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2890454",
+    "componentModelEn": "SMF5.0CAL",
+    "componentBrandEn": "Jiangsu JieJie Microelectronics",
+    "componentLibraryType": "expand",
+    "stockCount": 2882,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "120uA 40.1A@10/1000us 400W@10/1000us 5V 7V 9.2V Bidirectional IEC 61000-4-2 TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2891479",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "MSKSEMI",
+    "componentLibraryType": "expand",
+    "stockCount": 2829,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "200W 21.7A 400uA 5V 6.4V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2905636",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "TECH PUBLIC",
+    "componentLibraryType": "expand",
+    "stockCount": 3563,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 200W@10/1000us 21.7A 400uA 5V 7V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2925491",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "Liown",
+    "componentLibraryType": "expand",
+    "stockCount": 5415,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 1 200W 21.8A 500uA 5V 6.4V 9.2V Bidirectional IEC 61000-4-2 TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2980402",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "GOODWORK",
+    "componentLibraryType": "expand",
+    "stockCount": 325484,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 200W 21.7A 400uA 5V 6.4V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2985633",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "KUU",
+    "componentLibraryType": "expand",
+    "stockCount": 5106,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 1 200W@10/1000us 21.7A 400uA 5V 7V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C3035813",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "PAKER",
+    "componentLibraryType": "expand",
+    "stockCount": 247,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 1 200W@10/1000us 21.7A@10/1000us 400uA 5V 6.4V 9.2V Bidirectional TVS SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C4749140",
+    "componentModelEn": "SMF5.0CA",
+    "componentBrandEn": "Jiangsu JieJie Microelectronics",
+    "componentLibraryType": "expand",
+    "stockCount": 5605,
+    "componentSpecificationEn": "SOD-123FL",
+    "describe": "-55℃~+150℃ 100uA@5.0V 3.5V@20A 5V SOD-123FL ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C19829541": [
+   {
+    "componentCode": "C19829541",
+    "componentModelEn": "TPD1E04U04DPYR",
+    "componentBrandEn": "TECH PUBLIC",
+    "componentLibraryType": "expand",
+    "stockCount": 10664,
+    "componentSpecificationEn": "DFN1006-2",
+    "describe": "-55℃~+125℃ 0.45pF 1 15V 3.3V 4.2V 4A@8/20us 60W@8/20us 80nA IEC 61000-4-2、IEC 61000-4-5 TVS Unidirectional DFN1006-2 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "BLM18PG121SN1D": [
+   {
+    "componentCode": "C14709",
+    "componentModelEn": "BLM18PG121SN1D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "base",
+    "stockCount": 1481559,
+    "componentSpecificationEn": "0603",
+    "describe": "-55℃~+125℃ 1 120Ω@100MHz 2A 50mΩ ±25% 0603 Ferrite Beads ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C73100",
+    "componentModelEn": "BLM18PG121SN1D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0603",
+    "describe": "0603 Ferrite Beads ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900207011",
+    "componentModelEn": "BLM18PG121SN1D-YJLTY",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0603",
+    "describe": "0603 SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "BLM18AG121SN1D": [
+   {
+    "componentCode": "C76892",
+    "componentModelEn": "BLM18AG121SN1D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 86751,
+    "componentSpecificationEn": "0603",
+    "describe": "-55℃~+125℃ 1 120Ω@100MHz 180mΩ 800mA ±25% 0603 Ferrite Beads ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "BLM18AG601SN1D": [
+   {
+    "componentCode": "C19330",
+    "componentModelEn": "BLM18AG601SN1D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 537507,
+    "componentSpecificationEn": "0603",
+    "describe": "-55℃~+125℃ 1 380mΩ 500mA 600Ω@100MHz ±25% 0603 Ferrite Beads ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "SMD1206R200SF": [
+   {
+    "componentCode": "C50199643",
+    "componentModelEn": "SMD1206R200SF16V",
+    "componentBrandEn": "DARONG",
+    "componentLibraryType": "expand",
+    "stockCount": 6750,
+    "componentSpecificationEn": "1206",
+    "describe": "-40℃~+85℃ 1.5Ω 1.6mm 16V 2A 3.2mm 3.5A 35A 800mW 8s 1206 Resettable Fuses ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C14709": [
+   {
+    "componentCode": "C14709",
+    "componentModelEn": "BLM18PG121SN1D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "base",
+    "stockCount": 1481559,
+    "componentSpecificationEn": "0603",
+    "describe": "-55℃~+125℃ 1 120Ω@100MHz 2A 50mΩ ±25% 0603 Ferrite Beads ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "WY-3315": [],
+  "C492403": [
+   {
+    "componentCode": "C492403",
+    "componentModelEn": "PZ254V-11-04P",
+    "componentBrandEn": "XFCN",
+    "componentLibraryType": "expand",
+    "stockCount": 58642,
+    "componentSpecificationEn": "Plugin,P=2.54mm",
+    "describe": "-40℃~+105℃ 1 1x4P 2.54mm 2.5mm 250V 3A 3mm 4P 6.1mm Black Brass Gold Square pin Through Hole Plugin,P=2.54mm Pin Headers ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "WPN201610MR47MT": [
+   {
+    "componentCode": "C97014",
+    "componentModelEn": "WPN201610MR47MT",
+    "componentBrandEn": "Sunlord",
+    "componentLibraryType": "expand",
+    "stockCount": 1507,
+    "componentSpecificationEn": "0806",
+    "describe": "3A 44mΩ 470nH 5.2A ±20% 0806 Power Inductors ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "WPN201610U1R0MTY01": [
+   {
+    "componentCode": "C395545",
+    "componentModelEn": "WPN201610U1R0MTY01",
+    "componentBrandEn": "Sunlord",
+    "componentLibraryType": "expand",
+    "stockCount": 1127,
+    "componentSpecificationEn": "0806",
+    "describe": "1uH 3.1A 3.8A 50mΩ ±20% 0806 Power Inductors ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CQ0201BRNPO8BN3R3": [
+   {
+    "componentCode": "C2208907",
+    "componentModelEn": "CQ0201BRNPO8BN3R3",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0201",
+    "describe": "25V 3.3pF NP0 0201 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "LQW15AN2N2C10D": [
+   {
+    "componentCode": "C91240",
+    "componentModelEn": "LQW15AN2N2C10D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 5816,
+    "componentSpecificationEn": "0402",
+    "describe": "1A 2.2nH 27mΩ Wire-wound inductor 0402 Power Inductors ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "LQP03TQ2N2B02D": [
+   {
+    "componentCode": "C2041850",
+    "componentModelEn": "LQP03TQ2N2B02D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0201",
+    "describe": "11GHz 120mΩ 17@500MHz 2.2nH 650mA 0201 Inductors (SMD) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C3040349": [
+   {
+    "componentCode": "C3040349",
+    "componentModelEn": "FAUL0630-1R0MT",
+    "componentBrandEn": "cjiang (Changjiang Microelectronics Tech)",
+    "componentLibraryType": "expand",
+    "stockCount": 1266,
+    "componentSpecificationEn": "SMD,7x6.6mm",
+    "describe": "12A 15A 1uH 7.4mΩ ±20% SMD,7x6.6mm Molding Power Inductors ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "WS2812B-2020": [
+   {
+    "componentCode": "C965555",
+    "componentModelEn": "WS2812B-2020",
+    "componentBrandEn": "Worldsemi",
+    "componentLibraryType": "expand",
+    "stockCount": 1,
+    "componentSpecificationEn": "SMD,2.2x2mm",
+    "describe": "0.84mm 200mcd、520mcd、160mcd 2kHz 5V 800Kbit/s Built-in power-on reset circuit、Built-in power-on reset circuit、Integrated intelligent reverse connection protection function R:622.5nm、G:515.6nm、B:470.4nm Top-mount SMD,2.2x2mm RGB LEDs(Built-in IC) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900183990",
+    "componentModelEn": "WS2812B-2020",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,2x1.8mm",
+    "describe": "SMD,2x1.8mm SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900219148",
+    "componentModelEn": "WS2812B-2020",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,2.2x2mm",
+    "describe": "SMD,2.2x2mm SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900297362",
+    "componentModelEn": "WS2812B-2020",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LED-SMD_4P-L2.0-W2.0-TL_WS2812B-2020",
+    "describe": "LED-SMD_4P-L2.0-W2.0-TL_WS2812B-2020 SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C56205538",
+    "componentModelEn": "WS2812B-2020",
+    "componentBrandEn": "TUOZHAN",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "SMD SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C52917434",
+    "componentModelEn": "WS2812B-2020-V6",
+    "componentBrandEn": "Worldsemi",
+    "componentLibraryType": "expand",
+    "stockCount": 984243,
+    "componentSpecificationEn": "SMD2020-4P",
+    "describe": "-40℃~+85℃ 0.84mm 120us 160mcd 1uA 200mcd 2kHz 2mm 2mm 3.3V~5.3V 300ns 465nm~470nm 515nm~520nm 520mcd 620nm~625nm 800Kbit/s Built-in power-on reset circuit、Built-in power-on reset circuit、Integrated intelligent reverse connection protection function SMD2020-4P RGB LEDs(Built-in IC) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900309949",
+    "componentModelEn": "WS2812B-2020-V6",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "SMD SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900091551",
+    "componentModelEn": "LED-WS2812B-2020",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "2020",
+    "describe": "2020 New Arrivals ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "CJ3407": [
+   {
+    "componentCode": "C15903",
+    "componentModelEn": "CJ3407",
+    "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+    "componentLibraryType": "expand",
+    "stockCount": 103803,
+    "componentSpecificationEn": "SOT-23",
+    "describe": "1 P-Channel 120pF 30V 350mW 3V 4.1A 700pF 75pF 87mΩ@4.5V P-Channel SOT-23 MOSFETs ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5310945",
+    "componentModelEn": "CJ3407S3",
+    "componentBrandEn": "TECH PUBLIC",
+    "componentLibraryType": "expand",
+    "stockCount": 1884,
+    "componentSpecificationEn": "SOT-23-3",
+    "describe": "-55℃~+150℃ 1 P-Channel 1.51W 1.5V 30V 4.1A 55mΩ@10V 580pF 6.8nC@10V 74pF 98pF P-Channel ±20V SOT-23-3 MOSFETs ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5224207",
+    "componentModelEn": "CJ3407-ES",
+    "componentBrandEn": "ElecSuper",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOT-23",
+    "describe": "-55℃~+150℃ 1 P-Channel 1.4W 1.5V 2.9A 30V 46mΩ@10V 550pF 6.5nC@10V 63pF SOT-23 MOSFETs ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C19188256",
+    "componentModelEn": "CJ3407-VB",
+    "componentBrandEn": "VBsemi Elec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOT-23",
+    "describe": "1 P-Channel 30V SOT-23 MOSFETs ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "LBSS138WT1G": [
+   {
+    "componentCode": "C383201",
+    "componentModelEn": "LBSS138WT1G",
+    "componentBrandEn": "LRC",
+    "componentLibraryType": "expand",
+    "stockCount": 22624,
+    "componentSpecificationEn": "SC-70",
+    "describe": "-55℃~+150℃ 1 N-channel 1.5V 10Ω@2.75V 150mW 200mA 25pF 50V 50pF 5pF N-Channel SC-70 MOSFETs ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5224282",
+    "componentModelEn": "LBSS138WT1G-ES",
+    "componentBrandEn": "ElecSuper",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOT-323",
+    "describe": "-55℃~+150℃ 1 N-channel 1.1V@250uA 1.3pF@25V 1.6nC@4.5V 1.8Ω@10V,0.3A 15pF@25V 300mA 350mW 60V SOT-323 MOSFETs ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "S9013W": [
+   {
+    "componentCode": "C2919788",
+    "componentModelEn": "S9013W",
+    "componentBrandEn": "CBI",
+    "componentLibraryType": "expand",
+    "stockCount": 2663,
+    "componentSpecificationEn": "SOT-323",
+    "describe": "1 NPN 100nA 150MHz 200mW 25V 400 500mA 5V 600mV NPN SOT-323 Bipolar (BJT) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5188696",
+    "componentModelEn": "S9013W",
+    "componentBrandEn": "HT(Shenzhen Jinyu Semicon)",
+    "componentLibraryType": "expand",
+    "stockCount": 2446,
+    "componentSpecificationEn": "SOT-323",
+    "describe": "-55℃~+150℃ 1 NPN 100nA 150MHz 200mW 25V 400 500mA 5V 600mV NPN SOT-323 Bipolar (BJT) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C49446799",
+    "componentModelEn": "S9013W",
+    "componentBrandEn": "YONGYUTAI",
+    "componentLibraryType": "expand",
+    "stockCount": 10,
+    "componentSpecificationEn": "SOT-323",
+    "describe": "1 NPN 100nA 150MHz 200mW 25V 400@50mA,1V 500mA 5V 600mV@500mA,50mA NPN SOT-323 Bipolar (BJT) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C55454059",
+    "componentModelEn": "S9013W",
+    "componentBrandEn": "GOODWORK",
+    "componentLibraryType": "expand",
+    "stockCount": 2906,
+    "componentSpecificationEn": "SOT-323",
+    "describe": "SOT-323 Bipolar (BJT) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C37634",
+    "componentModelEn": "S9013W(RANGE:200-350)",
+    "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+    "componentLibraryType": "expand",
+    "stockCount": 2240,
+    "componentSpecificationEn": "SOT-323",
+    "describe": "1 NPN 100nA 150MHz 200 200mW 25V 500mA 5V 600mV NPN SOT-323 Bipolar (BJT) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C908265": [
+   {
+    "componentCode": "C908265",
+    "componentModelEn": "FS8205A",
+    "componentBrandEn": "FUXINSEMI",
+    "componentLibraryType": "expand",
+    "stockCount": 17771,
+    "componentSpecificationEn": "SOT-23-6L",
+    "describe": "-55℃~+150℃ 1.2V 1.5W 11nC@4.5V 125pF 18mΩ@4.5V 2 N-Channel 20V 6A 800pF SOT-23-6L MOSFETs ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C111356": [
+   {
+    "componentCode": "C111356",
+    "componentModelEn": "CSD25402Q3A",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 16493,
+    "componentSpecificationEn": "VSONP-8(3.3x3.3)",
+    "describe": "-55℃~+150℃ 1 P-Channel 1.15V 1.79nF 2.8W 20V 51pF 7.5nC@4.5V 72A 74mΩ@1.8V 992pF P-Channel VSONP-8(3.3x3.3) MOSFETs ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-074K7L": [
+   {
+    "componentCode": "C105870",
+    "componentModelEn": "RC0402JR-074K7L",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 270197,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 4.7kΩ 50V 62.5mW Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900299830",
+    "componentModelEn": "RC0402JR-074K7L",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0402",
+    "describe": "0402 SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-07100RL": [
+   {
+    "componentCode": "C106233",
+    "componentModelEn": "RC0402JR-07100RL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 5616899,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 100Ω 50V 62.5mW Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-071ML": [
+   {
+    "componentCode": "C93949",
+    "componentModelEn": "RC0402JR-071ML",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 547421,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 1MΩ 50V 62.5mW Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-07680RL": [
+   {
+    "componentCode": "C137849",
+    "componentModelEn": "RC0402JR-07680RL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 28,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 50V 62.5mW 680Ω Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-070RL": [
+   {
+    "componentCode": "C60485",
+    "componentModelEn": "RC0402JR-070RL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 8897892,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 0Ω 50V 62.5mW Thick Film Resistor ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-0747KL": [
+   {
+    "componentCode": "C163440",
+    "componentModelEn": "RC0402JR-0747KL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 432847,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 47kΩ 50V 62.5mW Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-071KL": [
+   {
+    "componentCode": "C105637",
+    "componentModelEn": "RC0402JR-071KL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 9079704,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 1kΩ 50V 62.5mW Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-073K3L": [
+   {
+    "componentCode": "C137874",
+    "componentModelEn": "RC0402JR-073K3L",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 167519,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 3.3kΩ 50V 62.5mW Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402FR-0710KL": [
+   {
+    "componentCode": "C60490",
+    "componentModelEn": "RC0402FR-0710KL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 9114815,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 10kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0603FR-0715KL": [
+   {
+    "componentCode": "C114661",
+    "componentModelEn": "RC0603FR-0715KL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 243106,
+    "componentSpecificationEn": "0603",
+    "describe": "-55℃~+155℃ 100mW 15kΩ 75V Thick Film Resistor ±1% ±100ppm/℃ 0603 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402FR-07470KL": [
+   {
+    "componentCode": "C137976",
+    "componentModelEn": "RC0402FR-07470KL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 900816,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 470kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402JR-0722RL": [
+   {
+    "componentCode": "C93929",
+    "componentModelEn": "RC0402JR-0722RL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 2,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 22Ω 50V 62.5mW Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0603JR-070RL": [
+   {
+    "componentCode": "C95177",
+    "componentModelEn": "RC0603JR-070RL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 3759083,
+    "componentSpecificationEn": "0603",
+    "describe": "-55℃~+155℃ 0Ω 100mW 75V Thick Film Resistor ±5% 0603 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402FR-075K1L": [
+   {
+    "componentCode": "C105872",
+    "componentModelEn": "RC0402FR-075K1L",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 2404640,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 5.1kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402FR-07100KL": [
+   {
+    "componentCode": "C60491",
+    "componentModelEn": "RC0402FR-07100KL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 9032722,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 100kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402FR-0722K1L": [
+   {
+    "componentCode": "C163478",
+    "componentModelEn": "RC0402FR-0722K1L",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 1804580,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 22.1kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402FR-0751KL": [
+   {
+    "componentCode": "C107229",
+    "componentModelEn": "RC0402FR-0751KL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 2755386,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 50V 51kΩ 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0201FR-070RL": [
+   {
+    "componentCode": "C106227",
+    "componentModelEn": "RC0201FR-070RL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 2471592,
+    "componentSpecificationEn": "0201",
+    "describe": "-55℃~+125℃ 0Ω 25V 50mW Thick Film Resistor ±1% 0201 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0805JR-070RL": [
+   {
+    "componentCode": "C96345",
+    "componentModelEn": "RC0805JR-070RL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 3093198,
+    "componentSpecificationEn": "0805",
+    "describe": "-55℃~+155℃ 0Ω 125mW 150V Thick Film Resistor ±5% 0805 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0402FR-07499RL": [
+   {
+    "componentCode": "C137970",
+    "componentModelEn": "RC0402FR-07499RL",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 44437,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 499Ω 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "RC0805JR-071ML": [
+   {
+    "componentCode": "C107699",
+    "componentModelEn": "RC0805JR-071ML",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 153838,
+    "componentSpecificationEn": "0805",
+    "describe": "-55℃~+155℃ 125mW 150V 1MΩ Thick Film Resistor ±100ppm/℃ ±5% 0805 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C25744": [
+   {
+    "componentCode": "C25744",
+    "componentModelEn": "0402WGF1002TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 19685774,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 10kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C25076": [
+   {
+    "componentCode": "C25076",
+    "componentModelEn": "0402WGF1000TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 9215068,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 100Ω 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C11702": [
+   {
+    "componentCode": "C11702",
+    "componentModelEn": "0402WGF1001TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 8258276,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 1kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7190590",
+    "componentModelEn": "FC1-17-02-T",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1mm,Surface Mount，Right Angle",
+    "describe": "-55℃~+105℃ 0.3mm 17P 1mm Double-Sided Contacts, Top and Bottom Entry Phosphor bronze Surface Mount, Right Angle Tin SMD,P=1mm,卧贴 FFC, FPC (Flat Flexible) Connector Assemblies ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5886496",
+    "componentModelEn": "SFMC-117-02-H-D",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Gold Surface Mount,Vertical SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5886498",
+    "componentModelEn": "SFMC-117-02-L-D",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C6294503",
+    "componentModelEn": "SFMC-117-02-F-D",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7358033",
+    "componentModelEn": "SFMC-117-02-S-D",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C17315421",
+    "componentModelEn": "TFC-117-02-L-D-A",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 17 2 24.77mm 2x17P 34P 5.588mm 5.72mm Black LCP Phosphor bronze Surface Mount,Vertical Tin UL94V-0 SMD Wire To Board Connector ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C17696518",
+    "componentModelEn": "TFC-117-02-F-D-A",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 17 2 24.77mm 2x17P 34P 5.588mm 5.72mm Black LCP Phosphor bronze Surface Mount,Vertical Tin UL94V-0 SMD Wire To Board Connector ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5700232",
+    "componentModelEn": "FC1-17-02-T-WT-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1mm,Surface Mount，Right Angle",
+    "describe": "-55℃~+105℃ 0.3mm 17P 1mm Double-Sided Contacts, Top and Bottom Entry Phosphor Bronze Surface Mount, Right Angle Tin SMD,P=1mm,Surface Mount，Right Angle FFC, FPC (Flat Flexible) Connector Assemblies ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C6216506",
+    "componentModelEn": "SFMC-117-02-L-D-P",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7075841",
+    "componentModelEn": "SFMC-117-02-S-D-P",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7310286",
+    "componentModelEn": "SFMC-117-02-S-D-K",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7358030",
+    "componentModelEn": "SFMC-117-02-L-D-K",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7358040",
+    "componentModelEn": "SFMC-117-02-SM-D",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C17433558",
+    "componentModelEn": "MOLC-117-02-S-Q-P",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "-55℃~+125℃ 1.27mm 4 Phosphor Bronze Surface Mount,Vertical Tin SMD Wire To Board Connector ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C6216508",
+    "componentModelEn": "SFMC-117-02-L-D-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C6480439",
+    "componentModelEn": "SFMC-117-02-S-D-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C17291558",
+    "componentModelEn": "TFC-117-02-F-D-K-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 17 2 24.77mm 2x17P 34P 5.588mm 5.72mm Black LCP Phosphor bronze Surface Mount,Vertical Tin UL94V-0 SMD Wire To Board Connector ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C20374341",
+    "componentModelEn": "MOLC-117-02-STL-Q",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "SMD,P=1.27mm Pin Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C6216510",
+    "componentModelEn": "SFMC-117-02-S-D-P-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C6673128",
+    "componentModelEn": "SFMC-117-02-L-D-P-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7358037",
+    "componentModelEn": "SFMC-117-02-S-D-K-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C17565089",
+    "componentModelEn": "TFC-117-02-F-D-A-K-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 17 2 24.77mm 2x17P 34P 5.588mm 5.72mm Black LCP Phosphor bronze Surface Mount,Vertical Tin UL94V-0 SMD Wire To Board Connector ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C17674278",
+    "componentModelEn": "SFMC-117-02-L-D-K-TR",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD,P=1.27mm",
+    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C20374346",
+    "componentModelEn": "MOLC-117-02-STL-Q-P",
+    "componentBrandEn": "Samtec",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Wire To Board Connector ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C8369": [
+   {
+    "componentCode": "C8369",
+    "componentModelEn": "0402WGF6040TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "expand",
+    "stockCount": 21491,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 50V 604Ω 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C25771": [
+   {
+    "componentCode": "C25771",
+    "componentModelEn": "0402WGF2702TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "expand",
+    "stockCount": 213390,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 27kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": true
+   }
+  ],
+  "C56583": [
+   {
+    "componentCode": "C56583",
+    "componentModelEn": "0402WGF6653TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "expand",
+    "stockCount": 36,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 50V 62.5mW 665kΩ Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C25741": [
+   {
+    "componentCode": "C25741",
+    "componentModelEn": "0402WGF1003TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 8471127,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 100kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C3186496",
+    "componentModelEn": "TC2574-12.0VPA",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "DIP-8",
+    "describe": "-40℃~+125℃@(TJ) 1 12V 4.75V~40V 500mA 52kHz Buck Buck Built-in Fixed No DIP-8 DC-DC Converters ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C17168": [
+   {
+    "componentCode": "C17168",
+    "componentModelEn": "0402WGF0000TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 9835413,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 0Ω 50V 62.5mW Thick Film Resistor ±1% ±800ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C26083": [
+   {
+    "componentCode": "C26083",
+    "componentModelEn": "0402WGF1004TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 2214059,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 1MΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C19290": [
+   {
+    "componentCode": "C19290",
+    "componentModelEn": "1206W4J0000T5E",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "expand",
+    "stockCount": 702615,
+    "componentSpecificationEn": "1206",
+    "describe": "-55℃~+155℃ 0Ω 200V 250mW Thick Film Resistor ±5% 1206 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C25895": [
+   {
+    "componentCode": "C25895",
+    "componentModelEn": "0402WGF4422TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "expand",
+    "stockCount": 60246,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 44.2kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C55786440",
+    "componentModelEn": "SC25895TUA-TR-Q",
+    "componentBrandEn": "Semiment",
+    "componentLibraryType": "expand",
+    "stockCount": 150,
+    "componentSpecificationEn": "TO-92S",
+    "describe": "TO-92S Hall Switches ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C25092": [
+   {
+    "componentCode": "C25092",
+    "componentModelEn": "0402WGF220JTCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 6242917,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 22Ω 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C25900": [
+   {
+    "componentCode": "C25900",
+    "componentModelEn": "0402WGF4701TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 14569420,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 4.7kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C13564": [
+   {
+    "componentCode": "C13564",
+    "componentModelEn": "NCP18XH103F03RB",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 183022,
+    "componentSpecificationEn": "0603",
+    "describe": "-40℃~+125℃ 0.8mm 1.6mm 100mW 10kΩ 1mW/℃ 310uA 3380K 3434K 3455K ±1% ±1% 0603 NTC Thermistors ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "SK-22H07": [],
+  "AN-P1S-2SP-Z": [],
+  "MK-12C02 G1.5": [
+   {
+    "componentCode": "C9900095361",
+    "componentModelEn": "MK-12C02",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "MK-12C02",
+    "describe": "MK-12C02 New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900040581",
+    "componentModelEn": "MK-12C02-07",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SW-SMD",
+    "describe": "SW-SMD New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2939274",
+    "componentModelEn": "MK-12C02G2-B",
+    "componentBrandEn": "HOOYA",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "SMD Slide Switches ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C778186",
+    "componentModelEn": "MK-12C02-G025",
+    "componentBrandEn": "G-Switch",
+    "componentLibraryType": "expand",
+    "stockCount": 2696,
+    "componentSpecificationEn": "SMD,6.6x1.4mm",
+    "describe": "1.4mm 300mA 5.2mm 5V 6.6mm Black Rectangular Columnar SPDT Surface Mount, Right Angle SMD,6.6x1.4mm Slide Switches ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C963206",
+    "componentModelEn": "MK-12C02-G020",
+    "componentBrandEn": "G-Switch",
+    "componentLibraryType": "expand",
+    "stockCount": 20037,
+    "componentSpecificationEn": "SMD,6.6x1.4mm",
+    "describe": "-20℃~+70℃ 1.4mm 10,000 Cycles 1A 4.7mm 6.6mm 6V Black Rectangular Columnar SPDT Surface Mount, Right Angle SMD,6.6x1.4mm Slide Switches ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2911519",
+    "componentModelEn": "MK-12C02-G015",
+    "componentBrandEn": "G-Switch",
+    "componentLibraryType": "expand",
+    "stockCount": 8631,
+    "componentSpecificationEn": "SMD,6.6x1.4mm",
+    "describe": "-20℃~+70℃ 1.4mm 10,000 Cycles 1A 4.2mm 6.6mm 6V Black Rectangular Columnar SPDT Surface Mount, Right Angle SMD,6.6x1.4mm Slide Switches ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900021215",
+    "componentModelEn": "MK-12C02-G015",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SW-SMD",
+    "describe": "SW-SMD SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C20611677",
+    "componentModelEn": "MK-12C02G1.5-W",
+    "componentBrandEn": "HOOYA",
+    "componentLibraryType": "expand",
+    "stockCount": 1062,
+    "componentSpecificationEn": "SMD",
+    "describe": "1.4mm 10,000 Cycles 12V 2.7mm 300mA 6.7mm Rectangular Columnar SMD(SMT) Tab SPDT Surface Mount, Right Angle SMD Slide Switches ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900039466",
+    "componentModelEn": "S2G1.5A",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "DO214AA",
+    "describe": "DO214AA New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900149720",
+    "componentModelEn": "MK-12C02G1.5-B",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "SMD New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C47020934",
+    "componentModelEn": "ZHG1.5-DZ",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 11350,
+    "componentSpecificationEn": "-",
+    "describe": "250V 26~32 Phosphor bronze Tin ZHG - Housing Contact ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C47021150",
+    "componentModelEn": "ZHG1.5-2Y",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1635,
+    "componentSpecificationEn": "P=1.5mm",
+    "describe": "-25℃~+85℃ 1 1.5mm 1x2P 2 Locking PA66 UL94V-0 White Without Fins P=1.5mm Housings (Wire To Board / Wire To Wire ) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C47021151",
+    "componentModelEn": "ZHG1.5-3Y",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1814,
+    "componentSpecificationEn": "P=1.5mm",
+    "describe": "-25℃~+85℃ 1 1.5mm 1x3P 3 Locking PA66 UL94V-0 White Without Fins P=1.5mm Housings (Wire To Board / Wire To Wire ) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C47021152",
+    "componentModelEn": "ZHG1.5-4Y",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1500,
+    "componentSpecificationEn": "P=1.5mm",
+    "describe": "-25℃~+85℃ 1 1.5mm 1x4P 4 Locking PA66 UL94V-0 White Without Fins P=1.5mm Housings (Wire To Board / Wire To Wire ) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C47021153",
+    "componentModelEn": "ZHG1.5-5Y",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1840,
+    "componentSpecificationEn": "P=1.5mm",
+    "describe": "-25℃~+85℃ 1 1.5mm 1x5P 5 Locking PA66 UL94V-0 White Without Fins P=1.5mm Housings (Wire To Board / Wire To Wire ) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C47021154",
+    "componentModelEn": "ZHG1.5-6Y",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1910,
+    "componentSpecificationEn": "P=1.5mm",
+    "describe": "-25℃~+85℃ 1 1.5mm 1x6P 6 Locking PA66 UL94V-0 White Without Fins P=1.5mm Housings (Wire To Board / Wire To Wire ) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C47021155",
+    "componentModelEn": "ZHG1.5-7Y",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1995,
+    "componentSpecificationEn": "P=1.5mm",
+    "describe": "-25℃~+85℃ 1 1.5mm 1x7P 7 Locking PA66 UL94V-0 White Without Fins P=1.5mm Housings (Wire To Board / Wire To Wire ) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C47021156",
+    "componentModelEn": "ZHG1.5-8Y",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 1985,
+    "componentSpecificationEn": "P=1.5mm",
+    "describe": "-25℃~+85℃ 1 1.5mm 1x8P 8 Locking PA66 UL94V-0 White Without Fins P=1.5mm Housings (Wire To Board / Wire To Wire ) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C18037320",
+    "componentModelEn": "G1.5X2WH6",
+    "componentBrandEn": "Panduit",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Comprehensive Electronic ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C18125349",
+    "componentModelEn": "G1.5X4WH6",
+    "componentBrandEn": "Panduit",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Comprehensive Electronic ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900136652",
+    "componentModelEn": "SK02_G1.5",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "SMD New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900199228",
+    "componentModelEn": "SK02 G1.5",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "TH-7P",
+    "describe": "TH-7P SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900264234",
+    "componentModelEn": "SK02-G1.5",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SMD",
+    "describe": "SMD SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5522293",
+    "componentModelEn": "74-4SG1.5A",
+    "componentBrandEn": "NTE Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "1.5A 100A Glass Tube Fuse - Disposable fuses ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5913984",
+    "componentModelEn": "74-6SG1.5A",
+    "componentBrandEn": "NTE Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "1.5A 125V、250V 200A 30mm 6mm Glass Tube Fuse - Disposable fuses ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C7507432": [
+   {
+    "componentCode": "C7507432",
+    "componentModelEn": "MSK-22D18G3 051",
+    "componentBrandEn": "SHOU HAN",
+    "componentLibraryType": "expand",
+    "stockCount": 6238,
+    "componentSpecificationEn": "DIP",
+    "describe": "-10℃~+50℃ 10 thousand cycles 100mA 12V 210gf 2mm 3.5mm 9mm Black DPDT PC Pin Phosphor coppe Rectangular Columnar Right Angle Silver DIP Slide Switches ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "ESP32-S3R8": [
+   {
+    "componentCode": "C2913194",
+    "componentModelEn": "ESP32-S3R8",
+    "componentBrandEn": "Espressif Systems",
+    "componentLibraryType": "expand",
+    "stockCount": 3978,
+    "componentSpecificationEn": "QFN-56(7x7)",
+    "describe": "-40℃~+65℃ -74.2dBm 150Mbps 18.5dBm 2.412GHz~2.484GHz 2.4GHz 283mA 3V~3.6V 88mA Bluetooth、WiFi DMA function SPI、USB、UART、I2C、I2S transceiver QFN-56(7x7) RF Transceiver ICs ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900185130",
+    "componentModelEn": "ESP32-S3R8V",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "QFN-56(7x7)",
+    "describe": "QFN-56(7x7) SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900191037",
+    "componentModelEn": "ESP32-S3R8/QFN56/ESPRESSIF",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "QFN-56_7x7mm",
+    "describe": "QFN-56_7x7mm SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "XU316-1024-QF60B-C24": [
+   {
+    "componentCode": "C6617472",
+    "componentModelEn": "XU316-1024-QF60B-C24",
+    "componentBrandEn": "XMOS",
+    "componentLibraryType": "expand",
+    "stockCount": 25,
+    "componentSpecificationEn": "QFN-60(7x7)",
+    "describe": "0℃~+70℃ 1MB 32 Bit 34 855mV~945mV 8KB External OTP Others QFN-60(7x7) Microcontrollers (MCU/MPU/SOC) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "ZB25VQ32DSJG": [
+   {
+    "componentCode": "C9900176291",
+    "componentModelEn": "ZB25VQ32DSJG",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOP-8-208MIL",
+    "describe": "SOP-8-208MIL SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "MIC-MSM261DHP006": [],
+  "SN74LVC125APWR": [
+   {
+    "componentCode": "C7813",
+    "componentModelEn": "SN74LVC125APWR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 34681,
+    "componentSpecificationEn": "TSSOP-14",
+    "describe": "-40℃~+125℃ 1 1.65V~3.6V 2.5ns@3.3V,50pF 24mA 24mA 4 40uA 74LVC Tri-State Unidirectional TSSOP-14 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2675642",
+    "componentModelEn": "SN74LVC125APWRG3",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "TSSOP-14",
+    "describe": "-40℃~+125℃ 1 1.65V~3.6V 2.5ns@3.3V,50pF 24mA 24mA 4 40uA 74LVC Output enable、Level shifting Tri-State Unidirectional TSSOP-14 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2675744",
+    "componentModelEn": "SN74LVC125APWRE4",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "TSSOP-14",
+    "describe": "-40℃~+125℃ 1 1.65V~3.6V 2.5ns@3.3V,50pF 24mA 24mA 4 40uA 74LVC Output enable、Level shifting Tri-State Unidirectional TSSOP-14 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2676040",
+    "componentModelEn": "SN74LVC125APWRG4",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "TSSOP-14",
+    "describe": "-40℃~+125℃ 1 1.65V~3.6V 2.5ns@3.3V,50pF 24mA 24mA 4 40uA 74LVC Output enable、Level shifting Tri-State Unidirectional TSSOP-14 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C54561941",
+    "componentModelEn": "SN74LVC125APWR-TP",
+    "componentBrandEn": "TECH PUBLIC",
+    "componentLibraryType": "expand",
+    "stockCount": 2581,
+    "componentSpecificationEn": "TSSOP-14",
+    "describe": "-40℃~+125℃ 1 1.65V~3.6V 40uA 50mA 50mA 6ns@3.6V,15pF 74LVC Power-off isolation、Output enable、Level shifting Schmitt trigger Tri-State Unidirectional TSSOP-14 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C53114346",
+    "componentModelEn": "SN74LVC125APWR-JSM",
+    "componentBrandEn": "JSMSEMI",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "TSSOP-14",
+    "describe": "-40℃~+125℃ 1 1.65V~3.6V 2.5ns@3.3V,50pF 4 40uA 74LVC Output enable Tri-State TSSOP-14 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "SN74LVC1G17DCKR": [
+   {
+    "componentCode": "C10425",
+    "componentModelEn": "SN74LVC1G17DCKR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 98734,
+    "componentSpecificationEn": "SC-70-5",
+    "describe": "-40℃~+85℃ 1 1 1.65V~5.5V 10uA 32mA 32mA 4.6ns@3.3V,50pF 74LVC Schmitt trigger Unidirectional SC-70-5 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C7394034",
+    "componentModelEn": "SN74LVC1G17DCKR(UMW)",
+    "componentBrandEn": "UMW(Youtai Semiconductor Co., Ltd.)",
+    "componentLibraryType": "expand",
+    "stockCount": 3697,
+    "componentSpecificationEn": "SC-70-5",
+    "describe": "-55℃~+125℃ 1 1 1.65V~5.5V 10uA 2.9ns@3.3V,50pF 24mA 24mA 74LVC Schmitt trigger Unidirectional SC-70-5 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2652130",
+    "componentModelEn": "SN74LVC1G17DCKRG4",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SC-70-5",
+    "describe": "-40℃~+125℃ 1 1 1.65V~5.5V 10uA 32mA 32mA 4.6ns@3.3V,15pF 74LVC Power-off isolation、Level shifting Schmitt trigger Unidirectional SC-70-5 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C19829631",
+    "componentModelEn": "SN74LVC1G17DCKR",
+    "componentBrandEn": "TECH PUBLIC",
+    "componentLibraryType": "expand",
+    "stockCount": 21913,
+    "componentSpecificationEn": "SOT-353",
+    "describe": "-40℃~+125℃ 1 1 1.2V、1.9V、2.3V、2.4V 1.65V~5.5V 100mV、300mV、400mV、550mV 10uA 32mA 32mA 74LVC 8.3ns@5V,50pF SOT-353 Logic Gates ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900217423",
+    "componentModelEn": "SN74LVC1G17DCKR-EV",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SC-70-5",
+    "describe": "SC-70-5 SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C54973439",
+    "componentModelEn": "SN74LVC1G17DCKR(AT)",
+    "componentBrandEn": "AOTE",
+    "componentLibraryType": "expand",
+    "stockCount": 2581,
+    "componentSpecificationEn": "SC-70-5",
+    "describe": "-40℃~+125℃ 1 1 1.65V~5.5V 10uA 32mA 32mA 4.2ns@5V,50pF 74LVC Schmitt trigger Unidirectional SC-70-5 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C55509842",
+    "componentModelEn": "SN74LVC1G17DCKR-JSM",
+    "componentBrandEn": "JSMSEMI",
+    "componentLibraryType": "expand",
+    "stockCount": 20893,
+    "componentSpecificationEn": "SOT-353",
+    "describe": "SOT-353 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C56055696",
+    "componentModelEn": "SN74LVC1G17DCKR-HXY",
+    "componentBrandEn": "HXY MOSFET",
+    "componentLibraryType": "expand",
+    "stockCount": 98,
+    "componentSpecificationEn": "SOT-353",
+    "describe": "SOT-353 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C56153382",
+    "componentModelEn": "SN74LVC1G17DCKR-TUDI",
+    "componentBrandEn": "Tudi",
+    "componentLibraryType": "expand",
+    "stockCount": 3000,
+    "componentSpecificationEn": "SC-70-5",
+    "describe": "SC-70-5 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "TLV320AIC3204IRHBR": [
+   {
+    "componentCode": "C24109",
+    "componentModelEn": "TLV320AIC3204IRHBR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 3807,
+    "componentSpecificationEn": "QFN-32-EP(5x5)",
+    "describe": "-40℃~+85℃ 1.1V~3.6V、1.26V~1.95V、1.5V~1.95V 8kHz~192kHz Encoder/decoder I2C、SPI QFN-32-EP(5x5) Audio Interface ICs ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "TI": [
+   {
+    "componentCode": "C2885",
+    "componentModelEn": "SN74HC373N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 178,
+    "componentSpecificationEn": "DIP-20",
+    "describe": "-40℃~+85℃ 12ns 13ns 15ns 2V~6V 7.8mA 7.8mA 74HC 8 80uA D Latch Tri-State DIP-20 Latches ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2886",
+    "componentModelEn": "SN74HC04N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 713,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1.5V~4.2V 150mV~260mV、170mV~260mV 16ns@6V,50pF 2V~6V 2uA 3.98V~4.3V、5.48V~5.8V 5.2mA 5.2mA 500mV~1.8V 6 74HC DIP-14 Inverters ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2887",
+    "componentModelEn": "SN74HC08N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 364,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1.5V~4.2V 1.9V、4.4V、5.9V 100mV、100mV、100mV 17ns@6V,50pF 2 2V~6V 2uA 4 5.2mA 5.2mA 500mV~1.8V 74HC Series AND Gate DIP-14 Logic Gates ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2888",
+    "componentModelEn": "SN74HC10N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 279,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1.5V~4.2V 16ns@6V,50pF 2V~6V 2uA 3 5.2mA 5.2mA 500mV~1.8V 74HC Series NAND Gate DIP-14 Logic Gates ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2890",
+    "componentModelEn": "SN74HC125N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 101,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1 24ns@4.5V,50pF 2V~6V 4 7.8mA 7.8mA 74HC 80uA Tri-State Unidirectional DIP-14 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2893",
+    "componentModelEn": "SN74HC163N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 43,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-40℃~+85℃ 1 2V~6V 36MHz 37ns 4 Divide-by-2 Rising Edge Synchronous Synchronous Up Counter DIP-16 Counters, Dividers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2894",
+    "componentModelEn": "SN74HC32N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 86,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1.5V~4.2V 17ns@6V,50pF 1mV~100mV、150mV~260mV 2 2V~6V 2uA 4 5.2mA 5.2mA 5.48V~5.8V、5.9V~5.99V 500mV~1.8V 74HC Series OR Gate DIP-14 Logic Gates ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2896",
+    "componentModelEn": "SN74HC175N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 27,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-40℃~+85℃ 1 21ns 26ns@6V,50pF 2V~6V 3pF 4 5.2mA 5.2mA 60MHz 74HC Series 8uA Asynchronous Complementary type D-Type Reset Rising Edge DIP-16 Flip Flops ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2897",
+    "componentModelEn": "SN74HC02N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 2229,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1.5V~4.2V 1.9V、3.98V、5.48V 100mV、400mV、400mV 15ns@6V,50pF 2 2V~6V 2uA 4 5.2mA 5.2mA 500mV~1.8V 74HC Series NOR Gate DIP-14 Logic Gates ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2899",
+    "componentModelEn": "SN74HC245N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 456,
+    "componentSpecificationEn": "DIP-20",
+    "describe": "-40℃~+85℃ 1 21ns@4.5V,50pF 2V~6V 7.8mA 7.8mA 74HC 8 80uA Bidirectional Output enable Tri-State DIP-20 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2902",
+    "componentModelEn": "SN74HC00N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 25,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1.5V~4.2V 15ns@6V,50pF 2V~6V 2uA 4 5.2mA 5.2mA 500mV~1.8V 74HC Series NAND Gate DIP-14 Logic Gates ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2903",
+    "componentModelEn": "SN74HC86N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 168,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1.5V~4.2V 1.9V、4.4V、5.9V 100mV、100mV、100mV 17ns@6V,50pF 2 2V~6V 2uA 4 5.2mA 5.2mA 500mV~1.8V 74HC Series XOR Gate DIP-14 Logic Gates ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2904",
+    "componentModelEn": "SN74HC03N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 1,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1.5V~4.2V 23ns@6V,50pF 2V~6V 2uA 4 5.2mA 500mV~1.8V 74HC Series NAND Gate DIP-14 Logic Gates ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2907",
+    "componentModelEn": "SN74HC14N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 2203,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+85℃ 1 1.5V~4.2V 21ns@6V,50pF 2V~6V 2uA 300mV~1.2V 5.2mA 5.2mA 6 74HC Schmitt trigger 噪声抑制功能 DIP-14 Inverters ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2908",
+    "componentModelEn": "SN74HC164N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 10153,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-40℃~+125℃ 1 20ns@6V,50pF 2V~6V 36MHz 4mA 74HC 8 Push-Pull Serial-to-Parallel DIP-14 Shift Registers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2909",
+    "componentModelEn": "SN74HC165N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 82,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-40℃~+125℃ 1 26ns@6V,50pF 2V~6V 4mA 62MHz 74HC 8 Complementary type Parallel or Serial to Serial DIP-16 Shift Registers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2912",
+    "componentModelEn": "SN74HC244N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 833,
+    "componentSpecificationEn": "DIP-20",
+    "describe": "-40℃~+85℃ 11ns@6V,50pF 2 2V~6V 4 7.8mA 7.8mA 74HC 80uA Tri-State Unidirectional DIP-20 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2913",
+    "componentModelEn": "SN74HC138N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 565,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-40℃~+85℃ 15ns@6V,50pF 2V~6V 3/8 5.2mA 5.2mA 74HC 80uA Decoder Single Supply DIP-16 Signal Switches, Multiplexers, Decoders ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5192",
+    "componentModelEn": "LM239N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 2,
+    "componentSpecificationEn": "PDIP-14",
+    "describe": "-18V~-1V、1V~18V -25℃~+85℃ 1.3us 1.3us 25nA 2V~36V 2mV 36V 5nA 800uA Four channels Open Collector Rail-to-Rail Input, Rail-to-Rail Output TTL、CMOS PDIP-14 Comparators ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5196",
+    "componentModelEn": "SN74HC573AN",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 1752,
+    "componentSpecificationEn": "DIP-20",
+    "describe": "-40℃~+85℃ 26ns 2V~6V 5ns 6mA 7.8mA 74HC 8 80uA 9ns D Latch Tri-State DIP-20 Latches ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5197",
+    "componentModelEn": "SN74LS07N",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 884,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "0.25mA 0℃~+70℃ 1 12ns@5V,15pF 4.75V~5.25V 40mA 6 74LS Open Collector Unidirectional DIP-14 Buffers, Drivers, Receivers, Transceivers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5198",
+    "componentModelEn": "CD4060BE",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 65,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-55℃~+125℃ 1 100ns 12MHz 3V~18V Asynchronous Divide-by-2 Falling Edge Up Counter DIP-16 Counters, Dividers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5199",
+    "componentModelEn": "CD4013BE",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 443,
+    "componentSpecificationEn": "DIP-14",
+    "describe": "-55℃~+125℃ 1 2 20ns 24MHz 2ns 3V~18V 4000B Series 4uA 5pF 6.8mA 6.8mA 90ns@15V,50pF Asynchronous Complementary type D-Type Rising Edge Set and Reset DIP-14 Flip Flops ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5200",
+    "componentModelEn": "CD4051BE",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 1596,
+    "componentSpecificationEn": "PDIP-16",
+    "describe": "-55℃~+125℃ 125Ω 20MHz 3V~20V 450ns 8 8:1 PDIP-16 Analog Switches, Multiplexers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C5201",
+    "componentModelEn": "CD4052BE",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 1450,
+    "componentSpecificationEn": "PDIP-16",
+    "describe": "-55℃~+125℃ 125Ω 160ns 18pF 25MHz 3V~20V 4 450ns 4:1 720ns PDIP-16 Analog Switches, Multiplexers ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "TPS62827DMQR": [
+   {
+    "componentCode": "C2071448",
+    "componentModelEn": "TPS62827DMQR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 663,
+    "componentSpecificationEn": "VSON-6(1.5x1.5)",
+    "describe": "-40℃~+125℃@(TJ) 1 2.2MHz 2.5V~5.5V 4A 4uA 600mV~4V Adjustable Buck Buck Built-in Yes VSON-6(1.5x1.5) DC-DC Converters ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "ME6211C18M5G-N": [
+   {
+    "componentCode": "C236671",
+    "componentModelEn": "ME6211C18M5G-N",
+    "componentBrandEn": "MICRONE(Nanjing Micro One Elec)",
+    "componentLibraryType": "expand",
+    "stockCount": 70524,
+    "componentSpecificationEn": "SOT-23-5",
+    "describe": "-40℃~+150℃@(Ta) 1 1.8V 200mV@(100mA)、400mV@(200mA) 300mA 30uA 50uVrms 6V 70dB@(1kHz) Enable、Short Circuit Protection Fixed Positive SOT-23-5 Voltage Regulators - Linear, Low Drop Out (LDO) Regulators ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "TPS62065DSGR": [
+   {
+    "componentCode": "C398352",
+    "componentModelEn": "TPS62065DSGR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 9025,
+    "componentSpecificationEn": "WSON-8-EP(2x2)",
+    "describe": "-40℃~+125℃@(TJ) 1 18uA 2.9V~6V 2A 3MHz 800mV~6V Adjustable Buck Buck Built-in Yes WSON-8-EP(2x2) DC-DC Converters ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "ZB25VQ128DSJG": [
+   {
+    "componentCode": "C9900142951",
+    "componentModelEn": "ZB25VQ128DSJG",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOP-8-208mil",
+    "describe": "SOP-8-208mil New Arrivals ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C45354125",
+    "componentModelEn": "ZB25VQ128DSJG",
+    "componentBrandEn": "Zbit Semi",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Lack of specifications ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900280621",
+    "componentModelEn": "ZB25VQ128DSJG",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOP8 - 208mil",
+    "describe": "SOP8 - 208mil SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900260959",
+    "componentModelEn": "ZB25VQ128DSJG_0x76",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOP-8-208mil",
+    "describe": "SOP-8-208mil SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900282016",
+    "componentModelEn": "ZB25VQ128DSJG_0x7D",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOP-8-208mil",
+    "describe": "SOP-8-208mil SMT ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C9900263318",
+    "componentModelEn": "SPI,FLASH,128MB,SOP8,ZB25VQ128DSJG",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "SOP-8-208mil",
+    "describe": "SOP-8-208mil SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "SGM7222YWQ10/TR": [
+   {
+    "componentCode": "C700326",
+    "componentModelEn": "SGM7222YWQ10/TR",
+    "componentBrandEn": "SGMICRO",
+    "componentLibraryType": "expand",
+    "stockCount": 2012,
+    "componentSpecificationEn": "QFN-10(1.4x1.8)",
+    "describe": "-40℃~+85℃ 1.8V~4.3V 4.3V Enable/shutdown function、Overvoltage protection Rail-to-Rail Input, Rail-to-Rail Output QFN-10(1.4x1.8) Operational Amplifier ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "SGM2036S-3.3XXDH4G/TR": [
+   {
+    "componentCode": "C5152997",
+    "componentModelEn": "SGM2036S-3.3XXDH4G/TR",
+    "componentBrandEn": "SGMICRO",
+    "componentLibraryType": "expand",
+    "stockCount": 9724,
+    "componentSpecificationEn": "XTDFN-4L(1x1)",
+    "describe": "-40℃~+85℃ 1 20uA 250mV@(300mA) 3.3V 300mA 5.5V 75dB@(1kHz) Fixed Over Current Protection、Over Temperature Protection、Short Circuit Protection Positive XTDFN-4L(1x1) Voltage Regulators - Linear, Low Drop Out (LDO) Regulators ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C485916": [
+   {
+    "componentCode": "C485916",
+    "componentModelEn": "TPS2121RUXR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 29472,
+    "componentSpecificationEn": "VQFN-HR-12(2x2.5)",
+    "describe": "-40℃~+125℃ 2.8V~22V 200uA 56mΩ VQFN-HR-12(2x2.5) ORing Controllers ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C2071784": [
+   {
+    "componentCode": "C2071784",
+    "componentModelEn": "TPS61022RWUT",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 319,
+    "componentSpecificationEn": "VQFN-7(2x2)",
+    "describe": "-40℃~+125℃@(TJ) 1 2.2V~5.5V 3uA 500mV~5.5V 600kHz~1MHz 8A Adjustable Boost Boost Built-in Yes VQFN-7(2x2) DC-DC Converters ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C5208201": [
+   {
+    "componentCode": "C5208201",
+    "componentModelEn": "BQ25170DSGR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 1934,
+    "componentSpecificationEn": "WSON-8(2x2)",
+    "describe": "-40℃~+125℃ 1 350nA 6.6V 800mA Charging IC Lithium Battery、LiFePO4 Battery Support 恒流充电、恒压充电、涓流充电、自动再充电、充电终止、可编程充电电流、欠压锁定、Overcurrent Protection、Short-Circuit  Protection、过压保护 WSON-8(2x2) Battery Management ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C2682616": [
+   {
+    "componentCode": "C2682616",
+    "componentModelEn": "MAX17048G+T10",
+    "componentBrandEn": "Analog Devices Inc./Maxim Integrated",
+    "componentLibraryType": "expand",
+    "stockCount": 25451,
+    "componentSpecificationEn": "DFN-8-EP(2x2)",
+    "describe": "-40℃~+85℃ 1 2.5V~4.5V 3uA I2C Lithium Battery Not supported Not supported DFN-8-EP(2x2) Battery Management ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C351410": [
+   {
+    "componentCode": "C351410",
+    "componentModelEn": "DW01A",
+    "componentBrandEn": "PUOLOP",
+    "componentLibraryType": "expand",
+    "stockCount": 113091,
+    "componentSpecificationEn": "SOT-23-6L",
+    "describe": "-40℃~+85℃ 1 2.5V 300mV~10V 3uA 4.3V Protection IC Support SOT-23-6L Battery Management ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C3235556": [
+   {
+    "componentCode": "C3235556",
+    "componentModelEn": "LM66200DRLR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 22161,
+    "componentSpecificationEn": "SOT-583",
+    "describe": "-40℃~+125℃ 1.32uA 1.6V~5.5V 2 74mΩ Reverse current blocking、Over temperature protection、With enable SOT-583 ORing Controllers ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "USB-31C-F-16P-L7.35": [],
+  "Y2400FE001": [],
+  "Y4000Fc001": [],
+  "C19626254": [
+   {
+    "componentCode": "C19626254",
+    "componentModelEn": "PESD0402V05",
+    "componentBrandEn": "DOWO",
+    "componentLibraryType": "expand",
+    "stockCount": 334057,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+125℃ 0.05pF 1 10nA 40V 5V Bidirectional ESD IEC 61000-4-2 0402 ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C883134": [
+   {
+    "componentCode": "C883134",
+    "componentModelEn": "BSMD1206-200-6V",
+    "componentBrandEn": "BHFUSE",
+    "componentLibraryType": "expand",
+    "stockCount": 67466,
+    "componentSpecificationEn": "1206",
+    "describe": "-40℃~+85℃ 1.5s 1.6mm 1.9mm 100A 15mΩ 1W 2A 3.5A 3.6mm 6V 80mΩ 1206 Resettable Fuses ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C177225": [
+   {
+    "componentCode": "C177225",
+    "componentModelEn": "532610271",
+    "componentBrandEn": "MOLEX",
+    "componentLibraryType": "expand",
+    "stockCount": 48805,
+    "componentSpecificationEn": "SMD,P=1.25mm,Surface Mount，Right Angle",
+    "describe": "-40℃~+105℃ 1 1.25mm 125V 1A 1x2P 2 2P 3.4mm 5.2mm 7.65mm Auxiliary Solder Pin Glass fiber reinforced PA Phosphor bronze PicoBlade(MX 1.25) Surface Mount, Right Angle Tin UL94V-0 White SMD,P=1.25mm,卧贴 Wire To Board Connector ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C32713277": [
+   {
+    "componentCode": "C32713277",
+    "componentModelEn": "HX PZ2.54-2x4P ZZ",
+    "componentBrandEn": "hanxia",
+    "componentLibraryType": "expand",
+    "stockCount": 63922,
+    "componentSpecificationEn": "Plugin,P=2.54mm",
+    "describe": "-40℃~+105℃ 1kV 2 2.54mm 2.54mm 2.5mm 2x4P 3A 3mm 6mm 8P Black Copper alloy Gold Square pin Through Hole Plugin,P=2.54mm Pin Headers ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C2897344": [
+   {
+    "componentCode": "C2897344",
+    "componentModelEn": "CQ0201ARNPO8BN3R3",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 42781,
+    "componentSpecificationEn": "0201",
+    "describe": "25V 3.3pF NP0 0201 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C98041": [
+   {
+    "componentCode": "C98041",
+    "componentModelEn": "LQP03TN2N2B02D",
+    "componentBrandEn": "Murata Electronics",
+    "componentLibraryType": "expand",
+    "stockCount": 166513,
+    "componentSpecificationEn": "0201",
+    "describe": "11GHz 14@500MHz 150mΩ 2.2nH 600mA Thick Film Inductor 0201 Inductors (SMD) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C52917434": [
+   {
+    "componentCode": "C52917434",
+    "componentModelEn": "WS2812B-2020-V6",
+    "componentBrandEn": "Worldsemi",
+    "componentLibraryType": "expand",
+    "stockCount": 984242,
+    "componentSpecificationEn": "SMD2020-4P",
+    "describe": "-40℃~+85℃ 0.84mm 120us 160mcd 1uA 200mcd 2kHz 2mm 2mm 3.3V~5.3V 300ns 465nm~470nm 515nm~520nm 520mcd 620nm~625nm 800Kbit/s Built-in power-on reset circuit、Built-in power-on reset circuit、Integrated intelligent reverse connection protection function SMD2020-4P RGB LEDs(Built-in IC) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C20611677": [
+   {
+    "componentCode": "C20611677",
+    "componentModelEn": "MK-12C02G1.5-W",
+    "componentBrandEn": "HOOYA",
+    "componentLibraryType": "expand",
+    "stockCount": 1062,
+    "componentSpecificationEn": "SMD",
+    "describe": "1.4mm 10,000 Cycles 12V 2.7mm 300mA 6.7mm Rectangular Columnar SMD(SMT) Tab SPDT Surface Mount, Right Angle SMD Slide Switches ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C179173": [
+   {
+    "componentCode": "C179173",
+    "componentModelEn": "W25Q32JVSSIQ",
+    "componentBrandEn": "Winbond Elec",
+    "componentLibraryType": "expand",
+    "stockCount": 3493,
+    "componentSpecificationEn": "SOIC-8-208mil",
+    "describe": "-40℃~+85℃ 100,000 cycles 133MHz 1uA 2.7V~3.6V 20 Years 32Mbit 3ms SPI SOIC-8-208mil NOR FLASH ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C22390138": [
+   {
+    "componentCode": "C22390138",
+    "componentModelEn": "MSM261DHP006",
+    "componentBrandEn": "MEMS",
+    "componentLibraryType": "expand",
+    "stockCount": 1038,
+    "componentSpecificationEn": "LGA-8(3x4)",
+    "describe": "-26dB 1.8V 1mm 3mm 4mm 64dB 670uA Omnidirectional Omnidirectional pickup LGA-8(3x4) MEMS Microphones ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C7718": [
+   {
+    "componentCode": "C7718",
+    "componentModelEn": "TPA6211A1DGNR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 594,
+    "componentSpecificationEn": "MSOP-8-EP",
+    "describe": "-40℃~+85℃ -85dB 0.02% 1-Channel 105dB 2.5V~5.5V 3.1Wx1@3Ω 4mA Automatic mute/no-noise switch、ESD protection Class AB MSOP-8-EP Audio Amplifiers ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C908013",
+    "componentModelEn": "DAC7718SRGZT",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 5,
+    "componentSpecificationEn": "VQFN-48(7x7)",
+    "describe": "-40℃~+105℃ 12 15us 1LSB、1LSB 2.7V~5.5V 35uA 8 Power-on reset、Power-down mode、Bipolar output、Programmable gain、Output short-circuit protection SPI Voltage Buffer VQFN-48(7x7) Digital to Analog Converters (DAC) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2679941",
+    "componentModelEn": "DAC7718SPAGR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 117,
+    "componentSpecificationEn": "TQFP-64(10x10)",
+    "describe": "-40℃~+105℃ 12 15us 1LSB 35uA 4.5V~18V 8 Power-on reset、Power-down mode、Bipolar output、Programmable gain、Output short-circuit protection SPI TQFP-64(10x10) Digital to Analog Converters (DAC) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2860661",
+    "componentModelEn": "DAC7718SPAG",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "TQFP-64(10x10)",
+    "describe": "-40℃~+105℃ 12 15us 1LSB、1LSB 2.7V~5.5V SPI Voltage Buffer TQFP-64(10x10) Digital to Analog Converters (DAC) ROHS",
+    "preferredComponentFlag": false
+   },
+   {
+    "componentCode": "C2862789",
+    "componentModelEn": "DAC7718SRGZR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "VQFN-48-EP(7x7)",
+    "describe": "-40℃~+105℃ 12 15us 1LSB、1LSB 2.7V~5.5V 35uA 50MHz 8 SPI Voltage Buffer VQFN-48-EP(7x7) Digital to Analog Converters (DAC) ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C97521": [
+   {
+    "componentCode": "C97521",
+    "componentModelEn": "W25Q128JVSIQ",
+    "componentBrandEn": "Winbond Elec",
+    "componentLibraryType": "base",
+    "stockCount": 44487,
+    "componentSpecificationEn": "SOIC-8-208mil",
+    "describe": "-40℃~+85℃ 100,000 cycles 120ms@(32KB) 128Mbit 133MHz 1uA 2.7V~3.6V 20 Years 3ms Power-on reset、Hardware write protection、Software write protection、Write enable latch、Absolute write protection SPI SOIC-8-208mil NOR FLASH ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C5210655": [
+   {
+    "componentCode": "C5210655",
+    "componentModelEn": "X201624MOB4SI",
+    "componentBrandEn": "YXC Crystal Oscillators",
+    "componentLibraryType": "expand",
+    "stockCount": 7950,
+    "componentSpecificationEn": "SMD2016-4P",
+    "describe": "-40℃~+85℃ 100Ω 12pF 24MHz Crystal Oscillator ±10ppm ±20ppm SMD2016-4P Crystals ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C49158179": [
+   {
+    "componentCode": "C49158179",
+    "componentModelEn": "Y201640MDBCX",
+    "componentBrandEn": "JLYE",
+    "componentLibraryType": "expand",
+    "stockCount": 3008,
+    "componentSpecificationEn": "SMD2016-4P",
+    "describe": "-40℃~+85℃ 40MHz 9pF SMD crystal oscillator ±10ppm ±20ppm SMD2016-4P Crystals ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C326704": [
+   {
+    "componentCode": "C326704",
+    "componentModelEn": "CC0201BRNPO9BN1R2",
+    "componentBrandEn": "YAGEO",
+    "componentLibraryType": "expand",
+    "stockCount": 81173,
+    "componentSpecificationEn": "0201",
+    "describe": "1.2pF 50V NP0 0201 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C25177": [
+   {
+    "componentCode": "C25177",
+    "componentModelEn": "0402WGJ0681TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "expand",
+    "stockCount": 210924,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 50V 62.5mW 680Ω Thick Film Resistor ±100ppm/℃ ±5% 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ],
+  "C4116370": [
+   {
+    "componentCode": "C4116370",
+    "componentModelEn": "CRCW0402665KFKED",
+    "componentBrandEn": "Vishay Intertech",
+    "componentLibraryType": "expand",
+    "stockCount": 18493,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 62.5mW 665kΩ Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false
+   }
+  ]
+ }
+}
