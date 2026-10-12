@@ -103,10 +103,10 @@ va a VDD por R7 (0 Ω), para 6 dB; R8 (0 Ω a GND, 12 dB) queda sin montar. OUTP
 
 | Ref. | Pines |
 |---|---|
-| J2 OLED (1 × 4) | 1 GND, 2 +3V3, 3 SCL (GPIO9), 4 SDA (GPIO8); pull-ups R9/R10 de 4,7 kΩ |
+| J2 OLED (1 × 4) | 1 GND, 2 +3V3, 3 SCL (GPIO42), 4 SDA (GPIO2); pull-ups R9/R10 de 4,7 kΩ (cambiado en la fase 3) |
 | J3 micrófono (1 × 6) | 1 GND, 2 +3V3, 3 SD (GPIO14), 4 SCK (GPIO3), 5 WS (GPIO1), 6 L/R = GND |
 | J4 altavoz (1 × 2) | 1 OUTP, 2 OUTN |
-| J5 expansión (2 × 10, sin montar) | 1 +5V, 2 GND, 3 +3V3, 4 GND, 5–20 GPIO 2, 4, 5, 6, 7, 10, 11, 12, 13, 15, 16, 17, 18, 38, 39, 42 |
+| J5 expansión (2 × 10, sin montar) | 1 +5V, 2 GND, 3 +3V3, 4 GND, 5–20 GPIO 4, 5, 6, 7, 15, 16, 17, 18, 8, 9, 10, 11, 12, 13, 38, 39 (orden de la fase 3) |
 | TP1–TP8 | USB nativo D+/D−, +5V, +3V3, GND, TXD0, RXD0, GPIO48 |
 
 Al cablear J3: los módulos INMP441 tienen los pines L/R, WS, SCK, SD, VDD y GND con distinto orden

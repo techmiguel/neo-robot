@@ -434,11 +434,11 @@ def build():
     esp = {"1": "GND", "40": "GND", "41": "GND", "2": "+3V3", "3": "EN", "27": "BOOT",
            "39": "MIC_WS", "15": "MIC_SCK", "22": "MIC_SD",
            "23": "SPK_BCLK", "24": "SPK_LRCK", "34": "SPK_DIN", "33": "AMP_SD",
-           "12": "I2C_SDA", "17": "I2C_SCL", "37": "U0TXD", "36": "U0RXD",
+           "38": "I2C_SDA", "35": "I2C_SCL", "37": "U0TXD", "36": "U0RXD",
            "13": "USB_NAT_DN", "14": "USB_NAT_DP",
            "28": "NC", "29": "NC", "30": "NC", "26": "NC", "16": "NC"}
-    for pin, gpio in {"38": 2, "4": 4, "5": 5, "6": 6, "7": 7, "18": 10, "19": 11, "20": 12, "21": 13,
-                      "8": 15, "9": 16, "10": 17, "11": 18, "31": 38, "32": 39, "35": 42, "25": 48}.items():
+    for pin, gpio in {"4": 4, "5": 5, "6": 6, "7": 7, "8": 15, "9": 16, "10": 17, "11": 18, "12": 8, "17": 9,
+                      "18": 10, "19": 11, "20": 12, "21": 13, "31": 38, "32": 39, "25": 48}.items():
         esp[pin] = f"GPIO{gpio}"
     g.part("RF_Module:ESP32-S3-WROOM-1", "U2", "ESP32-S3-WROOM-1-N16R8", 281.94, 99.06, esp,
            lcsc="C2913202", mpn="ESP32-S3-WROOM-1-N16R8",
@@ -457,7 +457,7 @@ def build():
     g.text(230, 190, "GPIO45 y GPIO46: pines de arranque, sin carga externa.\n"
            "GPIO35-37: ocupados por la PSRAM octal (sin conectar).\n"
            "GPIO19/20 (USB nativo): solo puntos de prueba TP1/TP2.\n"
-           "OLED en GPIO8/9: GPIO46 debe ser 0 para la descarga.")
+           "OLED en GPIO2/42 (lado derecho, junto a J2): GPIO46 debe ser 0 para la descarga.")
 
     # ===== Audio (x 230–355, y 210–280) =====
     g.text(230, 207, "AMPLIFICADOR I2S MAX98357A (+5V)", 2.0)
@@ -480,7 +480,7 @@ def build():
     g.part("Connector_Generic:Conn_01x04", "J2", "OLED", 383.54, 58.42,
            {"1": "GND", "2": "+3V3", "3": "I2C_SCL", "4": "I2C_SDA"},
            fp="Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical", in_bom=False,
-           desc="OLED SSD1306 0,96\" I2C (0x3C): GND, VCC, SCL, SDA")
+           desc="OLED SSD1306 0,96\" I2C (0x3C): GND, VCC, SCL (GPIO42), SDA (GPIO2)")
     g.R("R9", "4.7k", 398.78, 40.64, "+3V3", "I2C_SDA", desc="Pull-up de SDA")
     g.R("R10", "4.7k", 408.94, 40.64, "+3V3", "I2C_SCL", desc="Pull-up de SCL")
     g.part("Connector_Generic:Conn_01x06", "J3", "MIC INMP441", 383.54, 86.36,
@@ -491,8 +491,9 @@ def build():
            fp="Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical", in_bom=False,
            desc="Altavoz 8 Ω (OUTP, OUTN de U4)")
     j5 = {}
-    pins = ["+5V", "GND", "+3V3", "GND"] + [f"GPIO{n}" for n in (2, 4, 5, 6, 7, 10, 11, 12, 13, 15, 16, 17,
-                                                                  18, 38, 39, 42)]
+    # GPIO en el orden en que salen del lateral izquierdo y del borde inferior del módulo
+    pins = ["+5V", "GND", "+3V3", "GND"] + [f"GPIO{n}" for n in (4, 5, 6, 7, 15, 16, 17, 18, 8, 9, 10, 11,
+                                                                  12, 13, 38, 39)]
     for i, net in enumerate(pins):
         j5[str(i + 1)] = net
     g.part("Connector_Generic:Conn_02x10_Odd_Even", "J5", "EXPANSIÓN", 383.54, 154.94, j5,
@@ -509,17 +510,15 @@ def build():
 
 
 def write_project():
-    pro = {
-        "board": {"design_settings": {"defaults": {}, "rules": {}}},
-        "meta": {"filename": f"{PROJECT}.kicad_pro", "version": 3},
-        "schematic": {"legacy_lib_dir": "", "legacy_lib_list": []},
-        "sheets": [], "text_variables": {},
-        "erc": {"rule_severities": {"lib_symbol_issues": "ignore", "lib_symbol_mismatch": "ignore",
-                                    "footprint_link_issues": "ignore"}},
-    }
+    """Crea el .kicad_pro o, si ya existe (pcbnew lo reescribe), le vuelve a aplicar los ajustes de ERC.
+    Las bibliotecas estándar de KiCad no están en la tabla global de un entorno sin interfaz; el
+    esquemático lleva los símbolos incrustados, así que esos avisos de biblioteca no aplican."""
     p = os.path.join(KDIR, f"{PROJECT}.kicad_pro")
-    if not os.path.exists(p):
-        json.dump(pro, open(p, "w"), indent=2)
+    pro = json.load(open(p)) if os.path.exists(p) else {
+        "meta": {"filename": f"{PROJECT}.kicad_pro", "version": 3}, "sheets": [], "text_variables": {}}
+    sev = pro.setdefault("erc", {}).setdefault("rule_severities", {})
+    sev.update({"lib_symbol_issues": "ignore", "lib_symbol_mismatch": "ignore", "footprint_link_issues": "ignore"})
+    json.dump(pro, open(p, "w"), indent=2)
 
 
 def main():

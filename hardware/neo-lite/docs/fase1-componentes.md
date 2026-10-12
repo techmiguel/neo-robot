@@ -183,7 +183,7 @@ que también ayuda a la detección de la wake word.
 | J2 | 1 × 4 | GND, VCC (3V3), SCL, SDA: el orden habitual de los módulos SSD1306 de 0,96" |
 | J3 | 1 × 6 | GND, VDD (3V3), SD, SCK, WS, L/R (unido a GND en la placa → canal izquierdo, como hoy) |
 | J4 | 1 × 2 | OUTP, OUTN |
-| J5 | 2 × 10, sin montar | 16 GPIO libres (2, 4–7, 10–13, 15–18, 38, 39, 42) + 5V + 3V3 + 2 × GND; GPIO48 va a un punto de prueba (TP8) |
+| J5 | 2 × 10, sin montar | 16 GPIO libres (4–13, 15–18, 38, 39) + 5V + 3V3 + 2 × GND; GPIO48 va a un punto de prueba (TP8) |
 
 Los módulos INMP441 de distintos fabricantes ordenan sus pines de forma diferente. Con cable, el
 orden de la placa no depende del módulo. Si prefieres enchufarlo directamente, necesito la
@@ -196,7 +196,7 @@ disposición y la separación de los pines de tu módulo (ver § 5).
 | MIC WS / SCK / SD (I2S0) | 1 (39) / 3 (15) / 14 (22) | Como hoy. GPIO3 es pin de arranque solo para la fuente de JTAG, y únicamente si el eFuse STRAP_JTAG_SEL está quemado; aquí es salida del ESP32 |
 | SPK BCLK / LRCK / DIN (I2S1) | 21 (23) / 47 (24) / 41 (34) | Como hoy |
 | AMP SD_MODE | 40 (33) | Nuevo |
-| OLED SDA / SCL | 8 (12) / 9 (17) | **Cambio**: con GPIO0 = 0, GPIO46 debe ser 0 para la descarga (guía de diseño, tabla 7). Los pull-ups de la OLED en GPIO46 la impedirían |
+| OLED SDA / SCL | 2 (38) / 42 (35) | **Cambio**: con GPIO0 = 0, GPIO46 debe ser 0 para la descarga (guía de diseño, tabla 7). Los pull-ups de la OLED en GPIO46 la impedirían. En la fase 3 pasa de GPIO8/9 a GPIO2/42, junto a J2 (ver `fase3-colocacion.md` § 3) |
 | BOOT / pulsador de usuario | 0 (27) | Como hoy (`trigger.h`) |
 | UART0 TX / RX | 43 (37) / 44 (36) | Hacia RXD/TXD del CH340C |
 | EN | 3 | RC 10 kΩ / 1 µF, RESET y autorreset |

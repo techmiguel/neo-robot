@@ -15,7 +15,7 @@ los pines de audio y el modelo de wake word no cambian.
 |---|---|---|
 | 1 | Selección de componentes, BOM y coste | Entregada: `docs/fase1-componentes.md` |
 | 2 | Esquemático (KiCad 9) y ERC | Entregada: `docs/fase2-esquematico.md`, `docs/esquematico_neo_lite.pdf`; ERC 0/0 |
-| 3 | Colocación y PCB | Pendiente |
+| 3 | Colocación y PCB | Entregada: `docs/fase3-colocacion.md`; 56 × 72 mm, DRC sin errores (sin rutear) |
 | 4 | Ruteo y DRC | Pendiente |
 | 5 | Fabricación (Gerber, BOM, CPL) | Pendiente |
 | 6 | Firmware: entorno de la placa (pines de la OLED, SD_MODE) | Pendiente |
@@ -24,7 +24,9 @@ los pines de audio y el modelo de wake word no cambian.
 
 `tools/gen_schematic.py` genera el esquemático (`kicad/NEO_Lite.kicad_sch`) y
 `tools/verify_schematic.py` lo comprueba contra su descripción, las reglas eléctricas y la BOM;
-requieren KiCad 9 y `sexpdata` (uso en `docs/fase2-esquematico.md`).
+requieren KiCad 9 y `sexpdata` (uso en `docs/fase2-esquematico.md`). `tools/build_pcb.py` crea el PCB
+desde la netlist con la colocación de la fase 3 y `tools/plot_placement.py` dibuja la vista de
+colocación con ratsnest (`docs/fase3-colocacion.md`).
 
 `tools/jlc_search.py` consulta el buscador de piezas de JLCPCB y guarda una instantánea en
 `docs/data/jlc_cache.json`. `tools/bom_fase1.py` genera `docs/data/bom_fase1.csv` y el desglose

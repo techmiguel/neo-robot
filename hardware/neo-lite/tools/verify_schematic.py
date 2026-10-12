@@ -119,7 +119,7 @@ def main():
 
     esp = {  # pin del módulo -> neta (docs/fase1-componentes.md §3)
         "39": "MIC_WS", "15": "MIC_SCK", "22": "MIC_SD", "23": "SPK_BCLK", "24": "SPK_LRCK", "34": "SPK_DIN",
-        "33": "AMP_SD", "12": "I2C_SDA", "17": "I2C_SCL", "27": "BOOT", "37": "U0TXD", "36": "U0RXD",
+        "33": "AMP_SD", "38": "I2C_SDA", "35": "I2C_SCL", "27": "BOOT", "37": "U0TXD", "36": "U0RXD",
         "3": "EN", "2": "+3V3", "1": "GND", "40": "GND", "41": "GND"}
     for pin, want in esp.items():
         expect(f"U2.{pin}", want, "mapa de pines del ESP32-S3")
