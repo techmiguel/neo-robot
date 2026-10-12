@@ -16,7 +16,7 @@ funciona el firmware, así que el modelo de wake word no cambia.
 | 1 | Selección de componentes, BOM y coste | Entregada: `docs/fase1-componentes.md` |
 | 2 | Esquemático (KiCad 9) y ERC | Entregada: `docs/fase2-esquematico.md`, `docs/esquematico_neo_lite.pdf`; ERC 0/0 |
 | 3 | Colocación y PCB | Entregada (revisión B): `docs/fase3-colocacion.md`; 31 × 43 mm, DRC sin errores (sin rutear) |
-| 4 | Ruteo y DRC | Pendiente |
+| 4 | Ruteo y DRC | Entregada: `docs/fase4-ruteo.md`; DRC sin errores ni conexiones pendientes, paridad con el esquemático |
 | 5 | Fabricación (Gerber, BOM, CPL) | Pendiente |
 | 6 | Firmware: entorno de la placa (USB CDC, pines de la OLED, SD_MODE) | Pendiente |
 
@@ -26,7 +26,8 @@ funciona el firmware, así que el modelo de wake word no cambia.
 `tools/verify_schematic.py` lo comprueba contra su descripción, las reglas eléctricas y la BOM;
 requieren KiCad 9 y `sexpdata` (uso en `docs/fase2-esquematico.md`). `tools/build_pcb.py` crea el PCB
 desde la netlist con la colocación de la fase 3 y `tools/plot_placement.py` dibuja la vista de
-colocación con ratsnest (`docs/fase3-colocacion.md`).
+colocación con ratsnest (`docs/fase3-colocacion.md`). `tools/route_all.py` rutea con Freerouting
+(`route_pcb.py`), añade los planos de GND y comprueba el DRC (`docs/fase4-ruteo.md`).
 
 `tools/jlc_search.py` consulta el buscador de piezas de JLCPCB y guarda una instantánea en
 `docs/data/jlc_cache.json`. `tools/bom_fase1.py` genera `docs/data/bom_fase1.csv` y el desglose
