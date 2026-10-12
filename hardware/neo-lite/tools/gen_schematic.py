@@ -421,7 +421,7 @@ def build():
            "Firmware: ARDUINO_USB_CDC_ON_BOOT=1. Si el firmware cuelga el USB, BOOT + RESET fuerzan la descarga.")
 
     # ===== ESP32-S3 (x 230–355, y 25–200) =====
-    g.text(230, 22, "ESP32-S3-WROOM-1U-N16R8 (ANTENA EXTERNA U.FL)", 2.0)
+    g.text(230, 22, "ESP32-S3-WROOM-1-N16R8 (ANTENA PCB FUERA DEL BORDE)", 2.0)
     esp = {"1": "GND", "40": "GND", "41": "GND", "2": "+3V3", "3": "EN", "27": "BOOT",
            "39": "MIC_WS", "15": "MIC_SCK", "22": "MIC_SD",
            "23": "SPK_BCLK", "24": "SPK_LRCK", "34": "SPK_DIN", "33": "AMP_SD",
@@ -431,10 +431,9 @@ def build():
     for pin in ("4", "5", "6", "7", "8", "9", "10", "11", "12", "17", "18", "19", "20", "21", "25", "31",
                 "32", "36", "37"):
         esp[pin] = "NC"
-    # El WROOM-1U tiene el mismo patillaje que el WROOM-1 (hoja de datos, cap. 3): mismo símbolo, otra huella
-    g.part("RF_Module:ESP32-S3-WROOM-1", "U2", "ESP32-S3-WROOM-1U-N16R8", 281.94, 99.06, esp,
-           fp="RF_Module:ESP32-S3-WROOM-1U", lcsc="C3013946", mpn="ESP32-S3-WROOM-1U-N16R8",
-           desc="Módulo Wi-Fi/BLE ESP32-S3, flash 16 MB, PSRAM octal 8 MB, conector U.FL para antena externa")
+    g.part("RF_Module:ESP32-S3-WROOM-1", "U2", "ESP32-S3-WROOM-1-N16R8", 281.94, 99.06, esp,
+           lcsc="C2913202", mpn="ESP32-S3-WROOM-1-N16R8",
+           desc="Módulo Wi-Fi/BLE ESP32-S3, flash 16 MB, PSRAM octal 8 MB, antena PCB integrada")
     g.C("C5", "10uF", 243.84, 38.1, "+3V3", "GND", desc="Junto al pin 3V3 de U2")
     g.C("C7", "100nF", 254.0, 38.1, "+3V3", "GND", desc="Junto al pin 3V3 de U2")
     g.R("R3", "10k", 241.3, 157.48, "+3V3", "EN", desc="EN: RC de arranque (10 kΩ / 1 µF)")
@@ -487,7 +486,7 @@ def build():
                fp="MountingHole:MountingHole_2.2mm_M2", in_bom=False, desc="Taladro de montaje M2")
     g.text(365, 124, "J2-J4: tiras macho de 2,54 mm, cable dupont.\n"
            "J3: L/R del INMP441 a GND (pin 6) -> canal izquierdo (ONLY_LEFT).\n"
-           "Antena: externa de 2,4 GHz con conector U.FL/IPEX (MHF I), al conector del módulo U2.")
+           "Antena: la del módulo U2, que sobresale del borde superior de la placa (guía de Espressif).")
     return g
 
 

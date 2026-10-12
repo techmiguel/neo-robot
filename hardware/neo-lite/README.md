@@ -1,7 +1,7 @@
 # NEO Lite — hardware
 
-Placa económica y compacta (31 × 43 mm, 2 capas) para NEO: módulo ESP32-S3-WROOM-1U-N16R8 con
-antena externa por U.FL, USB-C con el USB nativo del S3 (sin puente USB-UART), conector para el
+Placa económica y compacta (31 × 43 mm, 2 capas) para NEO: módulo ESP32-S3-WROOM-1-N16R8 con su
+antena integrada sobresaliendo del borde, USB-C con el USB nativo del S3 (sin puente USB-UART), conector para el
 micrófono INMP441, amplificador I2S MAX98357A con salida de dos pines para el altavoz y conector
 I2C para la OLED SSD1306. Montaje SMT de JLCPCB por una cara; conectores soldados a mano.
 

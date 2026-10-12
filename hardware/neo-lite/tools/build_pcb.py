@@ -34,8 +34,10 @@ X0, Y0, W, H, RC = 100.0, 100.0, 31.0, 43.0, 1.0
 
 # ref -> (x, y, rotación en grados). Todo en la cara superior.
 PLACE = {
-    # Módulo WROOM-1U arriba a la izquierda (cuerpo 18 × 19,2 mm; conector U.FL arriba a la derecha)
-    "U2": (114.3, 110.4, 0),
+    # Módulo WROOM-1 arriba a la izquierda. El borde superior de la placa coincide con el límite entre
+    # el cuerpo y la antena (y = -6,75 mm en la huella): la antena (6,3 mm) queda fuera de la placa,
+    # posición recomendada por Espressif, y la zona de exclusión de la huella queda entera fuera.
+    "U2": (114.3, 106.75, 0),
     # Columna izquierda, frente a los pines 2-3 (3V3, EN) y 13-14 (USB D-/D+) del módulo
     "C5": (102.2, 103.2, 90), "C7": (102.2, 106.3, 90), "R3": (102.2, 108.4, 90), "C6": (102.2, 110.5, 90),
     "TP2": (102.2, 113.6, 0),
@@ -201,7 +203,7 @@ def main():
             fp.SetExcludedFromBOM(True)
             fp.SetExcludedFromPosFiles(True)
         if ref == "U2":
-            # Vías térmicas del pad central: 0,2 mm en la huella de KiCad (WROOM-1 y WROOM-1U); JLCPCB cobra suplemento
+            # Vías térmicas del pad central: 0,2 mm en la huella de KiCad (WROOM-1); JLCPCB cobra suplemento
             # por debajo de 0,3 mm en 2 capas. Se agrandan a 0,3/0,6 mm (separación entre taladros
             # ≥ 0,69 mm, por encima de los 0,5 mm de la regla).
             for pad in fp.Pads():

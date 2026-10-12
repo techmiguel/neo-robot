@@ -30,8 +30,11 @@ def mm(v):
 def main(out=OUT):
     b = pcbnew.LoadBoard(PCB)
     bb = b.GetBoardEdgesBoundingBox()
-    x0, y0 = mm(bb.GetLeft()) - 2, mm(bb.GetTop()) - 2
-    w, h = mm(bb.GetWidth()) + 4, mm(bb.GetHeight()) + 4
+    # el encuadre incluye lo que sobresale del contorno (la antena del módulo)
+    tops = [mm(bb.GetTop())] + [mm(fp.GetPosition().y) - 12.75 for fp in b.GetFootprints()
+                                if fp.GetReference() == "U2"]
+    x0, y0 = mm(bb.GetLeft()) - 2, min(tops) - 2
+    w, h = mm(bb.GetWidth()) + 4, mm(bb.GetBottom()) + 2 - y0
     X = lambda v: (v - x0) * S  # noqa: E731
     Y = lambda v: (v - y0) * S  # noqa: E731
     el = [f'<rect x="0" y="0" width="{w * S:.0f}" height="{h * S:.0f}" fill="#ffffff"/>']
@@ -47,6 +50,12 @@ def main(out=OUT):
                 el.append(f'<rect x="{X(mm(zb.GetLeft())):.1f}" y="{Y(top):.1f}" width="{mm(zb.GetWidth()) * S:.1f}" '
                           f'height="{(mm(zb.GetBottom()) - top) * S:.1f}" fill="url(#hatch)" stroke="#999" '
                           f'stroke-dasharray="6,4"/>')
+    for fp in b.GetFootprints():
+        if fp.GetReference() == "U2":
+            px, py = mm(fp.GetPosition().x), mm(fp.GetPosition().y)
+            el.append(f'<rect x="{X(px - 9):.1f}" y="{Y(py - 12.75):.1f}" width="{18 * S}" height="{6 * S}" '
+                      f'fill="#d6eaf8" stroke="#2e86c1"/><text x="{X(px):.1f}" y="{Y(py - 9.5):.1f}" '
+                      f'font-family="sans-serif" font-size="13" text-anchor="middle" fill="#2e86c1">antena (fuera de la placa)</text>')
     centers = {}
     for fp in b.GetFootprints():
         ref = fp.GetReference()

@@ -378,10 +378,10 @@
   },
   "U2": {
    "dnp": false,
-   "footprint": "RF_Module:ESP32-S3-WROOM-1U",
+   "footprint": "RF_Module:ESP32-S3-WROOM-1",
    "in_bom": true,
-   "lcsc": "C3013946",
-   "value": "ESP32-S3-WROOM-1U-N16R8"
+   "lcsc": "C2913202",
+   "value": "ESP32-S3-WROOM-1-N16R8"
   },
   "U4": {
    "dnp": false,

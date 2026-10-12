@@ -36,7 +36,7 @@ BOM = [
     ("C1,C2,C9", "10 µF 25 V X5R", "0805", "C15850", 2, "C1 bulk VBUS; C2 entrada de U1; C9 VDD de U4"),
     ("C4,C7,C10", "100 nF X7R", "0402", "C1525", 2, "Desacoplo U1, U2, U4"),
     # --- ESP32-S3 ---
-    ("U2", "ESP32-S3-WROOM-1U-N16R8", "Módulo 19,2 × 18 mm, U.FL", "C3013946", 41, "Flash 16 MB, PSRAM octal 8 MB, antena externa"),
+    ("U2", "ESP32-S3-WROOM-1-N16R8", "Módulo 25,5 × 18 mm", "C2913202", 41, "Flash 16 MB, PSRAM octal 8 MB, antena PCB fuera del borde"),
     ("C5", "10 µF 25 V X5R", "0805", "C15850", 2, "Junto al pin 3V3 del módulo (va en el grupo de C1)"),
     ("R3", "10 kΩ 1 %", "0402", "C25744", 2, "EN: RC de arranque (con C6)"),
     ("C6", "1 µF X5R", "0402", "C52923", 2, "EN: RC de arranque"),

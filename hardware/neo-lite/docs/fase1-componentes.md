@@ -3,8 +3,9 @@
 Documento de trabajo de la fase 1. Fija las piezas, el mapa de pines y los cálculos de los que
 parten el esquemático (fase 2) y el PCB (fase 3), y estima el coste del primer pedido.
 
-> **Revisión B (placa compacta, 12-10-2026).** El módulo pasa a ESP32-S3-WROOM-1U-N16R8 con
-> antena externa, el CH340C y el autorreset se sustituyen por el USB nativo del S3 y se elimina J5.
+> **Revisión B (placa compacta, 12-10-2026).** El módulo sigue siendo el ESP32-S3-WROOM-1-N16R8,
+> ahora con la antena fuera del borde de la placa; el CH340C y el autorreset se sustituyen por el
+> USB nativo del S3 y se elimina J5.
 > Las secciones 2.1, 2.2, 3 y 4 describen la revisión A; los cambios y el coste vigente están en
 > § 6.
 
@@ -273,18 +274,24 @@ expansión J5, y la placa lo más pequeña posible.
 
 | Opción | Tamaño | Capacidades | Stock JLCPCB | Valoración |
 |---|---|---|---|---|
-| **ESP32-S3-WROOM-1U-N16R8 (C3013946)** | 18 × 19,2 mm | Idénticas: el mismo ESP32-S3R8, flash de 16 MB y PSRAM octal de 8 MB, con el mismo patillaje (hoja de datos, cap. 3) | 11 588 | **Elegida.** Sin diseño de RF, sin zona de exclusión de antena. Necesita una antena externa por U.FL/MHF I |
+| **ESP32-S3-WROOM-1-N16R8 (C2913202), antena fuera del borde** | 18 × 25,5 mm, de los que 19,5 mm sobre la placa | Las de la revisión A | 34 313 | **Elegida.** Antena integrada, sin montaje adicional |
+| ESP32-S3-WROOM-1U-N16R8 (C3013946) | 18 × 19,2 mm | Idénticas, mismo patillaje | 11 588 | Propuesta en un primer momento y descartada por el usuario: exige comprar, conectar y fijar una antena externa por U.FL |
 | ESP32-S3-PICO-1-N8R8 | 7 × 7 mm (SiP) | 8 MB de flash, 8 MB de PSRAM | 0 | Descartada: sin stock |
 | ESP32-S3R8 + W25Q128 + cristal + antena | El más pequeño | Idénticas | 3826 (chip) | Descartada en esta iteración: red de adaptación y antena en 2 capas sin instrumentos para sintonizarlas |
 | ESP32-S3-MINI-1-N4R2 | 15,4 × 20,5 mm | 4 MB de flash, 2 MB de PSRAM quad | 1076 | Descartada: no son las mismas capacidades |
 
-El WROOM-1 de la revisión A obligaba a dejar la antena en el borde con una franja sin cobre de 6
-mm a todo lo ancho (zona de exclusión de la huella, de 48 mm). El 1U ahorra 6,3 mm de módulo y esa
-franja. El firmware no cambia: mismo chip y mismos GPIO.
+En la revisión A, la antena del WROOM-1 quedaba sobre la placa, en el borde, con una franja sin
+cobre de 6 mm a todo lo ancho. En la B, el borde superior de la placa coincide con el límite entre
+el cuerpo del módulo y su antena: los 6,3 mm de antena sobresalen. Es la posición que la guía de
+diseño de Espressif recomienda en primer lugar ("place the module's on-board PCB antenna outside
+the base board, and the feed point of the antenna close to the edge of the base board"). Sobre la
+placa queda el cuerpo del módulo, casi del mismo tamaño que el 1U, y la zona de exclusión de la
+huella queda entera fuera. El firmware no cambia: mismo módulo y mismos GPIO.
 
-**Antena.** Cualquier antena de 2,4 GHz con conector U.FL (IPEX/MHF I) de 50 Ω; por ejemplo, una
-adhesiva de FPC con cable de 50–100 mm, pegada dentro de la caja lejos del altavoz y de metal. No
-va en la BOM de JLCPCB: se compra aparte (~1 USD).
+Dos consecuencias: dentro de la caja, la antena necesita espacio libre (Espressif recomienda 15
+mm en todas direcciones, sin metal), y en el pedido conviene confirmar en la revisión DFM de
+JLCPCB que aceptan el módulo sobresaliendo del borde. Es una práctica común, pero no he
+encontrado una norma escrita de JLCPCB; si piden bordes de proceso (*rails*), es un coste pequeño.
 
 ### 6.2 USB nativo en lugar del CH340C
 
@@ -316,7 +323,5 @@ inutilizable, BOOT + RESET fuerzan la descarga. UART0 (GPIO43/44) queda libre.
 | Puesta en marcha y plantilla | 9,71 | 9,71 |
 | Piezas extendidas × 3,07 | 21,49 (7) | 18,42 (6) |
 | Juntas × 0,0016 | 1,26 | 1,07 |
-| Piezas | 43,13 | 39,13 |
-| **Total sin envío ni impuestos** | **79,59** | **72,33 (14,47 por placa)** |
-
-Más 5 antenas U.FL (~5 USD), fuera del pedido de JLCPCB.
+| Piezas | 43,13 | 39,93 |
+| **Total sin envío ni impuestos** | **79,59** | **73,14 (14,63 por placa)** |

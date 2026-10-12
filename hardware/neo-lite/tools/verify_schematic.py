@@ -130,8 +130,8 @@ def main():
     boot = {r for r, _ in nets.get("/BOOT", nets.get("BOOT", []))}
     if boot != {"U2", "SW2"}:
         errs.append(f"GPIO0 (BOOT) solo debe ir a U2 y SW2: {sorted(boot)}")
-    if comps["U2"]["footprint"] != "RF_Module:ESP32-S3-WROOM-1U":
-        errs.append(f"U2: huella {comps['U2']['footprint']}, se esperaba la del WROOM-1U (antena externa)")
+    if comps["U2"]["footprint"] != "RF_Module:ESP32-S3-WROOM-1":
+        errs.append(f"U2: huella {comps['U2']['footprint']}, se esperaba la del WROOM-1 (antena integrada)")
     for who, want, why in [
         ("J1.A5", "CC1", "CC1"), ("J1.B5", "CC2", "CC2"), ("R1.1", "CC1", "5,1 kΩ en CC1"), ("R1.2", "GND", "CC1 a GND"),
         ("R2.1", "CC2", "5,1 kΩ en CC2"), ("R2.2", "GND", "CC2 a GND"),
