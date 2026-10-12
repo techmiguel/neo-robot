@@ -19,7 +19,7 @@ import pcbnew
 HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, "..", "kicad", "NEO_Lite.kicad_pcb")
 OUT = os.path.join(HERE, "..", "docs", "img", "fase3_colocacion.svg")
-S = 12.0                      # px por mm
+S = 20.0                      # px por mm
 COL = {"GND": "#3a7d44", "+3V3": "#c0392b", "+5V": "#d35400", "VBUS": "#8e44ad"}
 
 
@@ -51,15 +51,10 @@ def main(out=OUT):
     for fp in b.GetFootprints():
         ref = fp.GetReference()
         cy = fp.GetCourtyard(pcbnew.F_CrtYd)
-        if cy.OutlineCount() and not ref.startswith("U2"):
+        if cy.OutlineCount():
             o = cy.Outline(0)
             pts = " ".join(f"{X(mm(o.CPoint(i).x)):.1f},{Y(mm(o.CPoint(i).y)):.1f}" for i in range(o.PointCount()))
             el.append(f'<polygon points="{pts}" fill="#fafafa" fill-opacity="0.7" stroke="#e67e22" stroke-width="1"/>')
-        if ref == "U2":
-            el.append(f'<rect x="{X(mm(fp.GetPosition().x) - 9):.1f}" y="{Y(mm(fp.GetPosition().y) - 12.75):.1f}" '
-                      f'width="{18 * S}" height="{25.5 * S}" fill="#fafafa" stroke="#e67e22"/>')
-            el.append(f'<rect x="{X(mm(fp.GetPosition().x) - 9):.1f}" y="{Y(mm(fp.GetPosition().y) - 12.75):.1f}" '
-                      f'width="{18 * S}" height="{6 * S}" fill="#d6eaf8" stroke="#2e86c1"/>')
         for p in fp.Pads():
             pb = p.GetBoundingBox()
             net = p.GetNetname()
@@ -90,7 +85,7 @@ def main(out=OUT):
                   f'font-weight="bold" text-anchor="middle" fill="#000">{fp.GetReference()}</text>')
     el.append(f'<text x="8" y="{h * S - 8:.0f}" font-family="sans-serif" font-size="13" fill="#333">'
               f'Ratsnest (MST por neta): {sum(total.values()):.0f} mm. Verde GND, rojo +3V3, naranja +5V, '
-              f'violeta VBUS. Rayado: exclusión de antena.</text>')
+              f'violeta VBUS. Rayado: zonas de exclusión.</text>')
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w * S:.0f}" height="{h * S + 10:.0f}">'
            '<defs><pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" '
            'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#bbb" stroke-width="3"/>'

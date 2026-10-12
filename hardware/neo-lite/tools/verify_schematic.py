@@ -11,7 +11,7 @@ reglas de diseño de la fase 1 (fase 2).
 3. Las huellas existen en las bibliotecas de KiCad.
 4. Las piezas montables y sus códigos LCSC coinciden con la BOM de la fase 1 (tools/bom_fase1.py).
 5. Reglas eléctricas: mapa de pines del ESP32-S3, pines de arranque, CC del USB-C, alimentación
-   de cada integrado, autorreset y amplificador.
+   de cada integrado, USB nativo y amplificador.
 Termina con código 1 si algo falla.
 """
 import json
@@ -119,7 +119,7 @@ def main():
 
     esp = {  # pin del módulo -> neta (docs/fase1-componentes.md §3)
         "39": "MIC_WS", "15": "MIC_SCK", "22": "MIC_SD", "23": "SPK_BCLK", "24": "SPK_LRCK", "34": "SPK_DIN",
-        "33": "AMP_SD", "38": "I2C_SDA", "35": "I2C_SCL", "27": "BOOT", "37": "U0TXD", "36": "U0RXD",
+        "33": "AMP_SD", "38": "I2C_SDA", "35": "I2C_SCL", "27": "BOOT", "13": "ESP_DN", "14": "ESP_DP",
         "3": "EN", "2": "+3V3", "1": "GND", "40": "GND", "41": "GND"}
     for pin, want in esp.items():
         expect(f"U2.{pin}", want, "mapa de pines del ESP32-S3")
@@ -128,18 +128,19 @@ def main():
         if not pin2net.get(f"U2.{pin}", "unconnected-").startswith("unconnected-"):
             errs.append(f"U2.{pin} ({why}) debe quedar sin conectar")
     boot = {r for r, _ in nets.get("/BOOT", nets.get("BOOT", []))}
-    if boot != {"U2", "Q2", "SW2"}:
-        errs.append(f"GPIO0 (BOOT) solo debe ir a U2, Q2 y SW2: {sorted(boot)}")
+    if boot != {"U2", "SW2"}:
+        errs.append(f"GPIO0 (BOOT) solo debe ir a U2 y SW2: {sorted(boot)}")
+    if comps["U2"]["footprint"] != "RF_Module:ESP32-S3-WROOM-1U":
+        errs.append(f"U2: huella {comps['U2']['footprint']}, se esperaba la del WROOM-1U (antena externa)")
     for who, want, why in [
         ("J1.A5", "CC1", "CC1"), ("J1.B5", "CC2", "CC2"), ("R1.1", "CC1", "5,1 kΩ en CC1"), ("R1.2", "GND", "CC1 a GND"),
         ("R2.1", "CC2", "5,1 kΩ en CC2"), ("R2.2", "GND", "CC2 a GND"),
         ("F1.1", "VBUS", "PPTC desde el conector"), ("F1.2", "+5V", "PPTC hacia +5V"),
         ("U1.3", "+5V", "entrada del LDO"), ("U1.2", "+3V3", "salida del LDO"),
-        ("U3.16", "+3V3", "CH340C a 3,3 V"), ("U3.4", "+3V3", "V3 unido a VCC"),
-        ("U3.2", "U0RXD", "TXD del CH340C -> RXD0"), ("U3.3", "U0TXD", "RXD del CH340C <- TXD0"),
-        ("U3.5", "USB_DP", "UD+"), ("U3.6", "USB_DN", "UD-"),
-        ("Q1.3", "EN", "autorreset: colector de Q1 a EN"), ("Q1.2", "RTS", "emisor de Q1 a RTS"),
-        ("Q2.3", "BOOT", "autorreset: colector de Q2 a GPIO0"), ("Q2.2", "DTR", "emisor de Q2 a DTR"),
+        ("J1.A6", "USB_DP", "D+ del conector"), ("J1.A7", "USB_DN", "D- del conector"),
+        ("R4.1", "USB_DP", "22 Ω en D+"), ("R4.2", "ESP_DP", "D+ al GPIO20"),
+        ("R5.1", "USB_DN", "22 Ω en D-"), ("R5.2", "ESP_DN", "D- al GPIO19"),
+        ("D1.1", "USB_DP", "ESD en D+"), ("D1.3", "USB_DN", "ESD en D-"),
         ("U4.7", "+5V", "VDD del amplificador"), ("U4.8", "+5V", "VDD del amplificador"),
         ("U4.4", "AMP_SD", "SD_MODE"), ("U4.2", "GAIN", "GAIN_SLOT"), ("R7.1", "+5V", "GAIN_SLOT a VDD (6 dB)"),
         ("R6.1", "+3V3", "pull-up de SD_MODE"), ("U4.17", "GND", "pad expuesto a GND"),
@@ -147,10 +148,6 @@ def main():
         ("J4.1", "SPK_P", "altavoz"), ("J4.2", "SPK_N", "altavoz"),
     ]:
         expect(who, want, why)
-    for who in ("R4", "R5"):
-        bases = {net(f"{who}.1"), net(f"{who}.2")}
-        if not bases & {"Q1_B", "Q2_B"}:
-            errs.append(f"{who}: no va a una base")
     if parts["R8"]["dnp"] is not True:
         errs.append("R8 (GAIN_SLOT a GND) debe estar sin montar")
 

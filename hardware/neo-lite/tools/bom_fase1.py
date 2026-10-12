@@ -34,17 +34,15 @@ BOM = [
     ("U1", "TLV1117LV33 (TI), LDO 3,3 V 1 A", "SOT-223", "C15578", 4, "Caída 230 mV a 500 mA; estable con cerámico"),
     ("C3", "22 µF 25 V X5R", "0805", "C45783", 2, "Salida de U1"),
     ("C1,C2,C9", "10 µF 25 V X5R", "0805", "C15850", 2, "C1 bulk VBUS; C2 entrada de U1; C9 VDD de U4"),
-    ("C4,C7,C8,C10", "100 nF X7R", "0402", "C1525", 2, "Desacoplo U1, U2, U3, U4"),
+    ("C4,C7,C10", "100 nF X7R", "0402", "C1525", 2, "Desacoplo U1, U2, U4"),
     # --- ESP32-S3 ---
-    ("U2", "ESP32-S3-WROOM-1-N16R8", "Módulo 25,5 × 18 mm", "C2913202", 41, "Flash 16 MB, PSRAM octal 8 MB"),
+    ("U2", "ESP32-S3-WROOM-1U-N16R8", "Módulo 19,2 × 18 mm, U.FL", "C3013946", 41, "Flash 16 MB, PSRAM octal 8 MB, antena externa"),
     ("C5", "10 µF 25 V X5R", "0805", "C15850", 2, "Junto al pin 3V3 del módulo (va en el grupo de C1)"),
     ("R3", "10 kΩ 1 %", "0402", "C25744", 2, "EN: RC de arranque (con C6)"),
     ("C6", "1 µF X5R", "0402", "C52923", 2, "EN: RC de arranque"),
     ("SW1,SW2", "Pulsador 5,1 × 5,1 mm", "SMD 4P", "C318884", 4, "SW1 RESET (EN), SW2 BOOT (GPIO0, pulsador de usuario)"),
-    # --- USB-UART ---
-    ("U3", "CH340C", "SOP-16", "C84681", 16, "VCC = V3 = 3V3 (niveles de 3,3 V), reloj interno"),
-    ("Q1,Q2", "MMBT3904", "SOT-23", "C20526", 3, "Autorreset DTR/RTS → EN/GPIO0"),
-    ("R4,R5", "10 kΩ 1 %", "0402", "C25744", 2, "Bases de Q1/Q2 (va en el grupo de R3)"),
+    # --- USB nativo ---
+    ("R4,R5", "22 Ω 1 %", "0402", "C25092", 2, "Serie en D+/D- junto al módulo (guía de Espressif)"),
     # --- Audio ---
     ("U4", "MAX98357AETE+T", "TQFN-16 3 × 3", "C910544", 17, "DAC I2S + clase D, 5 V"),
     ("R6", "470 kΩ 1 %", "0402", "C25790", 2, "SD_MODE a 3V3: (L+R)/2 sin firmware; GPIO40 bajo = apagado"),
@@ -52,7 +50,7 @@ BOM = [
     # --- OLED (I2C) ---
     ("R9,R10", "4,7 kΩ 1 %", "0402", "C25900", 2, "Pull-ups de SDA/SCL"),
 ]
-DNP = ["R8 (GAIN_SLOT a GND, 0 Ω)", "J5 (tira de expansión 1 × 16)"]
+DNP = ["R8 (GAIN_SLOT a GND, 0 Ω)"]
 HAND = [("J2", "Tira macho 1 × 4, 2,54 mm", "OLED: GND, VCC, SCL, SDA"),
         ("J3", "Tira macho 1 × 6, 2,54 mm", "INMP441 por cable: GND, VDD, SD, SCK, WS, L/R(=GND)"),
         ("J4", "Tira macho 1 × 2, 2,54 mm", "Altavoz 4–8 Ω (OUTP, OUTN)")]

@@ -4,6 +4,10 @@ El esquemático completo de NEO Lite cabe en una hoja A3, en KiCad 9. Todos los 
 de la BOM de la fase 1, sin cambios, y aplica las decisiones del usuario: micrófono por cable,
 altavoz de 8 Ω y sin recortes.
 
+> **Revisión B (placa compacta).** WROOM-1U con antena externa, USB nativo sin CH340C ni
+> autorreset, sin J5. El § 3.3 queda sustituido; los cambios y la verificación vigente están en
+> § 6.
+
 | Resultado | Valor |
 |---|---|
 | Componentes | 47 en total: 30 montados por JLCPCB, 3 tiras soldadas a mano (J2–J4), 2 sin montar (R8, J5), 8 puntos de prueba y 4 taladros |
@@ -129,3 +133,20 @@ lo garantiza en la regla 4).
    resuelve en la fase 5, con la tabla de rotaciones a revisar en la vista previa.
 3. Comprobar la huella `TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm` del MAX98357A contra el plano del
    encapsulado TQFN-16 de 3 × 3 mm de Maxim antes de fabricar, y la del USB-C contra el plano de HRO.
+
+## 6. Revisión B: esquemático de la placa compacta
+
+| Cambio | Detalle |
+|---|---|
+| U2 | Mismo símbolo `RF_Module:ESP32-S3-WROOM-1` (patillaje idéntico), huella `RF_Module:ESP32-S3-WROOM-1U`, LCSC C3013946 |
+| USB | J1 → D1 → R4 (D+) / R5 (D−), 22 Ω, → GPIO20 / GPIO19 del módulo (netas `ESP_DP` / `ESP_DN`) |
+| Eliminados | U3 (CH340C), Q1, Q2, C8, J5, TP de USB nativo, UART y GPIO48; símbolo local `CH340C_3V3` |
+| GPIO sin uso | Todos sin conexión, incluida UART0 (GPIO43/44) |
+| Taladros | H1, H2 de M2 |
+| Puntos de prueba | TP1 +5V, TP2 +3V3, TP3 GND |
+
+| Resultado | Valor |
+|---|---|
+| Componentes | 35: 26 montados por JLCPCB, 3 tiras a mano (J2–J4), R8 sin montar, 3 puntos de prueba, 2 taladros |
+| ERC | **0 errores, 0 avisos** |
+| `verify_schematic.py` | **OK**, 113 pines; reglas actualizadas: USB nativo (R4/R5, D1, J1), GPIO0 solo a U2 y SW2, huella del WROOM-1U |

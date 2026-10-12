@@ -3,6 +3,11 @@
 Documento de trabajo de la fase 1. Fija las piezas, el mapa de pines y los cálculos de los que
 parten el esquemático (fase 2) y el PCB (fase 3), y estima el coste del primer pedido.
 
+> **Revisión B (placa compacta, 12-10-2026).** El módulo pasa a ESP32-S3-WROOM-1U-N16R8 con
+> antena externa, el CH340C y el autorreset se sustituyen por el USB nativo del S3 y se elimina J5.
+> Las secciones 2.1, 2.2, 3 y 4 describen la revisión A; los cambios y el coste vigente están en
+> § 6.
+
 ## 0. Alcance y método
 
 NEO Lite es una placa nueva de 2 capas, de diseño propio, que lleva a una PCB la plataforma con la
@@ -258,3 +263,60 @@ de riesgos reales en la primera iteración.
 1. Micrófono por cable con la tira 1 × 6 (J3): permite separar el micrófono del altavoz.
 2. Altavoz de 8 Ω: pico en VBUS de ~0,57 A (§ 2.6).
 3. Sin recortes: se mantiene la BOM base (~80 USD).
+
+## 6. Revisión B: placa compacta
+
+Petición del usuario tras la fase 3: el mismo ESP32-S3 en menos espacio, sin la tira de
+expansión J5, y la placa lo más pequeña posible.
+
+### 6.1 Módulo
+
+| Opción | Tamaño | Capacidades | Stock JLCPCB | Valoración |
+|---|---|---|---|---|
+| **ESP32-S3-WROOM-1U-N16R8 (C3013946)** | 18 × 19,2 mm | Idénticas: el mismo ESP32-S3R8, flash de 16 MB y PSRAM octal de 8 MB, con el mismo patillaje (hoja de datos, cap. 3) | 11 588 | **Elegida.** Sin diseño de RF, sin zona de exclusión de antena. Necesita una antena externa por U.FL/MHF I |
+| ESP32-S3-PICO-1-N8R8 | 7 × 7 mm (SiP) | 8 MB de flash, 8 MB de PSRAM | 0 | Descartada: sin stock |
+| ESP32-S3R8 + W25Q128 + cristal + antena | El más pequeño | Idénticas | 3826 (chip) | Descartada en esta iteración: red de adaptación y antena en 2 capas sin instrumentos para sintonizarlas |
+| ESP32-S3-MINI-1-N4R2 | 15,4 × 20,5 mm | 4 MB de flash, 2 MB de PSRAM quad | 1076 | Descartada: no son las mismas capacidades |
+
+El WROOM-1 de la revisión A obligaba a dejar la antena en el borde con una franja sin cobre de 6
+mm a todo lo ancho (zona de exclusión de la huella, de 48 mm). El 1U ahorra 6,3 mm de módulo y esa
+franja. El firmware no cambia: mismo chip y mismos GPIO.
+
+**Antena.** Cualquier antena de 2,4 GHz con conector U.FL (IPEX/MHF I) de 50 Ω; por ejemplo, una
+adhesiva de FPC con cable de 50–100 mm, pegada dentro de la caja lejos del altavoz y de metal. No
+va en la BOM de JLCPCB: se compra aparte (~1 USD).
+
+### 6.2 USB nativo en lugar del CH340C
+
+La descarga y la consola pasan al USB-Serial-JTAG integrado del ESP32-S3 (GPIO19 = D−,
+GPIO20 = D+). Salen U3, Q1, Q2, R4/R5 de 10 kΩ, C8 y los puntos de prueba de la UART. Entran R4/R5
+de 22 Ω (C25092, básica) en serie con D+/D− junto al módulo, como recomienda la guía de diseño de
+Espressif ("reserve series resistors (initial value can be 22/33 Ω)"). Los condensadores a GND
+que la guía deja opcionales no se montan, para ahorrar espacio.
+
+Consecuencias para el firmware: `ARDUINO_USB_CDC_ON_BOOT=1`, y `Serial` sale por el USB. esptool
+reinicia en modo descarga por el propio USB, sin pulsar BOOT. Si un firmware deja el USB
+inutilizable, BOOT + RESET fuerzan la descarga. UART0 (GPIO43/44) queda libre.
+
+### 6.3 Otros cambios
+
+| Cambio | Motivo |
+|---|---|
+| J5 y TP8 eliminados | Petición del usuario. Los GPIO libres quedan sin conectar |
+| 4 taladros M3 → 2 taladros M2 | Un M3 ocupa 7 mm de diámetro; en una placa de 31 × 43 mm, dos M2 (5 mm) en esquinas opuestas bastan para fijarla |
+| Puntos de prueba: +5V, +3V3, GND | Los de USB nativo y UART ya no aplican |
+
+### 6.4 BOM y coste (revisión B)
+
+17 grupos y 26 piezas SMD por placa, todas en la cara superior; 6 extendidas (antes 7).
+
+| Concepto (5 placas, PCBA económico, una cara) | Rev. A | **Rev. B** |
+|---|---|---|
+| PCB de 2 capas (estimación) | 4,00 | 4,00 |
+| Puesta en marcha y plantilla | 9,71 | 9,71 |
+| Piezas extendidas × 3,07 | 21,49 (7) | 18,42 (6) |
+| Juntas × 0,0016 | 1,26 | 1,07 |
+| Piezas | 43,13 | 39,13 |
+| **Total sin envío ni impuestos** | **79,59** | **72,33 (14,47 por placa)** |
+
+Más 5 antenas U.FL (~5 USD), fuera del pedido de JLCPCB.

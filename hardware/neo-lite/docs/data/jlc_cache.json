@@ -22925,6 +22925,98 @@
     "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF4703TCE_C25790.pdf",
     "leastPatchNumber": 20
    }
+  ],
+  "C25092": [
+   {
+    "componentCode": "C25092",
+    "componentModelEn": "0402WGF220JTCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 6204119,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 22Ω 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 999,
+      "productPrice": 0.0028
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 2999,
+      "productPrice": 0.0021
+     },
+     {
+      "startNumber": 3000,
+      "endNumber": 9999,
+      "productPrice": 0.0017
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 49999,
+      "productPrice": 0.0016
+     },
+     {
+      "startNumber": 50000,
+      "endNumber": 50199,
+      "productPrice": 0.0012
+     },
+     {
+      "startNumber": 50200,
+      "endNumber": -1,
+      "productPrice": 0.0012
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311900_UNI-ROYAL-Uniroyal-Elec-0402WGF220JTCE_C25092.pdf",
+    "leastPatchNumber": 20
+   }
+  ],
+  "C3013946": [
+   {
+    "componentCode": "C3013946",
+    "componentModelEn": "ESP32-S3-WROOM-1U-N16R8",
+    "componentBrandEn": "Espressif Systems",
+    "componentLibraryType": "expand",
+    "stockCount": 11588,
+    "componentSpecificationEn": "SMD,19.2x18mm",
+    "describe": "-103.5dBm -40℃~+65℃ 2.4GHz 20.5dBm 355mA 3V~3.6V 95mA Bluetooth5.0 ESP32-S3R8 UART、SDIO、SPI、I2C、GPIO、PWM、ADC、I2S、JTAG、USB SMD,19.2x18mm WiFi Modules ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 4.9855
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 29,
+      "productPrice": 4.3617
+     },
+     {
+      "startNumber": 30,
+      "endNumber": 99,
+      "productPrice": 4.0148
+     },
+     {
+      "startNumber": 100,
+      "endNumber": 649,
+      "productPrice": 3.5881
+     },
+     {
+      "startNumber": 650,
+      "endNumber": 1299,
+      "productPrice": 3.435
+     },
+     {
+      "startNumber": 1300,
+      "endNumber": -1,
+      "productPrice": 3.3698
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411121101_Espressif-Systems-ESP32-S3-WROOM-1U-N16R8_C3013946.pdf",
+    "leastPatchNumber": 0
+   }
   ]
  }
 }

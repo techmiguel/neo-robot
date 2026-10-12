@@ -134,8 +134,6 @@ def embed_symbol(libname, sym):
 # Copias de símbolos estándar con un solo cambio de tipo de pin, para que el ERC refleje el uso real.
 #   (biblioteca, símbolo, nombre nuevo, {pin: tipo nuevo}, motivo)
 LOCAL_SYMBOLS = [
-    ("Interface_USB", "CH340C", "CH340C_3V3", {"4": "power_in"},
-     "V3 unido a VCC a 3,3 V (hoja de WCH, § 5): entrada de alimentación, no salida del regulador interno"),
     ("Audio", "MAX98357A", "MAX98357A", {"17": "passive"},
      "Pad expuesto sin conexión interna, a GND por disipación (hoja de Maxim, Pin Description)"),
 ]
@@ -344,7 +342,7 @@ class Sheet:
         self.part("power:PWR_FLAG", f"#FLG{self.flags:02d}", "PWR_FLAG", x, y, {"1": net}, in_bom=False)
 
     # pasivos (LCSC de docs/fase1-componentes.md)
-    RES = {"5.1k": "C25905", "10k": "C25744", "4.7k": "C25900", "470k": "C25790", "0": "C17168"}
+    RES = {"22": "C25092", "5.1k": "C25905", "10k": "C25744", "4.7k": "C25900", "470k": "C25790", "0": "C17168"}
     CAP = {"100nF": ("C1525", "Capacitor_SMD:C_0402_1005Metric"),
            "1uF": ("C52923", "Capacitor_SMD:C_0402_1005Metric"),
            "10uF": ("C15850", "Capacitor_SMD:C_0805_2012Metric"),
@@ -412,37 +410,31 @@ def build():
            "R1/R2 de 5,1 kΩ: sin ellas un cargador USB-C no entrega 5 V.\n"
            "U1 TLV1117LV33 (no AMS1117): ver docs/fase1-componentes.md §2.3.")
 
-    # ===== Puente USB-UART y autorreset (x 20–215, y 150–280) =====
-    g.text(20, 147, "PUENTE USB-UART (CH340C A 3,3 V) Y AUTORRESET", 2.0)
-    g.part(f"{PROJECT}:CH340C_3V3", "U3", "CH340C", 63.5, 205.74,
-           {"16": "+3V3", "4": "+3V3", "1": "GND", "5": "USB_DP", "6": "USB_DN",
-            "2": "U0RXD", "3": "U0TXD", "13": "DTR", "14": "RTS",
-            "9": "NC", "10": "NC", "11": "NC", "12": "NC", "15": "NC", "7": "NC", "8": "NC"},
-           lcsc="C84681", mpn="CH340C", desc="Puente USB-UART con reloj interno; VCC = V3 = 3V3")
-    g.C("C8", "100nF", 99.06, 182.88, "+3V3", "GND", desc="Desacoplo de U3 (VCC/V3)")
-    g.R("R4", "10k", 127.0, 190.5, "DTR", "Q1_B", rot=90)
-    g.part("Transistor_BJT:MMBT3904", "Q1", "MMBT3904", 160.02, 190.5, {"1": "Q1_B", "2": "RTS", "3": "EN"},
-           lcsc="C20526", desc="Autorreset: DTR=0, RTS=1 lleva EN a nivel bajo")
-    g.R("R5", "10k", 127.0, 236.22, "RTS", "Q2_B", rot=90)
-    g.part("Transistor_BJT:MMBT3904", "Q2", "MMBT3904", 160.02, 236.22, {"1": "Q2_B", "2": "DTR", "3": "BOOT"},
-           lcsc="C20526", desc="Autorreset: DTR=1, RTS=0 lleva GPIO0 a nivel bajo")
-    g.text(105, 255, "Circuito de autorreset de Espressif (DevKitC):\nDTR RTS -> EN GPIO0\n 1   1  ->  1   1\n"
-           " 0   0  ->  1   1\n 1   0  ->  0   1\n 0   1  ->  1   0\nTXD de U3 -> RXD0 del ESP32 (U0RXD); RXD de U3 <- TXD0 (U0TXD).")
+    # ===== USB nativo del ESP32-S3 (x 20–215, y 150–280) =====
+    g.text(20, 147, "USB NATIVO (USB-SERIAL-JTAG DEL ESP32-S3)", 2.0)
+    g.R("R4", "22", 76.2, 190.5, "USB_DP", "ESP_DP", rot=90,
+        desc="Serie en D+ junto al módulo (guía de diseño de Espressif: 22-33 Ω)")
+    g.R("R5", "22", 76.2, 210.82, "USB_DN", "ESP_DN", rot=90,
+        desc="Serie en D- junto al módulo (guía de diseño de Espressif: 22-33 Ω)")
+    g.text(20, 230, "D+/D- del USB-C (protegidas por D1) a GPIO20/GPIO19 del módulo.\n"
+           "Descarga y consola por el USB-Serial-JTAG integrado: sin puente USB-UART ni autorreset.\n"
+           "Firmware: ARDUINO_USB_CDC_ON_BOOT=1. Si el firmware cuelga el USB, BOOT + RESET fuerzan la descarga.")
 
     # ===== ESP32-S3 (x 230–355, y 25–200) =====
-    g.text(230, 22, "ESP32-S3-WROOM-1-N16R8", 2.0)
+    g.text(230, 22, "ESP32-S3-WROOM-1U-N16R8 (ANTENA EXTERNA U.FL)", 2.0)
     esp = {"1": "GND", "40": "GND", "41": "GND", "2": "+3V3", "3": "EN", "27": "BOOT",
            "39": "MIC_WS", "15": "MIC_SCK", "22": "MIC_SD",
            "23": "SPK_BCLK", "24": "SPK_LRCK", "34": "SPK_DIN", "33": "AMP_SD",
-           "38": "I2C_SDA", "35": "I2C_SCL", "37": "U0TXD", "36": "U0RXD",
-           "13": "USB_NAT_DN", "14": "USB_NAT_DP",
+           "38": "I2C_SDA", "35": "I2C_SCL", "13": "ESP_DN", "14": "ESP_DP",
            "28": "NC", "29": "NC", "30": "NC", "26": "NC", "16": "NC"}
-    for pin, gpio in {"4": 4, "5": 5, "6": 6, "7": 7, "8": 15, "9": 16, "10": 17, "11": 18, "12": 8, "17": 9,
-                      "18": 10, "19": 11, "20": 12, "21": 13, "31": 38, "32": 39, "25": 48}.items():
-        esp[pin] = f"GPIO{gpio}"
-    g.part("RF_Module:ESP32-S3-WROOM-1", "U2", "ESP32-S3-WROOM-1-N16R8", 281.94, 99.06, esp,
-           lcsc="C2913202", mpn="ESP32-S3-WROOM-1-N16R8",
-           desc="Módulo Wi-Fi/BLE ESP32-S3, flash 16 MB, PSRAM octal 8 MB, antena PCB")
+    # GPIO sin uso (incluida UART0: la consola va por el USB nativo)
+    for pin in ("4", "5", "6", "7", "8", "9", "10", "11", "12", "17", "18", "19", "20", "21", "25", "31",
+                "32", "36", "37"):
+        esp[pin] = "NC"
+    # El WROOM-1U tiene el mismo patillaje que el WROOM-1 (hoja de datos, cap. 3): mismo símbolo, otra huella
+    g.part("RF_Module:ESP32-S3-WROOM-1", "U2", "ESP32-S3-WROOM-1U-N16R8", 281.94, 99.06, esp,
+           fp="RF_Module:ESP32-S3-WROOM-1U", lcsc="C3013946", mpn="ESP32-S3-WROOM-1U-N16R8",
+           desc="Módulo Wi-Fi/BLE ESP32-S3, flash 16 MB, PSRAM octal 8 MB, conector U.FL para antena externa")
     g.C("C5", "10uF", 243.84, 38.1, "+3V3", "GND", desc="Junto al pin 3V3 de U2")
     g.C("C7", "100nF", 254.0, 38.1, "+3V3", "GND", desc="Junto al pin 3V3 de U2")
     g.R("R3", "10k", 241.3, 157.48, "+3V3", "EN", desc="EN: RC de arranque (10 kΩ / 1 µF)")
@@ -452,11 +444,11 @@ def build():
     g.part("Switch:SW_Push", "SW2", "BOOT", 299.72, 157.48, {"1": "BOOT", "2": "GND"},
            fp="Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A", lcsc="C318884",
            desc="Pulsador BOOT (GPIO0); también pulsador de usuario del firmware")
-    for i, net in enumerate(("USB_NAT_DP", "USB_NAT_DN", "+5V", "+3V3", "GND", "U0TXD", "U0RXD")):
+    for i, net in enumerate(("+5V", "+3V3", "GND")):
         g.TP(f"TP{i + 1}", net, 238.76 + 16.51 * i, 172.72)
     g.text(230, 190, "GPIO45 y GPIO46: pines de arranque, sin carga externa.\n"
            "GPIO35-37: ocupados por la PSRAM octal (sin conectar).\n"
-           "GPIO19/20 (USB nativo): solo puntos de prueba TP1/TP2.\n"
+           "GPIO19/20: USB nativo (D-/D+), con R5/R4 de 22 Ω.\n"
            "OLED en GPIO2/42 (lado derecho, junto a J2): GPIO46 debe ser 0 para la descarga.")
 
     # ===== Audio (x 230–355, y 210–280) =====
@@ -490,22 +482,12 @@ def build():
     g.part("Connector_Generic:Conn_01x02", "J4", "ALTAVOZ 8 Ω", 383.54, 114.3, {"1": "SPK_P", "2": "SPK_N"},
            fp="Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical", in_bom=False,
            desc="Altavoz 8 Ω (OUTP, OUTN de U4)")
-    j5 = {}
-    # GPIO en el orden en que salen del lateral izquierdo y del borde inferior del módulo
-    pins = ["+5V", "GND", "+3V3", "GND"] + [f"GPIO{n}" for n in (4, 5, 6, 7, 15, 16, 17, 18, 8, 9, 10, 11,
-                                                                  12, 13, 38, 39)]
-    for i, net in enumerate(pins):
-        j5[str(i + 1)] = net
-    g.part("Connector_Generic:Conn_02x10_Odd_Even", "J5", "EXPANSIÓN", 383.54, 154.94, j5,
-           fp="Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical", dnp=True, in_bom=False,
-           desc="Tira de expansión 2x10 sin montar")
-    g.TP("TP8", "GPIO48", 403.86, 177.8)
-    for i in range(4):
-        g.part("Mechanical:MountingHole", f"H{i + 1}", "M3", 365.76 + 10.16 * i, 195.58, {},
-               fp="MountingHole:MountingHole_3.2mm_M3", in_bom=False, desc="Taladro de montaje M3")
+    for i in range(2):
+        g.part("Mechanical:MountingHole", f"H{i + 1}", "M2", 365.76 + 10.16 * i, 195.58, {},
+               fp="MountingHole:MountingHole_2.2mm_M2", in_bom=False, desc="Taladro de montaje M2")
     g.text(365, 124, "J2-J4: tiras macho de 2,54 mm, cable dupont.\n"
            "J3: L/R del INMP441 a GND (pin 6) -> canal izquierdo (ONLY_LEFT).\n"
-           "J5: sin montar. GPIO48 en TP8 (sin hueco en J5).")
+           "Antena: externa de 2,4 GHz con conector U.FL/IPEX (MHF I), al conector del módulo U2.")
     return g
 
 

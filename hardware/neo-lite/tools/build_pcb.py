@@ -29,46 +29,33 @@ SCH = os.path.join(KDIR, "NEO_Lite.kicad_sch")
 PCB = os.path.join(KDIR, "NEO_Lite.kicad_pcb")
 FPDIR = "/usr/share/kicad/footprints"
 
-# Contorno: 56 × 72 mm, esquinas redondeadas de 2 mm
-X0, Y0, W, H, RC = 100.0, 100.0, 56.0, 72.0, 2.0
+# Contorno: 31 × 43 mm, esquinas redondeadas de 1 mm
+X0, Y0, W, H, RC = 100.0, 100.0, 31.0, 43.0, 1.0
 
 # ref -> (x, y, rotación en grados). Todo en la cara superior.
 PLACE = {
-    # Módulo con la antena en el borde superior (cuerpo y ∈ [100, 125.5])
-    "U2": (128.0, 112.75, 0),
-    # Columna izquierda: alimentación del módulo, EN y tira de expansión
-    "C7": (116.6, 109.6, 90), "C5": (114.2, 109.6, 90),
-    "R3": (116.6, 114.2, 90), "C6": (114.6, 114.2, 90),
-    "J5": (102.03, 117.0, 0),
-    "TP1": (112.5, 121.5, 0), "TP2": (112.5, 124.5, 0),
-    # Columna derecha: OLED, micrófono
-    "J2": (153.5, 116.5, 0), "R9": (148.6, 117.0, 90), "R10": (146.6, 117.0, 90),
-    "J3": (153.5, 129.0, 0),
-    # Entrada USB-C (boca en el borde inferior), protección y regulador
-    "J1": (128.0, 168.0, 0),
-    "D1": (128.0, 158.5, 90),
-    "R1": (124.6, 160.5, 90), "R2": (131.4, 160.5, 90),
-    "F1": (119.5, 156.0, 90),
-    "C1": (122.6, 153.6, 90),
-    "U1": (111.0, 155.0, 180),
-    "C2": (117.0, 150.0, 90),
-    "C3": (106.6, 149.2, 0), "C4": (110.2, 149.2, 0),
-    # Puente USB-UART y autorreset
-    "U3": (128.0, 145.0, 0),
-    "C8": (133.6, 140.6, 90),
-    "R4": (121.6, 137.5, 0), "Q1": (117.6, 141.5, 0),
-    "R5": (134.4, 137.0, 0), "Q2": (138.6, 133.0, 0),
-    # Amplificador y altavoz
-    "U4": (146.0, 150.0, 0),
-    "C9": (146.0, 144.2, 0), "C10": (146.0, 146.6, 0),
-    "R6": (141.4, 150.0, 90), "R7": (150.4, 148.0, 90), "R8": (150.4, 152.0, 90),
-    "J4": (153.5, 150.5, 0),
-    # Pulsadores y puntos de prueba
-    "SW1": (112.0, 168.0, 0), "SW2": (144.0, 168.0, 0),
-    "TP3": (122.4, 158.4, 0), "TP4": (103.6, 152.4, 0), "TP5": (103.6, 156.4, 0),
-    "TP6": (121.5, 144.4, 0), "TP7": (121.5, 147.0, 0), "TP8": (133.7, 129.0, 0),
-    # Taladros M3
-    "H1": (103.5, 110.5, 0), "H2": (152.5, 110.5, 0), "H3": (103.5, 168.5, 0), "H4": (152.5, 168.5, 0),
+    # Módulo WROOM-1U arriba a la izquierda (cuerpo 18 × 19,2 mm; conector U.FL arriba a la derecha)
+    "U2": (114.3, 110.4, 0),
+    # Columna izquierda, frente a los pines 2-3 (3V3, EN) y 13-14 (USB D-/D+) del módulo
+    "C5": (102.2, 103.2, 90), "C7": (102.2, 106.3, 90), "R3": (102.2, 108.4, 90), "C6": (102.2, 110.5, 90),
+    "TP2": (102.2, 113.6, 0),
+    "R4": (102.2, 116.9, 90), "R5": (102.2, 119.0, 90),
+    # Columna derecha: OLED, micrófono y altavoz, frente a los pines del lateral derecho
+    "J2": (128.3, 102.0, 0), "R9": (125.3, 104.0, 90), "R10": (125.3, 106.1, 90),
+    "J3": (128.3, 113.6, 0), "J4": (128.3, 130.0, 0), "TP1": (128.3, 135.6, 0),
+    # Franja central: regulador, amplificador y protección de la entrada
+    "C3": (102.2, 122.0, 90), "C2": (104.4, 125.0, 90), "C4": (107.0, 121.3, 0),
+    "U1": (110.5, 125.8, 0),
+    "C9": (116.8, 124.0, 90), "C10": (118.6, 124.0, 90),
+    "U4": (121.8, 124.2, 0),
+    "R6": (121.0, 127.4, 0), "R7": (123.4, 127.4, 0), "R8": (124.0, 128.6, 0),
+    "C1": (116.8, 128.4, 0),
+    "D1": (113.0, 131.2, 0), "R1": (108.0, 132.0, 0), "R2": (118.0, 132.0, 0),
+    "F1": (120.5, 131.2, 90),
+    # Borde inferior: USB-C centrado, pulsadores a los lados, taladros M2
+    "J1": (113.0, 139.0, 0), "SW1": (103.85, 139.9, 0), "SW2": (122.15, 139.9, 0),
+    "TP3": (103.0, 135.3, 0),
+    "H1": (102.6, 130.8, 0), "H2": (128.5, 140.0, 0),
 }
 
 # Clases de neta (mm): anchura de pista y separación. Reglas de JLCPCB 2 capas: 0,127 mm mínimo,
@@ -210,11 +197,11 @@ def main():
         dnp = "dnp" in c["props"]
         if dnp:
             fp.SetDNP(True)
-        if "exclude_from_bom" in c["props"] or ref.startswith(("TP", "H")) or ref in ("J2", "J3", "J4", "J5"):
+        if "exclude_from_bom" in c["props"] or ref.startswith(("TP", "H")) or ref in ("J2", "J3", "J4"):
             fp.SetExcludedFromBOM(True)
             fp.SetExcludedFromPosFiles(True)
         if ref == "U2":
-            # Vías térmicas del pad central: 0,2 mm en la huella de KiCad; JLCPCB cobra suplemento
+            # Vías térmicas del pad central: 0,2 mm en la huella de KiCad (WROOM-1 y WROOM-1U); JLCPCB cobra suplemento
             # por debajo de 0,3 mm en 2 capas. Se agrandan a 0,3/0,6 mm (separación entre taladros
             # ≥ 0,69 mm, por encima de los 0,5 mm de la regla).
             for pad in fp.Pads():
