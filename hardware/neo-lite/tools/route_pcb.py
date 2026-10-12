@@ -2,16 +2,22 @@
 """
 route_pcb.py — Ruteo de NEO Lite con Freerouting y planos de GND (fase 4).
 
-  python3 route_pcb.py [--passes N]
+  python3 route_pcb.py --stage route [--passes N]     # etapa A
+  python3 route_pcb.py --stage planes                  # etapa B
 
-Parte del PCB colocado por build_pcb.py (sin pistas):
-1. Exporta el diseño en Specctra DSN (pcbnew.ExportSpecctraDSN) con las clases de neta del proyecto.
-2. Rutea con Freerouting en modo consola (FREEROUTING_JAR o la ruta por defecto).
-3. Importa las pistas y vías (Specctra SES).
-4. Añade zonas de GND en las dos caras sobre todo el contorno, las rellena y cose las dos caras
-   con vías de GND en rejilla (solo donde ambas caras tienen relleno y no hay nada cerca).
-5. Guarda kicad/NEO_Lite.kicad_pcb.
-Freerouting es determinista con la misma entrada y el mismo número de pasadas.
+Cada etapa va en su propio proceso: hacer todo en uno provocaba fallos intermitentes de pcbnew.
+Etapa A, sobre el PCB colocado por build_pcb.py (sin pistas):
+  1. Exporta el diseño en Specctra DSN desde una copia con franjas de exclusión de 0,30 mm en el
+     contorno (Freerouting no aplica la separación cobre-borde de KiCad).
+  2. Rutea con Freerouting en modo consola (FREEROUTING_JAR o la ruta por defecto), GND incluida:
+     así cada pad de GND tiene conexión por pista y los planos solo la refuerzan.
+  3. Importa el SES, quita tramos duplicados o colgantes y guarda.
+Etapa B, sobre el PCB ruteado:
+  4. Zonas de GND en las dos caras sobre todo el contorno; conexión directa (sin alivio térmico)
+     para los pads expuestos de U2 y U4.
+  5. Rellena, cose las dos caras con vías de GND en rejilla, vuelve a rellenar, quita las vías de
+     cosido que no hayan quedado dentro del relleno de las dos caras y guarda.
+Freerouting 2.1 no es del todo determinista: route_all.py repite hasta obtener un DRC limpio.
 """
 import os
 import subprocess
@@ -43,7 +49,7 @@ def freeroute(board, passes):
             raise SystemExit("no se pudo exportar el DSN")
         # -mp no basta en la 2.1 si queda algo sin rutear: también --router.max_passes. Un solo hilo
         # (-mt 1) hace el resultado reproducible.
-        cmd = ["java", "-jar", JAR, "-de", dsn, "-do", ses, "-mp", str(passes), "-mt", "1", "-inc", "GND",
+        cmd = ["java", "-jar", JAR, "-de", dsn, "-do", ses, "-mp", str(passes), "-mt", "1",
                f"--router.max_passes={passes}", "--gui.enabled=false"]
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=150)
         log = [ln for ln in (r.stdout + r.stderr).splitlines() if "JAVA_TOOL" not in ln]
@@ -92,9 +98,9 @@ def remove_dangling(board):
         removed += len(bad)
 
 
-def edge_keepouts(board, width=0.32):
+def edge_keepouts(board, width=0.30):
     """Franjas de exclusión de pistas y vías a lo largo del contorno: Freerouting no aplica la
-    separación cobre-borde de KiCad (0,3 mm). Se quitan después del ruteo."""
+    separación cobre-borde de KiCad (0,3 mm). Solo se añaden a la copia que se exporta a DSN."""
     bb = board.GetBoardEdgesBoundingBox()
     l, t, r, b = bb.GetLeft(), bb.GetTop(), bb.GetRight(), bb.GetBottom()
     w = mm(width)
@@ -176,22 +182,64 @@ def stitch(board):
     return added
 
 
-def main(*args):
-    passes = int(args[args.index("--passes") + 1]) if "--passes" in args else 30
+def unstitch_dangling(board, stitched):
+    """Quita las vías de cosido cuyo centro no quedó dentro del relleno de GND de las dos caras
+    (islas eliminadas o huecos): el DRC las marcaría como vías colgantes."""
+    zones = [z for z in board.Zones() if z.GetNetname() == "GND" and not z.GetIsRuleArea()]
+    removed = 0
+    for v in stitched:
+        p = v.GetPosition()
+        if not all(any(z.HitTestFilledArea(layer, p) for z in zones if z.GetLayer() == layer)
+                   for layer in (pcbnew.F_Cu, pcbnew.B_Cu)):
+            board.Remove(v)
+            removed += 1
+    return removed
+
+
+def stage_route(passes):
     board = pcbnew.LoadBoard(PCB)
     if any(True for _ in board.GetTracks()):
         raise SystemExit("el PCB ya tiene pistas: regenerar antes con build_pcb.py")
     freeroute(board, passes)
-    print(f"tramos colgantes eliminados: {remove_dangling(board)}")
+    print(f"tramos duplicados o colgantes eliminados: {remove_dangling(board)}")
+    pcbnew.SaveBoard(PCB, board)
+
+
+def stage_planes():
+    board = pcbnew.LoadBoard(PCB)
+    if not any(True for _ in board.GetTracks()):
+        raise SystemExit("el PCB no tiene pistas: ejecutar antes la etapa route")
+    if any(z.GetNetname() == "GND" for z in board.Zones()):
+        raise SystemExit("el PCB ya tiene zonas de GND")
+    for ref, num in (("U2", "41"), ("U4", "17")):
+        for pad in board.FindFootprintByReference(ref).Pads():
+            if pad.GetNumber() == num:
+                pad.SetLocalZoneConnection(pcbnew.ZONE_CONNECTION_FULL)
     gnd_zones(board)
     fill(board)
+    before = {v.m_Uuid.AsString() for v in board.GetTracks() if v.GetClass() == "PCB_VIA"}
     n = stitch(board)
     fill(board)
+    stitched = [v for v in board.GetTracks() if v.GetClass() == "PCB_VIA" and v.m_Uuid.AsString() not in before]
+    dropped = unstitch_dangling(board, stitched)
+    if dropped:
+        fill(board)
     pcbnew.SaveBoard(PCB, board)
     tracks = [t for t in board.GetTracks() if t.GetClass() == "PCB_TRACK"]
     vias = [t for t in board.GetTracks() if t.GetClass() == "PCB_VIA"]
     length = sum(pcbnew.ToMM(t.GetLength()) for t in tracks)
-    print(f"{len(tracks)} tramos ({length:.0f} mm), {len(vias)} vías ({n} de cosido de GND)")
+    print(f"{len(tracks)} tramos ({length:.0f} mm), {len(vias)} vías ({n - dropped} de cosido de GND)")
+
+
+def main(*args):
+    passes = int(args[args.index("--passes") + 1]) if "--passes" in args else 15
+    stage = args[args.index("--stage") + 1] if "--stage" in args else None
+    if stage == "route":
+        stage_route(passes)
+    elif stage == "planes":
+        stage_planes()
+    else:
+        raise SystemExit("uso: route_pcb.py --stage route|planes [--passes N]")
 
 
 if __name__ == "__main__":
