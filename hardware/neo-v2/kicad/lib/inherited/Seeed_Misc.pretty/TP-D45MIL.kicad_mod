@@ -1,0 +1,130 @@
+(footprint "TP-D45MIL"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 0 180)
+		(layer "User.2")
+		(hide yes)
+		(uuid "2b8d13d2-8d36-4313-a60a-bf6241b2ed59")
+		(effects
+			(font
+				(size 0.254 0.254)
+				(thickness 0.127)
+			)
+			(justify right bottom mirror)
+		)
+	)
+	(property "Value" "TP-D45MIL"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "39b87fdb-f38e-42fd-b553-0facef685d90")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "763b6670-58c3-4aca-a4b3-dae27b16d829")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "12478333-a8d4-4564-b702-8bd106d2cb90")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "MANUFACTURER" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "fbf4c368-6479-4fa9-9020-a8158892b21c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "PARTREV" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "1649074f-1359-40c6-9704-728bdf0bee3c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "STANDARD" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ffa9ba1c-a2d3-435e-8086-c440371754c1")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_circle
+		(center 0 0)
+		(end 0.762 0)
+		(stroke
+			(width 0.127)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "13cebff7-ac3e-4b64-a2b9-c6af37b7652b")
+	)
+	(pad "1" smd roundrect
+		(at 0 0)
+		(size 1.143 1.143)
+		(layers "F.Cu" "F.Mask")
+		(roundrect_rratio 0.5)
+		(zone_connect 2)
+		(thermal_bridge_angle 45)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "a3d9e5b2-3045-4928-9cdd-275edc47ab9d")
+	)
+	(embedded_fonts no)
+)

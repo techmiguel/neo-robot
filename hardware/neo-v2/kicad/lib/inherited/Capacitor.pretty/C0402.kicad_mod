@@ -1,0 +1,311 @@
+(footprint "C0402"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "<b>0402<b><p>")
+	(property "Reference" "REF**"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(uuid "b0aff472-1ae5-4a96-80d8-1af1fe365e51")
+		(effects
+			(font
+				(size 0.254 0.254)
+				(thickness 0.127)
+			)
+		)
+	)
+	(property "Value" "C0402"
+		(at 0 0 180)
+		(layer "User.1")
+		(uuid "242d8822-53fd-4d4a-8523-ad6998182af6")
+		(effects
+			(font
+				(size 0.33 0.33)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "322a188f-782b-469c-b69a-40abd9d3dad8")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "36a06906-c797-4650-9cbf-6ed22f357a7d")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Dielectric" ""
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "1aeec22d-00e8-40f3-a247-4caa56031afc")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Part Type" "Ceramic"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "6112c85a-2a90-4210-a86a-3a7846fc4657")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "SKU" "302010024"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "928848ed-3fcb-4f18-aaf6-d99c4ec0a997")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Status" "BeagleBone Carrier Board"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2e739a8c-86bf-4139-b67b-989764a57c44")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Temperature" "-55°C to 125°C"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "80a9e121-86c5-4837-8d91-e54876a5d7fc")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Voltage Rating" "25V,X7R"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c15a9c39-488f-4db3-9172-52b62cb6a071")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "MANUFACTURER" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "fdd106d1-f827-4f9f-846a-85f1db234bf7")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "PARTREV" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "48988740-9e3f-4fb9-94c6-f436f1825000")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "STANDARD" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ebdfdb7d-3345-49f4-813c-c8825f8f9053")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -0.839001 0.2675)
+		(end -0.839001 -0.2675)
+		(stroke
+			(width 0.0762)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "67c3ed4b-c5bb-4116-8504-9e9178a74481")
+	)
+	(fp_line
+		(start -0.712 -0.394501)
+		(end 0.712 -0.394501)
+		(stroke
+			(width 0.0762)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "af585a2a-c66f-4c73-b24d-9ddf350ce168")
+	)
+	(fp_line
+		(start 0.712 0.394501)
+		(end -0.712 0.394501)
+		(stroke
+			(width 0.0762)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "8dd0388f-64c8-4e61-bcf8-7f2cadb91afa")
+	)
+	(fp_line
+		(start 0.839001 -0.2675)
+		(end 0.839001 0.2675)
+		(stroke
+			(width 0.0762)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "f6c3bf57-a17b-4032-93d9-d6a754a44572")
+	)
+	(fp_arc
+		(start -0.839001 -0.2675)
+		(mid -0.801804 -0.357304)
+		(end -0.712 -0.394501)
+		(stroke
+			(width 0.0762)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "a257b3cd-3580-4ff7-bb8f-c5c3741ef1e2")
+	)
+	(fp_arc
+		(start -0.712 0.394501)
+		(mid -0.801804 0.357304)
+		(end -0.839001 0.2675)
+		(stroke
+			(width 0.0762)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "82b2a79f-d1f2-4099-b5e7-c1ef2fc2e9e2")
+	)
+	(fp_arc
+		(start 0.712 -0.394501)
+		(mid 0.801803 -0.357303)
+		(end 0.839001 -0.2675)
+		(stroke
+			(width 0.0762)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "14dff1c5-f566-48dd-a909-506213eb5e53")
+	)
+	(fp_arc
+		(start 0.839001 0.2675)
+		(mid 0.801803 0.357303)
+		(end 0.712 0.394501)
+		(stroke
+			(width 0.0762)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "f631607b-8bb1-4310-a716-f9a0ff47e9b4")
+	)
+	(fp_poly
+		(pts
+			(xy 0.8636 0.4064) (xy -0.8636 0.4064) (xy -0.8636 -0.4064) (xy 0.8636 -0.4064)
+		)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "7e7cb7a5-2b2b-4d7d-a2cd-9d63ee17abe3")
+	)
+	(pad "1" smd roundrect
+		(at -0.4625 0)
+		(size 0.5 0.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.13)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "358e245c-231e-44ae-a88c-81c075d6dfaf")
+	)
+	(pad "2" smd roundrect
+		(at 0.4625 0)
+		(size 0.5 0.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.13)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "beb0f1c3-0ba1-46eb-a94d-d3f362538c4a")
+	)
+	(embedded_fonts no)
+	(model "${KICAD7_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

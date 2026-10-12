@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "NEO_v2")(type "KiCad")(uri "${KIPRJMOD}/lib/NEO_v2.kicad_sym")(options "")(descr "Símbolos propios de NEO v2"))
+)

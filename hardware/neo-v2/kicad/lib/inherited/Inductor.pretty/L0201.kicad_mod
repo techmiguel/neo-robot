@@ -1,0 +1,285 @@
+(footprint "L0201"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -0.010007 0.556732 180)
+		(layer "F.Fab")
+		(uuid "55eefd2b-b9eb-4b04-bede-7b2c13f741d0")
+		(effects
+			(font
+				(size 0.254 0.254)
+				(thickness 0.127)
+			)
+		)
+	)
+	(property "Value" "L0201"
+		(at -0.0254 0 180)
+		(layer "User.2")
+		(uuid "f6cee021-75f1-43eb-9f74-9811313ccc31")
+		(effects
+			(font
+				(size 0.48 0.48)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "afb69356-0270-4ca3-9ac1-b658798dde32")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "SMD Inductor 2.2nH-0.1nH-650mA;0201"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "96cc9d8b-6562-4abe-8974-c957b0652913")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "SKU" "303011229"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "fd14b8c6-06d4-4880-b953-f5bcb4e3bc9d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Part Type" "Inductor"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "162562b9-3d95-4db8-9194-5fbc52c4dafd")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Rating" "600mA"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "aab64f5a-eb73-4b56-a21c-c4908b24b0c0")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Status" "HA Voice KIT"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4595f161-a6d6-40e7-a2ae-75070ce8493e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Temperature" "-55°C to 125°C"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "a365b407-8578-4f83-9470-5f3f2d7e7f1f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Priority" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f47ad5cd-0680-4b00-8f52-ff2f1415fed6")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "MANUFACTURER" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "dc2749d7-9f63-4da3-ac81-0981c84cdf7b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "PARTREV" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "82ca39f8-f215-4118-9421-68de3cc88a03")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "STANDARD" ""
+		(at 0 0 180)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c13d6955-ac5c-4523-ab66-191adef84e37")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -0.508001 -0.254)
+		(end -0.508 0.254)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "f72f0423-daf1-446f-a6d7-e6affb29a602")
+	)
+	(fp_line
+		(start -0.508 0.254)
+		(end 0.508001 0.254)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "2902be3e-4c24-4752-8f44-ee4ddad4b420")
+	)
+	(fp_line
+		(start 0.508 -0.254)
+		(end -0.508001 -0.254)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "43efe614-f9ff-4e7b-a16c-7c9326f540c8")
+	)
+	(fp_line
+		(start 0.508001 0.254)
+		(end 0.508 -0.254)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "92db7782-04b7-4c8d-b8b8-e1f1123d9fef")
+	)
+	(fp_poly
+		(pts
+			(xy 0.3556 0.152401) (xy -0.355601 0.1524) (xy -0.3556 -0.152401) (xy 0.355601 -0.1524)
+		)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "d0d8e567-bf66-43d7-8445-405fa7132608")
+	)
+	(fp_poly
+		(pts
+			(xy 0.5 0.25) (xy -0.499999 0.25) (xy -0.5 -0.25) (xy 0.499999 -0.25)
+		)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "8deac121-ef67-476c-aaff-b36cc81bb2d6")
+	)
+	(pad "1" smd roundrect
+		(at -0.254701 -0.000001)
+		(size 0.2794 0.3175)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.2)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "20ba127e-8282-4162-9f9e-f458e11350ef")
+	)
+	(pad "2" smd roundrect
+		(at 0.254701 0.000001)
+		(size 0.2794 0.3175)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.2)
+		(teardrops
+			(best_length_ratio 0.5)
+			(max_length 1)
+			(best_width_ratio 1)
+			(max_width 2)
+			(curved_edges no)
+			(filter_ratio 0.9)
+			(enabled yes)
+			(allow_two_segments yes)
+			(prefer_zone_connections yes)
+		)
+		(uuid "a840a4de-751b-4576-aad1-4eb71b1677eb")
+	)
+	(embedded_fonts no)
+	(model "${KICAD7_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_0201_0603Metric.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

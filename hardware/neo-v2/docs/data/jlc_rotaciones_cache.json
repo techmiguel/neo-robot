@@ -1,0 +1,759 @@
+{
+ "Capacitor:C0402|C105883": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0402|C107000": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0402|C260623": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0603|C513691": {
+  "giro": 0,
+  "dev": 0.062,
+  "titulo": "C0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0603|C19702": {
+  "giro": 0,
+  "dev": 0.062,
+  "titulo": "C0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C1206|C96123": {
+  "giro": 0,
+  "dev": 0.058,
+  "titulo": "C1206",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0402|C327198": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0805|C602037": {
+  "giro": 0,
+  "dev": 0.111,
+  "titulo": "C0805",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0603|C14663": {
+  "giro": 0,
+  "dev": 0.062,
+  "titulo": "C0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0402|C60133": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0603|C59461": {
+  "giro": 0,
+  "dev": 0.062,
+  "titulo": "C0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0402|C14445": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0201|C162620": {
+  "giro": 0,
+  "dev": 0.019,
+  "titulo": "L0201-RD",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0402|C106201": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0402|C106996": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0402|C106203": {
+  "giro": 0,
+  "dev": 0.043,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C1206|C107191": {
+  "giro": 0,
+  "dev": 0.058,
+  "titulo": "C1206",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0201|C161450": {
+  "giro": 0,
+  "dev": 0.019,
+  "titulo": "C0201",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor:C0201|C326704": {
+  "giro": 0,
+  "dev": 0.019,
+  "titulo": "C0201",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor_SMD:C_0402_1005Metric|C1525": {
+  "giro": 0,
+  "dev": 0.06,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor_SMD:C_0402_1005Metric|C52923": {
+  "giro": 0,
+  "dev": 0.06,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor_SMD:C_0805_2012Metric|C45783": {
+  "giro": 0,
+  "dev": 0.05,
+  "titulo": "C0805",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor_SMD:C_0603_1608Metric|C19702": {
+  "giro": 0,
+  "dev": 0.075,
+  "titulo": "C0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Diode:ESD-0402|C19626254": {
+  "giro": 0,
+  "dev": 0.113,
+  "titulo": "UDFN1006-2_L1.0-W0.6-P0.70-BI-1",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Diode:ESD-0402|C48260": {
+  "giro": 0,
+  "dev": 0.037,
+  "titulo": "X1SON-2_L1.0-W0.6-P0.65-BI-1",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Diode:SOD-523|C52204749": {
+  "giro": 180,
+  "dev": 0.09,
+  "titulo": "SOD-523_L1.2-W0.8-LS1.6-RD-2",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Diode:SOD-123|C2980402": {
+  "giro": 180,
+  "dev": 0.025,
+  "titulo": "SOD-123FL_L2.8-W1.8-LS3.7-BI",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "NEO_v2:TI_DPY0002A_X1SON-2_1.0x0.6mm|C19829541": {
+  "giro": 0,
+  "dev": 0.025,
+  "titulo": "X1SON-2_L1.0-W0.6-P0.65-RD",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor:L0603|C14709": {
+  "giro": 0,
+  "dev": 0.062,
+  "titulo": "L0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor:L0603|C76892": {
+  "giro": 0,
+  "dev": 0.062,
+  "titulo": "L0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor:L0603|C19330": {
+  "giro": 0,
+  "dev": 0.062,
+  "titulo": "L0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Fuse:F1206|C883134": {
+  "giro": 0,
+  "dev": 0.048,
+  "titulo": "F1206",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor_SMD:L_0603_1608Metric|C14709": {
+  "giro": 0,
+  "dev": 0.088,
+  "titulo": "L0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Connector:JST2P_1d25_7_55x4_25x4_8mm|C177225": {
+  "giro": 180,
+  "dev": 0.285,
+  "titulo": "CONN-SMD_532610271",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Connector:H2X4-2.54-65_35MIL|C32713277": {
+  "giro": 0,
+  "dev": 5.68,
+  "titulo": "HDR-TH_8P-P2.54-V-M-R2-C4-S2.54",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor:L0805|C97014": {
+  "giro": 180,
+  "dev": 0.061,
+  "titulo": "IND-SMD_L2.0-W1.6",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor:L2016|C395545": {
+  "giro": 180,
+  "dev": 0.028,
+  "titulo": "IND-SMD_L2.0-W1.6",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor:L0201|C2897344": {
+  "giro": 0,
+  "dev": 0.019,
+  "titulo": "C0201",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor:L0402|C91240": {
+  "giro": 0,
+  "dev": 0.029,
+  "titulo": "IND-SMD_L1.0-W0.6",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Inductor:L0201|C98041": {
+  "giro": 0,
+  "dev": 0.019,
+  "titulo": "L0201",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "NEO_v2:L_CJIANG_FAUL0630|C3040349": {
+  "giro": 0,
+  "dev": 0.025,
+  "titulo": "IND-SMD_L7.0-W6.6",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Diode:LED4-1.0-2.2X2X0.84MM|C52917434": {
+  "giro": 180,
+  "dev": 0.05,
+  "titulo": "LED-SMD_4P-L2.2-W2.0-P1.00_WS2815C-2020-4P",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Mosfet:SOT23|C15903": {
+  "giro": 0,
+  "dev": 0.292,
+  "titulo": "SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Mosfet:SOT-323|C383201": {
+  "giro": 0,
+  "dev": 0.028,
+  "titulo": "SC-70-3_L2.1-W1.3-P1.30-LS2.1-BR",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Transistor:SOT-323|C55454059": {
+  "giro": 0,
+  "dev": 0.016,
+  "titulo": "SOT-323-3_L2.0-W1.3-P1.30-LS2.1-BR",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Package_TO_SOT_SMD:SOT-23-6|C908265": {
+  "giro": 180,
+  "dev": 0.213,
+  "titulo": "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BR",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "NEO_v2:TI_DNH0008A_VSONP-8_3.3x3.3mm_P0.65mm|C111356": {
+  "giro": 270,
+  "dev": 1.201,
+  "titulo": "VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL",
+  "solo_kicad": [],
+  "solo_lcsc": [
+   "6",
+   "7",
+   "8",
+   "9"
+  ]
+ },
+ "Resistor:R0402|C105870": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C106233": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C93949": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C25177": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C60485": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C163440": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C105637": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C137874": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C60490": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0603|C114661": {
+  "giro": 0,
+  "dev": 0.103,
+  "titulo": "R0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C137976": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C25092": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0603|C95177": {
+  "giro": 0,
+  "dev": 0.103,
+  "titulo": "R0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C105872": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C60491": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C163478": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C107229": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0201|C106227": {
+  "giro": 0,
+  "dev": 0.013,
+  "titulo": "R0201",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0805|C96345": {
+  "giro": 0,
+  "dev": 0.111,
+  "titulo": "R0805",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0402|C137970": {
+  "giro": 0,
+  "dev": 0.03,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor:R0805|C107699": {
+  "giro": 0,
+  "dev": 0.111,
+  "titulo": "R0805",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25744": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25076": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C11702": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C8369": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25771": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C4116370": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25741": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C17168": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C26083": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_1206_3216Metric|C19290": {
+  "giro": 0,
+  "dev": 0.017,
+  "titulo": "R1206",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25895": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25092": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25900": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0603_1608Metric|C13564": {
+  "giro": 0,
+  "dev": 0.072,
+  "titulo": "R0603",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Switch:SW7-SMD-L6.7X2.7X3.2MM|C20611677": {
+  "giro": 270,
+  "dev": 0.04,
+  "titulo": "SW-SMD_G-SWITCH_MK-12C02-G015",
+  "solo_kicad": [
+   "P1",
+   "P2",
+   "P3",
+   "P4"
+  ],
+  "solo_lcsc": [
+   "4",
+   "5",
+   "6",
+   "7"
+  ]
+ },
+ "NEO_v2:SW_SHOUHAN_MSK-22D18G3|C7507432": {
+  "giro": 0,
+  "dev": 0,
+  "titulo": "SW-TH_HX-MSK-22D18G3-051",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Ic:QFN56G-0.4-7X7MM|C2913194": {
+  "giro": 0,
+  "dev": 0.008,
+  "titulo": "QFN-56_L7.0-W7.0-P0.40-TL-EP4.0",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "reSpeaker Library:QFN_F60B-C24_XMO|C6617472": {
+  "giro": 0,
+  "dev": 0.059,
+  "titulo": "QFN-60_L7.0-W7.0-P0.40-TL-EP_XU316-1024",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Ic:SOIC8-1.27-5.3X5.3MM|C179173": {
+  "giro": 0,
+  "dev": 0.093,
+  "titulo": "SOIC-8_L5.3-W5.3-P1.27-LS8.0-BL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Misc:MIC8P-0.85-4X3X1MM|C22390138": {
+  "giro": 180,
+  "dev": 0.0,
+  "titulo": "QFN-8_L4.0-W3.0_WMM7040DTHN0-8-TR",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "reSpeaker Library:SN74LVC125APWR|C7813": {
+  "giro": 0,
+  "dev": 0,
+  "titulo": "TSSOP-14_L5.0-W4.4-P0.65-LS6.4-BL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "reSpeaker Library:SN74LVC1G17DCKR|C10425": {
+  "giro": 180,
+  "dev": 0.07,
+  "titulo": "SC-70-5_L2.1-W1.3-P0.65-LS2.1-BR",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "reSpeaker Library:TLV320AIC3204IRHBR|C24109": {
+  "giro": 0,
+  "dev": 0.018,
+  "titulo": "QFN-32_L5.0-W5.0-P0.50-TL-EP3.4",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Ic:DGN8_1d89X1P57|C7718": {
+  "giro": 270,
+  "dev": 0.069,
+  "titulo": "MSOP-8_L3.0-W3.0-P0.65-LS5.0-BL-EP",
+  "solo_kicad": [
+   "EPAD"
+  ],
+  "solo_lcsc": [
+   "9"
+  ]
+ },
+ "Ic:DFN6-0.5-1.5X1.5X0.65MM|C2071448": {
+  "giro": 0,
+  "dev": 0.012,
+  "titulo": "VSON-6_L1.5-W1.5-P0.50-TL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Ic:SOT-23-5|C236671": {
+  "giro": 270,
+  "dev": 0.0,
+  "titulo": "SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BR",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Ic:DFN8G-0.5-2X2MM|C398352": {
+  "giro": 0,
+  "dev": 0.072,
+  "titulo": "WSON-8_L2.0-W2.0-P0.65-BL-EP",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Ic:SOIC8-1.27-5.3X5.3MM|C97521": {
+  "giro": 0,
+  "dev": 0.093,
+  "titulo": "SOIC-8_L5.3-W5.3-P1.27-LS8.0-BL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Ic:WQFN10_0d4_1_8x1_4x0_75mm|C700326": {
+  "giro": 180,
+  "dev": 0.025,
+  "titulo": "QFN-10_L1.8-W1.4-P0.40-TR",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Ic:X2SON4-0.625-1x1x0.6mm|C5152997": {
+  "giro": 270,
+  "dev": 0.05,
+  "titulo": "USPQ-4B04_L1.0-W1.0-P0.65-BL-EP",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "NEO_v2:TI_RUX0012A_VQFN-HR-12_2x2.5mm_P0.5mm|C485916": {
+  "giro": 270,
+  "dev": 0.0,
+  "titulo": "VQFN-HR-12_L2.5-W2.0-P0.50-BL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Package_DFN_QFN:Texas_RWU0007A_VQFN-7_2x2mm_P0.5mm|C2071784": {
+  "giro": 0,
+  "dev": 0.0,
+  "titulo": "VQFN-7_L2.0-W2.0-P0.55-TL_RWU",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias|C5208201": {
+  "giro": 0,
+  "dev": 0,
+  "titulo": "WSON-8_L2.0-W2.0-P0.50-TL-EP",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Package_DFN_QFN:TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm|C2682616": {
+  "giro": 270,
+  "dev": 0.05,
+  "titulo": "TDFN-8_L2.0-W2.0-P0.50-BL-EP1.2",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Package_TO_SOT_SMD:SOT-23-6|C351410": {
+  "giro": 270,
+  "dev": 0.012,
+  "titulo": "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Crystal:X4-SMD-2.0X1.6MM|C5210655": {
+  "giro": 0,
+  "dev": 0.112,
+  "titulo": "CRYSTAL-SMD_4P-L2.0-W1.6-BL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Package_TO_SOT_SMD:SOT-583-8|C3235556": {
+  "giro": 270,
+  "dev": 0.1,
+  "titulo": "SOT-583-8_L2.1-W1.2-P0.50-LS1.6-BL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Crystal:X4-SMD-2.0X1.6MM|C49158179": {
+  "error": "'result'"
+ }
+}
