@@ -16039,2445 +16039,6 @@
     "leastPatchNumber": 0
    }
   ],
-  "C1525": [
-   {
-    "componentCode": "C1525",
-    "componentModelEn": "CL05B104KO5NNNC",
-    "componentBrandEn": "Samsung Electro-Mechanics",
-    "componentLibraryType": "base",
-    "stockCount": 24423959,
-    "componentSpecificationEn": "0402",
-    "describe": "100nF 16V X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 999,
-      "productPrice": 0.0045
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 2999,
-      "productPrice": 0.0034
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 9999,
-      "productPrice": 0.0029
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 49999,
-      "productPrice": 0.0025
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": 99999,
-      "productPrice": 0.0024
-     },
-     {
-      "startNumber": 100000,
-      "endNumber": -1,
-      "productPrice": 0.0023
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KO5NNNC_C1525.pdf",
-    "leastPatchNumber": 20
-   },
-   {
-    "componentCode": "C3186512",
-    "componentModelEn": "UC1525BJ",
-    "componentBrandEn": "Texas Instruments",
-    "componentLibraryType": "expand",
-    "stockCount": 3,
-    "componentSpecificationEn": "DIP-16",
-    "describe": "-55℃~+125℃ 100Hz~400kHz 14mA 2 8V~35V Boost、Flyback、Forward、Push-Pull、Full-Bridge、Half-Bridge Cycle-by-cycle current limiting、Frequency synchronization External Yes DIP-16 AC-DC Controllers and Regulators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 25.1095
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 24.2985
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 13,
-      "productPrice": 24.2985
-     },
-     {
-      "startNumber": 14,
-      "endNumber": 15,
-      "productPrice": 24.2985
-     },
-     {
-      "startNumber": 16,
-      "endNumber": 17,
-      "productPrice": 24.2985
-     },
-     {
-      "startNumber": 18,
-      "endNumber": -1,
-      "productPrice": 24.2985
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302212109_Texas-Instruments-UC1525BJ_C3186512.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C22427536",
-    "componentModelEn": "UC1525AJ",
-    "componentBrandEn": "Texas Instruments",
-    "componentLibraryType": "expand",
-    "stockCount": 5,
-    "componentSpecificationEn": "DIP-16",
-    "describe": "-55℃~+125℃ 100Hz~400kHz 2 20mA 500mA 8V~35V External Push-Pull DIP-16 DC-DC Converters ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 2,
-      "productPrice": 36.6195
-     },
-     {
-      "startNumber": 3,
-      "endNumber": 4,
-      "productPrice": 36.6195
-     },
-     {
-      "startNumber": 5,
-      "endNumber": 24,
-      "productPrice": 36.6195
-     },
-     {
-      "startNumber": 25,
-      "endNumber": 26,
-      "productPrice": 35.1765
-     },
-     {
-      "startNumber": 27,
-      "endNumber": 28,
-      "productPrice": 35.1765
-     },
-     {
-      "startNumber": 29,
-      "endNumber": -1,
-      "productPrice": 35.1765
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 2
-   },
-   {
-    "componentCode": "C35849606",
-    "componentModelEn": "UC1525AL",
-    "componentBrandEn": "Texas Instruments",
-    "componentLibraryType": "expand",
-    "stockCount": 6,
-    "componentSpecificationEn": "LCCC-20",
-    "describe": "LCCC-20 AC-DC Controllers and Regulators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 2,
-      "productPrice": 40.1147
-     },
-     {
-      "startNumber": 3,
-      "endNumber": 4,
-      "productPrice": 40.1147
-     },
-     {
-      "startNumber": 5,
-      "endNumber": 44,
-      "productPrice": 40.1147
-     },
-     {
-      "startNumber": 45,
-      "endNumber": 46,
-      "productPrice": 38.6097
-     },
-     {
-      "startNumber": 47,
-      "endNumber": 48,
-      "productPrice": 38.6097
-     },
-     {
-      "startNumber": 49,
-      "endNumber": -1,
-      "productPrice": 38.6097
-     }
-    ],
-    "dataManualUrl": null,
-    "leastPatchNumber": 2
-   },
-   {
-    "componentCode": "C22451596",
-    "componentModelEn": "UC1525AL883B",
-    "componentBrandEn": "Texas Instruments",
-    "componentLibraryType": "expand",
-    "stockCount": 5,
-    "componentSpecificationEn": "LCCC-20(8.9x8.9)",
-    "describe": "-55℃~+125℃ 100Hz~400kHz 49% 8V~35V Push-Pull LCCC-20(8.9x8.9) AC-DC Controllers and Regulators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 2,
-      "productPrice": 53.0774
-     },
-     {
-      "startNumber": 3,
-      "endNumber": 4,
-      "productPrice": 53.0774
-     },
-     {
-      "startNumber": 5,
-      "endNumber": 29,
-      "productPrice": 53.0774
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 31,
-      "productPrice": 50.3803
-     },
-     {
-      "startNumber": 32,
-      "endNumber": 33,
-      "productPrice": 50.3803
-     },
-     {
-      "startNumber": 34,
-      "endNumber": -1,
-      "productPrice": 50.3803
-     }
-    ],
-    "dataManualUrl": null,
-    "leastPatchNumber": 2
-   },
-   {
-    "componentCode": "C2949389",
-    "componentModelEn": "CY7C1525V18-200BZC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "LBGA-165",
-    "describe": "0℃~+70℃ 1.7V~1.9V 72Mbit 750mA Parallel Port (Parallel) LBGA-165 SRAM",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 11.6729
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 11.6729
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 203,
-      "productPrice": 11.6729
-     },
-     {
-      "startNumber": 204,
-      "endNumber": 509,
-      "productPrice": 4.518
-     },
-     {
-      "startNumber": 510,
-      "endNumber": 1019,
-      "productPrice": 4.36
-     },
-     {
-      "startNumber": 1020,
-      "endNumber": -1,
-      "productPrice": 4.2802
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525V18-200BZC_C2949389.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2949388",
-    "componentModelEn": "CY7C1525V18-200BZXC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "LBGA-165",
-    "describe": "LBGA-165 SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 11.6729
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 11.6729
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 199,
-      "productPrice": 11.6729
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 4.518
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 4.36
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 4.2802
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2949391",
-    "componentModelEn": "CY7C1525KV18-333BZC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "LBGA-165",
-    "describe": "0℃~+70℃ 1.7V~1.9V 290mA 72Mbit 790mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 13.4107
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 13.4107
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 135,
-      "productPrice": 13.4107
-     },
-     {
-      "startNumber": 136,
-      "endNumber": 543,
-      "productPrice": 5.1907
-     },
-     {
-      "startNumber": 544,
-      "endNumber": 951,
-      "productPrice": 5.0083
-     },
-     {
-      "startNumber": 952,
-      "endNumber": -1,
-      "productPrice": 4.9171
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525KV18-333BZC_C2949391.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2949392",
-    "componentModelEn": "CY7C1525KV18-300BZC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "LBGA-165",
-    "describe": "0℃~+70℃ 1.7V~1.9V 72Mbit 730mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 15.0866
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 15.0866
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 15.0866
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 679,
-      "productPrice": 5.8389
-     },
-     {
-      "startNumber": 680,
-      "endNumber": 1359,
-      "productPrice": 5.6337
-     },
-     {
-      "startNumber": 1360,
-      "endNumber": -1,
-      "productPrice": 5.5327
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2949395",
-    "componentModelEn": "CY7C1525JV18-250BZC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "LBGA-165",
-    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 13.7185
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 13.7185
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 209,
-      "productPrice": 13.7185
-     },
-     {
-      "startNumber": 210,
-      "endNumber": 524,
-      "productPrice": 5.3096
-     },
-     {
-      "startNumber": 525,
-      "endNumber": 1049,
-      "productPrice": 5.1223
-     },
-     {
-      "startNumber": 1050,
-      "endNumber": -1,
-      "productPrice": 5.0311
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525JV18-250BZC_C2949395.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2949390",
-    "componentModelEn": "CY7C1525KV18-333BZXC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "FBGA-165(13x15)",
-    "describe": "0℃~+70℃ 1.7V~1.9V 290mA 72Mbit 790mA Parallel Port (Parallel) FBGA-165(13x15) SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 15.9921
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 15.9921
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 15.9921
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 6.1891
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 1359,
-      "productPrice": 5.9725
-     },
-     {
-      "startNumber": 1360,
-      "endNumber": -1,
-      "productPrice": 5.865
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525KV18-333BZXC_C2949390.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2949393",
-    "componentModelEn": "CY7C1525KV18-250BZXC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "LBGA-165",
-    "describe": "0℃~+70℃ 1.7V~1.9V 640mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 12.5735
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 12.5735
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 135,
-      "productPrice": 12.5735
-     },
-     {
-      "startNumber": 136,
-      "endNumber": 543,
-      "productPrice": 4.8666
-     },
-     {
-      "startNumber": 544,
-      "endNumber": 951,
-      "productPrice": 4.6956
-     },
-     {
-      "startNumber": 952,
-      "endNumber": -1,
-      "productPrice": 4.6109
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2949394",
-    "componentModelEn": "CY7C1525JV18-250BZXC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "LBGA-165",
-    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 10.9742
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 10.9742
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 209,
-      "productPrice": 10.9742
-     },
-     {
-      "startNumber": 210,
-      "endNumber": 524,
-      "productPrice": 4.2477
-     },
-     {
-      "startNumber": 525,
-      "endNumber": 1049,
-      "productPrice": 4.0978
-     },
-     {
-      "startNumber": 1050,
-      "endNumber": -1,
-      "productPrice": 4.0245
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525JV18-250BZXC_C2949394.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2950628",
-    "componentModelEn": "CY7C1525KV18-300BZXC",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "LBGA-165",
-    "describe": "0℃~+70℃ 1.7V~1.9V 280mA 72Mbit 730mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 14.0198
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 14.0198
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 135,
-      "productPrice": 14.0198
-     },
-     {
-      "startNumber": 136,
-      "endNumber": 543,
-      "productPrice": 5.4268
-     },
-     {
-      "startNumber": 544,
-      "endNumber": 951,
-      "productPrice": 5.2347
-     },
-     {
-      "startNumber": 952,
-      "endNumber": -1,
-      "productPrice": 5.1418
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241123_Infineon-Cypress-Semicon-CY7C1525KV18-300BZXC_C2950628.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2952839",
-    "componentModelEn": "CY7C1525KV18-250BZXIT",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "FBGA-165(13x15)",
-    "describe": "-40℃~+85℃ 1.7V~1.9V 270mA 640mA 72Mbit Parallel Port (Parallel) FBGA-165(13x15) SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 12.5735
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 12.5735
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 12.5735
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 4.8666
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 4.6956
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 4.6109
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241123_Infineon-Cypress-Semicon-CY7C1525KV18-250BZXIT_C2952839.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C2955032",
-    "componentModelEn": "CY7C1525JV18-250BZCES",
-    "componentBrandEn": "Infineon/Cypress Semicon",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "FBGA-165(15x17)",
-    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) FBGA-165(15x17) SRAM ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 5.4871
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 5.4871
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 199,
-      "productPrice": 5.4871
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 2.1239
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 2.0489
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 2.0131
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C20291151",
-    "componentModelEn": "DSC1525JL2A-24M00000T",
-    "componentBrandEn": "Microchip Tech",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "-",
-    "describe": "- Programmable Oscillators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 0.9805
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 0.9479
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 0.9317
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401240917_Microchip-Tech-DSC1525JL2A-24M00000T_C20291151.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C20291152",
-    "componentModelEn": "DSC1525JL2A-25M00000T",
-    "componentBrandEn": "Microchip Tech",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "-",
-    "describe": "- Programmable Oscillators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 0.9805
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 0.9479
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 0.9317
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401240917_Microchip-Tech-DSC1525JL2A-25M00000T_C20291152.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C20291153",
-    "componentModelEn": "DSC1525JL2A-27M00000T",
-    "componentBrandEn": "Microchip Tech",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "-",
-    "describe": "- Programmable Oscillators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 0.9805
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 0.9479
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 0.9317
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401240917_Microchip-Tech-DSC1525JL2A-27M00000T_C20291153.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C20291154",
-    "componentModelEn": "DSC1525JL2A-50M00000T",
-    "componentBrandEn": "Microchip Tech",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "-",
-    "describe": "- Programmable Oscillators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 2.4577
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 0.9805
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 0.9479
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 0.9317
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401240917_Microchip-Tech-DSC1525JL2A-50M00000T_C20291154.pdf",
-    "leastPatchNumber": 0
-   }
-  ],
-  "C19702": [
-   {
-    "componentCode": "C19702",
-    "componentModelEn": "CL10A106KP8NNNC",
-    "componentBrandEn": "Samsung Electro-Mechanics",
-    "componentLibraryType": "base",
-    "stockCount": 10281933,
-    "componentSpecificationEn": "0603",
-    "describe": "10V 10uF X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 199,
-      "productPrice": 0.0305
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 599,
-      "productPrice": 0.0227
-     },
-     {
-      "startNumber": 600,
-      "endNumber": 3999,
-      "productPrice": 0.0191
-     },
-     {
-      "startNumber": 4000,
-      "endNumber": 7999,
-      "productPrice": 0.0165
-     },
-     {
-      "startNumber": 8000,
-      "endNumber": 19999,
-      "productPrice": 0.0154
-     },
-     {
-      "startNumber": 20000,
-      "endNumber": -1,
-      "productPrice": 0.0147
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A106KP8NNNC_C19702.pdf",
-    "leastPatchNumber": 20
-   }
-  ],
-  "C45783": [
-   {
-    "componentCode": "C45783",
-    "componentModelEn": "CL21A226MAQNNNE",
-    "componentBrandEn": "Samsung Electro-Mechanics",
-    "componentLibraryType": "base",
-    "stockCount": 3681395,
-    "componentSpecificationEn": "0805",
-    "describe": "22uF 25V X5R ±20% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 199,
-      "productPrice": 0.2206
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 599,
-      "productPrice": 0.1641
-     },
-     {
-      "startNumber": 600,
-      "endNumber": 1999,
-      "productPrice": 0.1365
-     },
-     {
-      "startNumber": 2000,
-      "endNumber": 9999,
-      "productPrice": 0.1119
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 19999,
-      "productPrice": 0.1051
-     },
-     {
-      "startNumber": 20000,
-      "endNumber": -1,
-      "productPrice": 0.101
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21A226MAQNNNE_C45783.pdf",
-    "leastPatchNumber": 2
-   }
-  ],
-  "C25744": [
-   {
-    "componentCode": "C25744",
-    "componentModelEn": "0402WGF1002TCE",
-    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
-    "componentLibraryType": "base",
-    "stockCount": 19635892,
-    "componentSpecificationEn": "0402",
-    "describe": "-55℃~+155℃ 10kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 999,
-      "productPrice": 0.0034
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 2999,
-      "productPrice": 0.0026
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 9999,
-      "productPrice": 0.0023
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 49999,
-      "productPrice": 0.0021
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": 50199,
-      "productPrice": 0.0017
-     },
-     {
-      "startNumber": 50200,
-      "endNumber": -1,
-      "productPrice": 0.0017
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411221126_UNI-ROYAL-Uniroyal-Elec-0402WGF1002TCE_C25744.pdf",
-    "leastPatchNumber": 20
-   }
-  ],
-  "C25905": [
-   {
-    "componentCode": "C25905",
-    "componentModelEn": "0402WGF5101TCE",
-    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
-    "componentLibraryType": "base",
-    "stockCount": 5593247,
-    "componentSpecificationEn": "0402",
-    "describe": "-55℃~+155℃ 5.1kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 999,
-      "productPrice": 0.0024
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 2999,
-      "productPrice": 0.0018
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 9999,
-      "productPrice": 0.0015
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 49999,
-      "productPrice": 0.0014
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": 50199,
-      "productPrice": 0.0012
-     },
-     {
-      "startNumber": 50200,
-      "endNumber": -1,
-      "productPrice": 0.0012
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0402WGF5101TCE_C25905.pdf",
-    "leastPatchNumber": 20
-   }
-  ],
-  "C11702": [
-   {
-    "componentCode": "C11702",
-    "componentModelEn": "0402WGF1001TCE",
-    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
-    "componentLibraryType": "base",
-    "stockCount": 8231192,
-    "componentSpecificationEn": "0402",
-    "describe": "-55℃~+155℃ 1kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 999,
-      "productPrice": 0.0035
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 2999,
-      "productPrice": 0.0027
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 9999,
-      "productPrice": 0.0023
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 49999,
-      "productPrice": 0.0021
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": 50199,
-      "productPrice": 0.0019
-     },
-     {
-      "startNumber": 50200,
-      "endNumber": -1,
-      "productPrice": 0.0019
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010216_UNI-ROYAL-Uniroyal-Elec-0402WGF1001TCE_C11702.pdf",
-    "leastPatchNumber": 20
-   },
-   {
-    "componentCode": "C7190590",
-    "componentModelEn": "FC1-17-02-T",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1mm,Surface Mount，Right Angle",
-    "describe": "-55℃~+105℃ 0.3mm 17P 1mm Double-Sided Contacts, Top and Bottom Entry Phosphor bronze Surface Mount, Right Angle Tin SMD,P=1mm,卧贴 FFC, FPC (Flat Flexible) Connector Assemblies ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 5.8096
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 5.8096
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 202,
-      "productPrice": 5.8096
-     },
-     {
-      "startNumber": 203,
-      "endNumber": 492,
-      "productPrice": 2.3193
-     },
-     {
-      "startNumber": 493,
-      "endNumber": 985,
-      "productPrice": 2.2411
-     },
-     {
-      "startNumber": 986,
-      "endNumber": -1,
-      "productPrice": 2.2037
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C5886496",
-    "componentModelEn": "SFMC-117-02-H-D",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Gold Surface Mount,Vertical SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 15.655
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 15.655
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 15.655
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 6.2477
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 6.0376
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 5.935
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312031856_Samtec-SFMC-117-02-H-D_C5886496.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C5886498",
-    "componentModelEn": "SFMC-117-02-L-D",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 9.8846
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 9.8846
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 9.8846
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 3.9447
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 3.8128
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 3.7477
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312031856_Samtec-SFMC-117-02-L-D_C5886498.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C6294503",
-    "componentModelEn": "SFMC-117-02-F-D",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 16.2935
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 16.2935
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 16.2935
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 6.5018
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 6.2852
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 6.1777
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312100143_Samtec-SFMC-117-02-F-D_C6294503.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C7358033",
-    "componentModelEn": "SFMC-117-02-S-D",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 12.3813
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 12.3813
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 12.3813
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 4.9415
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 4.7754
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 4.6939
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272300_Samtec-SFMC-117-02-S-D_C7358033.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C17315421",
-    "componentModelEn": "TFC-117-02-L-D-A",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 17 2 24.77mm 2x17P 34P 5.588mm 5.72mm Black LCP Phosphor bronze Surface Mount,Vertical Tin UL94V-0 SMD Wire To Board Connector ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 16.9905
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 16.9905
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 197,
-      "productPrice": 16.9905
-     },
-     {
-      "startNumber": 198,
-      "endNumber": 505,
-      "productPrice": 6.7803
-     },
-     {
-      "startNumber": 506,
-      "endNumber": 989,
-      "productPrice": 6.5539
-     },
-     {
-      "startNumber": 990,
-      "endNumber": -1,
-      "productPrice": 6.4415
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C17696518",
-    "componentModelEn": "TFC-117-02-F-D-A",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 17 2 24.77mm 2x17P 34P 5.588mm 5.72mm Black LCP Phosphor bronze Surface Mount,Vertical Tin UL94V-0 SMD Wire To Board Connector ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 13.7462
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 13.7462
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 197,
-      "productPrice": 13.7462
-     },
-     {
-      "startNumber": 198,
-      "endNumber": 505,
-      "productPrice": 5.4855
-     },
-     {
-      "startNumber": 506,
-      "endNumber": 989,
-      "productPrice": 5.3014
-     },
-     {
-      "startNumber": 990,
-      "endNumber": -1,
-      "productPrice": 5.2119
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C5700232",
-    "componentModelEn": "FC1-17-02-T-WT-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1mm,Surface Mount，Right Angle",
-    "describe": "-55℃~+105℃ 0.3mm 17P 1mm Double-Sided Contacts, Top and Bottom Entry Phosphor Bronze Surface Mount, Right Angle Tin SMD,P=1mm,Surface Mount，Right Angle FFC, FPC (Flat Flexible) Connector Assemblies ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 3.6972
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 3.6972
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 3.6972
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 1.4756
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 1374,
-      "productPrice": 1.4268
-     },
-     {
-      "startNumber": 1375,
-      "endNumber": -1,
-      "productPrice": 1.4024
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C6216506",
-    "componentModelEn": "SFMC-117-02-L-D-P",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 9.3341
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 9.3341
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 9.3341
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 3.7249
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 3.6011
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 3.5392
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312090211_Samtec-SFMC-117-02-L-D-P_C6216506.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C7075841",
-    "componentModelEn": "SFMC-117-02-S-D-P",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 23.6519
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 23.6519
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 23.6519
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 9.4383
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 9.1223
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 8.9676
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312271444_Samtec-SFMC-117-02-S-D-P_C7075841.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C7310286",
-    "componentModelEn": "SFMC-117-02-S-D-K",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 23.3082
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 23.3082
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 23.3082
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 9.3015
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 8.9904
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 8.8373
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272138_Samtec-SFMC-117-02-S-D-K_C7310286.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C7358030",
-    "componentModelEn": "SFMC-117-02-L-D-K",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 18.699
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 18.699
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 18.699
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 7.4611
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 7.2119
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 7.0897
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272300_Samtec-SFMC-117-02-L-D-K_C7358030.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C7358040",
-    "componentModelEn": "SFMC-117-02-SM-D",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 22.9076
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 22.9076
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 207,
-      "productPrice": 22.9076
-     },
-     {
-      "startNumber": 208,
-      "endNumber": 493,
-      "productPrice": 9.1403
-     },
-     {
-      "startNumber": 494,
-      "endNumber": 987,
-      "productPrice": 8.8357
-     },
-     {
-      "startNumber": 988,
-      "endNumber": -1,
-      "productPrice": 8.6842
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312272300_Samtec-SFMC-117-02-SM-D_C7358040.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C17433558",
-    "componentModelEn": "MOLC-117-02-S-Q-P",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD",
-    "describe": "-55℃~+125℃ 1.27mm 4 Phosphor Bronze Surface Mount,Vertical Tin SMD Wire To Board Connector ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 52.0578
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 52.0578
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 206,
-      "productPrice": 52.0578
-     },
-     {
-      "startNumber": 207,
-      "endNumber": 505,
-      "productPrice": 20.7723
-     },
-     {
-      "startNumber": 506,
-      "endNumber": 988,
-      "productPrice": 20.0785
-     },
-     {
-      "startNumber": 989,
-      "endNumber": -1,
-      "productPrice": 19.7349
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C6216508",
-    "componentModelEn": "SFMC-117-02-L-D-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 12.181
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 12.181
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 12.181
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 699,
-      "productPrice": 4.8601
-     },
-     {
-      "startNumber": 700,
-      "endNumber": 1399,
-      "productPrice": 4.6988
-     },
-     {
-      "startNumber": 1400,
-      "endNumber": -1,
-      "productPrice": 4.6174
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312051031_Samtec-SFMC-117-02-L-D-TR_C6216508.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C6480439",
-    "componentModelEn": "SFMC-117-02-S-D-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 15.1973
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 15.1973
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 15.1973
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 699,
-      "productPrice": 6.0637
-     },
-     {
-      "startNumber": 700,
-      "endNumber": 1399,
-      "productPrice": 5.8617
-     },
-     {
-      "startNumber": 1400,
-      "endNumber": -1,
-      "productPrice": 5.7624
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312051047_Samtec-SFMC-117-02-S-D-TR_C6480439.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C17291558",
-    "componentModelEn": "TFC-117-02-F-D-K-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 17 2 24.77mm 2x17P 34P 5.588mm 5.72mm Black LCP Phosphor bronze Surface Mount,Vertical Tin UL94V-0 SMD Wire To Board Connector ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 11.6403
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 11.6403
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 349,
-      "productPrice": 11.6403
-     },
-     {
-      "startNumber": 350,
-      "endNumber": 699,
-      "productPrice": 4.6451
-     },
-     {
-      "startNumber": 700,
-      "endNumber": 1049,
-      "productPrice": 4.4903
-     },
-     {
-      "startNumber": 1050,
-      "endNumber": -1,
-      "productPrice": 4.4138
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C20374341",
-    "componentModelEn": "MOLC-117-02-STL-Q",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "SMD,P=1.27mm Pin Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 59.2501
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 59.2501
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 199,
-      "productPrice": 59.2501
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 23.6421
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 22.8522
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 22.4613
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401171340_Samtec-MOLC-117-02-STL-Q_C20374341.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C6216510",
-    "componentModelEn": "SFMC-117-02-S-D-P-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 17.5883
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 17.5883
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 17.5883
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 449,
-      "productPrice": 7.0181
-     },
-     {
-      "startNumber": 450,
-      "endNumber": 899,
-      "productPrice": 6.7835
-     },
-     {
-      "startNumber": 900,
-      "endNumber": -1,
-      "productPrice": 6.6679
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312090211_Samtec-SFMC-117-02-S-D-P-TR_C6216510.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C6673128",
-    "componentModelEn": "SFMC-117-02-L-D-P-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 14.2022
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 14.2022
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 14.2022
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 449,
-      "productPrice": 5.6663
-     },
-     {
-      "startNumber": 450,
-      "endNumber": 899,
-      "productPrice": 5.4773
-     },
-     {
-      "startNumber": 900,
-      "endNumber": -1,
-      "productPrice": 5.3845
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312220729_Samtec-SFMC-117-02-L-D-P-TR_C6673128.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C7358037",
-    "componentModelEn": "SFMC-117-02-S-D-K-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 17.9417
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 17.9417
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 17.9417
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 699,
-      "productPrice": 7.1598
-     },
-     {
-      "startNumber": 700,
-      "endNumber": 1399,
-      "productPrice": 6.9203
-     },
-     {
-      "startNumber": 1400,
-      "endNumber": -1,
-      "productPrice": 6.8015
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312051133_Samtec-SFMC-117-02-S-D-K-TR_C7358037.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C17565089",
-    "componentModelEn": "TFC-117-02-F-D-A-K-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 17 2 24.77mm 2x17P 34P 5.588mm 5.72mm Black LCP Phosphor bronze Surface Mount,Vertical Tin UL94V-0 SMD Wire To Board Connector ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 11.6403
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 11.6403
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 349,
-      "productPrice": 11.6403
-     },
-     {
-      "startNumber": 350,
-      "endNumber": 699,
-      "productPrice": 4.6451
-     },
-     {
-      "startNumber": 700,
-      "endNumber": 1049,
-      "productPrice": 4.4903
-     },
-     {
-      "startNumber": 1050,
-      "endNumber": -1,
-      "productPrice": 4.4138
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C17674278",
-    "componentModelEn": "SFMC-117-02-L-D-K-TR",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "SMD,P=1.27mm",
-    "describe": "-55℃~+125℃ 1.27mm 1.27mm 2 2.9A 34P 4.7mm Surface Mount,Vertical Tin SMD,P=1.27mm Female Headers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 12.5996
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 12.5996
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 249,
-      "productPrice": 12.5996
-     },
-     {
-      "startNumber": 250,
-      "endNumber": 499,
-      "productPrice": 5.0278
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 4.8601
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 4.777
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2311161551_Samtec-SFMC-117-02-L-D-K-TR_C17674278.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C20374346",
-    "componentModelEn": "MOLC-117-02-STL-Q-P",
-    "componentBrandEn": "Samtec",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "-",
-    "describe": "- Wire To Board Connector ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 60.0465
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 60.0465
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 199,
-      "productPrice": 60.0465
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 23.9597
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 23.1584
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 22.7642
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401161110_Samtec-MOLC-117-02-STL-Q-P_C20374346.pdf",
-    "leastPatchNumber": 0
-   }
-  ],
-  "C25741": [
-   {
-    "componentCode": "C25741",
-    "componentModelEn": "0402WGF1003TCE",
-    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
-    "componentLibraryType": "base",
-    "stockCount": 8447378,
-    "componentSpecificationEn": "0402",
-    "describe": "-55℃~+155℃ 100kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 999,
-      "productPrice": 0.0021
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 2999,
-      "productPrice": 0.0016
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 9999,
-      "productPrice": 0.0014
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 49999,
-      "productPrice": 0.0013
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": 50199,
-      "productPrice": 0.0011
-     },
-     {
-      "startNumber": 50200,
-      "endNumber": -1,
-      "productPrice": 0.0011
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.pdf",
-    "leastPatchNumber": 20
-   },
-   {
-    "componentCode": "C3186496",
-    "componentModelEn": "TC2574-12.0VPA",
-    "componentBrandEn": "Microchip Tech",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "DIP-8",
-    "describe": "-40℃~+125℃@(TJ) 1 12V 4.75V~40V 500mA 52kHz Buck Buck Built-in Fixed No DIP-8 DC-DC Converters ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 3.0685
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 3.0685
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 199,
-      "productPrice": 3.0685
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 499,
-      "productPrice": 1.1874
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 1.1466
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 1.1255
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401291241_Microchip-Tech-TC2574-12-0VPA_C3186496.pdf",
-    "leastPatchNumber": 0
-   }
-  ],
-  "C52923": [
-   {
-    "componentCode": "C52923",
-    "componentModelEn": "CL05A105KA5NQNC",
-    "componentBrandEn": "Samsung Electro-Mechanics",
-    "componentLibraryType": "base",
-    "stockCount": 7462797,
-    "componentSpecificationEn": "0402",
-    "describe": "1uF 25V X5R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 499,
-      "productPrice": 0.0087
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 1499,
-      "productPrice": 0.0068
-     },
-     {
-      "startNumber": 1500,
-      "endNumber": 9999,
-      "productPrice": 0.006
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 19999,
-      "productPrice": 0.0054
-     },
-     {
-      "startNumber": 20000,
-      "endNumber": 49999,
-      "productPrice": 0.0051
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": -1,
-      "productPrice": 0.005
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05A105KA5NQNC_C52923.pdf",
-    "leastPatchNumber": 20
-   }
-  ],
-  "C15850": [
-   {
-    "componentCode": "C15850",
-    "componentModelEn": "CL21A106KAYNNNE",
-    "componentBrandEn": "Samsung Electro-Mechanics",
-    "componentLibraryType": "base",
-    "stockCount": 4280962,
-    "componentSpecificationEn": "0805",
-    "describe": "10uF 25V X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 199,
-      "productPrice": 0.0688
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 599,
-      "productPrice": 0.0507
-     },
-     {
-      "startNumber": 600,
-      "endNumber": 1999,
-      "productPrice": 0.0416
-     },
-     {
-      "startNumber": 2000,
-      "endNumber": 9999,
-      "productPrice": 0.0339
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 19999,
-      "productPrice": 0.0312
-     },
-     {
-      "startNumber": 20000,
-      "endNumber": -1,
-      "productPrice": 0.0294
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21A106KAYNNNE_C15850.pdf",
-    "leastPatchNumber": 20
-   },
-   {
-    "componentCode": "C9900163687",
-    "componentModelEn": "C15850",
-    "componentBrandEn": "JLCPCB Assembly",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "0805",
-    "describe": "0805 SMT ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 99,
-      "productPrice": 0.0396
-     },
-     {
-      "startNumber": 100,
-      "endNumber": -1,
-      "productPrice": 0.0204
-     }
-    ],
-    "dataManualUrl": null,
-    "leastPatchNumber": 5
-   },
-   {
-    "componentCode": "C18096778",
-    "componentModelEn": "EC1585-000",
-    "componentBrandEn": "TE Connectivity",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "-",
-    "describe": "- Comprehensive Electronic ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": -1,
-      "productPrice": 0.0486
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 5
-   }
-  ],
-  "C15849": [
-   {
-    "componentCode": "C15849",
-    "componentModelEn": "CL10A105KB8NNNC",
-    "componentBrandEn": "Samsung Electro-Mechanics",
-    "componentLibraryType": "base",
-    "stockCount": 8556440,
-    "componentSpecificationEn": "0603",
-    "describe": "1uF 50V X5R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 499,
-      "productPrice": 0.0163
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 1499,
-      "productPrice": 0.0128
-     },
-     {
-      "startNumber": 1500,
-      "endNumber": 3999,
-      "productPrice": 0.0112
-     },
-     {
-      "startNumber": 4000,
-      "endNumber": 23999,
-      "productPrice": 0.01
-     },
-     {
-      "startNumber": 24000,
-      "endNumber": 47999,
-      "productPrice": 0.0095
-     },
-     {
-      "startNumber": 48000,
-      "endNumber": -1,
-      "productPrice": 0.0092
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf",
-    "leastPatchNumber": 20
-   }
-  ],
   "nSMD110": [
    {
     "componentCode": "C71465",
@@ -21986,762 +19547,6 @@
     "leastPatchNumber": 5
    }
   ],
-  "C2803344": [
-   {
-    "componentCode": "C2803344",
-    "componentModelEn": "BSMD1206-110-6V",
-    "componentBrandEn": "BHFUSE",
-    "componentLibraryType": "expand",
-    "stockCount": 24139,
-    "componentSpecificationEn": "1206",
-    "describe": "-40℃~+85℃ 1.1A 100A 2.2A 250mΩ 300ms 40mΩ 6V 800mW 1206 Resettable Fuses ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 99,
-      "productPrice": 0.0515
-     },
-     {
-      "startNumber": 100,
-      "endNumber": 299,
-      "productPrice": 0.0398
-     },
-     {
-      "startNumber": 300,
-      "endNumber": 999,
-      "productPrice": 0.0339
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 3499,
-      "productPrice": 0.0297
-     },
-     {
-      "startNumber": 3500,
-      "endNumber": 10499,
-      "productPrice": 0.0261
-     },
-     {
-      "startNumber": 10500,
-      "endNumber": -1,
-      "productPrice": 0.0243
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2305121425_BHFUSE-BSMD1206-110-6V_C2803344.pdf",
-    "leastPatchNumber": 5
-   }
-  ],
-  "C7519": [
-   {
-    "componentCode": "C7519",
-    "componentModelEn": "USBLC6-2SC6",
-    "componentBrandEn": "STMicroelectronics",
-    "componentLibraryType": "expand",
-    "stockCount": 47826,
-    "componentSpecificationEn": "SOT-23-6L",
-    "describe": "-40℃~+125℃ 150nA 17V 2 3.5pF 5.25V 5A 6V ESD IEC 61000-4-2 Unidirectional SOT-23-6L ESD and Surge Protection (TVS/ESD) ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 49,
-      "productPrice": 0.177
-     },
-     {
-      "startNumber": 50,
-      "endNumber": 149,
-      "productPrice": 0.1362
-     },
-     {
-      "startNumber": 150,
-      "endNumber": 499,
-      "productPrice": 0.1163
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 2999,
-      "productPrice": 0.0986
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 5999,
-      "productPrice": 0.0937
-     },
-     {
-      "startNumber": 6000,
-      "endNumber": -1,
-      "productPrice": 0.0908
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121836_STMicroelectronics-USBLC6-2SC6_C7519.pdf",
-    "leastPatchNumber": 5
-   }
-  ],
-  "C15578": [
-   {
-    "componentCode": "C15578",
-    "componentModelEn": "TLV1117LV33DCYR",
-    "componentBrandEn": "Texas Instruments",
-    "componentLibraryType": "expand",
-    "stockCount": 5741,
-    "componentSpecificationEn": "SOT-223",
-    "describe": "-40℃~+125℃@(Tj) 1 100uA 1A 3.3V 455mV@(1A) 5.5V 60uVrms 65dB@(1kHz) Fixed Positive Under Voltage Lockout、Over Current Protection、Over Temperature Protection SOT-223 Voltage Regulators - Linear, Low Drop Out (LDO) Regulators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 0.3893
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 0.3014
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 99,
-      "productPrice": 0.259
-     },
-     {
-      "startNumber": 100,
-      "endNumber": 499,
-      "productPrice": 0.2216
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 0.2102
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 0.2036
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809050431_Texas-Instruments-TLV1117LV33DCYR_C15578.pdf",
-    "leastPatchNumber": 5
-   }
-  ],
-  "C25790": [
-   {
-    "componentCode": "C25790",
-    "componentModelEn": "0402WGF4703TCE",
-    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
-    "componentLibraryType": "expand",
-    "stockCount": 233222,
-    "componentSpecificationEn": "0402",
-    "describe": "-55℃~+155℃ 470kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
-    "preferredComponentFlag": true,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 999,
-      "productPrice": 0.003
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 2999,
-      "productPrice": 0.0024
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 9999,
-      "productPrice": 0.002
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 49999,
-      "productPrice": 0.0018
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": 50199,
-      "productPrice": 0.0016
-     },
-     {
-      "startNumber": 50200,
-      "endNumber": -1,
-      "productPrice": 0.0016
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF4703TCE_C25790.pdf",
-    "leastPatchNumber": 20
-   },
-   {
-    "componentCode": "C19429154",
-    "componentModelEn": "M87C257-90C1",
-    "componentBrandEn": "STMicroelectronics",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "PLCC-32(11.4x13.9)",
-    "describe": "PLCC-32(11.4x13.9) Non-Volatile Memory (ROM) ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 12.8113
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 12.8113
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 191,
-      "productPrice": 12.8113
-     },
-     {
-      "startNumber": 192,
-      "endNumber": 511,
-      "productPrice": 5.1125
-     },
-     {
-      "startNumber": 512,
-      "endNumber": 991,
-      "productPrice": 4.9415
-     },
-     {
-      "startNumber": 992,
-      "endNumber": -1,
-      "productPrice": 4.8568
-     }
-    ],
-    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312201843_STMicroelectronics-M87C257-90C1_C19429154.pdf",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C19751348",
-    "componentModelEn": "M87C257-90C1TR",
-    "componentBrandEn": "STMicroelectronics",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "PLCC-32",
-    "describe": "PLCC-32 Non-Volatile Memory (ROM) ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 10.7934
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 11,
-      "productPrice": 10.7934
-     },
-     {
-      "startNumber": 12,
-      "endNumber": 199,
-      "productPrice": 10.7934
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 749,
-      "productPrice": 4.3079
-     },
-     {
-      "startNumber": 750,
-      "endNumber": 1499,
-      "productPrice": 4.163
-     },
-     {
-      "startNumber": 1500,
-      "endNumber": -1,
-      "productPrice": 4.0929
-     }
-    ],
-    "dataManualUrl": "",
-    "leastPatchNumber": 0
-   },
-   {
-    "componentCode": "C9900126617",
-    "componentModelEn": "C2579-001 GPIO Ribbon Cable",
-    "componentBrandEn": "JLCPCB Assembly",
-    "componentLibraryType": "expand",
-    "stockCount": 0,
-    "componentSpecificationEn": "Accessories",
-    "describe": "Accessories New Arrivals ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 99,
-      "productPrice": 0.0396
-     },
-     {
-      "startNumber": 100,
-      "endNumber": -1,
-      "productPrice": 0.0204
-     }
-    ],
-    "dataManualUrl": null,
-    "leastPatchNumber": 2
-   }
-  ],
-  "C17168": [
-   {
-    "componentCode": "C17168",
-    "componentModelEn": "0402WGF0000TCE",
-    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
-    "componentLibraryType": "base",
-    "stockCount": 9769982,
-    "componentSpecificationEn": "0402",
-    "describe": "-55℃~+155℃ 0Ω 50V 62.5mW Thick Film Resistor ±1% ±800ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 999,
-      "productPrice": 0.0025
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 2999,
-      "productPrice": 0.0019
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 9999,
-      "productPrice": 0.0016
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 49999,
-      "productPrice": 0.0015
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": 50199,
-      "productPrice": 0.0013
-     },
-     {
-      "startNumber": 50200,
-      "endNumber": -1,
-      "productPrice": 0.0013
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010216_UNI-ROYAL-Uniroyal-Elec-0402WGF0000TCE_C17168.pdf",
-    "leastPatchNumber": 20
-   }
-  ],
-  "C25900": [
-   {
-    "componentCode": "C25900",
-    "componentModelEn": "0402WGF4701TCE",
-    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
-    "componentLibraryType": "base",
-    "stockCount": 14525824,
-    "componentSpecificationEn": "0402",
-    "describe": "-55℃~+155℃ 4.7kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 999,
-      "productPrice": 0.0027
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 2999,
-      "productPrice": 0.0021
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 9999,
-      "productPrice": 0.0017
-     },
-     {
-      "startNumber": 10000,
-      "endNumber": 49999,
-      "productPrice": 0.0016
-     },
-     {
-      "startNumber": 50000,
-      "endNumber": 50199,
-      "productPrice": 0.0013
-     },
-     {
-      "startNumber": 50200,
-      "endNumber": -1,
-      "productPrice": 0.0013
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0402WGF4701TCE_C25900.pdf",
-    "leastPatchNumber": 20
-   }
-  ],
-  "C20526": [
-   {
-    "componentCode": "C20526",
-    "componentModelEn": "MMBT3904(RANGE:100-300)",
-    "componentBrandEn": "Jiangsu Changjing Electronics Technology Co., Ltd.",
-    "componentLibraryType": "base",
-    "stockCount": 323113,
-    "componentSpecificationEn": "SOT-23",
-    "describe": "-55℃~+150℃ 1 NPN 100 100nA 200mA 200mW 300MHz 300mV 40V 6V NPN SOT-23 Bipolar (BJT) ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 499,
-      "productPrice": 0.0116
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 2999,
-      "productPrice": 0.0092
-     },
-     {
-      "startNumber": 3000,
-      "endNumber": 5999,
-      "productPrice": 0.0081
-     },
-     {
-      "startNumber": 6000,
-      "endNumber": 23999,
-      "productPrice": 0.0073
-     },
-     {
-      "startNumber": 24000,
-      "endNumber": 50999,
-      "productPrice": 0.007
-     },
-     {
-      "startNumber": 51000,
-      "endNumber": -1,
-      "productPrice": 0.0068
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2207041900_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--MMBT3904-RANGE-100-300_C20526.pdf",
-    "leastPatchNumber": 10
-   }
-  ],
-  "C318884": [
-   {
-    "componentCode": "C318884",
-    "componentModelEn": "TS-1187A-B-A-B",
-    "componentBrandEn": "XKB Connection",
-    "componentLibraryType": "base",
-    "stockCount": 379606,
-    "componentSpecificationEn": "SMD-4P,5.1x5.1mm",
-    "describe": "-30℃~+85℃ 1.5mm 1.6N 100,000 cycles 12V 5.1mm 5.1mm 50mA Gold No Round Button SPST Surface Mount,Vertical Without Bracket SMD-4P,5.1x5.1mm Tactile Switches ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 199,
-      "productPrice": 0.0206
-     },
-     {
-      "startNumber": 200,
-      "endNumber": 599,
-      "productPrice": 0.0159
-     },
-     {
-      "startNumber": 600,
-      "endNumber": 3999,
-      "productPrice": 0.0138
-     },
-     {
-      "startNumber": 4000,
-      "endNumber": 7999,
-      "productPrice": 0.012
-     },
-     {
-      "startNumber": 8000,
-      "endNumber": 19999,
-      "productPrice": 0.0114
-     },
-     {
-      "startNumber": 20000,
-      "endNumber": -1,
-      "productPrice": 0.011
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_XKB-Connection-TS-1187A-B-A-B_C318884.pdf",
-    "leastPatchNumber": 5
-   }
-  ],
-  "C84681": [
-   {
-    "componentCode": "C84681",
-    "componentModelEn": "CH340C",
-    "componentBrandEn": "WCH(Jiangsu Qin Heng)",
-    "componentLibraryType": "expand",
-    "stockCount": 135516,
-    "componentSpecificationEn": "SOP-16",
-    "describe": "-20℃~+70℃ 2Mbps 3.3V、5V 50uA 7mA Transceiver USB 2.0 SOP-16 USB Converters ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 0.6059
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 49,
-      "productPrice": 0.5163
-     },
-     {
-      "startNumber": 50,
-      "endNumber": 99,
-      "productPrice": 0.4496
-     },
-     {
-      "startNumber": 100,
-      "endNumber": 499,
-      "productPrice": 0.3958
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 0.3795
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 0.3698
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2406191656_WCH-Jiangsu-Qin-Heng-CH340C_C84681.pdf",
-    "leastPatchNumber": 0
-   }
-  ],
-  "C910544": [
-   {
-    "componentCode": "C910544",
-    "componentModelEn": "MAX98357AETE+T",
-    "componentBrandEn": "Analog Devices Inc./Maxim Integrated",
-    "componentLibraryType": "expand",
-    "stockCount": 32307,
-    "componentSpecificationEn": "TQFN-16-EP(3x3)",
-    "describe": "-40℃~+85℃ 2.4mA 2.5V~5.5V 3.2Wx1@4Ω 77dB 92% Automatic mute/no-noise switch、Enable/shutdown function、Filterless architecture Class D TQFN-16-EP(3x3) Audio Amplifiers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 1.3177
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 1.1532
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 99,
-      "productPrice": 0.9984
-     },
-     {
-      "startNumber": 100,
-      "endNumber": 499,
-      "productPrice": 0.8828
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 0.8356
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 0.8128
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2201242100_Analog-Devices-Inc--Maxim-Integrated-MAX98357AETE-T_C910544.pdf",
-    "leastPatchNumber": 0
-   }
-  ],
-  "C165948": [
-   {
-    "componentCode": "C165948",
-    "componentModelEn": "TYPE-C-31-M-12",
-    "componentBrandEn": "Korean Hroparts Elec",
-    "componentLibraryType": "expand",
-    "stockCount": 407280,
-    "componentSpecificationEn": "SMD",
-    "describe": "-30℃~+80℃ 1 10,000 cycles 16P 20V 5A 7.35mm Female Surface Mount, Right Angle Type-C SMD USB Connectors ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 49,
-      "productPrice": 0.186
-     },
-     {
-      "startNumber": 50,
-      "endNumber": 149,
-      "productPrice": 0.147
-     },
-     {
-      "startNumber": 150,
-      "endNumber": 999,
-      "productPrice": 0.1277
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": 1999,
-      "productPrice": 0.1036
-     },
-     {
-      "startNumber": 2000,
-      "endNumber": 4999,
-      "productPrice": 0.0989
-     },
-     {
-      "startNumber": 5000,
-      "endNumber": -1,
-      "productPrice": 0.0961
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2205251630_Korean-Hroparts-Elec-TYPE-C-31-M-12_C165948.pdf",
-    "leastPatchNumber": 2
-   }
-  ],
-  "C2913202": [
-   {
-    "componentCode": "C2913202",
-    "componentModelEn": "ESP32-S3-WROOM-1-N16R8",
-    "componentBrandEn": "Espressif Systems",
-    "componentLibraryType": "expand",
-    "stockCount": 34320,
-    "componentSpecificationEn": "SMD,25.5x18mm",
-    "describe": "-103.5dBm -40℃~+65℃ 2.4GHz 20.5dBm 355mA 3V~3.6V 95mA ESP32-S3R8 On-board PCB Antenna UART、SPI、I2C、GPIO、I2S、USB SMD,25.5x18mm WiFi Modules ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 5.1467
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 4.5229
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 99,
-      "productPrice": 4.0343
-     },
-     {
-      "startNumber": 100,
-      "endNumber": 649,
-      "productPrice": 3.6076
-     },
-     {
-      "startNumber": 650,
-      "endNumber": 1299,
-      "productPrice": 3.4545
-     },
-     {
-      "startNumber": 1300,
-      "endNumber": -1,
-      "productPrice": 3.3877
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411121101_Espressif-Systems-ESP32-S3-WROOM-1-N16R8_C2913202.pdf",
-    "leastPatchNumber": 0
-   }
-  ],
-  "C6186": [
-   {
-    "componentCode": "C6186",
-    "componentModelEn": "AMS1117-3.3",
-    "componentBrandEn": "Advanced Monolithic Systems",
-    "componentLibraryType": "base",
-    "stockCount": 1225764,
-    "componentSpecificationEn": "SOT-223",
-    "describe": "-40℃~+125℃ 0.003%Vout 1 1.1V@(800mA) 15V 1A 3.3V 5mA 72dB@(120Hz) Fixed Over Current Protection、Short Circuit Protection、Thermal shutdown Positive SOT-223 Voltage Regulators - Linear, Low Drop Out (LDO) Regulators ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 49,
-      "productPrice": 0.208
-     },
-     {
-      "startNumber": 50,
-      "endNumber": 149,
-      "productPrice": 0.1623
-     },
-     {
-      "startNumber": 150,
-      "endNumber": 499,
-      "productPrice": 0.1398
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 2499,
-      "productPrice": 0.1198
-     },
-     {
-      "startNumber": 2500,
-      "endNumber": 4999,
-      "productPrice": 0.1144
-     },
-     {
-      "startNumber": 5000,
-      "endNumber": -1,
-      "productPrice": 0.111
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121508_Advanced-Monolithic-Systems-AMS1117-3-3_C6186.pdf",
-    "leastPatchNumber": 2
-   }
-  ],
-  "C910588": [
-   {
-    "componentCode": "C910588",
-    "componentModelEn": "NS4168",
-    "componentBrandEn": "Shenzhen Nsiway Tech",
-    "componentLibraryType": "expand",
-    "stockCount": 7222,
-    "componentSpecificationEn": "ESOP-8-EP(3.9x4.9x1.27)",
-    "describe": "-80dB 0.2% 1-Channel 13mA 2.5Wx1@4Ω 3V~5.5V 80% 85dB Automatic mute/no-noise switch、Enable/shutdown function、Filterless architecture、Built-in audio processing Class D ESOP-8-EP(3.9x4.9x1.27) Audio Amplifiers ROHS",
-    "preferredComponentFlag": false,
-    "componentPrices": [
-     {
-      "startNumber": 1,
-      "endNumber": 9,
-      "productPrice": 0.7378
-     },
-     {
-      "startNumber": 10,
-      "endNumber": 29,
-      "productPrice": 0.6027
-     },
-     {
-      "startNumber": 30,
-      "endNumber": 99,
-      "productPrice": 0.5343
-     },
-     {
-      "startNumber": 100,
-      "endNumber": 499,
-      "productPrice": 0.4675
-     },
-     {
-      "startNumber": 500,
-      "endNumber": 999,
-      "productPrice": 0.4007
-     },
-     {
-      "startNumber": 1000,
-      "endNumber": -1,
-      "productPrice": 0.3795
-     }
-    ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407221202_Shenzhen-Nsiway-Tech-NS4168_C910588.pdf",
-    "leastPatchNumber": 0
-   }
-  ],
   "0402WGF5603TCE": [
    {
     "componentCode": "C132339",
@@ -22926,13 +19731,1444 @@
     "leastPatchNumber": 20
    }
   ],
+  "C165948": [
+   {
+    "componentCode": "C165948",
+    "componentModelEn": "TYPE-C-31-M-12",
+    "componentBrandEn": "Korean Hroparts Elec",
+    "componentLibraryType": "expand",
+    "stockCount": 401977,
+    "componentSpecificationEn": "SMD",
+    "describe": "-30℃~+80℃ 1 10,000 cycles 16P 20V 5A 7.35mm Female Surface Mount, Right Angle Type-C SMD USB Connectors ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 49,
+      "productPrice": 0.186
+     },
+     {
+      "startNumber": 50,
+      "endNumber": 149,
+      "productPrice": 0.147
+     },
+     {
+      "startNumber": 150,
+      "endNumber": 999,
+      "productPrice": 0.1277
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 1999,
+      "productPrice": 0.1036
+     },
+     {
+      "startNumber": 2000,
+      "endNumber": 4999,
+      "productPrice": 0.0989
+     },
+     {
+      "startNumber": 5000,
+      "endNumber": -1,
+      "productPrice": 0.0961
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2205251630_Korean-Hroparts-Elec-TYPE-C-31-M-12_C165948.pdf",
+    "leastPatchNumber": 2
+   }
+  ],
+  "C25905": [
+   {
+    "componentCode": "C25905",
+    "componentModelEn": "0402WGF5101TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 5563632,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 5.1kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 999,
+      "productPrice": 0.0024
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 2999,
+      "productPrice": 0.0018
+     },
+     {
+      "startNumber": 3000,
+      "endNumber": 9999,
+      "productPrice": 0.0015
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 49999,
+      "productPrice": 0.0014
+     },
+     {
+      "startNumber": 50000,
+      "endNumber": 50199,
+      "productPrice": 0.0012
+     },
+     {
+      "startNumber": 50200,
+      "endNumber": -1,
+      "productPrice": 0.0012
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0402WGF5101TCE_C25905.pdf",
+    "leastPatchNumber": 20
+   }
+  ],
+  "C2803344": [
+   {
+    "componentCode": "C2803344",
+    "componentModelEn": "BSMD1206-110-6V",
+    "componentBrandEn": "BHFUSE",
+    "componentLibraryType": "expand",
+    "stockCount": 24139,
+    "componentSpecificationEn": "1206",
+    "describe": "-40℃~+85℃ 1.1A 100A 2.2A 250mΩ 300ms 40mΩ 6V 800mW 1206 Resettable Fuses ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 99,
+      "productPrice": 0.0515
+     },
+     {
+      "startNumber": 100,
+      "endNumber": 299,
+      "productPrice": 0.0398
+     },
+     {
+      "startNumber": 300,
+      "endNumber": 999,
+      "productPrice": 0.0339
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 3499,
+      "productPrice": 0.0297
+     },
+     {
+      "startNumber": 3500,
+      "endNumber": 10499,
+      "productPrice": 0.0261
+     },
+     {
+      "startNumber": 10500,
+      "endNumber": -1,
+      "productPrice": 0.0243
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2305121425_BHFUSE-BSMD1206-110-6V_C2803344.pdf",
+    "leastPatchNumber": 5
+   }
+  ],
+  "C7519": [
+   {
+    "componentCode": "C7519",
+    "componentModelEn": "USBLC6-2SC6",
+    "componentBrandEn": "STMicroelectronics",
+    "componentLibraryType": "expand",
+    "stockCount": 46196,
+    "componentSpecificationEn": "SOT-23-6L",
+    "describe": "-40℃~+125℃ 150nA 17V 2 3.5pF 5.25V 5A 6V ESD IEC 61000-4-2 Unidirectional SOT-23-6L ESD and Surge Protection (TVS/ESD) ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 49,
+      "productPrice": 0.177
+     },
+     {
+      "startNumber": 50,
+      "endNumber": 149,
+      "productPrice": 0.1362
+     },
+     {
+      "startNumber": 150,
+      "endNumber": 499,
+      "productPrice": 0.1163
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 2999,
+      "productPrice": 0.0986
+     },
+     {
+      "startNumber": 3000,
+      "endNumber": 5999,
+      "productPrice": 0.0937
+     },
+     {
+      "startNumber": 6000,
+      "endNumber": -1,
+      "productPrice": 0.0908
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121836_STMicroelectronics-USBLC6-2SC6_C7519.pdf",
+    "leastPatchNumber": 5
+   }
+  ],
+  "C15578": [
+   {
+    "componentCode": "C15578",
+    "componentModelEn": "TLV1117LV33DCYR",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 4484,
+    "componentSpecificationEn": "SOT-223",
+    "describe": "-40℃~+125℃@(Tj) 1 100uA 1A 3.3V 455mV@(1A) 5.5V 60uVrms 65dB@(1kHz) Fixed Positive Under Voltage Lockout、Over Current Protection、Over Temperature Protection SOT-223 Voltage Regulators - Linear, Low Drop Out (LDO) Regulators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 0.3893
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 29,
+      "productPrice": 0.3014
+     },
+     {
+      "startNumber": 30,
+      "endNumber": 99,
+      "productPrice": 0.259
+     },
+     {
+      "startNumber": 100,
+      "endNumber": 499,
+      "productPrice": 0.2216
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 0.2102
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 0.2036
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809050431_Texas-Instruments-TLV1117LV33DCYR_C15578.pdf",
+    "leastPatchNumber": 5
+   }
+  ],
+  "C45783": [
+   {
+    "componentCode": "C45783",
+    "componentModelEn": "CL21A226MAQNNNE",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 3603074,
+    "componentSpecificationEn": "0805",
+    "describe": "22uF 25V X5R ±20% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 199,
+      "productPrice": 0.2369
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 599,
+      "productPrice": 0.1803
+     },
+     {
+      "startNumber": 600,
+      "endNumber": 1999,
+      "productPrice": 0.1528
+     },
+     {
+      "startNumber": 2000,
+      "endNumber": 9999,
+      "productPrice": 0.1282
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 19999,
+      "productPrice": 0.1214
+     },
+     {
+      "startNumber": 20000,
+      "endNumber": -1,
+      "productPrice": 0.1173
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21A226MAQNNNE_C45783.pdf",
+    "leastPatchNumber": 2
+   }
+  ],
+  "C15850": [
+   {
+    "componentCode": "C15850",
+    "componentModelEn": "CL21A106KAYNNNE",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 4148536,
+    "componentSpecificationEn": "0805",
+    "describe": "10uF 25V X5R ±10% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 199,
+      "productPrice": 0.0688
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 599,
+      "productPrice": 0.0507
+     },
+     {
+      "startNumber": 600,
+      "endNumber": 1999,
+      "productPrice": 0.0416
+     },
+     {
+      "startNumber": 2000,
+      "endNumber": 9999,
+      "productPrice": 0.0339
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 19999,
+      "productPrice": 0.0312
+     },
+     {
+      "startNumber": 20000,
+      "endNumber": -1,
+      "productPrice": 0.0294
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21A106KAYNNNE_C15850.pdf",
+    "leastPatchNumber": 20
+   },
+   {
+    "componentCode": "C9900163687",
+    "componentModelEn": "C15850",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "0805",
+    "describe": "0805 SMT ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 99,
+      "productPrice": 0.0396
+     },
+     {
+      "startNumber": 100,
+      "endNumber": -1,
+      "productPrice": 0.0204
+     }
+    ],
+    "dataManualUrl": null,
+    "leastPatchNumber": 5
+   },
+   {
+    "componentCode": "C18096778",
+    "componentModelEn": "EC1585-000",
+    "componentBrandEn": "TE Connectivity",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Comprehensive Electronic ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": -1,
+      "productPrice": 0.0486
+     }
+    ],
+    "dataManualUrl": "",
+    "leastPatchNumber": 5
+   }
+  ],
+  "C1525": [
+   {
+    "componentCode": "C1525",
+    "componentModelEn": "CL05B104KO5NNNC",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 23849914,
+    "componentSpecificationEn": "0402",
+    "describe": "100nF 16V X7R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 999,
+      "productPrice": 0.0039
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 2999,
+      "productPrice": 0.0029
+     },
+     {
+      "startNumber": 3000,
+      "endNumber": 9999,
+      "productPrice": 0.0025
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 49999,
+      "productPrice": 0.0022
+     },
+     {
+      "startNumber": 50000,
+      "endNumber": 50199,
+      "productPrice": 0.002
+     },
+     {
+      "startNumber": 50200,
+      "endNumber": -1,
+      "productPrice": 0.002
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05B104KO5NNNC_C1525.pdf",
+    "leastPatchNumber": 20
+   },
+   {
+    "componentCode": "C3186512",
+    "componentModelEn": "UC1525BJ",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 3,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-55℃~+125℃ 100Hz~400kHz 14mA 2 8V~35V Boost、Flyback、Forward、Push-Pull、Full-Bridge、Half-Bridge Cycle-by-cycle current limiting、Frequency synchronization External Yes DIP-16 AC-DC Controllers and Regulators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 25.1095
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 24.2985
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 13,
+      "productPrice": 24.2985
+     },
+     {
+      "startNumber": 14,
+      "endNumber": 15,
+      "productPrice": 24.2985
+     },
+     {
+      "startNumber": 16,
+      "endNumber": 17,
+      "productPrice": 24.2985
+     },
+     {
+      "startNumber": 18,
+      "endNumber": -1,
+      "productPrice": 24.2985
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302212109_Texas-Instruments-UC1525BJ_C3186512.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C22427536",
+    "componentModelEn": "UC1525AJ",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 5,
+    "componentSpecificationEn": "DIP-16",
+    "describe": "-55℃~+125℃ 100Hz~400kHz 2 20mA 500mA 8V~35V External Push-Pull DIP-16 DC-DC Converters ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 2,
+      "productPrice": 36.6195
+     },
+     {
+      "startNumber": 3,
+      "endNumber": 4,
+      "productPrice": 36.6195
+     },
+     {
+      "startNumber": 5,
+      "endNumber": 24,
+      "productPrice": 36.6195
+     },
+     {
+      "startNumber": 25,
+      "endNumber": 26,
+      "productPrice": 35.1765
+     },
+     {
+      "startNumber": 27,
+      "endNumber": 28,
+      "productPrice": 35.1765
+     },
+     {
+      "startNumber": 29,
+      "endNumber": -1,
+      "productPrice": 35.1765
+     }
+    ],
+    "dataManualUrl": "",
+    "leastPatchNumber": 2
+   },
+   {
+    "componentCode": "C35849606",
+    "componentModelEn": "UC1525AL",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 6,
+    "componentSpecificationEn": "LCCC-20",
+    "describe": "LCCC-20 AC-DC Controllers and Regulators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 2,
+      "productPrice": 40.1147
+     },
+     {
+      "startNumber": 3,
+      "endNumber": 4,
+      "productPrice": 40.1147
+     },
+     {
+      "startNumber": 5,
+      "endNumber": 44,
+      "productPrice": 40.1147
+     },
+     {
+      "startNumber": 45,
+      "endNumber": 46,
+      "productPrice": 38.6097
+     },
+     {
+      "startNumber": 47,
+      "endNumber": 48,
+      "productPrice": 38.6097
+     },
+     {
+      "startNumber": 49,
+      "endNumber": -1,
+      "productPrice": 38.6097
+     }
+    ],
+    "dataManualUrl": null,
+    "leastPatchNumber": 2
+   },
+   {
+    "componentCode": "C22451596",
+    "componentModelEn": "UC1525AL883B",
+    "componentBrandEn": "Texas Instruments",
+    "componentLibraryType": "expand",
+    "stockCount": 5,
+    "componentSpecificationEn": "LCCC-20(8.9x8.9)",
+    "describe": "-55℃~+125℃ 100Hz~400kHz 49% 8V~35V Push-Pull LCCC-20(8.9x8.9) AC-DC Controllers and Regulators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 2,
+      "productPrice": 53.0774
+     },
+     {
+      "startNumber": 3,
+      "endNumber": 4,
+      "productPrice": 53.0774
+     },
+     {
+      "startNumber": 5,
+      "endNumber": 29,
+      "productPrice": 53.0774
+     },
+     {
+      "startNumber": 30,
+      "endNumber": 31,
+      "productPrice": 50.3803
+     },
+     {
+      "startNumber": 32,
+      "endNumber": 33,
+      "productPrice": 50.3803
+     },
+     {
+      "startNumber": 34,
+      "endNumber": -1,
+      "productPrice": 50.3803
+     }
+    ],
+    "dataManualUrl": null,
+    "leastPatchNumber": 2
+   },
+   {
+    "componentCode": "C2949389",
+    "componentModelEn": "CY7C1525V18-200BZC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 72Mbit 750mA Parallel Port (Parallel) LBGA-165 SRAM",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 11.6729
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 11.6729
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 203,
+      "productPrice": 11.6729
+     },
+     {
+      "startNumber": 204,
+      "endNumber": 509,
+      "productPrice": 4.518
+     },
+     {
+      "startNumber": 510,
+      "endNumber": 1019,
+      "productPrice": 4.36
+     },
+     {
+      "startNumber": 1020,
+      "endNumber": -1,
+      "productPrice": 4.2802
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525V18-200BZC_C2949389.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2949388",
+    "componentModelEn": "CY7C1525V18-200BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 11.6729
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 29,
+      "productPrice": 11.6729
+     },
+     {
+      "startNumber": 30,
+      "endNumber": 199,
+      "productPrice": 11.6729
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 499,
+      "productPrice": 4.518
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 4.36
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 4.2802
+     }
+    ],
+    "dataManualUrl": "",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2949391",
+    "componentModelEn": "CY7C1525KV18-333BZC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 290mA 72Mbit 790mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 13.4107
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 13.4107
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 135,
+      "productPrice": 13.4107
+     },
+     {
+      "startNumber": 136,
+      "endNumber": 543,
+      "productPrice": 5.1907
+     },
+     {
+      "startNumber": 544,
+      "endNumber": 951,
+      "productPrice": 5.0083
+     },
+     {
+      "startNumber": 952,
+      "endNumber": -1,
+      "productPrice": 4.9171
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525KV18-333BZC_C2949391.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2949392",
+    "componentModelEn": "CY7C1525KV18-300BZC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 72Mbit 730mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 15.0866
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 15.0866
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 199,
+      "productPrice": 15.0866
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 679,
+      "productPrice": 5.8389
+     },
+     {
+      "startNumber": 680,
+      "endNumber": 1359,
+      "productPrice": 5.6337
+     },
+     {
+      "startNumber": 1360,
+      "endNumber": -1,
+      "productPrice": 5.5327
+     }
+    ],
+    "dataManualUrl": "",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2949395",
+    "componentModelEn": "CY7C1525JV18-250BZC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 13.7185
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 13.7185
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 209,
+      "productPrice": 13.7185
+     },
+     {
+      "startNumber": 210,
+      "endNumber": 524,
+      "productPrice": 5.3096
+     },
+     {
+      "startNumber": 525,
+      "endNumber": 1049,
+      "productPrice": 5.1223
+     },
+     {
+      "startNumber": 1050,
+      "endNumber": -1,
+      "productPrice": 5.0311
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525JV18-250BZC_C2949395.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2949390",
+    "componentModelEn": "CY7C1525KV18-333BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "FBGA-165(13x15)",
+    "describe": "0℃~+70℃ 1.7V~1.9V 290mA 72Mbit 790mA Parallel Port (Parallel) FBGA-165(13x15) SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 15.9921
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 15.9921
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 199,
+      "productPrice": 15.9921
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 499,
+      "productPrice": 6.1891
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 1359,
+      "productPrice": 5.9725
+     },
+     {
+      "startNumber": 1360,
+      "endNumber": -1,
+      "productPrice": 5.865
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525KV18-333BZXC_C2949390.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2949393",
+    "componentModelEn": "CY7C1525KV18-250BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 640mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 12.5735
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 12.5735
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 135,
+      "productPrice": 12.5735
+     },
+     {
+      "startNumber": 136,
+      "endNumber": 543,
+      "productPrice": 4.8666
+     },
+     {
+      "startNumber": 544,
+      "endNumber": 951,
+      "productPrice": 4.6956
+     },
+     {
+      "startNumber": 952,
+      "endNumber": -1,
+      "productPrice": 4.6109
+     }
+    ],
+    "dataManualUrl": "",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2949394",
+    "componentModelEn": "CY7C1525JV18-250BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 10.9742
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 10.9742
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 209,
+      "productPrice": 10.9742
+     },
+     {
+      "startNumber": 210,
+      "endNumber": 524,
+      "productPrice": 4.2477
+     },
+     {
+      "startNumber": 525,
+      "endNumber": 1049,
+      "productPrice": 4.0978
+     },
+     {
+      "startNumber": 1050,
+      "endNumber": -1,
+      "productPrice": 4.0245
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241115_Infineon-Cypress-Semicon-CY7C1525JV18-250BZXC_C2949394.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2950628",
+    "componentModelEn": "CY7C1525KV18-300BZXC",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "LBGA-165",
+    "describe": "0℃~+70℃ 1.7V~1.9V 280mA 72Mbit 730mA Parallel Port (Parallel) LBGA-165 SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 14.0198
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 14.0198
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 135,
+      "productPrice": 14.0198
+     },
+     {
+      "startNumber": 136,
+      "endNumber": 543,
+      "productPrice": 5.4268
+     },
+     {
+      "startNumber": 544,
+      "endNumber": 951,
+      "productPrice": 5.2347
+     },
+     {
+      "startNumber": 952,
+      "endNumber": -1,
+      "productPrice": 5.1418
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241123_Infineon-Cypress-Semicon-CY7C1525KV18-300BZXC_C2950628.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2952839",
+    "componentModelEn": "CY7C1525KV18-250BZXIT",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "FBGA-165(13x15)",
+    "describe": "-40℃~+85℃ 1.7V~1.9V 270mA 640mA 72Mbit Parallel Port (Parallel) FBGA-165(13x15) SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 12.5735
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 12.5735
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 199,
+      "productPrice": 12.5735
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 499,
+      "productPrice": 4.8666
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 4.6956
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 4.6109
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401241123_Infineon-Cypress-Semicon-CY7C1525KV18-250BZXIT_C2952839.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C2955032",
+    "componentModelEn": "CY7C1525JV18-250BZCES",
+    "componentBrandEn": "Infineon/Cypress Semicon",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "FBGA-165(15x17)",
+    "describe": "0℃~+70℃ 1.255A 1.7V~1.9V 365mA 72Mbit Parallel Port (Parallel) FBGA-165(15x17) SRAM ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 5.4871
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 29,
+      "productPrice": 5.4871
+     },
+     {
+      "startNumber": 30,
+      "endNumber": 199,
+      "productPrice": 5.4871
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 499,
+      "productPrice": 2.1239
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 2.0489
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 2.0131
+     }
+    ],
+    "dataManualUrl": "",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C20291151",
+    "componentModelEn": "DSC1525JL2A-24M00000T",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Programmable Oscillators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 199,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 499,
+      "productPrice": 0.9805
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 0.9479
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 0.9317
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401240917_Microchip-Tech-DSC1525JL2A-24M00000T_C20291151.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C20291152",
+    "componentModelEn": "DSC1525JL2A-25M00000T",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Programmable Oscillators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 199,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 499,
+      "productPrice": 0.9805
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 0.9479
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 0.9317
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401240917_Microchip-Tech-DSC1525JL2A-25M00000T_C20291152.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C20291153",
+    "componentModelEn": "DSC1525JL2A-27M00000T",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Programmable Oscillators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 199,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 499,
+      "productPrice": 0.9805
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 0.9479
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 0.9317
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401240917_Microchip-Tech-DSC1525JL2A-27M00000T_C20291153.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C20291154",
+    "componentModelEn": "DSC1525JL2A-50M00000T",
+    "componentBrandEn": "Microchip Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "-",
+    "describe": "- Programmable Oscillators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 199,
+      "productPrice": 2.4577
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 499,
+      "productPrice": 0.9805
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 0.9479
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 0.9317
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401240917_Microchip-Tech-DSC1525JL2A-50M00000T_C20291154.pdf",
+    "leastPatchNumber": 0
+   }
+  ],
+  "C2913202": [
+   {
+    "componentCode": "C2913202",
+    "componentModelEn": "ESP32-S3-WROOM-1-N16R8",
+    "componentBrandEn": "Espressif Systems",
+    "componentLibraryType": "expand",
+    "stockCount": 33853,
+    "componentSpecificationEn": "SMD,25.5x18mm",
+    "describe": "-103.5dBm -40℃~+65℃ 2.4GHz 20.5dBm 355mA 3V~3.6V 95mA ESP32-S3R8 On-board PCB Antenna UART、SPI、I2C、GPIO、I2S、USB SMD,25.5x18mm WiFi Modules ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 5.1467
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 29,
+      "productPrice": 4.5229
+     },
+     {
+      "startNumber": 30,
+      "endNumber": 99,
+      "productPrice": 4.0343
+     },
+     {
+      "startNumber": 100,
+      "endNumber": 649,
+      "productPrice": 3.6076
+     },
+     {
+      "startNumber": 650,
+      "endNumber": 1299,
+      "productPrice": 3.4545
+     },
+     {
+      "startNumber": 1300,
+      "endNumber": -1,
+      "productPrice": 3.3877
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411121101_Espressif-Systems-ESP32-S3-WROOM-1-N16R8_C2913202.pdf",
+    "leastPatchNumber": 0
+   }
+  ],
+  "C25744": [
+   {
+    "componentCode": "C25744",
+    "componentModelEn": "0402WGF1002TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 19217719,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 10kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 999,
+      "productPrice": 0.0034
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 2999,
+      "productPrice": 0.0026
+     },
+     {
+      "startNumber": 3000,
+      "endNumber": 9999,
+      "productPrice": 0.0023
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 49999,
+      "productPrice": 0.0021
+     },
+     {
+      "startNumber": 50000,
+      "endNumber": 50199,
+      "productPrice": 0.0017
+     },
+     {
+      "startNumber": 50200,
+      "endNumber": -1,
+      "productPrice": 0.0017
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411221126_UNI-ROYAL-Uniroyal-Elec-0402WGF1002TCE_C25744.pdf",
+    "leastPatchNumber": 20
+   }
+  ],
+  "C52923": [
+   {
+    "componentCode": "C52923",
+    "componentModelEn": "CL05A105KA5NQNC",
+    "componentBrandEn": "Samsung Electro-Mechanics",
+    "componentLibraryType": "base",
+    "stockCount": 7283898,
+    "componentSpecificationEn": "0402",
+    "describe": "1uF 25V X5R ±10% 0402 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 499,
+      "productPrice": 0.0087
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 1499,
+      "productPrice": 0.0068
+     },
+     {
+      "startNumber": 1500,
+      "endNumber": 9999,
+      "productPrice": 0.006
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 19999,
+      "productPrice": 0.0054
+     },
+     {
+      "startNumber": 20000,
+      "endNumber": 49999,
+      "productPrice": 0.0051
+     },
+     {
+      "startNumber": 50000,
+      "endNumber": -1,
+      "productPrice": 0.005
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL05A105KA5NQNC_C52923.pdf",
+    "leastPatchNumber": 20
+   }
+  ],
+  "C318884": [
+   {
+    "componentCode": "C318884",
+    "componentModelEn": "TS-1187A-B-A-B",
+    "componentBrandEn": "XKB Connection",
+    "componentLibraryType": "base",
+    "stockCount": 367036,
+    "componentSpecificationEn": "SMD-4P,5.1x5.1mm",
+    "describe": "-30℃~+85℃ 1.5mm 1.6N 100,000 cycles 12V 5.1mm 5.1mm 50mA Gold No Round Button SPST Surface Mount,Vertical Without Bracket SMD-4P,5.1x5.1mm Tactile Switches ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 199,
+      "productPrice": 0.0206
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 599,
+      "productPrice": 0.0159
+     },
+     {
+      "startNumber": 600,
+      "endNumber": 3999,
+      "productPrice": 0.0138
+     },
+     {
+      "startNumber": 4000,
+      "endNumber": 7999,
+      "productPrice": 0.012
+     },
+     {
+      "startNumber": 8000,
+      "endNumber": 19999,
+      "productPrice": 0.0114
+     },
+     {
+      "startNumber": 20000,
+      "endNumber": -1,
+      "productPrice": 0.011
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_XKB-Connection-TS-1187A-B-A-B_C318884.pdf",
+    "leastPatchNumber": 5
+   }
+  ],
   "C25092": [
    {
     "componentCode": "C25092",
     "componentModelEn": "0402WGF220JTCE",
     "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
     "componentLibraryType": "base",
-    "stockCount": 6204119,
+    "stockCount": 6054157,
     "componentSpecificationEn": "0402",
     "describe": "-55℃~+155℃ 22Ω 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
     "preferredComponentFlag": false,
@@ -22972,49 +21208,391 @@
     "leastPatchNumber": 20
    }
   ],
-  "C3013946": [
+  "C910544": [
    {
-    "componentCode": "C3013946",
-    "componentModelEn": "ESP32-S3-WROOM-1U-N16R8",
-    "componentBrandEn": "Espressif Systems",
+    "componentCode": "C910544",
+    "componentModelEn": "MAX98357AETE+T",
+    "componentBrandEn": "Analog Devices Inc./Maxim Integrated",
     "componentLibraryType": "expand",
-    "stockCount": 11588,
-    "componentSpecificationEn": "SMD,19.2x18mm",
-    "describe": "-103.5dBm -40℃~+65℃ 2.4GHz 20.5dBm 355mA 3V~3.6V 95mA Bluetooth5.0 ESP32-S3R8 UART、SDIO、SPI、I2C、GPIO、PWM、ADC、I2S、JTAG、USB SMD,19.2x18mm WiFi Modules ROHS",
+    "stockCount": 32028,
+    "componentSpecificationEn": "TQFN-16-EP(3x3)",
+    "describe": "-40℃~+85℃ 2.4mA 2.5V~5.5V 3.2Wx1@4Ω 77dB 92% Automatic mute/no-noise switch、Enable/shutdown function、Filterless architecture Class D TQFN-16-EP(3x3) Audio Amplifiers ROHS",
     "preferredComponentFlag": false,
     "componentPrices": [
      {
       "startNumber": 1,
       "endNumber": 9,
-      "productPrice": 4.9855
+      "productPrice": 1.3177
      },
      {
       "startNumber": 10,
       "endNumber": 29,
-      "productPrice": 4.3617
+      "productPrice": 1.1532
      },
      {
       "startNumber": 30,
       "endNumber": 99,
-      "productPrice": 4.0148
+      "productPrice": 0.9984
      },
      {
       "startNumber": 100,
-      "endNumber": 649,
-      "productPrice": 3.5881
+      "endNumber": 499,
+      "productPrice": 0.8828
      },
      {
-      "startNumber": 650,
-      "endNumber": 1299,
-      "productPrice": 3.435
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 0.8356
      },
      {
-      "startNumber": 1300,
+      "startNumber": 1000,
       "endNumber": -1,
-      "productPrice": 3.3698
+      "productPrice": 0.8128
      }
     ],
-    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411121101_Espressif-Systems-ESP32-S3-WROOM-1U-N16R8_C3013946.pdf",
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2201242100_Analog-Devices-Inc--Maxim-Integrated-MAX98357AETE-T_C910544.pdf",
+    "leastPatchNumber": 0
+   }
+  ],
+  "C25790": [
+   {
+    "componentCode": "C25790",
+    "componentModelEn": "0402WGF4703TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "expand",
+    "stockCount": 231108,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 470kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": true,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 999,
+      "productPrice": 0.003
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 2999,
+      "productPrice": 0.0024
+     },
+     {
+      "startNumber": 3000,
+      "endNumber": 9999,
+      "productPrice": 0.002
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 49999,
+      "productPrice": 0.0018
+     },
+     {
+      "startNumber": 50000,
+      "endNumber": 50199,
+      "productPrice": 0.0016
+     },
+     {
+      "startNumber": 50200,
+      "endNumber": -1,
+      "productPrice": 0.0016
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0402WGF4703TCE_C25790.pdf",
+    "leastPatchNumber": 20
+   },
+   {
+    "componentCode": "C19429154",
+    "componentModelEn": "M87C257-90C1",
+    "componentBrandEn": "STMicroelectronics",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "PLCC-32(11.4x13.9)",
+    "describe": "PLCC-32(11.4x13.9) Non-Volatile Memory (ROM) ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 12.8113
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 12.8113
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 191,
+      "productPrice": 12.8113
+     },
+     {
+      "startNumber": 192,
+      "endNumber": 511,
+      "productPrice": 5.1125
+     },
+     {
+      "startNumber": 512,
+      "endNumber": 991,
+      "productPrice": 4.9415
+     },
+     {
+      "startNumber": 992,
+      "endNumber": -1,
+      "productPrice": 4.8568
+     }
+    ],
+    "dataManualUrl": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2312201843_STMicroelectronics-M87C257-90C1_C19429154.pdf",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C19751348",
+    "componentModelEn": "M87C257-90C1TR",
+    "componentBrandEn": "STMicroelectronics",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "PLCC-32",
+    "describe": "PLCC-32 Non-Volatile Memory (ROM) ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 10.7934
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 11,
+      "productPrice": 10.7934
+     },
+     {
+      "startNumber": 12,
+      "endNumber": 199,
+      "productPrice": 10.7934
+     },
+     {
+      "startNumber": 200,
+      "endNumber": 749,
+      "productPrice": 4.3079
+     },
+     {
+      "startNumber": 750,
+      "endNumber": 1499,
+      "productPrice": 4.163
+     },
+     {
+      "startNumber": 1500,
+      "endNumber": -1,
+      "productPrice": 4.0929
+     }
+    ],
+    "dataManualUrl": "",
+    "leastPatchNumber": 0
+   },
+   {
+    "componentCode": "C9900126617",
+    "componentModelEn": "C2579-001 GPIO Ribbon Cable",
+    "componentBrandEn": "JLCPCB Assembly",
+    "componentLibraryType": "expand",
+    "stockCount": 0,
+    "componentSpecificationEn": "Accessories",
+    "describe": "Accessories New Arrivals ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 99,
+      "productPrice": 0.0396
+     },
+     {
+      "startNumber": 100,
+      "endNumber": -1,
+      "productPrice": 0.0204
+     }
+    ],
+    "dataManualUrl": null,
+    "leastPatchNumber": 2
+   }
+  ],
+  "C17168": [
+   {
+    "componentCode": "C17168",
+    "componentModelEn": "0402WGF0000TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 9359596,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 0Ω 50V 62.5mW Thick Film Resistor ±1% ±800ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 999,
+      "productPrice": 0.0025
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 2999,
+      "productPrice": 0.0019
+     },
+     {
+      "startNumber": 3000,
+      "endNumber": 9999,
+      "productPrice": 0.0016
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 49999,
+      "productPrice": 0.0015
+     },
+     {
+      "startNumber": 50000,
+      "endNumber": 50199,
+      "productPrice": 0.0013
+     },
+     {
+      "startNumber": 50200,
+      "endNumber": -1,
+      "productPrice": 0.0013
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010216_UNI-ROYAL-Uniroyal-Elec-0402WGF0000TCE_C17168.pdf",
+    "leastPatchNumber": 20
+   }
+  ],
+  "C25900": [
+   {
+    "componentCode": "C25900",
+    "componentModelEn": "0402WGF4701TCE",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentLibraryType": "base",
+    "stockCount": 14280463,
+    "componentSpecificationEn": "0402",
+    "describe": "-55℃~+155℃ 4.7kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 999,
+      "productPrice": 0.0027
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": 2999,
+      "productPrice": 0.0021
+     },
+     {
+      "startNumber": 3000,
+      "endNumber": 9999,
+      "productPrice": 0.0017
+     },
+     {
+      "startNumber": 10000,
+      "endNumber": 49999,
+      "productPrice": 0.0016
+     },
+     {
+      "startNumber": 50000,
+      "endNumber": 50199,
+      "productPrice": 0.0013
+     },
+     {
+      "startNumber": 50200,
+      "endNumber": -1,
+      "productPrice": 0.0013
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0402WGF4701TCE_C25900.pdf",
+    "leastPatchNumber": 20
+   }
+  ],
+  "C6186": [
+   {
+    "componentCode": "C6186",
+    "componentModelEn": "AMS1117-3.3",
+    "componentBrandEn": "Advanced Monolithic Systems",
+    "componentLibraryType": "base",
+    "stockCount": 1204901,
+    "componentSpecificationEn": "SOT-223",
+    "describe": "-40℃~+125℃ 0.003%Vout 1 1.1V@(800mA) 15V 1A 3.3V 5mA 72dB@(120Hz) Fixed Over Current Protection、Short Circuit Protection、Thermal shutdown Positive SOT-223 Voltage Regulators - Linear, Low Drop Out (LDO) Regulators ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 49,
+      "productPrice": 0.208
+     },
+     {
+      "startNumber": 50,
+      "endNumber": 149,
+      "productPrice": 0.1623
+     },
+     {
+      "startNumber": 150,
+      "endNumber": 499,
+      "productPrice": 0.1398
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 2499,
+      "productPrice": 0.1198
+     },
+     {
+      "startNumber": 2500,
+      "endNumber": 4999,
+      "productPrice": 0.1144
+     },
+     {
+      "startNumber": 5000,
+      "endNumber": -1,
+      "productPrice": 0.111
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121508_Advanced-Monolithic-Systems-AMS1117-3-3_C6186.pdf",
+    "leastPatchNumber": 2
+   }
+  ],
+  "C910588": [
+   {
+    "componentCode": "C910588",
+    "componentModelEn": "NS4168",
+    "componentBrandEn": "Shenzhen Nsiway Tech",
+    "componentLibraryType": "expand",
+    "stockCount": 7081,
+    "componentSpecificationEn": "ESOP-8-EP(3.9x4.9x1.27)",
+    "describe": "-80dB 0.2% 1-Channel 13mA 2.5Wx1@4Ω 3V~5.5V 80% 85dB Automatic mute/no-noise switch、Enable/shutdown function、Filterless architecture、Built-in audio processing Class D ESOP-8-EP(3.9x4.9x1.27) Audio Amplifiers ROHS",
+    "preferredComponentFlag": false,
+    "componentPrices": [
+     {
+      "startNumber": 1,
+      "endNumber": 9,
+      "productPrice": 0.7378
+     },
+     {
+      "startNumber": 10,
+      "endNumber": 29,
+      "productPrice": 0.6027
+     },
+     {
+      "startNumber": 30,
+      "endNumber": 99,
+      "productPrice": 0.5343
+     },
+     {
+      "startNumber": 100,
+      "endNumber": 499,
+      "productPrice": 0.4675
+     },
+     {
+      "startNumber": 500,
+      "endNumber": 999,
+      "productPrice": 0.4007
+     },
+     {
+      "startNumber": 1000,
+      "endNumber": -1,
+      "productPrice": 0.3795
+     }
+    ],
+    "dataManualUrl": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407221202_Shenzhen-Nsiway-Tech-NS4168_C910588.pdf",
     "leastPatchNumber": 0
    }
   ]

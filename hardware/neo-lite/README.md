@@ -17,7 +17,7 @@ funciona el firmware, así que el modelo de wake word no cambia.
 | 2 | Esquemático (KiCad 9) y ERC | Entregada: `docs/fase2-esquematico.md`, `docs/esquematico_neo_lite.pdf`; ERC 0/0 |
 | 3 | Colocación y PCB | Entregada (revisión B): `docs/fase3-colocacion.md`; 31 × 43 mm, DRC sin errores (sin rutear) |
 | 4 | Ruteo y DRC | Entregada: `docs/fase4-ruteo.md`; DRC sin errores ni conexiones pendientes, paridad con el esquemático |
-| 5 | Fabricación (Gerber, BOM, CPL) | Pendiente |
+| 5 | Fabricación (Gerber, BOM, CPL) | Entregada: `docs/fase5-fabricacion.md`; paquete en `production/` |
 | 6 | Firmware: entorno de la placa (USB CDC, pines de la OLED, SD_MODE) | Pendiente |
 
 ## Herramientas
@@ -27,7 +27,9 @@ funciona el firmware, así que el modelo de wake word no cambia.
 requieren KiCad 9 y `sexpdata` (uso en `docs/fase2-esquematico.md`). `tools/build_pcb.py` crea el PCB
 desde la netlist con la colocación de la fase 3 y `tools/plot_placement.py` dibuja la vista de
 colocación con ratsnest (`docs/fase3-colocacion.md`). `tools/route_all.py` rutea con Freerouting
-(`route_pcb.py`), añade los planos de GND y comprueba el DRC (`docs/fase4-ruteo.md`).
+(`route_pcb.py`), añade los planos de GND y comprueba el DRC (`docs/fase4-ruteo.md`). `tools/silk_cleanup.py`
+limpia y rotula la serigrafía y `tools/fab_outputs.py` genera `production/` (Gerber, taladros, BOM y
+CPL de JLCPCB) y la tabla de rotaciones (`docs/fase5-fabricacion.md`).
 
 `tools/jlc_search.py` consulta el buscador de piezas de JLCPCB y guarda una instantánea en
 `docs/data/jlc_cache.json`. `tools/bom_fase1.py` genera `docs/data/bom_fase1.csv` y el desglose

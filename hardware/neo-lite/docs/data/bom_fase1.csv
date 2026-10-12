@@ -1,18 +1,18 @@
 Designador,Cant./placa,Valor,Huella,LCSC,Modelo,Fabricante,Tipo,Stock,Precio unit. (USD),Coste 5 placas (USD),Estado,Nota
-J1,1,USB-C 16P (solo USB 2.0),HRO TYPE-C-31-M-12,C165948,TYPE-C-31-M-12,Korean Hroparts Elec,extendida,407280,0.186,0.93,OK,"VBUS, CC1/CC2, D+/D-, carcasa"
-"R1,R2",2,"5,1 kΩ 1 %",0402,C25905,0402WGF5101TCE,UNI-ROYAL(Uniroyal Elec),básica,5593247,0.0024,0.03,OK,CC1/CC2 a GND: sumidero por defecto
+J1,1,USB-C 16P (solo USB 2.0),HRO TYPE-C-31-M-12,C165948,TYPE-C-31-M-12,Korean Hroparts Elec,extendida,401977,0.186,0.93,OK,"VBUS, CC1/CC2, D+/D-, carcasa"
+"R1,R2",2,"5,1 kΩ 1 %",0402,C25905,0402WGF5101TCE,UNI-ROYAL(Uniroyal Elec),básica,5563632,0.0024,0.03,OK,CC1/CC2 a GND: sumidero por defecto
 F1,1,"PPTC 1,1 A / 6 V",1206,C2803344,BSMD1206-110-6V,BHFUSE,extendida,24139,0.0515,0.26,OK,Protege VBUS ante cortos en conectores soldados a mano
-D1,1,USBLC6-2SC6 (ST),SOT-23-6,C7519,USBLC6-2SC6,STMicroelectronics,extendida,47826,0.177,0.89,OK,ESD en D+/D- y VBUS
-U1,1,"TLV1117LV33 (TI), LDO 3,3 V 1 A",SOT-223,C15578,TLV1117LV33DCYR,Texas Instruments,extendida,5741,0.3893,1.95,OK,Caída 230 mV a 500 mA; estable con cerámico
-C3,1,22 µF 25 V X5R,0805,C45783,CL21A226MAQNNNE,Samsung Electro-Mechanics,básica,3681395,0.2206,1.54,OK,Salida de U1
-"C1,C2,C9,C5",4,10 µF 25 V X5R,0805,C15850,CL21A106KAYNNNE,Samsung Electro-Mechanics,básica,4280962,0.0688,1.51,OK,C1 bulk VBUS; C2 entrada de U1; C9 VDD de U4; Junto al pin 3V3 del módulo (va en el grupo de C1)
-"C4,C7,C10",3,100 nF X7R,0402,C1525,CL05B104KO5NNNC,Samsung Electro-Mechanics,básica,24423959,0.0045,0.08,OK,"Desacoplo U1, U2, U4"
-U2,1,ESP32-S3-WROOM-1-N16R8,"Módulo 25,5 × 18 mm",C2913202,ESP32-S3-WROOM-1-N16R8,Espressif Systems,extendida,34320,5.1467,25.73,OK,"Flash 16 MB, PSRAM octal 8 MB, antena PCB fuera del borde"
-R3,1,10 kΩ 1 %,0402,C25744,0402WGF1002TCE,UNI-ROYAL(Uniroyal Elec),básica,19635892,0.0034,0.02,OK,EN: RC de arranque (con C6)
-C6,1,1 µF X5R,0402,C52923,CL05A105KA5NQNC,Samsung Electro-Mechanics,básica,7462797,0.0087,0.06,OK,EN: RC de arranque
-"SW1,SW2",2,"Pulsador 5,1 × 5,1 mm",SMD 4P,C318884,TS-1187A-B-A-B,XKB Connection,básica,379606,0.0206,0.25,OK,"SW1 RESET (EN), SW2 BOOT (GPIO0, pulsador de usuario)"
-"R4,R5",2,22 Ω 1 %,0402,C25092,0402WGF220JTCE,UNI-ROYAL(Uniroyal Elec),básica,6204119,0.0028,0.03,OK,Serie en D+/D- junto al módulo (guía de Espressif)
-U4,1,MAX98357AETE+T,TQFN-16 3 × 3,C910544,MAX98357AETE+T,Analog Devices Inc./Maxim Integrated,extendida,32307,1.3177,6.59,OK,"DAC I2S + clase D, 5 V"
-R6,1,470 kΩ 1 %,0402,C25790,0402WGF4703TCE,UNI-ROYAL(Uniroyal Elec),preferida,233222,0.003,0.01,OK,SD_MODE a 3V3: (L+R)/2 sin firmware; GPIO40 bajo = apagado
-R7,1,0 Ω,0402,C17168,0402WGF0000TCE,UNI-ROYAL(Uniroyal Elec),básica,9769982,0.0025,0.02,OK,"GAIN_SLOT a VDD: 6 dB (R8, a GND = 12 dB, sin montar)"
-"R9,R10",2,"4,7 kΩ 1 %",0402,C25900,0402WGF4701TCE,UNI-ROYAL(Uniroyal Elec),básica,14525824,0.0027,0.03,OK,Pull-ups de SDA/SCL
+D1,1,USBLC6-2SC6 (ST),SOT-23-6,C7519,USBLC6-2SC6,STMicroelectronics,extendida,46196,0.177,0.89,OK,ESD en D+/D- y VBUS
+U1,1,"TLV1117LV33 (TI), LDO 3,3 V 1 A",SOT-223,C15578,TLV1117LV33DCYR,Texas Instruments,extendida,4484,0.3893,1.95,OK,Caída 230 mV a 500 mA; estable con cerámico
+C3,1,22 µF 25 V X5R,0805,C45783,CL21A226MAQNNNE,Samsung Electro-Mechanics,básica,3603074,0.2369,1.66,OK,Salida de U1
+"C1,C2,C9,C5",4,10 µF 25 V X5R,0805,C15850,CL21A106KAYNNNE,Samsung Electro-Mechanics,básica,4148536,0.0688,1.51,OK,C1 bulk VBUS; C2 entrada de U1; C9 VDD de U4; Junto al pin 3V3 del módulo (va en el grupo de C1)
+"C4,C7,C10",3,100 nF X7R,0402,C1525,CL05B104KO5NNNC,Samsung Electro-Mechanics,básica,23849914,0.0039,0.07,OK,"Desacoplo U1, U2, U4"
+U2,1,ESP32-S3-WROOM-1-N16R8,"Módulo 25,5 × 18 mm",C2913202,ESP32-S3-WROOM-1-N16R8,Espressif Systems,extendida,33853,5.1467,25.73,OK,"Flash 16 MB, PSRAM octal 8 MB, antena PCB fuera del borde"
+R3,1,10 kΩ 1 %,0402,C25744,0402WGF1002TCE,UNI-ROYAL(Uniroyal Elec),básica,19217719,0.0034,0.02,OK,EN: RC de arranque (con C6)
+C6,1,1 µF X5R,0402,C52923,CL05A105KA5NQNC,Samsung Electro-Mechanics,básica,7283898,0.0087,0.06,OK,EN: RC de arranque
+"SW1,SW2",2,"Pulsador 5,1 × 5,1 mm",SMD 4P,C318884,TS-1187A-B-A-B,XKB Connection,básica,367036,0.0206,0.25,OK,"SW1 RESET (EN), SW2 BOOT (GPIO0, pulsador de usuario)"
+"R4,R5",2,22 Ω 1 %,0402,C25092,0402WGF220JTCE,UNI-ROYAL(Uniroyal Elec),básica,6054157,0.0028,0.03,OK,Serie en D+/D- junto al módulo (guía de Espressif)
+U4,1,MAX98357AETE+T,TQFN-16 3 × 3,C910544,MAX98357AETE+T,Analog Devices Inc./Maxim Integrated,extendida,32028,1.3177,6.59,OK,"DAC I2S + clase D, 5 V"
+R6,1,470 kΩ 1 %,0402,C25790,0402WGF4703TCE,UNI-ROYAL(Uniroyal Elec),preferida,231108,0.003,0.01,OK,SD_MODE a 3V3: (L+R)/2 sin firmware; GPIO40 bajo = apagado
+R7,1,0 Ω,0402,C17168,0402WGF0000TCE,UNI-ROYAL(Uniroyal Elec),básica,9359596,0.0025,0.02,OK,"GAIN_SLOT a VDD: 6 dB (R8, a GND = 12 dB, sin montar)"
+"R9,R10",2,"4,7 kΩ 1 %",0402,C25900,0402WGF4701TCE,UNI-ROYAL(Uniroyal Elec),básica,14280463,0.0027,0.03,OK,Pull-ups de SDA/SCL

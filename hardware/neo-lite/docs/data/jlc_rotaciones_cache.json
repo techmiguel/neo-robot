@@ -1,0 +1,145 @@
+{
+ "Capacitor_SMD:C_0805_2012Metric|C15850": {
+  "giro": 0,
+  "dev": 0.05,
+  "titulo": "C0805",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor_SMD:C_0805_2012Metric|C45783": {
+  "giro": 0,
+  "dev": 0.05,
+  "titulo": "C0805",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor_SMD:C_0402_1005Metric|C1525": {
+  "giro": 0,
+  "dev": 0.06,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Capacitor_SMD:C_0402_1005Metric|C52923": {
+  "giro": 0,
+  "dev": 0.06,
+  "titulo": "C0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Package_TO_SOT_SMD:SOT-23-6|C7519": {
+  "giro": 270,
+  "dev": 0.012,
+  "titulo": "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Fuse:Fuse_1206_3216Metric|C2803344": {
+  "giro": 0,
+  "dev": 0.045,
+  "titulo": "F1206",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12|C165948": {
+  "giro": 0,
+  "dev": 0,
+  "titulo": "USB-C_SMD-TYPE-C-31-M-12_1",
+  "solo_kicad": [
+   "A1",
+   "A12",
+   "A4",
+   "A9",
+   "B1",
+   "B12",
+   "B4",
+   "B9",
+   "S1"
+  ],
+  "solo_lcsc": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "A1B12",
+   "A4B9",
+   "B1A12",
+   "B4A9"
+  ]
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25905": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25744": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25092": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25790": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C17168": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Resistor_SMD:R_0402_1005Metric|C25900": {
+  "giro": 0,
+  "dev": 0.077,
+  "titulo": "R0402",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A|C318884": {
+  "giro": 270,
+  "dev": 1.125,
+  "titulo": "SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5",
+  "solo_kicad": [],
+  "solo_lcsc": [
+   "3",
+   "4"
+  ]
+ },
+ "Package_TO_SOT_SMD:SOT-223-3_TabPin2|C15578": {
+  "giro": 180,
+  "dev": 4.2,
+  "titulo": "SOT-223_L6.7-W3.5-P2.30-BR",
+  "solo_kicad": [],
+  "solo_lcsc": [
+   "4"
+  ]
+ },
+ "RF_Module:ESP32-S3-WROOM-1|C2913202": {
+  "giro": 0,
+  "dev": 1.926,
+  "titulo": "WIRELM-SMD_ESP32-S3-WROOM-1",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ },
+ "Package_DFN_QFN:TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm|C910544": {
+  "giro": 270,
+  "dev": 0.063,
+  "titulo": "TQFN-16_L3.0-W3.0-P0.50-BL-EP1.5",
+  "solo_kicad": [],
+  "solo_lcsc": []
+ }
+}
