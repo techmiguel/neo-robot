@@ -14,7 +14,7 @@ los pines de audio y el modelo de wake word no cambian.
 | Fase | Contenido | Estado |
 |---|---|---|
 | 1 | Selección de componentes, BOM y coste | Entregada: `docs/fase1-componentes.md` |
-| 2 | Esquemático (KiCad 9) y ERC | Pendiente |
+| 2 | Esquemático (KiCad 9) y ERC | Entregada: `docs/fase2-esquematico.md`, `docs/esquematico_neo_lite.pdf`; ERC 0/0 |
 | 3 | Colocación y PCB | Pendiente |
 | 4 | Ruteo y DRC | Pendiente |
 | 5 | Fabricación (Gerber, BOM, CPL) | Pendiente |
@@ -22,6 +22,10 @@ los pines de audio y el modelo de wake word no cambian.
 
 ## Herramientas
 
+`tools/gen_schematic.py` genera el esquemático (`kicad/NEO_Lite.kicad_sch`) y
+`tools/verify_schematic.py` lo comprueba contra su descripción, las reglas eléctricas y la BOM;
+requieren KiCad 9 y `sexpdata` (uso en `docs/fase2-esquematico.md`).
+
 `tools/jlc_search.py` consulta el buscador de piezas de JLCPCB y guarda una instantánea en
 `docs/data/jlc_cache.json`. `tools/bom_fase1.py` genera `docs/data/bom_fase1.csv` y el desglose
-de coste del pedido. Requieren Python 3 y nada más.
+de coste del pedido; solo requieren Python 3.

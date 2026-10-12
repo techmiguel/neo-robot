@@ -183,7 +183,7 @@ que también ayuda a la detección de la wake word.
 | J2 | 1 × 4 | GND, VCC (3V3), SCL, SDA: el orden habitual de los módulos SSD1306 de 0,96" |
 | J3 | 1 × 6 | GND, VDD (3V3), SD, SCK, WS, L/R (unido a GND en la placa → canal izquierdo, como hoy) |
 | J4 | 1 × 2 | OUTP, OUTN |
-| J5 | 2 × 10, sin montar | 17 GPIO libres (2, 4–7, 10–13, 15–18, 38, 39, 42, 48) + 3V3 + GND + 5V |
+| J5 | 2 × 10, sin montar | 16 GPIO libres (2, 4–7, 10–13, 15–18, 38, 39, 42) + 5V + 3V3 + 2 × GND; GPIO48 va a un punto de prueba (TP8) |
 
 Los módulos INMP441 de distintos fabricantes ordenan sus pines de forma diferente. Con cable, el
 orden de la placa no depende del módulo. Si prefieres enchufarlo directamente, necesito la
@@ -200,7 +200,7 @@ disposición y la separación de los pines de tu módulo (ver § 5).
 | BOOT / pulsador de usuario | 0 (27) | Como hoy (`trigger.h`) |
 | UART0 TX / RX | 43 (37) / 44 (36) | Hacia RXD/TXD del CH340C |
 | EN | 3 | RC 10 kΩ / 1 µF, RESET y autorreset |
-| USB nativo D− / D+ | 19 (13) / 20 (14) | Solo puntos de prueba |
+| USB nativo D− / D+ | 19 (13) / 20 (14) | Solo puntos de prueba (TP2/TP1) |
 | Sin uso | 45, 46 | Pines de arranque: sin carga externa |
 
 ## 4. BOM y coste
@@ -253,10 +253,8 @@ Supuestos no verificados:
 Mi recomendación es no aplicar ninguno: los tres primeros juntos ahorran ~11 USD (14 %) a cambio
 de riesgos reales en la primera iteración.
 
-## 5. Preguntas abiertas para la fase 2
+## 5. Decisiones del usuario tras la fase 1 (12-10-2026)
 
-1. ¿Te sirve la conexión del INMP441 por cable (J3, tira 1 × 6), o quieres enchufar el módulo
-   directamente? En ese caso necesito la disposición y la separación de sus pines.
-2. ¿Confirmas el altavoz de 8 Ω, o tienes ya uno de 4 Ω? Afecta al presupuesto de corriente
-   (§ 2.6).
-3. ¿Aceptas los recortes de § 4, o seguimos con la BOM base de unos 80 USD?
+1. Micrófono por cable con la tira 1 × 6 (J3): permite separar el micrófono del altavoz.
+2. Altavoz de 8 Ω: pico en VBUS de ~0,57 A (§ 2.6).
+3. Sin recortes: se mantiene la BOM base (~80 USD).
