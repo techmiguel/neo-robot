@@ -61,13 +61,18 @@ PLACE = {
 }
 
 # Clases de neta (mm): anchura de pista y separación. Reglas de JLCPCB 2 capas: 0,127 mm mínimo,
-# vía 0,3/0,6 mm sin suplemento; se deja margen.
+# vía 0,3/0,6 mm sin suplemento; se deja margen. Freerouting usa una sola anchura por neta, así que
+# las netas que llegan a los pines de 0,5 mm de paso del MAX98357A (+5V, GND, altavoz) van a 0,3 mm
+# (> 1 A en cobre exterior de 1 oz; el pico es de 0,6 A). Las netas con etiqueta local llevan "/".
 NETCLASSES = {
-    "Default": {"track": 0.25, "clearance": 0.2, "via_d": 0.6, "via_drill": 0.3},
-    "Power": {"track": 0.6, "clearance": 0.2, "via_d": 0.8, "via_drill": 0.4,
-              "nets": ["VBUS", "+5V", "+3V3", "GND"]},
-    "Speaker": {"track": 0.6, "clearance": 0.2, "via_d": 0.8, "via_drill": 0.4, "nets": ["SPK_P", "SPK_N"]},
-    "USB": {"track": 0.3, "clearance": 0.2, "via_d": 0.6, "via_drill": 0.3, "nets": ["USB_DP", "USB_DN"]},
+    "Default": {"track": 0.2, "clearance": 0.15, "via_d": 0.6, "via_drill": 0.3},
+    "Power": {"track": 0.4, "clearance": 0.2, "via_d": 0.7, "via_drill": 0.35, "nets": ["VBUS", "+3V3"]},
+    "PowerQFN": {"track": 0.3, "clearance": 0.15, "via_d": 0.7, "via_drill": 0.35, "nets": ["+5V"]},
+    # GND no la rutea Freerouting (route_pcb.py la ignora): la conectan los planos de las dos caras.
+    "GND": {"track": 0.3, "clearance": 0.15, "via_d": 0.6, "via_drill": 0.3, "nets": ["GND"]},
+    "Speaker": {"track": 0.3, "clearance": 0.15, "via_d": 0.7, "via_drill": 0.35, "nets": ["/SPK_P", "/SPK_N"]},
+    "USB": {"track": 0.2, "clearance": 0.15, "via_d": 0.6, "via_drill": 0.3,
+            "nets": ["/USB_DP", "/USB_DN", "/ESP_DP", "/ESP_DN"]},
 }
 
 _n = lambda x: x.value() if isinstance(x, Symbol) else x  # noqa: E731
