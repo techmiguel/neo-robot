@@ -141,5 +141,12 @@
   "titulo": "TQFN-16_L3.0-W3.0-P0.50-BL-EP1.5",
   "solo_kicad": [],
   "solo_lcsc": []
+ },
+ "Capacitor_Tantalum_SMD:CP_EIA-6032-28_Kemet-C|C444805": {
+  "giro": 0,
+  "dev": 0.491,
+  "titulo": "CAP-SMD_L6.0-W3.2",
+  "solo_kicad": [],
+  "solo_lcsc": []
  }
 }

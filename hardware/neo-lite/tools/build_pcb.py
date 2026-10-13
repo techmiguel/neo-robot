@@ -9,7 +9,8 @@ build_pcb.py — Crea el PCB de NEO Lite desde la netlist del esquemático y col
    de las bibliotecas de KiCad 9 con su neta en cada pad, el campo LCSC y el enlace al símbolo
    (así "Actualizar PCB desde el esquemático" sigue funcionando en KiCad).
 3. Coloca cada huella según PLACE (coordenadas en mm, origen del contorno en (100, 100)).
-No rutea: el ruteo es la fase 4. Se puede volver a ejecutar sin perder nada mientras no haya
+4. Añade las pistas fijas de preroute.py (par USB, alimentación y EN; fase 6), bloqueadas.
+El resto del ruteo es la fase 4 (route_all.py). Se puede volver a ejecutar sin perder nada mientras no haya
 ruteo; después, la colocación se cambia aquí y se vuelve a generar.
 """
 import os
@@ -24,6 +25,7 @@ from sexpdata import Symbol
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from gen_schematic import write_project  # noqa: E402
+from preroute import preroute  # noqa: E402
 KDIR = os.path.join(HERE, "..", "kicad")
 SCH = os.path.join(KDIR, "NEO_Lite.kicad_sch")
 PCB = os.path.join(KDIR, "NEO_Lite.kicad_pcb")
@@ -38,24 +40,29 @@ PLACE = {
     # el cuerpo y la antena (y = -6,75 mm en la huella): la antena (6,3 mm) queda fuera de la placa,
     # posición recomendada por Espressif, y la zona de exclusión de la huella queda entera fuera.
     "U2": (114.3, 106.75, 0),
-    # Columna izquierda, frente a los pines 2-3 (3V3, EN) y 13-14 (USB D-/D+) del módulo
-    "C5": (102.2, 103.2, 90), "C7": (102.2, 106.3, 90), "R3": (102.2, 108.4, 90), "C6": (102.2, 110.5, 90),
+    # Columna izquierda, frente a los pines 2-3 (3V3, EN): el 100 nF pegado al pin 3V3 y el RC de EN
+    # (C6, R3) junto al pin EN; el bulk de 10 µF (C5) debajo
+    "C7": (102.2, 102.6, 90), "C6": (102.2, 104.75, 90), "R3": (102.2, 106.75, 90), "C5": (102.2, 109.6, 90),
     "TP2": (102.2, 113.6, 0),
-    "R4": (102.2, 116.9, 90), "R5": (102.2, 119.0, 90),
+    # Resistencias serie del USB bajo los pines 13-14 (D-/D+), una junto a otra en el recorrido del par
+    # (pre-ruteado en preroute.py): el par sube pegado al módulo y deja libre la franja del borde
+    "R5": (103.0, 121.2, 90), "R4": (104.1, 121.2, 90),
     # Columna derecha: OLED, micrófono y altavoz, frente a los pines del lateral derecho
     "J2": (128.3, 102.0, 0), "R9": (125.3, 104.0, 90), "R10": (125.3, 106.1, 90),
     "J3": (128.3, 113.6, 0), "J4": (128.3, 130.0, 0), "TP1": (128.3, 135.6, 0),
-    # Franja central: regulador, amplificador y protección de la entrada
-    "C3": (102.2, 122.0, 90), "C2": (104.4, 125.0, 90), "C4": (107.0, 121.3, 0),
-    "U1": (110.5, 125.5, 0),
-    "C9": (116.8, 124.0, 90), "C10": (118.6, 124.0, 90),
-    "U4": (121.8, 124.2, 0),
-    "R6": (121.0, 127.4, 0), "R7": (123.4, 127.4, 0), "R8": (124.0, 128.6, 0),
-    "C1": (116.8, 128.4, 0),
-    "D1": (113.0, 130.9, 0), "R1": (108.0, 132.0, 0), "R2": (118.0, 132.0, 0),
-    "F1": (120.5, 131.2, 90),
-    # Borde inferior: USB-C centrado, pulsadores a los lados, taladros M2
-    "J1": (113.0, 139.0, 0), "SW1": (103.85, 139.9, 0), "SW2": (122.15, 139.9, 0),
+    # Regulador girado 180°: la lengüeta (+3V3) mira al módulo, con C3/C4 y una zona de cobre de +3V3;
+    # la entrada (+5V) mira al amplificador y a la entrada de alimentación
+    "U1": (111.0, 125.0, 180), "C3": (105.4, 124.0, 90), "C4": (105.4, 126.8, 270),
+    "C2": (116.5, 123.0, 90),
+    # Amplificador: C10 (100 nF) y C9 (10 µF) bajo los pines VDD 7/8; R6-R8 en el lado de SD_MODE/GAIN
+    "U4": (121.8, 124.2, 0), "C10": (122.3, 127.0, 0), "C9": (122.6, 128.75, 0),
+    "R8": (118.6, 122.75, 180), "R7": (118.6, 124.0, 0), "R6": (118.6, 125.25, 0),
+    # Entrada: D1 en flujo continuo sobre el USB-C (el par pasa por debajo, de los pines 4/6 a 3/1),
+    # resistencias CC a los lados, PPTC y tántalo de amortiguación a la derecha
+    "D1": (113.2, 131.5, 270), "R1": (110.9, 131.6, 90), "R2": (116.6, 132.3, 0),
+    "C1": (121.6, 131.65, 180), "F1": (121.6, 135.4, 0),
+    # Borde inferior: USB-C centrado y sobresaliendo 0,3 mm, pulsadores a los lados, taladros M2
+    "J1": (113.0, 139.65, 0), "SW1": (103.85, 139.9, 0), "SW2": (122.15, 139.9, 0),
     "TP3": (103.0, 135.3, 0),
     "H1": (102.6, 130.8, 0), "H2": (128.5, 140.0, 0),
 }
@@ -223,11 +230,13 @@ def main():
             net = pinnets.get((ref, pad.GetNumber()))
             if net is not None:
                 pad.SetNet(netinfo[net])
+    n_tracks = preroute(board)
     pcbnew.SaveBoard(PCB, board)
     write_project()     # SaveBoard reescribe el .kicad_pro: se reponen los ajustes de ERC
     with open(os.path.join(KDIR, "fp-lib-table"), "w") as fh:
         fh.write("(fp_lib_table\n\t(version 7)\n)\n")
-    print(f"{PCB}: {len(comps)} huellas, {len(netinfo)} netas, contorno {W:.0f} × {H:.0f} mm")
+    print(f"{PCB}: {len(comps)} huellas, {len(netinfo)} netas, contorno {W:.0f} × {H:.0f} mm, "
+          f"{n_tracks} elementos pre-ruteados")
 
 
 if __name__ == "__main__":

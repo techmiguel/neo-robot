@@ -13,7 +13,7 @@ Sobre el PCB ruteado (route_all.py), sin tocar el cobre:
    (altavoz), RST/BOOT junto a SW1/SW2, tensiones de los puntos de prueba y el nombre de la placa.
    Cada rótulo prueba una lista de posiciones, primero en la cara superior y si no cabe en la
    inferior, y se coloca en la primera que no pise pads (+0,15 mm), taladros, vías, otra
-   serigrafía (+0,1 mm) ni el borde (+0,3 mm).
+   serigrafía (+0,1 mm) ni el borde (+0,25 mm sobre el cuadro envolvente).
 pcbnew.SaveBoard reescribe el .kicad_pro: se guarda antes y se restaura después.
 """
 import os
@@ -26,7 +26,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PCB = os.path.join(HERE, "..", "kicad", "NEO_Lite.kicad_pcb")
 PRO = PCB.replace(".kicad_pcb", ".kicad_pro")
 MM = pcbnew.FromMM
-CLR_PAD, CLR_SILK, CLR_EDGE = MM(0.15), MM(0.1), MM(0.3)
+# Márgenes sobre el cuadro envolvente del texto, que KiCad calcula con el interlineado: el trazo real
+# queda bastante más lejos (unos 0,25 mm más en un rótulo vertical de 0,8 mm)
+CLR_PAD, CLR_SILK, CLR_EDGE = MM(0.15), MM(0.1), MM(0.25)
 
 
 def box(item, inflate=0):
@@ -68,7 +70,7 @@ class Placer:
             t.SetText(s)
             t.SetLayer(layer)
             t.SetTextSize(pcbnew.VECTOR2I(MM(width or size), MM(size)))
-            t.SetTextThickness(MM(max(0.12, size * 0.15)))
+            t.SetTextThickness(MM(max(0.15, size * 0.15)))    # 0,15 mm: mínimo recomendado por JLCPCB
             t.SetTextAngleDegrees(angle)
             t.SetHorizJustify(pcbnew.GR_TEXT_H_ALIGN_CENTER)
             t.SetVertJustify(pcbnew.GR_TEXT_V_ALIGN_CENTER)
@@ -160,8 +162,8 @@ def main():
               + around(x - 2.0, y, axis="y"), size=0.8)
     # Nombre de la placa: cara inferior, bajo el módulo
     cx = (pcbnew.ToMM(edge.GetLeft()) + pcbnew.ToMM(edge.GetRight())) / 2 - 2
-    for s, y, size in (("NEO Lite rev B", 108.0, 1.2), ("2026-10 techmiguel/neo-robot", 110.5, 0.9)):
-        P.add(s, [(cx + dx, y + dy, "B") for dy in (0, -1, 1, -2, 2) for dx in (0, -2, 2)], size=size)
+    for s, y, size in (("NEO Lite rev C", 108.0, 1.2), ("2026-10 techmiguel/neo-robot", 110.5, 0.9)):
+        P.add(s, [(cx + dx, y + dy, "B") for dy in (0, -1, 1, -2, 2, 3, 4, 5, 6) for dx in (0, -2, 2, -4, 4)], size=size)
 
     pcbnew.SaveBoard(PCB, board)
     shutil.move(PRO + ".bak", PRO)

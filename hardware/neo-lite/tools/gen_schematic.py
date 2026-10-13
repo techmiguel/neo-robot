@@ -365,7 +365,7 @@ class Sheet:
     def render(self, title):
         s = (f'(kicad_sch\n\t(version 20250114)\n\t(generator "eeschema")\n\t(generator_version "9.0")\n'
              f'\t(uuid "{self.sheet_uuid}")\n\t(paper "A3")\n\t(title_block\n\t\t(title "{title}")\n'
-             f'\t\t(rev "A")\n\t\t(company "NEO — techmiguel")\n'
+             f'\t\t(rev "C")\n\t\t(company "NEO — techmiguel")\n'
              f'\t\t(comment 1 "Generado por tools/gen_schematic.py: no editar a mano")\n\t)\n')
         s += "\t(lib_symbols\n" + "".join(embed_symbol(*lid.split(":")) for lid in sorted(self.lib_ids)) + "\t)\n"
         s += "".join(self.items)
@@ -395,7 +395,10 @@ def build():
     g.part("Device:Polyfuse", "F1", "1.1A", 139.7, 50.8, {"1": "VBUS", "2": "+5V"},
            fp="Fuse:Fuse_1206_3216Metric", lcsc="C2803344", mpn="BSMD1206-110-6V",
            desc="PPTC 1,1 A mantenimiento / 2,2 A disparo, 6 V, 1206")
-    g.C("C1", "10uF", 152.4, 63.5, "+5V", "GND", desc="Bulk de +5V junto a la entrada")
+    g.part("Device:C_Polarized", "C1", "47uF 16V", 152.4, 63.5, {"1": "+5V", "2": "GND"},
+           fp="Capacitor_Tantalum_SMD:CP_EIA-6032-28_Kemet-C", lcsc="C444805", mpn="TPSC476K016R0350",
+           desc="Tántalo 47 µF 16 V, ESR 0,35 Ω (AVX TPS): bulk de +5V y amortiguación del enchufado en "
+                "caliente (docs/fase6-revision.md)")
     g.part("Regulator_Linear:TLV1117-33", "U1", "TLV1117LV33", 182.88, 53.34,
            {"3": "+5V", "1": "GND", "2": "+3V3"}, fp="Package_TO_SOT_SMD:SOT-223-3_TabPin2",
            lcsc="C15578", mpn="TLV1117LV33DCYR",
@@ -408,6 +411,8 @@ def build():
     g.flag("GND", 165.1, 35.56)
     g.text(120, 95, "VBUS: entrada del conector (antes de F1).\n+5V: después de F1; alimenta U1 y el amplificador U4.\n"
            "R1/R2 de 5,1 kΩ: sin ellas un cargador USB-C no entrega 5 V.\n"
+           "C1 (tántalo, ESR 0,35 Ω) amortigua la resonancia cable-cerámicos al enchufar:\n"
+           "sin él el pico puede pasar de los 6 V máximos de U1 y U4.\n"
            "U1 TLV1117LV33 (no AMS1117): ver docs/fase1-componentes.md §2.3.")
 
     # ===== USB nativo del ESP32-S3 (x 20–215, y 150–280) =====

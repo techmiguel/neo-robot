@@ -33,7 +33,9 @@ BOM = [
     ("D1", "USBLC6-2SC6 (ST)", "SOT-23-6", "C7519", 6, "ESD en D+/D- y VBUS"),
     ("U1", "TLV1117LV33 (TI), LDO 3,3 V 1 A", "SOT-223", "C15578", 4, "Caída 230 mV a 500 mA; estable con cerámico"),
     ("C3", "22 µF 25 V X5R", "0805", "C45783", 2, "Salida de U1"),
-    ("C1,C2,C9", "10 µF 25 V X5R", "0805", "C15850", 2, "C1 bulk VBUS; C2 entrada de U1; C9 VDD de U4"),
+    ("C1", "47 µF 16 V tántalo, ESR 0,35 Ω (AVX TPS)", "EIA-6032-28 (C)", "C444805", 2,
+     "Bulk de +5V y amortiguación del enchufado en caliente (fase 6); alternativa C7219 (TAJ, 0,5 Ω)"),
+    ("C2,C9", "10 µF 25 V X5R", "0805", "C15850", 2, "C2 entrada de U1; C9 VDD de U4"),
     ("C4,C7,C10", "100 nF X7R", "0402", "C1525", 2, "Desacoplo U1, U2, U4"),
     # --- ESP32-S3 ---
     ("U2", "ESP32-S3-WROOM-1-N16R8", "Módulo 25,5 × 18 mm", "C2913202", 41, "Flash 16 MB, PSRAM octal 8 MB, antena PCB fuera del borde"),

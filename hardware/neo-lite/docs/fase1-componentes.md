@@ -166,6 +166,10 @@ La capacidad total en VBUS (10 µF de C1, 10 µF de C2 y 10 µF de C9) supera lo
 especificación USB 2.0 permite en la conexión. Es habitual en placas de desarrollo, sin efecto
 práctico con el PPTC en serie, y no se busca certificación USB-IF.
 
+> Revisión C (fase 6): C1 pasa a ser un tántalo de 47 µF con ESR de 0,35 Ω, que amortigua el
+> sobreimpulso al enchufar. La capacidad en +5V sube a unos 67 µF. La corriente de conexión es
+> mayor, pero la limitan la ESR, el cable y el PPTC (`fase6-revision.md` § 2.1).
+
 ### 2.6 Presupuesto de corriente en VBUS
 
 | Caso | 3V3 | Amplificador | Total en VBUS |

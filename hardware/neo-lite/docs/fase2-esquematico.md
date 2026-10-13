@@ -74,7 +74,7 @@ orientaciones) y CC1/CC2 a GND por R1/R2 (5,1 kΩ). SBU1/SBU2 quedan sin conexi�
 (S1) va directa a GND. D1 (USBLC6-2SC6) protege D+, D− y VBUS en el lado del conector. F1 (PPTC
 de 1,1 A) separa VBUS de +5V. +5V alimenta U1 (TLV1117LV33) y el amplificador.
 
-C1 (10 µF) es el bulk de +5V; C2 (10 µF) va a la entrada de U1; C3 (22 µF) y C4 (100 nF), a su
+C1 (10 µF; en la revisión C, tántalo de 47 µF/16 V con ESR de 0,35 Ω, fase 6) es el bulk de +5V; C2 (10 µF) va a la entrada de U1; C3 (22 µF) y C4 (100 nF), a su
 salida. Hay tres PWR_FLAG, en VBUS, +5V y GND, porque las alimenta un conector y una pieza pasiva
 y el ERC no puede deducirlo.
 

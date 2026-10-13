@@ -136,6 +136,7 @@ def main():
         ("J1.A5", "CC1", "CC1"), ("J1.B5", "CC2", "CC2"), ("R1.1", "CC1", "5,1 kΩ en CC1"), ("R1.2", "GND", "CC1 a GND"),
         ("R2.1", "CC2", "5,1 kΩ en CC2"), ("R2.2", "GND", "CC2 a GND"),
         ("F1.1", "VBUS", "PPTC desde el conector"), ("F1.2", "+5V", "PPTC hacia +5V"),
+        ("C1.1", "+5V", "positivo del tántalo de amortiguación"), ("C1.2", "GND", "negativo del tántalo"),
         ("U1.3", "+5V", "entrada del LDO"), ("U1.2", "+3V3", "salida del LDO"),
         ("J1.A6", "USB_DP", "D+ del conector"), ("J1.A7", "USB_DN", "D- del conector"),
         ("R4.1", "USB_DP", "22 Ω en D+"), ("R4.2", "ESP_DP", "D+ al GPIO20"),

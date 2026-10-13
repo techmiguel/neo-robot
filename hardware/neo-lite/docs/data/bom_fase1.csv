@@ -5,7 +5,8 @@ F1,1,"PPTC 1,1 A / 6 V",1206,C2803344,BSMD1206-110-6V,BHFUSE,extendida,24139,0.0
 D1,1,USBLC6-2SC6 (ST),SOT-23-6,C7519,USBLC6-2SC6,STMicroelectronics,extendida,46196,0.177,0.89,OK,ESD en D+/D- y VBUS
 U1,1,"TLV1117LV33 (TI), LDO 3,3 V 1 A",SOT-223,C15578,TLV1117LV33DCYR,Texas Instruments,extendida,4484,0.3893,1.95,OK,Caída 230 mV a 500 mA; estable con cerámico
 C3,1,22 µF 25 V X5R,0805,C45783,CL21A226MAQNNNE,Samsung Electro-Mechanics,básica,3603074,0.2369,1.66,OK,Salida de U1
-"C1,C2,C9,C5",4,10 µF 25 V X5R,0805,C15850,CL21A106KAYNNNE,Samsung Electro-Mechanics,básica,4148536,0.0688,1.51,OK,C1 bulk VBUS; C2 entrada de U1; C9 VDD de U4; Junto al pin 3V3 del módulo (va en el grupo de C1)
+C1,1,"47 µF 16 V tántalo, ESR 0,35 Ω (AVX TPS)",EIA-6032-28 (C),C444805,TPSC476K016R0350,--,extendida,397,0.8225,4.11,OK,"Bulk de +5V y amortiguación del enchufado en caliente (fase 6); alternativa C7219 (TAJ, 0,5 Ω)"
+"C2,C9,C5",3,10 µF 25 V X5R,0805,C15850,CL21A106KAYNNNE,Samsung Electro-Mechanics,básica,4148536,0.0688,1.17,OK,C2 entrada de U1; C9 VDD de U4; Junto al pin 3V3 del módulo (va en el grupo de C1)
 "C4,C7,C10",3,100 nF X7R,0402,C1525,CL05B104KO5NNNC,Samsung Electro-Mechanics,básica,23849914,0.0039,0.07,OK,"Desacoplo U1, U2, U4"
 U2,1,ESP32-S3-WROOM-1-N16R8,"Módulo 25,5 × 18 mm",C2913202,ESP32-S3-WROOM-1-N16R8,Espressif Systems,extendida,33853,5.1467,25.73,OK,"Flash 16 MB, PSRAM octal 8 MB, antena PCB fuera del borde"
 R3,1,10 kΩ 1 %,0402,C25744,0402WGF1002TCE,UNI-ROYAL(Uniroyal Elec),básica,19217719,0.0034,0.02,OK,EN: RC de arranque (con C6)

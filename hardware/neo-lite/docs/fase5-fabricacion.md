@@ -1,26 +1,31 @@
-# NEO Lite — Fase 5: fabricación
+# NEO Lite — Fase 5: fabricación (actualizada a la revisión C)
 
 Paquete para pedir a JLCPCB 5 placas de 2 capas con montaje SMT por la cara superior: serigrafía
 limpia y rotulada, Gerber y taladros, BOM y CPL, comprobación de las huellas contra las de la vista
 previa de JLCPCB y lista de revisión previa al pedido.
 
+El paquete corresponde a la **revisión C**, la que sale de la revisión de la fase 6
+(`fase6-revision.md`).
+
 Todo se regenera desde `hardware/neo-lite`:
 
 ```
-python3 tools/route_all.py        # PCB ruteado (fase 4)
+python3 tools/route_all.py        # PCB ruteado (fases 4 y 6)
 python3 tools/silk_cleanup.py     # serigrafía y rótulos
+python3 tools/review_pcb.py       # comprobaciones de la fase 6
 python3 tools/fab_outputs.py      # production/ y docs/data/jlc_rotaciones.csv
 python3 tools/bom_fase1.py        # stock, precio y coste (consulta la API de JLCPCB)
 ```
 
 | Comprobación | Resultado |
 |---|---|
-| DRC con paridad de esquemático | **0 errores, 0 conexiones pendientes, 0 avisos de serigrafía, 0 diferencias** |
-| Avisos aceptados | 5 × `lib_footprint_mismatch` (U2, J1–J4): huellas modificadas a propósito (vías térmicas de U2; serigrafía del contorno movida a F.Fab) |
+| DRC con paridad de esquemático | **0 errores, 0 conexiones pendientes, 0 diferencias** |
+| Avisos aceptados | 5 × `lib_footprint_mismatch` (U2, J1–J4): huellas modificadas a propósito (vías térmicas de U2; serigrafía del contorno movida a F.Fab). 1 × `silk_over_copper`: triángulo de pin 1 de U4 recortado en parte por la máscara de R7 (fase 6 § 4) |
+| `review_pcb.py` (fase 6) | 24 de 24 comprobaciones OK |
 | ERC y `verify_schematic.py` | 0/0 y OK |
-| BOM de fabricación | 18 grupos, 26 piezas; **idéntica a la de la fase 1** (referencias y códigos LCSC; `fab_outputs.py` falla si no) |
+| BOM de fabricación | 19 grupos, 26 piezas; **idéntica a la de la fase 1** (referencias y códigos LCSC; `fab_outputs.py` falla si no) |
 | CPL | 26 piezas, las mismas referencias que la BOM, todas en la cara superior |
-| Stock (API de JLCPCB, 12-10-2026) | Todas las piezas con stock de sobra; la más justa, U1 (TLV1117LV33), con 4484 unidades para 5 |
+| Stock (API de JLCPCB, 12-10-2026) | Todas las piezas con stock; la más justa, C1 (TPSC476K016R0350), con 397 unidades para 5. Alternativa con la misma huella: TAJC476K016RNJ (C7219) |
 
 ## 1. Contenido de `production/`
 
@@ -53,14 +58,15 @@ Gerber; es coherente).
 | Montaje | PCBA Economic, cara superior, 5 placas | |
 | Bordes de proceso | Los que pida la revisión DFM | Ver § 4.1 |
 
-Coste estimado (fase 1, precios del 12-10-2026): **73,24 USD sin envío ni impuestos** (14,65 por
-placa).
+Coste estimado (`bom_fase1.py`, precios del 12-10-2026): **80,08 USD sin envío ni impuestos** (16,02
+por placa). En la revisión B eran 73,24; la diferencia es el tántalo C1: pieza extendida (+3,07) y el
+precio de las 5 unidades.
 
 ## 3. Serigrafía
 
-![Cara superior](img/fase5_render_top.png)
+![Cara superior](img/fase6_render_top.png)
 
-![Cara inferior](img/fase5_render_bottom.png)
+![Cara inferior](img/fase6_render_bottom.png)
 
 `tools/silk_cleanup.py`:
 
@@ -75,10 +81,12 @@ placa).
    - **J4:** + y − con "SPK".
    - **Pulsadores:** RST y BOOT.
    - **Puntos de prueba:** 5V, 3V3 y GND.
-   - **Cara inferior:** "NEO Lite rev B" y la referencia al repositorio.
+   - **Cara inferior:** "NEO Lite rev C" y la referencia al repositorio. El rótulo BOOT también va
+     en la cara inferior: arriba no cabe.
 
-Altura mínima de texto: 0,8 mm (regla de KiCad). Los rótulos de pin van en vertical con anchura de
-carácter de 0,65 mm, para caber a 2,54 mm de paso.
+Altura mínima de texto: 0,8 mm (regla de KiCad). Grosor de trazo mínimo: 0,15 mm (recomendación de
+JLCPCB). Los rótulos de pin van en vertical con anchura de carácter de 0,65 mm, para caber a 2,54 mm
+de paso.
 
 ## 4. Revisión previa al pedido
 
@@ -98,8 +106,9 @@ giro en la propia herramienta de JLCPCB antes de confirmar.
 
 | Pieza | Giro KiCad → EasyEDA | Qué comprobar en la vista previa |
 |---|---|---|
-| D1 (USBLC6-2SC6, SOT-23-6) | 270° | Pin 1 (punto) hacia la izquierda, como en KiCad |
-| U1 (TLV1117LV33, SOT-223) | 180° | Lengüeta (OUT) a la derecha, pines 1–3 a la izquierda |
+| C1 (tántalo, caja C) | 0° | **Polaridad**: banda (+) hacia la derecha, hacia J4 (en la placa, pad 1 a la derecha). Comprobado que en las dos huellas el pad 1 es el positivo |
+| D1 (USBLC6-2SC6, SOT-23-6) | 270° | Pin 1 arriba a la derecha (placa girada 270° en KiCad; triángulo de serigrafía) |
+| U1 (TLV1117LV33, SOT-223) | 180° | Lengüeta (OUT) a la izquierda, hacia el módulo; pines 1–3 a la derecha (U1 va girado 180° en la placa) |
 | U4 (MAX98357A, TQFN-16) | 270° | Pin 1 arriba a la izquierda (marca de pin 1 de la serigrafía) |
 | SW1, SW2 (TS-1187A) | 270° | Simétrico: cualquier giro de 90° monta igual |
 | U2 (WROOM-1) | 0° | Antena hacia fuera de la placa |
@@ -111,6 +120,9 @@ Desviaciones de pads que la tabla marca y que **no son errores**, revisadas pad 
 - **U2:** solo difiere el pad central de GND, que EasyEDA divide en varios. Los 40 pines de señal
   coinciden.
 - **SW1/SW2:** EasyEDA numera los pads 1–4 y KiCad 1-1-2-2.
+
+- **C1:** separación de pads de ±2,47 mm en KiCad y ±2,96 mm en EasyEDA. Las dos cubren los
+  terminales de la caja C y el pad 1 es el positivo en ambas.
 
 El resto de grupos (pasivos, USB-C, fusible) coincide en giro y en pads con una desviación de
 0,08 mm o menos.
@@ -125,9 +137,9 @@ los terminales, que el pad de 0,825 mm de la huella cubre. La huella de LCSC (pa
 
 1. Subir `NEO_Lite_gerber.zip` y comprobar en el visor de JLCPCB: 2 capas, 31 × 43 mm, contorno con
    esquinas redondeadas, serigrafía legible y ningún rótulo cortado.
-2. Activar el montaje: subir `NEO_Lite_BOM_JLC.csv` y `NEO_Lite_CPL_JLC.csv`. Las 18 líneas deben
+2. Activar el montaje: subir `NEO_Lite_BOM_JLC.csv` y `NEO_Lite_CPL_JLC.csv`. Las 19 líneas deben
    casar con su código LCSC y no debe haber piezas "no encontradas".
-3. Revisar las rotaciones de § 4.2 en la vista previa.
+3. Revisar las rotaciones de § 4.2 en la vista previa, y sobre todo la polaridad de C1.
 4. Confirmar stock en el momento del pedido (cambia a diario).
 5. Revisión DFM (§ 4.1).
 

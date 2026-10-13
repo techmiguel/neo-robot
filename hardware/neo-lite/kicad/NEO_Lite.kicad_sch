@@ -6,7 +6,7 @@
 	(paper "A3")
 	(title_block
 		(title "NEO Lite — ESP32-S3, micrófono, amplificador I2S y OLED")
-		(rev "A")
+		(rev "C")
 		(company "NEO — techmiguel")
 		(comment 1 "Generado por tools/gen_schematic.py: no editar a mano")
 	)
@@ -1515,6 +1515,167 @@
 				)
 			)
 			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:C_Polarized"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Polarized"
+				(at 0.635 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Polarized capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "CP_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_Polarized_0_1"
+				(rectangle
+					(start -2.286 0.508)
+					(end 2.286 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.286) (xy -0.762 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.794) (xy -1.27 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 2.286 -0.508)
+					(end -2.286 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "C_Polarized_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 2.794)
@@ -5069,7 +5230,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
+		(lib_id "Device:C_Polarized")
 		(at 152.40 63.50 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5078,11 +5239,12 @@
 		(dnp no)
 		(uuid "cb70eecc-d4d9-568c-8f41-56bad5ce8748")
 		(property "Reference" "C1" (at 154.94 62.23 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Value" "10uF" (at 154.94 64.77 0) (effects (font (size 1.27 1.27)) (justify left)))
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 152.40 63.50 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Value" "47uF 16V" (at 154.94 64.77 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "Capacitor_Tantalum_SMD:CP_EIA-6032-28_Kemet-C" (at 152.40 63.50 0) (effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" "~" (at 152.40 63.50 0) (effects (font (size 1.27 1.27)) (hide yes)))
-		(property "Description" "Bulk de +5V junto a la entrada" (at 152.40 63.50 0) (effects (font (size 1.27 1.27)) (hide yes)))
-		(property "LCSC" "C15850" (at 152.40 63.50 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Tántalo 47 µF 16 V, ESR 0,35 Ω (AVX TPS): bulk de +5V y amortiguación del enchufado en caliente (docs/fase6-revision.md)" (at 152.40 63.50 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "TPSC476K016R0350" (at 152.40 63.50 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C444805" (at 152.40 63.50 0) (effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1" (uuid "a54812c3-a40c-5451-9573-a122a29425df"))
 		(pin "2" (uuid "bce7264b-43f7-52b4-9df0-504db2a9d4ed"))
 		(instances
@@ -5572,7 +5734,7 @@
 			)
 		)
 	)
-	(text "VBUS: entrada del conector (antes de F1).\n+5V: después de F1; alimenta U1 y el amplificador U4.\nR1/R2 de 5,1 kΩ: sin ellas un cargador USB-C no entrega 5 V.\nU1 TLV1117LV33 (no AMS1117): ver docs/fase1-componentes.md §2.3." (exclude_from_sim no) (at 119.38 95.25 0) (effects (font (size 1.27 1.27)) (justify left top)) (uuid "78650111-cfb9-504b-8763-7e67ccc557b0"))
+	(text "VBUS: entrada del conector (antes de F1).\n+5V: después de F1; alimenta U1 y el amplificador U4.\nR1/R2 de 5,1 kΩ: sin ellas un cargador USB-C no entrega 5 V.\nC1 (tántalo, ESR 0,35 Ω) amortigua la resonancia cable-cerámicos al enchufar:\nsin él el pico puede pasar de los 6 V máximos de U1 y U4.\nU1 TLV1117LV33 (no AMS1117): ver docs/fase1-componentes.md §2.3." (exclude_from_sim no) (at 119.38 95.25 0) (effects (font (size 1.27 1.27)) (justify left top)) (uuid "78650111-cfb9-504b-8763-7e67ccc557b0"))
 	(text "USB NATIVO (USB-SERIAL-JTAG DEL ESP32-S3)" (exclude_from_sim no) (at 20.32 147.32 0) (effects (font (size 2.0 2.0)) (justify left top)) (uuid "2a224184-9d93-5df8-a676-e4e1a69a71b9"))
 	(wire (pts (xy 72.39 190.50) (xy 69.85 190.50)) (stroke (width 0) (type default)) (uuid "91a4d5ce-f98f-503d-87b8-e2b15152c9c1"))
 	(label "USB_DP" (at 69.85 190.50 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right bottom)) (uuid "7c51eddc-25b7-56fc-b914-73f5657b289d"))

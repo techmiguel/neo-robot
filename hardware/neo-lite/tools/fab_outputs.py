@@ -45,9 +45,12 @@ LAYERS = ["F.Cu", "B.Cu", "F.Paste", "B.Paste", "F.Silkscreen", "B.Silkscreen", 
 # Desviaciones de compare_fp.py que son de numeración, no de geometría (revisado pad a pad, fase 5)
 NOTES = {
     "U1": "artefacto de numeración: EasyEDA numera la lengüeta como pin 4 y KiCad como pin 2; "
-          "con el giro de 180° los pines 1-3 coinciden",
+          "con el giro indicado los pines 1-3 coinciden",
     "U2": "solo difiere el pad central de GND (41): en KiCad es un pad de 3,9 mm y en EasyEDA está "
           "dividido; los 40 pines de señal coinciden",
+    "C1": "polaridad comprobada: en las dos huellas el pad 1 es el positivo (EasyEDA dibuja el '+' y la banda "
+          "junto al pad 1); solo cambia la separación de pads (±2,47 mm en KiCad, ±2,96 en EasyEDA), los dos "
+          "cubren los terminales de la caja C",
     "SW1": "artefacto de numeración: EasyEDA numera los pads 1-4 y KiCad 1-1-2-2; pulsador simétrico",
     "SW2": "artefacto de numeración: EasyEDA numera los pads 1-4 y KiCad 1-1-2-2; pulsador simétrico",
 }

@@ -1,5 +1,9 @@
 # NEO Lite — Fase 4: ruteo y DRC
 
+> Este documento describe el ruteo de la revisión B. La revisión C (`fase6-revision.md`) añade el
+> pre-ruteo de `tools/preroute.py`, las exclusiones bajo el módulo y junto a U1, la zona de +3V3 y
+> las comprobaciones de `tools/review_pcb.py`. Sus cifras están en la fase 6.
+
 PCB de 31 × 43 mm y 2 capas, completamente ruteada, con planos de GND en las dos caras.
 
 | Resultado | Valor |

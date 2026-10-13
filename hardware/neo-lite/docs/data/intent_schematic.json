@@ -147,10 +147,10 @@
  "parts": {
   "C1": {
    "dnp": false,
-   "footprint": "Capacitor_SMD:C_0805_2012Metric",
+   "footprint": "Capacitor_Tantalum_SMD:CP_EIA-6032-28_Kemet-C",
    "in_bom": true,
-   "lcsc": "C15850",
-   "value": "10uF"
+   "lcsc": "C444805",
+   "value": "47uF 16V"
   },
   "C10": {
    "dnp": false,

@@ -88,6 +88,16 @@ def main(out=OUT):
             inside.append(c)
             rest.remove(c)
         total[net] = length
+    # pistas y vías ya existentes (el pre-ruteo de preroute.py): superior en rojo oscuro, inferior en azul
+    for t in b.GetTracks():
+        if t.GetClass() == "PCB_VIA":
+            el.append(f'<circle cx="{X(mm(t.GetPosition().x)):.1f}" cy="{Y(mm(t.GetPosition().y)):.1f}" '
+                      f'r="{mm(t.GetWidth(pcbnew.F_Cu)) / 2 * S:.1f}" fill="#555" stroke="#000"/>')
+        else:
+            col = "#8b1a1a" if t.GetLayer() == pcbnew.F_Cu else "#1f4e9a"
+            el.append(f'<line x1="{X(mm(t.GetStart().x)):.1f}" y1="{Y(mm(t.GetStart().y)):.1f}" '
+                      f'x2="{X(mm(t.GetEnd().x)):.1f}" y2="{Y(mm(t.GetEnd().y)):.1f}" stroke="{col}" '
+                      f'stroke-width="{mm(t.GetWidth()) * S:.1f}" stroke-linecap="round" opacity="0.8"/>')
     for fp in b.GetFootprints():
         p = fp.GetPosition()
         el.append(f'<text x="{X(mm(p.x)):.1f}" y="{Y(mm(p.y)) + 4:.1f}" font-family="sans-serif" font-size="13" '
