@@ -1,0 +1,25 @@
+Comprobación,Valor,Límite,Resultado
+USB-C: el frente sobresale del borde,0.25 mm,>= 0.2 mm,OK
+USB-C: todos los pads dentro de la placa,sí,a >= 0.3 mm del borde,OK
+USB: vías en el par,0,0,OK
+USB: tramos fuera de la cara superior,0,0,OK
+"USB: longitudes, orientación A (A6/A7)","D+ 30.2 mm, D- 33.1 mm, diferencia 2.8 mm",<= 3.0 mm,OK
+"USB: longitudes, orientación B (B6/B7)","D+ 29.2 mm, D- 29.8 mm, diferencia 0.5 mm",<= 3.0 mm,OK
+Desacoplo C7.1 -> U2.2 (+3V3),3.5 mm por pista,<= 4.0 mm,OK
+Desacoplo C5.1 -> U2.2 (+3V3),13.5 mm por pista,<= 15.0 mm,OK
+Desacoplo C10.1 -> U4.7 (+5V),1.5 mm por pista,<= 2.0 mm,OK
+Desacoplo C9.1 -> U4.7 (+5V),3.3 mm por pista,<= 4.0 mm,OK
+Desacoplo C2.1 -> U1.3 (+5V),2.9 mm por pista,<= 3.5 mm,OK
+Desacoplo C3.1 -> U1.2 (+3V3),2.5 mm por pista,<= 3.5 mm,OK
+Desacoplo C4.1 -> U1.2 (+3V3),3.2 mm por pista,<= 3.5 mm,OK
+Desacoplo C6.1 -> U2.3 (/EN),4.3 mm por pista,<= 5.0 mm,OK
+Vías dentro de pads SMD,ninguna,ninguna,OK
+Pistas de la cara superior bajo el módulo,0 tramos,0,OK
+Ángulos agudos entre tramos,ninguno,ninguno (< 90°),OK
+Serigrafía: grosor de trazo,"22 textos, 0 finos",>= 0.15 mm,OK
+Serigrafía: altura de texto,0 bajos,>= 0.8 mm,OK
+Cobre de +3V3 junto a la lengüeta de U1,26 mm² de zona (+ 7.6 de lengüeta),>= 20 mm²,OK
+"Pistas y vías a >= 0,3 mm del borde",0 fuera,0,OK
+Cobre por encima del borde superior (antena),0,0,OK
+Pad expuesto U2.41 con conexión directa al GND,sí,directa,OK
+Pad expuesto U4.17 con conexión directa al GND,sí,directa,OK
