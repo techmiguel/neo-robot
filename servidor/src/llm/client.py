@@ -52,18 +52,53 @@ def _preguntar_groq(messages: list[dict]) -> str:
 def _preguntar_ollama(messages: list[dict]) -> str:
     import requests
     host  = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-    model = os.getenv("OLLAMA_MODEL", "llama3.2")
-    resp = requests.post(
-        f"{host}/api/chat",
-        json={
-            "model": model,
-            "messages": messages,
-            "stream": False,
-        },
-        timeout=60,
-    )
-    resp.raise_for_status()
-    return resp.json()["message"]["content"].strip()
+    model = os.getenv("OLLAMA_MODEL", "qwen2.5-coder:3b")
+    try:
+        resp = requests.post(
+            f"{host}/api/chat",
+            json={
+                "model": model,
+                "messages": messages,
+                "stream": False,
+                # Mantiene el modelo en RAM entre consultas (por defecto Ollama lo
+                # descarga a los 5 min y la siguiente petición paga la recarga).
+                "keep_alive": os.getenv("OLLAMA_KEEP_ALIVE", "30m"),
+                "options": {
+                    "num_predict": int(os.getenv("OLLAMA_NUM_PREDICT", "80")),
+                    "temperature": float(os.getenv("OLLAMA_TEMPERATURE", "0.7")),
+                    "num_ctx":     int(os.getenv("OLLAMA_NUM_CTX", "2048")),
+                },
+            },
+            timeout=int(os.getenv("OLLAMA_TIMEOUT", "120")),
+        )
+        resp.raise_for_status()
+    except requests.ConnectionError as e:
+        raise RuntimeError(
+            f"No hay conexión con Ollama en {host}. ¿Está corriendo `ollama serve`?"
+        ) from e
+    except requests.HTTPError as e:
+        # 404 = modelo no descargado; el cuerpo trae el mensaje de Ollama.
+        raise RuntimeError(
+            f"Ollama respondió {resp.status_code}: {resp.text.strip()[:200]} "
+            f"(¿falta `ollama pull {model}`?)"
+        ) from e
+    texto = (resp.json().get("message", {}).get("content") or "").strip()
+    return texto or "No tengo una respuesta clara para eso."
+
+
+def precargar_modelo() -> None:
+    """Carga el modelo de Ollama en memoria al arrancar (si LLM_PROVIDER=ollama)."""
+    if os.getenv("LLM_PROVIDER", "groq") != "ollama":
+        return
+    import requests
+    host  = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    model = os.getenv("OLLAMA_MODEL", "qwen2.5-coder:3b")
+    # /api/generate sin prompt solo carga el modelo.
+    requests.post(
+        f"{host}/api/generate",
+        json={"model": model, "keep_alive": os.getenv("OLLAMA_KEEP_ALIVE", "30m")},
+        timeout=int(os.getenv("OLLAMA_TIMEOUT", "120")),
+    ).raise_for_status()
 
 
 def ask(prompt: str, messages: list[dict] = None) -> str:

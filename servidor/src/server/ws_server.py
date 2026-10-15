@@ -247,8 +247,27 @@ async def _health(connection, request):
             return http.HTTPStatus.OK, [], b"NEO OK\n"
 
 
+async def _precargar_modelos():
+    """Carga STT/LLM locales al arrancar para que la 1ª consulta no pague la carga.
+
+    Un fallo aquí (p. ej. Ollama aún no levantado) no impide arrancar: se avisa
+    y el error reaparecerá, con mensaje claro, en la primera consulta.
+    """
+    from src.stt.transcriber import precargar_modelo as precargar_stt
+    from src.llm.client      import precargar_modelo as precargar_llm
+    for nombre, fn in (("STT", precargar_stt), ("LLM", precargar_llm)):
+        try:
+            t0 = time.time()
+            await asyncio.to_thread(fn)
+            log.info(f"[precarga] {nombre} listo ({time.time()-t0:.1f}s)")
+        except Exception as e:
+            log.warning(f"[precarga] {nombre} falló: {e}")
+
+
 async def main():
     log.info(f"Servidor NEO WebSocket en ws://{HOST}:{PORT}  modo={MODO}")
+    if MODO == "pipeline":
+        await _precargar_modelos()
     # ping_interval y ping_timeout ajustados para HuggingFace Spaces:
     # - ping_interval=10: enviar ping cada 10s (el proxy de HF cierra conexiones inactivas)
     # - ping_timeout=10: esperar 10s respuesta (el ESP32 puede tardar por el proxy)
