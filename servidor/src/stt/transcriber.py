@@ -52,9 +52,13 @@ def _transcribir_local(pcm: bytes, sample_rate: int) -> str:
         modelo_size = os.getenv("WHISPER_MODEL_SIZE", "base")
         _whisper = WhisperModel(modelo_size, device="cpu", compute_type="int8")
     modelo = _whisper
-    wav = _pcm_a_wav_bytes(pcm, sample_rate)
-    audio_buf = io.BytesIO(wav)
-    segments, _ = modelo.transcribe(audio_buf, language="es")
+    import numpy as np
+    if sample_rate != 16000:
+        raise ValueError(f"faster-whisper espera 16 kHz, llegó {sample_rate} Hz")
+    # PCM → float32 directo: evita decodificar un WAV con PyAV (más lento, y
+    # algunas versiones de PyAV rompen decode_audio de faster-whisper).
+    audio = np.frombuffer(pcm, dtype=np.int16).astype(np.float32) / 32768.0
+    segments, _ = modelo.transcribe(audio, language="es")
     return " ".join(s.text.strip() for s in segments)
 
 
