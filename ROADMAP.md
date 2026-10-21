@@ -22,7 +22,7 @@ El plan se organiza en dos entregas con fecha. Las fases originales completadas 
 
 ### 1.1 Wake word en el dispositivo con métricas publicadas
 **Descripción:** wake word "Hola NEO" ejecutándose en el ESP32-S3, reentrenado con dos hablantes.  
-**Dependencias:** módulos 4.2 y 4.3 (CNN int8, MFCC 148×40); reintegración de la rama `test/wake-word-minimo` en `main` (WDT durante la extracción MFCC).  
+**Dependencias:** módulos 4.2 y 4.3 (CNN int8, MFCC 148×40).  
 **Criterio de aceptación:**
 - Dataset con muestras de dos hablantes, con la partición entrenamiento/validación/prueba documentada.
 - Matriz de confusión sobre el conjunto de prueba (clases `hola_neo`, `desconocido`, `silencio`).
@@ -30,8 +30,23 @@ El plan se organiza en dos entregas con fecha. Las fases originales completadas 
 - Latencia de detección medida en el dispositivo: fin del enunciado → evento de detección.
 - Funcionando en el firmware completo, no solo en el entorno `wake_word_test`.
 
-**Artefactos:** resultados y metodología en `docs/metrics/`.  
-**Estado: EN CURSO** (detección validada en la rama mínima; falta reentrenamiento con dos hablantes, métricas y reintegración en `main`).
+**Artefactos:** resultados y metodología en `docs/metrics/`. Las métricas en la placa se calculan con `firmware/tools/analizar_log_wake.py` (modos `fp` y `matriz`) a partir de logs grabados con `pio device monitor -e esp32dev --filter time --filter log2file`.  
+**Estado: EN CURSO**
+
+Hecho (2026-10-20/21):
+- Reentrenado con dos hablantes (h1, h2) a 0,5/1/2 m y varias orientaciones: 570 hola_neo, 736 desconocido, 200 silencio. Normalización de volumen (c0 relativo) y CMN en entrenamiento y en `inference.cpp`, con paridad verificada (|Δ| < 2e-6). Detalle en `firmware/models/experimentos/2026-10-20/RESUMEN.md`.
+- Evaluación fuera de la placa (int8, 302 clips de test): exactitud 95,7 %; con umbral 0,7618, TPR 95,6 % y FP 2/348 (0,6 %); 0 disparos con palabras nunca vistas ("el toque", "noticias").
+- Modelo en el firmware completo (`main`, env `esp32dev`) y probado informalmente en la placa con buen resultado.
+
+Pendiente:
+- Falsos positivos por hora en la placa (≥ 2 h de fondo realista).
+- Matriz de confusión en la placa: ~20 intentos por hablante y distancia, más sesiones negativas.
+- Latencia de detección en la placa (la última medida, con el modelo anterior, fue ~2,57 s con 3 muestras).
+
+Notas para la documentación:
+- `CONF_MINIMAS = 1` en `firmware/src/main.cpp`: basta una detección para activar, no dos seguidas. Las cifras válidas son las de una sola ventana (TPR 95,6 %), no el "TPR² 91,4 %" del RESUMEN. El comentario de esa línea aún cita el umbral antiguo (0,49).
+- Generalización limitada: con un hablante no visto, TPR 71–77 % y FPR 7–11 %. Solo se corrige grabando más hablantes.
+- Posición no vista: dejando fuera todos los clips a 2 m, TPR 80 % a esa distancia.
 
 ### 1.2 Conversación por voz con el LLM y latencia de punta a punta
 **Descripción:** conversación por voz con el LLM a través del servidor Python, midiendo la latencia de punta a punta: wake word, transcripción, respuesta y audio.  
@@ -42,6 +57,10 @@ El plan se organiza en dos entregas con fecha. Las fases originales completadas 
 
 **Artefactos:** datos crudos en `docs/metrics/` (continuación de `latency_data_20260911.json`) y resumen en el README.  
 **Estado: EN CURSO** (instrumentación en servidor y firmware hecha; falta la línea base medida en el flujo con wake word).
+
+Pendiente de decidir la configuración que se mide: Groq rechaza (403) la IP de Proton VPN, y el modo local usa Whisper base + `qwen2.5-coder:3b` (modelo de código, poco adecuado para conversar). La voz de las respuestas es `es-CU-ManuelNeural` con edge-tts, que requiere internet; Piper queda como alternativa offline (`TTS_PROVIDER=local`). En pruebas del 21/10 solo en el servidor, el modo local tardó 5,1 s en una consulta al LLM y 2,3 s en una de clima.
+
+Corregido (2026-10-21): `percentile()` de `servidor/scripts/neo_metrics_tool.py` no ordenaba los valores por etapa, por eso los p50/p95 de STT/LLM/TTS de `docs/metrics/README.md` (11/09) no son válidos. Hay que regenerarlos con los logs originales del PC.
 
 ### 1.3 Alimentación con batería 18650
 **Descripción:** alimentación con batería 18650 sobre placa de prototipo, con el nivel de carga en la OLED.  
@@ -115,7 +134,8 @@ El plan se organiza en dos entregas con fecha. Las fases originales completadas 
 
 ## Riesgos y evaluación de plazos (corte 2026-10-21)
 
-- Entrega 1 está a dos días. El wake word aún no está reintegrado en `main`, falta el reentrenamiento con dos hablantes y el hardware de batería (1.3) y las medidas de consumo (1.4) están sin empezar. Es un plazo muy ajustado.
+- Entrega 1 está a dos días. El modelo con dos hablantes ya está en `main`, pero faltan sus métricas en la placa (FP/h requiere horas de reloj), la línea base de latencia, la batería (componentes llegan el 22/10), el consumo y la documentación. Es un plazo muy ajustado.
+- El consumo por estado (1.4) puede medirse ya con alimentación USB y un medidor en línea, sin esperar a la batería.
 - Entrega 2 está a una semana de la 1 e incluye modo sin conexión (nuevo modelo de comandos), relé ESP-12F (segundo dispositivo y enlace nuevo) y una descarga completa de la batería, que por sí sola consume horas o días de reloj.
 - Prioridad recomendada: 1.1 y 1.2 primero, porque son la base de todo lo demás; montar 1.3 cuanto antes y lanzar la descarga de 2.3 en cuanto la batería esté operativa; tratar 2.4 y 2.5 como fuera de alcance salvo que sobre holgura.
 
@@ -165,7 +185,7 @@ PlatformIO configurado, ESP32 compilando y flasheando, entorno Python con venv/u
 |---|---|---|
 | 4.1 Trigger | Botón BOOT (corta → grabar, larga 1,5 s → consulta directa) | COMPLETADO |
 | 4.2 Modelo de comandos | CNN int8 embebida, 3 clases (hola_neo, desconocido, silencio), MFCC 148×40, reentrenado con onset alignment | COMPLETADO |
-| 4.3 Inferencia TFLite | Validado en la rama `test/wake-word-minimo`: score alto y endpointing ajustado | COMPLETADO |
+| 4.3 Inferencia TFLite | Validado en la rama `test/wake-word-minimo` y fusionado en `main`; normalización de volumen + CMN desde el 2026-10-20 | COMPLETADO |
 | 4.4 Dispatcher de comandos | Absorbido por el entregable 2.1 | — |
 
 ### Fase 5 — Handlers de comandos en servidor
@@ -179,25 +199,13 @@ PlatformIO configurado, ESP32 compilando y flasheando, entorno Python con venv/u
 
 ---
 
-## Estado honesto por rama (corte 2026-09-11)
+## Estado del código (corte 2026-10-21)
 
-### Rama `main`
-- Firmware completo: wake word + WebSocket + audio streaming + conversación manos libres.
-- **No validado end-to-end en hardware reciente.** El último commit relevante (`docs: add project README`) es de documentación; el código funciona pero el wake word en el firmware completo tiene un issue conocido con el task watchdog durante la extracción MFCC (ver "Siguiente" abajo).
-- Servidor: pipeline completo STT → intención → handler/LLM → TTS, funcionando.
-
-### Rama `test/wake-word-minimo` (rama actual de desarrollo)
-- Firmware mínimo: solo micrófono + OLED + MFCC + inferencia TFLite. Sin WiFi, sin WebSocket, sin altavoz.
-- Wake word validado en hardware: detección de "Hola NEO" con score alto y endpointing ajustado.
-- Issue del task watchdog resuelto en esta rama (inferencia síncrona, sin concurrencia).
-- **Pendiente:** reintegrar la inferencia validada al firmware completo (`main`).
-
-### Próximos pasos críticos
-1. Reintegrar wake word validado al firmware completo (resolver WDT MFCC-SRAM).
-2. Validar flujo end-to-end: wake word → grabación → servidor → respuesta → playback.
-3. Una vez validado, merge de `test/wake-word-minimo` a `main`.
-
-Estos pasos son prerrequisito de los entregables 1.1 y 1.2.
+- `main` contiene el firmware completo con el wake word reentrenado (dos hablantes, umbral 0,7618), WebSocket, streaming de audio y conversación manos libres. La rama `test/wake-word-minimo` ya está fusionada en `main`.
+- El problema del task watchdog durante la extracción MFCC no está resuelto, sino evitado: `esp_task_wdt_deinit()` en `firmware/src/main.cpp` desactiva el watchdog de tareas. Debe figurar en las limitaciones.
+- Servidor: pipeline STT → intención → handler/LLM → TTS. Proveedores configurables por `.env`: Groq o local (faster-whisper, Ollama) y edge-tts o Piper. Precarga de modelos locales al arrancar.
+- Servidor en la nube (Hugging Face Spaces): conserva edge-tts antiguo y la voz de Jorge hasta reconstruirlo; además, su proxy cierra las conexiones WebSocket (ver `docs/metrics/README.md`).
+- Experimentos de entrenamiento (`firmware/models/experimentos/`, ~19 MB de `.tflite` y logs) solo en el PC; en el repositorio están los `RESUMEN.md`.
 
 ---
 
