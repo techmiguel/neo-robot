@@ -3,165 +3,179 @@
 Principio general: cada módulo se prueba en aislamiento antes de integrarse con módulos posteriores.
 No se avanza al módulo N+1 sin tener el N verificado en hardware o entorno real.
 
----
-
-## FASE 0 — Preparación del entorno
-**Estado: EN CURSO**
-
-### Entregables
-- PlatformIO instalado y configurado
-- ESP32 compilando y flasheando un blink correctamente
-- Entorno Python con venv/uv, estructura de carpetas, pytest ejecutando sin errores
-- Repositorio Git inicializado con estructura base
-
-### Criterio de aceptación
-`claude --version` o Cursor funcionando sobre esta carpeta, blink corriendo en ESP32, `pytest` verde en servidor/.
+El plan se organiza en dos entregas con fecha. Las fases originales completadas se conservan en el
+[Histórico](#histórico-de-fases-completadas); lo que no entra en ninguna entrega queda en el
+[Backlog](#backlog-fuera-de-las-entregas).
 
 ---
 
-## FASE 1 — Módulos base ESP32 (hardware aislado)
+## Calendario
 
-### Módulo 1.1 — OLED SSD1306
-**Dependencias previas:** Fase 0  
-**Librería:** Adafruit_SSD1306 (descartada U8g2 por incompatibilidad con ESP32-S3)  
-**Prueba:** texto estático → contador → texto multilínea  
-**Criterio de aceptación:** función `display_print(texto)` funciona desde main  
-**Estado: COMPLETADO**
-
-### Módulo 1.2 — Captura de audio INMP441 (I2S input)
-**Dependencias previas:** 1.1  
-**Bus:** I2S_NUM_0, 16 kHz, mono, 16-bit  
-**Prueba:** captura 3 segundos, envía bytes por serial, script Python reconstruye WAV audible  
-**Criterio de aceptación:** función `record_audio(duracion_ms) -> buffer`  
-**Nota:** este es el primer módulo difícil. No avanzar sin audio limpio verificado en PC.  
-**Estado: COMPLETADO**
-
-### Módulo 1.3 — Reproducción PCM5100A + PAM8403 (I2S output)
-**Dependencias previas:** 1.2  
-**Bus:** I2S_NUM_1 (distinto al del micrófono)  
-**Prueba:** reproduce WAV precargado en SPIFFS (beep o voz sintética generada en PC)  
-**Criterio de aceptación:** función `play_wav(ruta)` sin distorsión  
-**Estado: COMPLETADO**
-
-### Módulo 1.4 — Conectividad WiFi
-**Dependencias previas:** 1.1 (para mostrar estado en OLED)  
-**Prueba:** HTTP GET a endpoint público, sobrevive reinicio de router  
-**Criterio de aceptación:** reconexión automática sin intervención, estados visibles en OLED  
-**Estado: COMPLETADO**
+| Entrega | Fecha | Alcance | Estado |
+|---|---|---|---|
+| Entrega 1 | viernes 23/10/2026 | Wake word con métricas, conversación con latencia medida, batería 18650, consumo por estado, documentación y vídeo | EN CURSO |
+| Entrega 2 | viernes 30/10/2026 | Modo sin conexión, relé ESP-12F por voz, autonomía real; opcionales: segundo micrófono, reconocimiento facial | PENDIENTE |
 
 ---
 
-## FASE 2 — Servidor Python (paralelo a Fase 1)
+## Entrega 1 — viernes 23/10/2026
 
-### Módulo 2.1 — Pipeline STT
-**Implementación final:** Groq Whisper large-v3-turbo con fallback Faster-Whisper local  
-**Estado: COMPLETADO**
+### 1.1 Wake word en el dispositivo con métricas publicadas
+**Descripción:** wake word "Hola NEO" ejecutándose en el ESP32-S3, reentrenado con dos hablantes.  
+**Dependencias:** módulos 4.2 y 4.3 (CNN int8, MFCC 148×40); reintegración de la rama `test/wake-word-minimo` en `main` (WDT durante la extracción MFCC).  
+**Criterio de aceptación:**
+- Dataset con muestras de dos hablantes, con la partición entrenamiento/validación/prueba documentada.
+- Matriz de confusión sobre el conjunto de prueba (clases `hola_neo`, `desconocido`, `silencio`).
+- Falsos positivos por hora medidos con audio de fondo continuo (duración de la prueba y tipo de ruido documentados).
+- Latencia de detección medida en el dispositivo: fin del enunciado → evento de detección.
+- Funcionando en el firmware completo, no solo en el entorno `wake_word_test`.
 
-### Módulo 2.2 — Pipeline TTS
-**Implementación final:** edge-tts (es-MX-JorgeNeural, 16 kHz PCM)  
-**Estado: COMPLETADO**
+**Artefactos:** resultados y metodología en `docs/metrics/`.  
+**Estado: EN CURSO** (detección validada en la rama mínima; falta reentrenamiento con dos hablantes, métricas y reintegración en `main`).
 
-### Módulo 2.3 — Cliente LLM externo
-**Implementación final:** Groq (llama-3.1-8b-instant)  
-**Estado: COMPLETADO**
+### 1.2 Conversación por voz con el LLM y latencia de punta a punta
+**Descripción:** conversación por voz con el LLM a través del servidor Python, midiendo la latencia de punta a punta: wake word, transcripción, respuesta y audio.  
+**Dependencias:** 1.1; módulos 2.5 y 3.4; instrumentación descrita en `docs/experimento-latencia.md`.  
+**Criterio de aceptación:**
+- Flujo completo validado en hardware: wake word → grabación → STT → LLM → TTS → reproducción.
+- Latencia desglosada por etapa (detección, transcripción, respuesta del LLM, síntesis, primer audio reproducido) y total, con N interacciones y estadísticos (mediana y p90 como mínimo).
 
-### Módulo 2.4 — Servidor WebSocket
-**Modos:** echo, pipeline y consulta directa JSON  
-**Estado: COMPLETADO**
+**Artefactos:** datos crudos en `docs/metrics/` (continuación de `latency_data_20260911.json`) y resumen en el README.  
+**Estado: EN CURSO** (instrumentación en servidor y firmware hecha; falta la línea base medida en el flujo con wake word).
 
-### Módulo 2.5 — Pipeline completo STT + LLM + TTS
-**Hito:** primera conversación end-to-end en PC  
-**Estado: COMPLETADO**
+### 1.3 Alimentación con batería 18650
+**Descripción:** alimentación con batería 18650 sobre placa de prototipo, con el nivel de carga en la OLED.  
+**Dependencias:** módulo 1.1 (`display_print`).  
+**Criterio de aceptación:**
+- El robot arranca y completa una conversación alimentado solo por la batería (sin USB).
+- Nivel de carga leído por ADC (divisor resistivo) y mostrado en la OLED; curva tensión → porcentaje documentada.
+- Esquema del montaje (carga, protección y regulación a 3V3) documentado.
 
----
+**Nota:** la PSRAM octal exige un pico de corriente en el arranque (ver Notas de desarrollo); el regulador debe soportarlo sin hundir la línea de 3V3.  
+**Estado: PENDIENTE**
 
-## FASE 3 — Primera integración ESP32 ↔ Servidor
+### 1.4 Consumo medido por estado
+**Descripción:** consumo medido en cada estado: reposo, escucha activa y conversación.  
+**Dependencias:** 1.3.  
+**Criterio de aceptación:** corriente media y pico por estado, con el instrumento y el método de medida documentados.  
+**Artefactos:** tabla en `docs/metrics/` y en el README.  
+**Estado: PENDIENTE**
 
-### Módulo 3.1 — Cliente WebSocket en ESP32
-**WiFi manager:** NVS, portal AP con HTTP. Reconnect automático.  
-**Estado: COMPLETADO**
+### 1.5 Documentación y vídeo
+**Descripción:** README en inglés, arquitectura, decisiones de diseño, personalidad del prompt, estado actual y limitaciones, y un vídeo corto.  
+**Criterio de aceptación:**
+- README en inglés actualizado con los resultados de 1.1–1.4. Hoy declara "No battery backup" y "Baseline measurements are pending"; ambas afirmaciones deben corregirse al cerrar 1.2–1.4.
+- Secciones de arquitectura, decisiones de diseño y personalidad del prompt del LLM.
+- Estado actual y limitaciones, coherentes con este roadmap.
+- Vídeo corto de una conversación completa con wake word y batería.
 
-### Módulo 3.2 — Streaming audio ESP32 → servidor
-**VAD con IIR smoothing, máx 30s, envía PCM crudo.**  
-**Estado: COMPLETADO**
-
-### Módulo 3.3 — Streaming audio servidor → ESP32
-**Buffer PSRAM 30s (fallback SRAM 5s), playback por altavoz.**  
-**Estado: COMPLETADO**
-
-### Módulo 3.4 — Loop conversacional completo ⭐
-**Trigger:** botón BOOT (corta → grabar, larga 1.5s → consulta directa).  
-**Estado: COMPLETADO**
-
----
-
-## FASE 4 — Reconocimiento de comandos locales
-
-### Módulo 4.1 — Trigger de interacción
-**Implementación:** botón BOOT (corta → grabar, larga 1.5s → consulta directa).  
-**Estado: COMPLETADO**
-
-### Módulo 4.2 — Entrenamiento modelo de comandos
-**Modelo:** CNN int8 embebido, 3 clases (hola_neo, desconocido, silencio), MFCC 148×40.  
-**Estado: COMPLETADO** (modelo re-entrenado con onset alignment)
-
-### Módulo 4.3 — Inferencia TFLite en ESP32
-**Prueba:** pronunciar comando → OLED muestra nombre y score  
-**Estado: COMPLETADO**  
-
-Validado en hardware en la rama `test/wake-word-minimo` (ver Decisiones de arquitectura). La detección de "Hola NEO" funciona con score alto y endpointing ajustado. Próximo paso: reintegrar al pipeline principal (`main`).
-
-### Módulo 4.4 — Dispatcher de comandos
-**Estado: PENDIENTE** (espera validación de 4.3 en hardware)
+**Estado: EN CURSO** (README en inglés existente; faltan personalidad del prompt, resultados medidos y vídeo).
 
 ---
 
-## FASE 5 — Handlers de comandos en servidor
+## Entrega 2 — viernes 30/10/2026
 
-Un handler independiente y testeable por comando con pytest antes de conectar al ESP32.
+### 2.1 Modo sin conexión
+**Descripción:** comandos de voz reconocidos en el propio dispositivo, sin servidor.  
+**Dependencias:** 1.1; amplía el modelo del módulo 4.2 con clases de comando y absorbe el antiguo módulo 4.4 (dispatcher de comandos).  
+**Criterio de aceptación:**
+- Con el WiFi o el servidor caídos, el dispositivo reconoce y ejecuta los comandos locales.
+- Matriz de confusión del modelo de comandos publicada en `docs/metrics/`.
+- La OLED indica el modo sin conexión.
 
+**Estado: PENDIENTE**
+
+### 2.2 Control por voz del relé ESP-12F
+**Descripción:** control del relé ESP-12F por voz, de dos formas: con conexión, por intención del LLM; sin conexión, por comando local.  
+**Dependencias:** 2.1 (vía local); clasificador de intenciones del servidor (vía con conexión).  
+**Criterio de aceptación:**
+- Con conexión: una orden en lenguaje natural produce una intención estructurada del LLM y el relé conmuta.
+- Sin conexión: un comando local conmuta el relé sin pasar por el servidor.
+- Enlace ESP32-S3 ↔ ESP-12F definido y documentado (protocolo y comportamiento si el ESP-12F no responde).
+
+**Estado: PENDIENTE**
+
+### 2.3 Autonomía real
+**Descripción:** autonomía real medida con una descarga completa de la batería.  
+**Dependencias:** 1.3 y 1.4.  
+**Criterio de aceptación:** descarga completa desde carga llena hasta corte, con el perfil de uso durante la prueba documentado y registro de tensión frente a tiempo; comparación con la estimación obtenida a partir de 1.4.  
+**Estado: PENDIENTE**
+
+### 2.4 (Opcional) Segundo micrófono con ESP-SR
+**Descripción:** segundo micrófono con el procesado de audio (AFE) de ESP-SR, comparando la tasa de acierto con uno y con dos micrófonos.  
+**Criterio de aceptación:** tasa de acierto con uno y dos micrófonos medida en las mismas condiciones. El modelo de wake word se valida o se reentrena con el audio procesado por el AFE, ya que su distribución difiere del audio crudo con el que fue entrenado.  
+**Estado: OPCIONAL / PENDIENTE**
+
+### 2.5 (Opcional) Reconocimiento facial de dos personas
+**Descripción:** reconocimiento facial de dos personas, desactivado por defecto y procesado en el dispositivo sin guardar imágenes.  
+**Criterio de aceptación:** desactivado por defecto; inferencia en el dispositivo; solo se persisten embeddings, nunca imágenes; tasa de acierto medida para las dos personas.  
+**Estado: OPCIONAL / PENDIENTE**
+
+---
+
+## Riesgos y evaluación de plazos (corte 2026-10-21)
+
+- Entrega 1 está a dos días. El wake word aún no está reintegrado en `main`, falta el reentrenamiento con dos hablantes y el hardware de batería (1.3) y las medidas de consumo (1.4) están sin empezar. Es un plazo muy ajustado.
+- Entrega 2 está a una semana de la 1 e incluye modo sin conexión (nuevo modelo de comandos), relé ESP-12F (segundo dispositivo y enlace nuevo) y una descarga completa de la batería, que por sí sola consume horas o días de reloj.
+- Prioridad recomendada: 1.1 y 1.2 primero, porque son la base de todo lo demás; montar 1.3 cuanto antes y lanzar la descarga de 2.3 en cuanto la batería esté operativa; tratar 2.4 y 2.5 como fuera de alcance salvo que sobre holgura.
+
+---
+
+## Backlog (fuera de las entregas)
+
+- **Temporizador** (antigua Fase 5): handler local en ESP32. PENDIENTE.
+- **Fallback a nube** (antigua Fase 6): health check del servidor local con detección de caída en <5 s; clientes Whisper API + Google Cloud TTS con la misma interfaz que los pipelines locales; fallback automático (apagar servidor → el sistema continúa vía nube). PENDIENTE.
+- **Robustez y pulido** (antigua Fase 7), en lo no absorbido por las entregas: manejo de errores con feedback visual en OLED, estados claros (escuchando / procesando / hablando / error), gestión de memoria de buffers de audio, watchdog timer, logs estructurados en servidor.
+- **Expansión domótica con Arduino Nano** (antigua Fase 8): I2C o UART como expansor de GPIOs. Construir solo ante una necesidad concreta; el relé ESP-12F de la Entrega 2 cubre la primera.
+
+---
+
+## Histórico de fases completadas
+
+### Fase 0 — Preparación del entorno
+PlatformIO configurado, ESP32 compilando y flasheando, entorno Python con venv/uv y pytest, repositorio Git con estructura base. Figuraba como EN CURSO en la versión anterior de este documento; las fases posteriores lo presuponen.
+
+### Fase 1 — Módulos base ESP32 (hardware aislado)
+| Módulo | Implementación | Estado |
+|---|---|---|
+| 1.1 OLED SSD1306 | Adafruit_SSD1306 (U8g2 descartada por incompatibilidad con ESP32-S3); `display_print(texto)` | COMPLETADO |
+| 1.2 Captura INMP441 | I2S_NUM_0, 16 kHz, mono, 16-bit; `record_audio(duracion_ms) -> buffer` | COMPLETADO |
+| 1.3 Reproducción PCM5100A + PAM8403 | I2S_NUM_1; `play_wav(ruta)` desde SPIFFS | COMPLETADO |
+| 1.4 WiFi | Reconexión automática, estados en OLED | COMPLETADO |
+
+### Fase 2 — Servidor Python
+| Módulo | Implementación final | Estado |
+|---|---|---|
+| 2.1 STT | Groq Whisper large-v3-turbo, fallback Faster-Whisper local | COMPLETADO |
+| 2.2 TTS | edge-tts (es-MX-JorgeNeural, 16 kHz PCM) | COMPLETADO |
+| 2.3 LLM | Groq (llama-3.1-8b-instant) | COMPLETADO |
+| 2.4 Servidor WebSocket | Modos echo, pipeline y consulta directa JSON | COMPLETADO |
+| 2.5 Pipeline STT + LLM + TTS | Primera conversación end-to-end en PC | COMPLETADO |
+
+### Fase 3 — Integración ESP32 ↔ Servidor
+| Módulo | Implementación | Estado |
+|---|---|---|
+| 3.1 Cliente WebSocket | WiFi manager con NVS, portal AP con HTTP, reconexión automática | COMPLETADO |
+| 3.2 Audio ESP32 → servidor | VAD con suavizado IIR, máx. 30 s, PCM crudo | COMPLETADO |
+| 3.3 Audio servidor → ESP32 | Buffer PSRAM 30 s (fallback SRAM 5 s), reproducción por altavoz | COMPLETADO |
+| 3.4 Loop conversacional | Botón BOOT (corta → grabar, larga 1,5 s → consulta directa) | COMPLETADO |
+
+### Fase 4 — Reconocimiento local
+| Módulo | Implementación | Estado |
+|---|---|---|
+| 4.1 Trigger | Botón BOOT (corta → grabar, larga 1,5 s → consulta directa) | COMPLETADO |
+| 4.2 Modelo de comandos | CNN int8 embebida, 3 clases (hola_neo, desconocido, silencio), MFCC 148×40, reentrenado con onset alignment | COMPLETADO |
+| 4.3 Inferencia TFLite | Validado en la rama `test/wake-word-minimo`: score alto y endpointing ajustado | COMPLETADO |
+| 4.4 Dispatcher de comandos | Absorbido por el entregable 2.1 | — |
+
+### Fase 5 — Handlers de comandos en servidor
 | Comando | API externa | Estado |
 |---|---|---|
 | Clima | OpenWeatherMap | COMPLETADO |
 | Tasas de cambio (El Toque) | El Toque API (`/v1/trmi`, tasas CUP) | COMPLETADO |
 | Cripto | CoinGecko | COMPLETADO |
 | Noticias | NewsAPI (`/v2/everything`, language=es) | COMPLETADO |
-| Temporizador | Local en ESP32 | PENDIENTE |
-
----
-
-## FASE 6 — Fallback a nube
-
-### Módulo 6.1 — Health check del servidor local
-**Criterio:** detecta caída en <5 segundos  
-**Estado: PENDIENTE**
-
-### Módulo 6.2 — Clientes de APIs de nube
-**APIs:** Whisper API (STT) + Google Cloud TTS  
-**Requisito:** misma interfaz que pipelines locales (intercambiables)  
-**Estado: PENDIENTE**
-
-### Módulo 6.3 — Lógica de fallback automático
-**Prueba:** apagar servidor → sistema continúa funcionando vía nube  
-**Estado: PENDIENTE**
-
----
-
-## FASE 7 — Robustez y pulido
-
-- Manejo de errores con feedback visual en OLED
-- Estados claros: escuchando / procesando / hablando / error
-- Gestión de memoria en ESP32 (buffers de audio grandes)
-- Watchdog timer
-- Logs estructurados en servidor
-- Documentación técnica completa
-
----
-
-## FASE 8 (futura) — Expansión domótica con Arduino Nano
-
-Comunicación I2C o UART entre ESP32 y Arduino Nano como expansor de GPIOs.
-Construir solo cuando haya una necesidad concreta. No antes.
+| Temporizador | Local en ESP32 | Movido al Backlog |
 
 ---
 
@@ -182,6 +196,8 @@ Construir solo cuando haya una necesidad concreta. No antes.
 1. Reintegrar wake word validado al firmware completo (resolver WDT MFCC-SRAM).
 2. Validar flujo end-to-end: wake word → grabación → servidor → respuesta → playback.
 3. Una vez validado, merge de `test/wake-word-minimo` a `main`.
+
+Estos pasos son prerrequisito de los entregables 1.1 y 1.2.
 
 ---
 
