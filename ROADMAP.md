@@ -58,7 +58,15 @@ Notas para la documentación:
 **Artefactos:** datos crudos en `docs/metrics/` (continuación de `latency_data_20260911.json`) y resumen en el README.  
 **Estado: EN CURSO** (instrumentación en servidor y firmware hecha; falta la línea base medida en el flujo con wake word).
 
-Pendiente de decidir la configuración que se mide: Groq rechaza (403) la IP de Proton VPN, y el modo local usa Whisper base + `qwen2.5-coder:3b` (modelo de código, poco adecuado para conversar). La voz de las respuestas es `es-CU-ManuelNeural` con edge-tts, que requiere internet; Piper queda como alternativa offline (`TTS_PROVIDER=local`). En pruebas del 21/10 solo en el servidor, el modo local tardó 5,1 s en una consulta al LLM y 2,3 s en una de clima.
+Se miden los dos perfiles con el mismo audio: `local` (faster-whisper + Ollama + Piper, sin internet) y `nube` (Groq STT + Groq LLM + edge-tts), con la velocidad de internet en el informe y la calidad del STT (WER, CER, intención correcta). Herramientas y guía en `servidor/benchmark/README.md`:
+1. Grabar el corpus (31 frases de `servidor/benchmark/frases.csv`) con la placa, con `GUARDAR_AUDIO_DIR`.
+2. `python -m src.benchmark.corpus` empareja grabaciones y frases.
+3. `python -m src.benchmark.e2e` mide los dos perfiles.
+4. `python -m src.benchmark.placa` mide la latencia percibida en la placa a partir de su log.
+
+Ensayo de la herramienta (21/10, contenedor, voz sintética, LLM simulado): Whisper base con WER 19,6 %, STT 1,27 s y TTS 0,24 s de mediana. No es un resultado del proyecto.
+
+Riesgos: Groq rechaza (403) algunas IPs de Proton VPN, y el banco de pruebas lo detecta antes de medir. `qwen2.5-coder:3b` es un modelo de código; para comparar, `qwen2.5:3b` (`--ollama-model`).
 
 Corregido (2026-10-21): `percentile()` de `servidor/scripts/neo_metrics_tool.py` no ordenaba los valores por etapa, por eso los p50/p95 de STT/LLM/TTS de `docs/metrics/README.md` (11/09) no son válidos. Hay que regenerarlos con los logs originales del PC.
 

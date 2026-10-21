@@ -404,7 +404,8 @@ def main():
                                                  args.calentamiento, not args.sin_pausas))
         except RuntimeError as e:
             print(f"  {e}")
-            entrada["omitido"] = [str(e).splitlines()[0]]
+            lineas = [l for l in str(e).splitlines() if l.strip()]
+            entrada["omitido"] = [lineas[0] + " " + lineas[-1].strip() if len(lineas) > 1 else lineas[0]]
             continue
         if not args.sin_red:
             entrada["red_despues"] = red.medir()

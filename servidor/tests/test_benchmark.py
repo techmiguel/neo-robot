@@ -60,7 +60,7 @@ def test_frases_del_corpus_tienen_la_intencion_declarada():
 
 FRASES = {  # duración del audio (ms) → lo que "transcribe" el STT simulado
     600: "¿Cuál es la capital de Japón?",
-    700: "Quien escribio cien años de soledad",   # sin tildes ni signos: errores reales
+    700: "Quien escribio Don Quijote de la Mancha",   # sin tildes ni signos: errores reales
     800: "¿Cómo está el clima hoy?",
 }
 
@@ -137,12 +137,12 @@ async def test_ciclo_completo(servidor):
     assert res["errores"] == 0
     assert res["latencia_libre"]["e2e"]["n"] == 4 and res["latencia_comandos"]["e2e"]["n"] == 2
     assert res["intencion_acierto"] == 1.0
-    assert res["stt"]["wer"] == pytest.approx(4 / 34)   # 2 errores × 2 rep. / 17 palabras × 2 rep.
+    assert res["stt"]["wer"] == pytest.approx(4 / 36)   # 2 errores × 2 rep. / 18 palabras × 2 rep.
 
     texto = e2e.informe({"fecha": "hoy", "repeticiones": 2, "como_placa": True,
                          "corpus": {"consultas": 3, "libres": 2, "comandos": 1},
                          "perfiles": [{"nombre": "local", "config": libre["perfil"], "resumen": res}]})
-    assert "| WER | 11.8 % |" in texto and "Peores transcripciones (local)" in texto
+    assert "| WER | 11.1 % |" in texto and "Peores transcripciones (local)" in texto
 
 
 # ── Servidor real en subproceso ───────────────────────────────────────────────
