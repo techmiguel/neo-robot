@@ -11,7 +11,7 @@ import os
 import miniaudio
 import edge_tts
 
-VOZ_DEFAULT = "es-MX-JorgeNeural"
+VOZ_DEFAULT = "es-CU-ManuelNeural"
 SAMPLE_RATE  = 16000  # igual que el micrófono → el ESP32 usa un solo rate para I2S
 
 _piper_voz = None   # se carga una vez (tarda ~1 s)
