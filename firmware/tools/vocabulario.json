@@ -2,9 +2,12 @@
   "descripcion": "Vocabulario del modelo LOCAL de NEO. Solo wake word: el resto de intenciones se deduce del audio transcrito en el servidor. El orden define el indice de clase del modelo TFLite. Regenerar src/models/vocabulario.h con: python tools/gen_vocabulario.py",
   "muestreo_hz": 16000,
   "umbral_defecto": 0.85,
+  "nota_carpetas_extra": "carpetas_extra: subcarpetas de dataset/ que train_model.py carga con la etiqueta de esa clase (las graba tools/capture_dataset_hablantes.py). El firmware no las usa.",
   "clases": [
-    { "nombre": "hola_neo",    "frase": "Hola NEO",              "objetivo": 170, "comando": "HOLA_NEO" },
-    { "nombre": "desconocido", "frase": "otras palabras o voces", "objetivo": 120, "comando": null },
-    { "nombre": "silencio",    "frase": "solo ruido ambiente",    "objetivo": 60,  "comando": null }
+    { "nombre": "hola_neo",    "frase": "Hola NEO",              "objetivo": 320, "comando": "HOLA_NEO" },
+    { "nombre": "desconocido", "frase": "otras palabras o voces", "objetivo": 800, "comando": null,
+      "carpetas_extra": ["neg_similares", "neg_libre"] },
+    { "nombre": "silencio",    "frase": "solo ruido ambiente",    "objetivo": 180, "comando": null,
+      "carpetas_extra": ["neg_ambiente"] }
   ]
 }

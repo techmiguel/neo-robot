@@ -7,18 +7,30 @@
  * Clases disponibles: definidas en src/models/vocabulario.h
  * (generado desde tools/vocabulario.json — NO editar aquí).
  *
- * ── Protocolo Serial (115200 baud) ───────────────────────────────────────────
+ * ── Protocolo Serial (921600 baud) ───────────────────────────────────────────
  *  PC → ESP32:
- *    "RECORD:{clase}\n"   — inicia grabación de la clase indicada
+ *    "RECORD:{clase}\n"   — inicia grabación de 1.5s de la clase indicada
  *    "STATUS\n"           — consulta clase y conteo actuales
+ *    "START_CONT\n"       — inicia grabación continua (bloques de 1.5s)
+ *    0x1B (ESC)           — detiene grabación continua
  *
- *  ESP32 → PC:
+ *  ESP32 → PC (modo 1.5s):
  *    "RECORDING:{clase}\n"
  *    "START_AUDIO:{bytes}\n"
  *    [bytes PCM crudo 16-bit LE 16 kHz mono]
  *    "END_AUDIO\n"
  *    "STATUS:{clase}:{conteo}\n"
- *    "ERROR:{msg}\n"
+ *
+ *  ESP32 → PC (modo continuo):
+ *    "START_AUDIO:{block_bytes}\n"
+ *    "BLOCK_SIZE:{block_bytes}\n"
+ *    [bloque 1 PCM crudo]
+ *    "BLOCK_SIZE:{block_bytes}\n"
+ *    [bloque 2 PCM crudo]
+ *    ...
+ *    "END_CONT\n"
+ *
+ *  Errores: "ERROR:{msg}\n"
  *
  * ── Botón BOOT (GPIO0) ────────────────────────────────────────────────────────
  *  Pulsación corta (<1.5s):  graba la clase actualmente seleccionada
@@ -46,6 +58,8 @@ static Trigger    trigger;
 static uint8_t  clase_actual  = 0;
 static uint16_t conteos[VOCAB_N_CLASES] = {};
 static int16_t* audio_buf     = nullptr;
+static bool     modo_continuo = false;
+static uint32_t ultimo_heartbeat = 0;
 
 // Buffer para acumular una línea de Serial sin bloquear
 static char    _line_buf[64];
@@ -97,6 +111,50 @@ static void grabar() {
     actualizarOled();
 }
 
+// ── Grabación continua (negativos) ────────────────────────────────────────────
+
+static void grabarContinuo() {
+    modo_continuo = true;
+    oled.mostrar("Continuo", "Grabando...");
+
+    Serial.printf("START_AUDIO:%u\r\n", (unsigned)AUDIO_BYTES);
+    Serial.printf("BLOCK_SIZE:%u\r\n", (unsigned)AUDIO_BYTES);
+
+    uint32_t bloque = 0;
+    while (true) {
+        if (Serial.available()) {
+            int c = Serial.read();
+            if (c == 0x1B) break;
+        }
+
+        for (size_t offset = 0; offset < SAMPLE_COUNT; ) {
+            int16_t tmp[Microphone::BLOCK_SIZE];
+            if (!mic.leer(tmp)) continue;
+            size_t n = min((size_t)Microphone::BLOCK_SIZE, SAMPLE_COUNT - offset);
+            memcpy(audio_buf + offset, tmp, n * sizeof(int16_t));
+            offset += n;
+        }
+
+        Serial.write(reinterpret_cast<const uint8_t*>(audio_buf), AUDIO_BYTES);
+        Serial.flush();
+        bloque++;
+
+        if (bloque % 5 == 0) {
+            uint32_t seg = bloque * 3 / 2;
+            char tiempo[16];
+            snprintf(tiempo, sizeof(tiempo), "%u:%02u",
+                     (unsigned)(seg / 60), (unsigned)(seg % 60));
+            oled.mostrar("Continuo", tiempo);
+        }
+    }
+
+    Serial.print("END_CONT\r\n");
+    Serial.flush();
+    modo_continuo = false;
+
+    oled.mostrar("Continuo", "Listo");
+}
+
 // ── Cambio de clase ───────────────────────────────────────────────────────────
 
 static void siguienteClase() {
@@ -131,6 +189,8 @@ static void procesarSerial() {
     char linea[64];
     if (!_leerLinea(linea, sizeof(linea))) return;
 
+    Serial.printf("DEBUG:Recibido: %s\r\n", linea);
+
     if (strncmp(linea, "RECORD:", 7) == 0) {
         const char* clase_pedida = linea + 7;
         for (uint8_t i = 0; i < VOCAB_N_CLASES; i++) {
@@ -144,17 +204,20 @@ static void procesarSerial() {
 
     } else if (strcmp(linea, "STATUS") == 0) {
         Serial.printf("STATUS:%s:%u\r\n", VOCAB_CLASES[clase_actual], conteos[clase_actual]);
+
+    } else if (strcmp(linea, "START_CONT") == 0) {
+        grabarContinuo();
     }
 }
 
 // ── Setup ─────────────────────────────────────────────────────────────────────
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(921600);
     delay(500);
     Serial.println("=== NEO DATASET CAPTURE ===");
     Serial.printf("Clases: %d (ver tools/vocabulario.json)\n", VOCAB_N_CLASES);
-    Serial.println("Protocolo: RECORD:{clase} / STATUS");
+    Serial.println("Protocolo: RECORD:{clase} / START_CONT / STATUS");
 
     audio_buf = (int16_t*)malloc(AUDIO_BYTES);
     if (!audio_buf) {
@@ -185,6 +248,12 @@ void setup() {
 // ── Loop ──────────────────────────────────────────────────────────────────────
 
 void loop() {
-    trigger.tick();
+    if (!modo_continuo) trigger.tick();
     procesarSerial();
+
+    // Heartbeat cada 5 segundos
+    if (millis() - ultimo_heartbeat > 5000) {
+        Serial.printf("HEARTBEAT:%u\r\n", (unsigned)(millis() / 1000));
+        ultimo_heartbeat = millis();
+    }
 }

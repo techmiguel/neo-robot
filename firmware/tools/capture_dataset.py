@@ -25,7 +25,7 @@ import wave
 from pathlib import Path
 
 # ── Configuración ─────────────────────────────────────────────────────────────
-BAUD_RATE    = 115200
+BAUD_RATE    = 921600
 SAMPLE_RATE  = 16000
 CHANNELS     = 1
 SAMPLE_WIDTH = 2        # int16 → 2 bytes por muestra
