@@ -68,6 +68,20 @@ Ensayo de la herramienta (21/10, contenedor, voz sintética, LLM simulado): Whis
 
 Riesgos: Groq rechaza (403) algunas IPs de Proton VPN, y el banco de pruebas lo detecta antes de medir. `qwen2.5-coder:3b` es un modelo de código; para comparar, `qwen2.5:3b` (`--ollama-model`).
 
+**Primera medición con la placa (21/10, panel frase a frase, 29 frases válidas).** Detalle en `docs/metrics/validacion_20261021/ANALISIS.md`.
+
+| | WER | Intención | Respuesta completa (mediana / p90) |
+|---|---|---|---|
+| Local | 29 % | 83 % | 6,7 s / 10,0 s (LLM 5,1 s) |
+| Nube | 6,5 % | 100 % | 6,1 s / 15,3 s (TTS 2,7 s) |
+| Híbrido calculado (Groq + Piper) | | | 3,9 s / 9,0 s |
+
+Hallazgos:
+- **El VAD de la placa corta la primera palabra** en 7 de 29 frases, en ambos perfiles. Hace falta pre-roll en el firmware.
+- **`qwen2.5-coder:3b` comete errores de hecho**; hay que probar `qwen2.5:3b` y Whisper `small`.
+- **Faltan datos:** la latencia percibida en la placa (no se encontró su log).
+- **Handlers por corregir:** ciudad del clima, euro de El Toque y búsqueda de noticias.
+
 Corregido (2026-10-21): `percentile()` de `servidor/scripts/neo_metrics_tool.py` no ordenaba los valores por etapa, por eso los p50/p95 de STT/LLM/TTS de `docs/metrics/README.md` (11/09) no son válidos. Hay que regenerarlos con los logs originales del PC.
 
 ### 1.3 Alimentación con batería 18650
