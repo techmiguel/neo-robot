@@ -1,0 +1,20 @@
+Designator,LCSC,Huella KiCad,Huella EasyEDA,Giro,Desviación (mm),Revisar
+C1,C444805,CP_EIA-6032-28_Kemet-C,CAP-SMD_L6.0-W3.2,0,0.491,"polaridad comprobada: en las dos huellas el pad 1 es el positivo (EasyEDA dibuja el '+' y la banda junto al pad 1); solo cambia la separación de pads (±2,47 mm en KiCad, ±2,96 en EasyEDA), los dos cubren los terminales de la caja C"
+"C2,C5,C9",C15850,C_0805_2012Metric,C0805,0,0.05,no
+C3,C45783,C_0805_2012Metric,C0805,0,0.05,no
+"C4,C7,C10",C1525,C_0402_1005Metric,C0402,0,0.06,no
+C6,C52923,C_0402_1005Metric,C0402,0,0.06,no
+D1,C7519,SOT-23-6,SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL,270,0.012,girada 270° respecto a EasyEDA: comprobar en la vista previa
+F1,C2803344,Fuse_1206_3216Metric,F1206,0,0.045,no
+J1,C165948,USB_C_Receptacle_HRO_TYPE-C-31-M-12,USB-C_SMD-TYPE-C-31-M-12_1,0,0,no
+"R1,R2",C25905,R_0402_1005Metric,R0402,0,0.077,no
+R3,C25744,R_0402_1005Metric,R0402,0,0.077,no
+"R4,R5",C25092,R_0402_1005Metric,R0402,0,0.077,no
+R6,C25790,R_0402_1005Metric,R0402,0,0.077,no
+R7,C17168,R_0402_1005Metric,R0402,0,0.077,no
+"R9,R10",C25900,R_0402_1005Metric,R0402,0,0.077,no
+SW1,C318884,SW_Push_1P1T_XKB_TS-1187A,SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5,270,1.125,girada 270° respecto a EasyEDA: comprobar en la vista previa; artefacto de numeración: EasyEDA numera los pads 1-4 y KiCad 1-1-2-2; pulsador simétrico
+SW2,C318884,SW_Push_1P1T_XKB_TS-1187A,SW-SMD_4P-L5.1-W5.1-P3.70-LS6.5-TL_H1.5,270,1.125,girada 270° respecto a EasyEDA: comprobar en la vista previa; artefacto de numeración: EasyEDA numera los pads 1-4 y KiCad 1-1-2-2; pulsador simétrico
+U1,C15578,SOT-223-3_TabPin2,SOT-223_L6.7-W3.5-P2.30-BR,180,4.2,girada 180° respecto a EasyEDA: comprobar en la vista previa; artefacto de numeración: EasyEDA numera la lengüeta como pin 4 y KiCad como pin 2; con el giro indicado los pines 1-3 coinciden
+U2,C2913202,ESP32-S3-WROOM-1,WIRELM-SMD_ESP32-S3-WROOM-1,0,1.926,"solo difiere el pad central de GND (41): en KiCad es un pad de 3,9 mm y en EasyEDA está dividido; los 40 pines de señal coinciden"
+U4,C910544,TQFN-16-1EP_3x3mm_P0.5mm_EP1.23x1.23mm,TQFN-16_L3.0-W3.0-P0.50-BL-EP1.5,270,0.063,girada 270° respecto a EasyEDA: comprobar en la vista previa
