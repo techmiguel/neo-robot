@@ -41,10 +41,16 @@ def _transcribir_groq(pcm: bytes, sample_rate: int) -> str:
     return resultado.strip()
 
 
+_whisper = None   # se carga una vez: cargarlo en cada consulta suma segundos
+
+
 def _transcribir_local(pcm: bytes, sample_rate: int) -> str:
-    from faster_whisper import WhisperModel
-    modelo_size = os.getenv("WHISPER_MODEL_SIZE", "base")
-    modelo = WhisperModel(modelo_size, device="cpu", compute_type="int8")
+    global _whisper
+    if _whisper is None:
+        from faster_whisper import WhisperModel
+        modelo_size = os.getenv("WHISPER_MODEL_SIZE", "base")
+        _whisper = WhisperModel(modelo_size, device="cpu", compute_type="int8")
+    modelo = _whisper
     wav = _pcm_a_wav_bytes(pcm, sample_rate)
     audio_buf = io.BytesIO(wav)
     segments, _ = modelo.transcribe(audio_buf, language="es")

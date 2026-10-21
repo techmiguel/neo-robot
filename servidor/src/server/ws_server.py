@@ -247,7 +247,25 @@ async def _health(connection, request):
             return http.HTTPStatus.OK, [], b"NEO OK\n"
 
 
+async def _precalentar():
+    """Carga los modelos locales antes de aceptar conexiones: la primera carga
+    (Whisper ~15 s, Ollama ~50 s, Piper ~7 s) superaría el timeout del ESP32."""
+    from src.stt.transcriber import transcribe
+    from src.llm.client      import ask
+    from src.tts.synthesizer import synthesize
+    t0 = time.time()
+    if os.getenv("STT_PROVIDER") == "local":
+        await asyncio.to_thread(transcribe, b"\x00" * MIC_SAMPLE_RATE, MIC_SAMPLE_RATE)
+    if os.getenv("LLM_PROVIDER") == "ollama":
+        await asyncio.to_thread(ask, "Hola")
+    if os.getenv("TTS_PROVIDER") == "local":
+        await synthesize("Hola")
+    log.info(f"[precarga] modelos locales listos en {time.time() - t0:.1f}s")
+
+
 async def main():
+    if MODO == "pipeline":
+        await _precalentar()
     log.info(f"Servidor NEO WebSocket en ws://{HOST}:{PORT}  modo={MODO}")
     # ping_interval y ping_timeout ajustados para HuggingFace Spaces:
     # - ping_interval=10: enviar ping cada 10s (el proxy de HF cierra conexiones inactivas)
