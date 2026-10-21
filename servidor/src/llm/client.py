@@ -9,6 +9,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+GROQ_LLM_DEFAULT     = "openai/gpt-oss-20b"
+OLLAMA_MODEL_DEFAULT = "llama3.2"
+
 # System prompt con personalidad distintiva de NEO.
 # Parametrizable por .env (NEO_SYSTEM_PROMPT) para ajustar sin tocar código.
 # La concisión es crítica: el TTS genera audio, y frases largas = latencia alta.
@@ -26,7 +29,7 @@ SYSTEM_PROMPT = os.getenv(
 def _preguntar_groq(messages: list[dict]) -> str:
     from groq import Groq
     cliente = Groq(api_key=os.environ["GROQ_API_KEY"])
-    modelo  = os.getenv("GROQ_LLM_MODEL", "openai/gpt-oss-20b")
+    modelo  = os.getenv("GROQ_LLM_MODEL", GROQ_LLM_DEFAULT)
     resp = cliente.chat.completions.create(
         model=modelo,
         messages=messages,
@@ -52,7 +55,7 @@ def _preguntar_groq(messages: list[dict]) -> str:
 def _preguntar_ollama(messages: list[dict]) -> str:
     import requests
     host  = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-    model = os.getenv("OLLAMA_MODEL", "llama3.2")
+    model = os.getenv("OLLAMA_MODEL", OLLAMA_MODEL_DEFAULT)
     resp = requests.post(
         f"{host}/api/chat",
         json={

@@ -15,6 +15,7 @@ load_dotenv()
 
 SAMPLE_RATE   = 16000  # rate del micrófono INMP441 en el ESP32
 _PROVIDER     = os.getenv("STT_PROVIDER", "groq")
+GROQ_STT_MODEL = "whisper-large-v3-turbo"
 
 
 def _pcm_a_wav_bytes(pcm: bytes, sample_rate: int = SAMPLE_RATE) -> bytes:
@@ -34,7 +35,7 @@ def _transcribir_groq(pcm: bytes, sample_rate: int) -> str:
     wav = _pcm_a_wav_bytes(pcm, sample_rate)
     resultado = cliente.audio.transcriptions.create(
         file=("audio.wav", wav, "audio/wav"),
-        model="whisper-large-v3-turbo",
+        model=GROQ_STT_MODEL,
         language="es",
         response_format="text",
     )
