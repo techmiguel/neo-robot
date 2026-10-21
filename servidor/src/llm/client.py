@@ -59,6 +59,9 @@ def _preguntar_ollama(messages: list[dict]) -> str:
             "model": model,
             "messages": messages,
             "stream": False,
+            # Ollama descarga el modelo tras 5 min sin uso; recargarlo (~50 s)
+            # supera el timeout de 40 s del ESP32.
+            "keep_alive": os.getenv("OLLAMA_KEEP_ALIVE", "60m"),
         },
         timeout=60,
     )

@@ -27,6 +27,10 @@
 // 150 KB deja margen para buffers internos del operador.
 static const size_t kArenaSize = 150 * 1024;
 
+// Piso de c0 relativo al frame más fuerte. Debe coincidir con C0_PISO de
+// tools/train_model.py (normalizar_c0): el modelo se entrena así.
+static const float kC0Piso = -40.0f;
+
 // ── Tipos internos ────────────────────────────────────────────────────────────
 using OpResolver = tflite::MicroMutableOpResolver<5>;
 
@@ -151,6 +155,39 @@ Comando Inference::clasificar(const int16_t* muestras, size_t n_muestras) {
         // Rellenar frames faltantes con ceros
         memset(_mfcc_buf + frames * MFCC_NUM_COEFFS, 0,
                (MFCC_NUM_FRAMES - frames) * MFCC_NUM_COEFFS * sizeof(float));
+    }
+
+    // 1b. Normalización por clip, igual que normalizar_c0() de train_model.py:
+    //   - c0 (energía) relativo al frame más fuerte, con piso → no depende del
+    //     volumen (distancia al micro).
+    //   - CMN: a c1.. se le resta su media en los frames con audio (los que no
+    //     quedan en el piso) → quita la coloración fija del canal/posición.
+    //   Los frames de relleno (ceros tras la palabra) quedan en [piso, 0, 0…].
+    float c0_max = -1e30f;
+    for (int f = 0; f < frames; f++) {
+        c0_max = fmaxf(c0_max, _mfcc_buf[f * MFCC_NUM_COEFFS]);
+    }
+    static float media[MFCC_NUM_COEFFS];
+    memset(media, 0, sizeof(media));
+    int n_audio = 0;
+    for (int f = 0; f < MFCC_NUM_FRAMES; f++) {
+        float* v = &_mfcc_buf[f * MFCC_NUM_COEFFS];
+        bool relleno = (f >= frames) || (v[0] - c0_max <= kC0Piso);
+        v[0] = relleno ? kC0Piso : v[0] - c0_max;
+        if (relleno) {
+            memset(v + 1, 0, (MFCC_NUM_COEFFS - 1) * sizeof(float));
+        } else {
+            for (int k = 1; k < MFCC_NUM_COEFFS; k++) media[k] += v[k];
+            n_audio++;
+        }
+    }
+    if (n_audio > 0) {
+        for (int k = 1; k < MFCC_NUM_COEFFS; k++) media[k] /= (float)n_audio;
+        for (int f = 0; f < MFCC_NUM_FRAMES; f++) {
+            float* v = &_mfcc_buf[f * MFCC_NUM_COEFFS];
+            if (v[0] <= kC0Piso) continue;   // relleno
+            for (int k = 1; k < MFCC_NUM_COEFFS; k++) v[k] -= media[k];
+        }
     }
 
     auto* interp = (tflite::MicroInterpreter*)_interpreter;

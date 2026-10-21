@@ -6,7 +6,7 @@ para que NEO confirme en voz alta que salió del reposo.
 
 Uso:
     python tools/gen_ack.py
-    python tools/gen_ack.py --texto "¡Hola!" --voz es-MX-JorgeNeural
+    python tools/gen_ack.py --texto "¡Hola!" --voz es-CU-ManuelNeural
 
 Requiere: pip install edge-tts miniaudio
 """
@@ -66,7 +66,7 @@ def escribir_header(muestras: list[int], texto: str, voz: str) -> None:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--texto", default="¡Hola!")
-    ap.add_argument("--voz", default="es-MX-JorgeNeural")
+    ap.add_argument("--voz", default="es-CU-ManuelNeural")
     args = ap.parse_args()
     mp3 = asyncio.run(sintetizar(args.texto, args.voz))
     muestras = convertir(mp3)
