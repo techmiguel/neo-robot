@@ -211,3 +211,18 @@ def test_placa_tramos_y_emparejado(tmp_path):
     assert res["filas"][1]["completo"] is False and res["filas"][1]["silencio_vad"] == 0.0
     texto = placa.informe(res)
     assert "Perfil del servidor: **local**" in texto and "| STT | 1.00 |" in texto
+
+
+# ── Precarga del servidor ─────────────────────────────────────────────────────
+
+async def test_precarga_no_tumba_el_servidor_si_ollama_falla(monkeypatch, caplog):
+    """Con Ollama caído la precarga avisa y sigue: un servidor caído haría que
+    la placa se fuera a la nube sin que nadie lo note."""
+    from src.server import ws_server
+    monkeypatch.setenv("LLM_PROVIDER", "ollama")
+    monkeypatch.setenv("STT_PROVIDER", "groq")
+    monkeypatch.setenv("TTS_PROVIDER", "edge")
+    monkeypatch.setenv("OLLAMA_HOST", f"http://127.0.0.1:{_puerto_libre()}")   # nadie escucha
+    with caplog.at_level("INFO"):
+        await ws_server._precalentar()
+    assert "[precarga] Ollama FALLÓ" in caplog.text and "[precarga] terminada" in caplog.text

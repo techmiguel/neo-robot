@@ -277,18 +277,29 @@ async def _health(connection, request):
 
 async def _precalentar():
     """Carga los modelos locales antes de aceptar conexiones: la primera carga
-    (Whisper ~15 s, Ollama ~50 s, Piper ~7 s) superaría el timeout del ESP32."""
+    (Whisper ~15 s, Ollama 50–90 s en frío, Piper ~7 s) superaría el timeout del ESP32.
+
+    Un fallo aquí no tumba el servidor: si cae, la placa se va sola a la nube y
+    no se nota; mejor que escuche y que el error salga en el log y en la consulta."""
     from src.stt.transcriber import transcribe
-    from src.llm.client      import ask
+    from src.llm.client      import precargar_ollama
     from src.tts.synthesizer import synthesize
-    t0 = time.time()
+    pasos = []
     if os.getenv("STT_PROVIDER") == "local":
-        await asyncio.to_thread(transcribe, b"\x00" * MIC_SAMPLE_RATE, MIC_SAMPLE_RATE)
+        pasos.append(("Whisper", lambda: asyncio.to_thread(transcribe, b"\x00" * MIC_SAMPLE_RATE, MIC_SAMPLE_RATE)))
     if os.getenv("LLM_PROVIDER") == "ollama":
-        await asyncio.to_thread(ask, "Hola")
+        pasos.append(("Ollama", lambda: asyncio.to_thread(precargar_ollama)))
     if os.getenv("TTS_PROVIDER") == "local":
-        await synthesize("Hola")
-    log.info(f"[precarga] modelos locales listos en {time.time() - t0:.1f}s")
+        pasos.append(("Piper", lambda: synthesize("Hola")))
+    t0 = time.time()
+    for nombre, paso in pasos:
+        t = time.time()
+        try:
+            await paso()
+            log.info(f"[precarga] {nombre} listo en {time.time() - t:.1f}s")
+        except Exception as e:
+            log.error(f"[precarga] {nombre} FALLÓ ({type(e).__name__}: {e}); las consultas que lo usen darán error")
+    log.info(f"[precarga] terminada en {time.time() - t0:.1f}s")
 
 
 async def main():

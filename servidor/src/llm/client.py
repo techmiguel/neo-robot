@@ -72,6 +72,18 @@ def _preguntar_ollama(messages: list[dict]) -> str:
     return resp.json()["message"]["content"].strip()
 
 
+def precargar_ollama(timeout: float = 300) -> None:
+    """Carga el modelo en memoria sin generar nada (/api/generate sin prompt).
+    En frío puede tardar más de un minuto; el timeout de 60 s de las consultas
+    no sirve aquí."""
+    import requests
+    host  = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    model = os.getenv("OLLAMA_MODEL", OLLAMA_MODEL_DEFAULT)
+    requests.post(f"{host}/api/generate",
+                  json={"model": model, "keep_alive": os.getenv("OLLAMA_KEEP_ALIVE", "60m")},
+                  timeout=timeout).raise_for_status()
+
+
 def ask(prompt: str, messages: list[dict] = None) -> str:
     """Envía un prompt al LLM y retorna la respuesta en texto.
 
