@@ -77,7 +77,9 @@ def comprobar(perfil: str, env: dict) -> list[str]:
         modelo = env.get("OLLAMA_MODEL", "llama3.2")
         try:
             nombres = [m["name"] for m in requests.get(f"{host}/api/tags", timeout=5).json()["models"]]
-            if not any(n == modelo or n.startswith(modelo + ":") for n in nombres):
+            # Ollama no distingue mayúsculas: "Qwen2.5-Coder:3B" sirve para "qwen2.5-coder:3b"
+            m = modelo.lower()
+            if not any(n.lower() == m or n.lower().startswith(m + ":") for n in nombres):
                 problemas.append(f"Ollama no tiene '{modelo}' (tiene: {', '.join(nombres) or 'ninguno'}); "
                                  f"ollama pull {modelo}")
         except Exception as e:
