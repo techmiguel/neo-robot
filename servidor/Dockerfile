@@ -6,7 +6,7 @@ WORKDIR /app
 COPY pyproject.toml .
 RUN pip install --no-cache-dir \
     "groq>=0.9.0" \
-    "edge-tts>=6.1.9" \
+    "edge-tts>=7.3.1" \
     "miniaudio>=1.58" \
     "requests>=2.31.0" \
     "websockets>=12.0" \
