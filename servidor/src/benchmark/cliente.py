@@ -19,7 +19,8 @@ PAUSA_FIN_S = 0.200
 SAMPLE_RATE = 16000
 
 
-async def consulta(url: str, pcm: bytes, timeout: float = 60.0, como_placa: bool = True) -> dict:
+async def consulta(url: str, pcm: bytes, timeout: float = 60.0, como_placa: bool = True,
+                   guardar_audio: bool = False) -> dict:
     """Envía una consulta de audio y mide los tiempos vistos desde el cliente.
 
     Tiempos en segundos:
@@ -27,8 +28,11 @@ async def consulta(url: str, pcm: bytes, timeout: float = 60.0, como_placa: bool
       espera          fin_grabacion → fin_respuesta (STT + LLM + TTS + envío)
       primer_audio    fin_grabacion → primer chunk de respuesta
       total           primer chunk enviado → fin_respuesta
+
+    Con guardar_audio=True, res["pcm"] trae el audio de la respuesta.
     """
     res = {"ok": False, "bytes_respuesta": 0}
+    audio = bytearray()
     t_primer_audio = None
     async with websockets.connect(url, max_size=None, open_timeout=15,
                                   ping_interval=None) as ws:
@@ -52,6 +56,8 @@ async def consulta(url: str, pcm: bytes, timeout: float = 60.0, como_placa: bool
                 if t_primer_audio is None:
                     t_primer_audio = time.perf_counter()
                 res["bytes_respuesta"] += len(msg)
+                if guardar_audio:
+                    audio.extend(msg)
                 continue
             data = json.loads(msg)
             if data.get("cmd") == "fin_respuesta":
@@ -70,4 +76,6 @@ async def consulta(url: str, pcm: bytes, timeout: float = 60.0, como_placa: bool
         total=t_end - t_ini,
         duracion_respuesta_s=res["bytes_respuesta"] / 2 / SAMPLE_RATE,
     )
+    if guardar_audio:
+        res["pcm"] = bytes(audio)
     return res

@@ -141,17 +141,17 @@ def lanzar_servidor(perfil: str, puerto: int, carpeta: Path, env: dict, timeout_
 
 # ── Ejecución ─────────────────────────────────────────────────────────────────
 
-def _registros(ruta: Path | None) -> list[dict]:
+def leer_registros(ruta: Path | None) -> list[dict]:
     if ruta is None or not ruta.exists():
         return []
     return [json.loads(l) for l in ruta.read_text(encoding="utf-8").splitlines() if l.strip()]
 
 
-async def _esperar_registro(ruta: Path | None, previos: int, espera: float = 5.0) -> dict | None:
+async def esperar_registro(ruta: Path | None, previos: int, espera: float = 5.0) -> dict | None:
     """El servidor escribe el registro justo después de fin_respuesta: esperar a que aparezca."""
     t0 = time.time()
     while ruta is not None and time.time() - t0 < espera:
-        regs = _registros(ruta)
+        regs = leer_registros(ruta)
         if len(regs) > previos:
             return regs[-1]
         await asyncio.sleep(0.05)
@@ -196,12 +196,12 @@ async def ejecutar(items: list[dict], url: str, timing: Path | None, repeticione
     total = len(items) * repeticiones
     for rep in range(repeticiones):
         for item in items:
-            previos = len(_registros(timing))
+            previos = len(leer_registros(timing))
             try:
                 c = await cliente.consulta(url, item["pcm"], timeout, como_placa)
             except Exception as e:
                 c = {"ok": False, "error": f"{type(e).__name__}: {e}"}
-            fila = construir_fila(item, rep, c, await _esperar_registro(timing, previos))
+            fila = construir_fila(item, rep, c, await esperar_registro(timing, previos))
             filas.append(fila)
             estado = f"{fila['e2e']:.2f} s" if fila["ok"] else f"ERROR {fila['error']}"
             print(f"  [{len(filas):>3}/{total}] {item['id']}: {estado}  «{fila['transcripcion'] or ''}»")
@@ -257,10 +257,17 @@ def _red(r) -> str:
 
 def informe(res: dict) -> str:
     perfs = [p for p in res["perfiles"] if p.get("resumen")]
+    # origen "panel": audio en vivo de la placa reenviado por src.benchmark.panel; la
+    # subida dentro del PC es instantánea y la latencia de la placa va en otra sección.
+    panel = res.get("origen") == "panel"
     L = [f"# Latencia end-to-end y calidad de transcripción — {res['fecha']}", ""]
-    L += [f"Corpus: {res['corpus']['consultas']} audios ({res['corpus']['libres']} preguntas libres, "
-          f"{res['corpus']['comandos']} comandos), {res['repeticiones']} repetición(es), "
-          f"cliente {'con el ritmo de envío de la placa' if res['como_placa'] else 'sin pausas'}.", ""]
+    if panel:
+        L += [f"Frases: {res['corpus']['consultas']} leídas a la placa ({res['corpus']['libres']} preguntas "
+              f"libres, {res['corpus']['comandos']} comandos); el mismo audio se envía a cada perfil.", ""]
+    else:
+        L += [f"Corpus: {res['corpus']['consultas']} audios ({res['corpus']['libres']} preguntas libres, "
+              f"{res['corpus']['comandos']} comandos), {res['repeticiones']} repetición(es), "
+              f"cliente {'con el ritmo de envío de la placa' if res['como_placa'] else 'sin pausas'}.", ""]
 
     L += ["## Configuración", "", "| Perfil | STT | LLM | TTS |", "|---|---|---|---|"]
     for p in res["perfiles"]:
@@ -271,11 +278,16 @@ def informe(res: dict) -> str:
             L.append(f"\n**{p['nombre']} no se midió:** " + "; ".join(p["omitido"]))
 
     L += ["", "## Red", ""]
+    if res.get("red"):                      # una medición para toda la sesión (panel)
+        antes, despues = res["red"].get("antes"), res["red"].get("despues")
+        L.append(f"- Al empezar: {_red(antes)}.")
+        if despues and despues != antes:
+            L.append(f"- Última medición: {_red(despues)}.")
     for p in res["perfiles"]:
         if p.get("red_antes") or p.get("red_despues"):
             L.append(f"- **{p['nombre']}**, antes: {_red(p.get('red_antes'))}.")
             L.append(f"- **{p['nombre']}**, después: {_red(p.get('red_despues'))}.")
-    if not any(p.get("red_antes") for p in res["perfiles"]):
+    if not res.get("red") and not any(p.get("red_antes") for p in res["perfiles"]):
         L.append("No medida (--sin-red).")
     L.append("\nEl perfil local no usa internet salvo en los comandos; la red solo explica las diferencias del perfil nube.")
 
@@ -291,13 +303,18 @@ def informe(res: dict) -> str:
 
     L += ["", "## Latencia de preguntas libres (STT → LLM → TTS)", "",
           "Segundos, mediana (p90).", "", cab, sep]
+    if panel:
+        nombres["e2e"] = "**Respuesta completa** (desde fin de grabación)"
     for k in LATENCIAS_LIBRE:
+        if panel and k in ("cliente_subida", "cliente_espera"):
+            continue
         L.append(f"| {nombres[k]} | " + " | ".join(
             f"{_s(p['resumen']['latencia_libre'][k])} ({_s(p['resumen']['latencia_libre'][k], 'p90')})"
             for p in perfs) + " |")
     L.append("| n | " + " | ".join(str(p["resumen"]["latencia_libre"]["e2e"].get("n", 0)) for p in perfs) + " |")
     L.append("| Factor de tiempo real del TTS (mediana) | " + " | ".join(_s(p["resumen"]["rtf_tts"]) for p in perfs) + " |")
-    L += ["", "En la placa hay que sumar la espera de silencio del VAD (1.5 s, `VAD_HOLD_MS`) y el WiFi "
+    L += ["", "La latencia percibida en la placa está en la última sección." if panel else
+          "En la placa hay que sumar la espera de silencio del VAD (1.5 s, `VAD_HOLD_MS`) y el WiFi "
           "placa↔PC; ver `python -m src.benchmark.placa`."]
 
     if any(p["resumen"]["latencia_comandos"]["e2e"].get("n") for p in perfs):

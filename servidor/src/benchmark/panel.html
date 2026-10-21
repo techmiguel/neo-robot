@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEO · Validación frase a frase</title>
+<link rel="icon" href="data:,">
+<style>
+  :root {
+    --fondo: #f6f7f9; --tarjeta: #ffffff; --texto: #1d232b; --suave: #5d6875; --borde: #dfe3e8;
+    --acento: #2563eb; --ok: #15803d; --mal: #c2410c; --falta: #94a3b8;
+    --stt: #6366f1; --llm: #0ea5e9; --handler: #a855f7; --tts: #f59e0b; --otro: #94a3b8;
+    --sombra: 0 1px 2px rgb(0 0 0 / 6%), 0 2px 8px rgb(0 0 0 / 4%);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #0f1318; --tarjeta: #171c23; --texto: #e6eaef; --suave: #98a3b0; --borde: #2a323c;
+      --acento: #60a5fa; --ok: #4ade80; --mal: #fb923c; --falta: #64748b; --sombra: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fondo); color: var(--texto);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between;
+           padding: 12px 20px; border-bottom: 1px solid var(--borde); background: var(--tarjeta); }
+  header h1 { font-size: 17px; margin: 0; }
+  main { max-width: 1200px; margin: 0 auto; padding: 16px 20px 40px; display: grid; gap: 16px; }
+  .tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 10px;
+             padding: 16px; box-shadow: var(--sombra); }
+  .fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .chip { font-size: 12.5px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--borde); color: var(--suave); }
+  .chip.ok { color: var(--ok); border-color: currentColor; }
+  .chip.mal { color: var(--mal); border-color: currentColor; }
+  .suave { color: var(--suave); }
+  button { font: inherit; padding: 7px 13px; border-radius: 8px; border: 1px solid var(--borde);
+           background: var(--tarjeta); color: var(--texto); cursor: pointer; }
+  button:hover { border-color: var(--acento); }
+  button.primario { background: var(--acento); border-color: var(--acento); color: #fff; }
+  button:disabled { opacity: .5; cursor: default; }
+  .contador { font-size: 13px; color: var(--suave); letter-spacing: .02em; }
+  .frase { font-size: clamp(22px, 3.2vw, 34px); font-weight: 600; margin: 6px 0 10px; }
+  .estado { font-size: 14px; color: var(--suave); }
+  .estado.activo { color: var(--acento); font-weight: 600; }
+  .columnas { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 16px; }
+  .perfil h3 { margin: 0 0 2px; font-size: 16px; display: flex; gap: 8px; align-items: center; }
+  .perfil .config { font-size: 12px; color: var(--suave); margin-bottom: 12px; word-break: break-word; }
+  .etiqueta { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--suave); margin: 12px 0 4px; }
+  .diff span { margin-right: 4px; }
+  .diff .error { color: var(--mal); font-weight: 600; text-decoration: underline wavy; text-underline-offset: 3px; }
+  .diff .falta { color: var(--falta); text-decoration: line-through; }
+  .respuesta { white-space: pre-wrap; }
+  .barra { display: flex; height: 14px; border-radius: 4px; overflow: hidden; background: var(--borde); margin: 6px 0; }
+  .barra div { height: 100%; }
+  .leyenda { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12.5px; }
+  .leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+  .total { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .total small { font-size: 13px; font-weight: 400; color: var(--suave); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  th { font-weight: 600; color: var(--suave); font-size: 12.5px; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: color-mix(in srgb, var(--acento) 7%, transparent); }
+  tr.actual { outline: 2px solid var(--acento); outline-offset: -2px; }
+  tr.descartado td { text-decoration: line-through; color: var(--suave); }
+  .num { text-align: right; }
+  pre { white-space: pre-wrap; font-size: 13px; background: var(--fondo); padding: 12px; border-radius: 8px; max-height: 420px; overflow: auto; }
+  .tabla-scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>NEO · Validación frase a frase</h1>
+  <div class="fila" id="perfiles"></div>
+  <div class="fila"><span class="suave" id="red">Red: midiendo…</span><button id="btn-red">Medir red</button></div>
+</header>
+
+<main>
+  <section class="tarjeta">
+    <div class="fila" style="justify-content: space-between">
+      <span class="contador" id="contador"></span>
+      <span class="fila"><span class="suave">La placa oye:</span><span id="responde"></span></span>
+    </div>
+    <div class="frase" id="frase"></div>
+    <div class="fila" style="justify-content: space-between">
+      <div class="fila">
+        <button id="btn-anterior">◀ Anterior</button>
+        <button id="btn-siguiente">Siguiente ▶</button>
+        <button id="btn-descartar" title="Marca el último intento como no válido y vuelve a su frase">Descartar último y repetir</button>
+      </div>
+      <span class="estado" id="estado"></span>
+    </div>
+  </section>
+
+  <section>
+    <div class="etiqueta" id="titulo-ultimo">Último intento</div>
+    <div class="columnas" id="ultimo"></div>
+  </section>
+
+  <section class="tarjeta">
+    <div class="fila" style="justify-content: space-between; margin-bottom: 8px">
+      <strong>Progreso</strong>
+      <span class="fila"><span class="suave" id="carpeta"></span><button class="primario" id="btn-informe">Generar informe</button></span>
+    </div>
+    <div class="tabla-scroll"><table id="tabla"></table></div>
+    <pre id="informe" hidden></pre>
+  </section>
+</main>
+
+<script>
+const ETAPAS = [["stt", "STT", "--stt"], ["llm", "LLM", "--llm"], ["handler", "Handler (API)", "--handler"],
+                ["tts", "TTS", "--tts"], ["otro", "Intención + envío + red", "--otro"]];
+let E = null;
+const $ = id => document.getElementById(id);
+const seg = v => v == null ? "—" : v.toFixed(2) + " s";
+const pct = (e, p) => p ? Math.round(100 * e / p) + " %" : "—";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const post = (url, datos) => fetch(url, {method: "POST", headers: {"Content-Type": "application/json"},
+                                         body: JSON.stringify(datos || {})}).then(r => r.json());
+
+function conectar() {
+  const ws = new WebSocket(`ws://${location.host}/ws`);
+  ws.onmessage = ev => { const m = JSON.parse(ev.data); if (m.tipo === "estado") { E = m.estado; pintar(); } };
+  ws.onclose = () => { $("estado").textContent = "Sin conexión con el panel; reintentando…"; setTimeout(conectar, 1500); };
+}
+
+function textoRed(r) {
+  if (!r) return "Red: no medida";
+  const n = (v, u) => typeof v === "number" ? `${v.toFixed(v < 10 ? 1 : 0)} ${u}` : "error";
+  const s = r.salida || {};
+  return `Red: ↓ ${n(r.bajada_mbps, "Mbit/s")} · ↑ ${n(r.subida_mbps, "Mbit/s")} · Groq ${n(r.latencia_groq_ms, "ms")}` +
+         ` · edge-tts ${n(r.latencia_edge_tts_ms, "ms")} · salida ${s.pais || "?"} (${s.centro_datos || "?"}) · ${r.momento.slice(11, 16)}`;
+}
+
+function pintar() {
+  const nombres = Object.keys(E.perfiles);
+  $("perfiles").innerHTML = nombres.map(p => {
+    const d = E.perfiles[p];
+    const t = d.ok ? `${d.config.stt} · ${d.config.llm} · ${d.config.tts}` : d.motivo;
+    return `<span class="chip ${d.ok ? "ok" : "mal"}" title="${esc(t)}">${p}: ${d.ok ? "listo" : "no disponible"}</span>`;
+  }).join("");
+  $("red").textContent = E.red.midiendo ? "Red: midiendo…" : textoRed(E.red.ultima);
+  $("btn-red").disabled = E.red.midiendo;
+  $("responde").innerHTML = nombres.filter(p => E.perfiles[p].ok).map(p =>
+    `<button class="${p === E.responde ? "primario" : ""}" data-responde="${p}">${p}</button>`).join("");
+
+  const f = E.frases[E.indice];
+  $("contador").textContent = `Frase ${E.indice + 1} de ${E.frases.length}` + (f.intencion ? ` · comando: ${f.intencion}` : " · pregunta libre");
+  $("frase").textContent = f.frase;
+  const est = $("estado");
+  if (E.procesando) { est.textContent = `Procesando ${E.procesando.id} en ${E.procesando.perfil}…`; est.className = "estado activo"; }
+  else { est.textContent = "Esperando a la placa: «Hola NEO», espera 1 s y lee la frase."; est.className = "estado"; }
+
+  const ultimo = E.intentos[E.intentos.length - 1];
+  $("titulo-ultimo").textContent = ultimo ? `Último intento: ${ultimo.id} (#${ultimo.n})${ultimo.descartado ? " · descartado" : ""}` : "Aún no hay intentos";
+  $("ultimo").innerHTML = ultimo ? nombres.map(p => tarjetaPerfil(p, ultimo)).join("") : "";
+  pintarTabla(nombres);
+  $("carpeta").textContent = E.carpeta;
+}
+
+function tarjetaPerfil(p, intento) {
+  const f = intento.perfiles[p];
+  const cfg = E.perfiles[p].config;
+  if (!f) {
+    const enCurso = E.procesando && E.procesando.perfil === p;
+    return `<div class="tarjeta perfil"><h3>${p}</h3><div class="suave">${enCurso ? "Procesando…" : E.perfiles[p].ok ? "Pendiente" : esc(E.perfiles[p].motivo)}</div></div>`;
+  }
+  const diff = (f.diff || []).map(w => `<span class="${w.op}">${esc(w.t)}</span>`).join("") || `<span class="suave">(sin transcripción)</span>`;
+  const servidor = f.servidor || 0, total = f.respuesta_completa || servidor;
+  const partes = {stt: f.stt || 0, llm: f.llm || 0, handler: f.handler || 0, tts: f.tts || 0};
+  partes.otro = Math.max(total - partes.stt - partes.llm - partes.handler - partes.tts, 0);
+  const barra = ETAPAS.filter(([k]) => partes[k] > 0.005).map(([k, , c]) =>
+    `<div style="width:${100 * partes[k] / Math.max(total, 1e-6)}%;background:var(${c})" title="${k} ${seg(partes[k])}"></div>`).join("");
+  const leyenda = ETAPAS.filter(([k]) => partes[k] > 0.005).map(([k, n, c]) => `<span><i style="background:var(${c})"></i>${n} ${seg(partes[k])}</span>`).join("");
+  const intOk = f.intencion_ok;
+  const percibida = f.percibida != null
+    ? `<div class="etiqueta">Percibida en la placa${f.percibida_estimada ? " (estimada)" : ""}</div><div class="total">${seg(f.percibida)} <small>desde que dejas de hablar</small></div>` : "";
+  const audio = f.audio_respuesta ? `<audio controls preload="none" src="/archivos/${f.audio_respuesta}" style="width:100%;margin-top:6px"></audio>` : "";
+  return `<div class="tarjeta perfil">
+    <h3>${p} ${intento.responde === p ? '<span class="chip">respondió a la placa</span>' : ""} ${f.ok ? "" : '<span class="chip mal">error</span>'}</h3>
+    <div class="config">${esc(cfg ? `${cfg.stt} · ${cfg.llm} · ${cfg.tts}` : "")}</div>
+    <div class="etiqueta">Transcripción · ${f.errores_palabra ?? "?"} errores en ${f.palabras ?? "?"} palabras · WER ${pct(f.errores_palabra, f.palabras)}</div>
+    <div class="diff">${diff}</div>
+    <div class="etiqueta">Intención</div>
+    <div>${intOk == null ? "—" : intOk ? `<span class="chip ok">correcta</span>` : `<span class="chip mal">esperada ${intento.intencion || "LLM"}, detectada ${f.intencion_detectada || "LLM"}</span>`}</div>
+    <div class="etiqueta">Respuesta</div>
+    <div class="respuesta">${f.ok ? esc(f.respuesta) : `<span style="color:var(--mal)">${esc(f.error)}</span>`}</div>${audio}
+    <div class="etiqueta">Latencia: respuesta completa desde fin_grabacion</div>
+    <div class="total">${seg(total)} <small>servidor ${seg(servidor)}</small></div>
+    <div class="barra">${barra}</div><div class="leyenda">${leyenda}</div>
+    ${percibida}
+  </div>`;
+}
+
+function pintarTabla(nombres) {
+  const ultimoPorFrase = {};
+  E.intentos.forEach((it, pos) => { if (!it.descartado || !ultimoPorFrase[it.id]) ultimoPorFrase[it.id] = {...it, pos}; });
+  const cab = nombres.map(p => `<th class="num">WER ${p}</th><th class="num">Resp. ${p}</th><th class="num">Percibida ${p}</th>`).join("");
+  const filas = E.frases.map((fr, i) => {
+    const it = ultimoPorFrase[fr.id];
+    const celdas = nombres.map(p => {
+      const f = it && it.perfiles[p];
+      return f ? `<td class="num">${pct(f.errores_palabra, f.palabras)}</td><td class="num">${seg(f.respuesta_completa)}</td>` +
+                 `<td class="num">${f.percibida != null ? seg(f.percibida) + (f.percibida_estimada ? "*" : "") : "—"}</td>`
+               : `<td></td><td></td><td></td>`;
+    }).join("");
+    const estado = !it ? '<span class="suave">pendiente</span>' : it.descartado ? "descartado" : "✓";
+    return `<tr data-indice="${i}" class="${i === E.indice ? "actual" : ""} ${it && it.descartado ? "descartado" : ""}">
+      <td>${fr.id}</td><td>${esc(fr.frase)}</td><td>${estado}</td>${celdas}</tr>`;
+  }).join("");
+  $("tabla").innerHTML = `<thead><tr><th>Id</th><th>Frase</th><th>Estado</th>${cab}</tr></thead><tbody>${filas}</tbody>`;
+}
+
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("[data-responde], tr[data-indice]");
+  if (!t) return;
+  if (t.dataset.responde) post("/api/responde", {perfil: t.dataset.responde});
+  else post("/api/ir", {indice: +t.dataset.indice});
+});
+$("btn-anterior").onclick = () => post("/api/ir", {indice: E.indice - 1});
+$("btn-siguiente").onclick = () => post("/api/ir", {indice: E.indice + 1});
+$("btn-descartar").onclick = () => post("/api/descartar");
+$("btn-red").onclick = () => post("/api/red");
+$("btn-informe").onclick = async () => {
+  const r = await post("/api/informe");
+  const pre = $("informe");
+  pre.hidden = false;
+  pre.textContent = `Guardado en ${r.ruta}\n\n${r.texto}`;
+};
+conectar();
+</script>
+</body>
+</html>

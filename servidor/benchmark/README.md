@@ -17,6 +17,47 @@ Y, aparte, la **latencia percibida en la placa**: desde que la persona deja de h
 
 Todos los comandos se ejecutan desde `servidor/` en PowerShell.
 
+## Panel frase a frase (la forma más directa)
+
+Lees cada frase a la placa y ves al momento, para local y nube lado a lado:
+
+- la transcripción, con las palabras erróneas resaltadas;
+- la intención detectada;
+- la respuesta del LLM, que puedes escuchar;
+- la latencia por etapa;
+- la latencia percibida en la placa.
+
+1. **Prepara el PC.** Para el servidor de NEO si lo tienes corriendo: el panel ocupa su puerto, el 8765. Después actualiza el código con `git pull`.
+2. **Abre el monitor de la placa** (desde `firmware\`), para medir la latencia percibida:
+   ```powershell
+   pio device monitor -e esp32dev --filter time --filter log2file
+   ```
+3. **Lanza el panel** (desde `servidor\`). Abre el navegador en `http://localhost:8080`:
+   ```powershell
+   python -m src.benchmark.panel --ollama-model qwen2.5-coder:3b
+   ```
+4. **Lee las frases.** Di «Hola NEO», espera 1 s después del «¡Hola!» y lee la frase que muestra el panel. Al terminar avanza solo a la siguiente. Si leíste mal o el audio se cortó, pulsa «Descartar último y repetir».
+5. **Genera el informe.** Al terminar, pulsa «Generar informe». También se genera al salir con Ctrl+C.
+
+Cómo funciona:
+
+- **Cada perfil tiene su servidor.** El panel arranca uno por perfil (puertos 8797 y 8798) y hace de intermediario con la placa.
+- **La placa oye un solo perfil.** Por defecto el local; se cambia en la página («La placa oye») o con `--responde nube`. El mismo audio se envía después al otro perfil.
+- **La latencia percibida del otro perfil es una estimación:** la percibida real menos la respuesta del perfil que contestó, más la respuesta del otro. Va marcada con «(estimada)» o con *.
+- **Si un perfil no está disponible** (por ejemplo, Groq responde 403 a tu VPN), el panel funciona con el otro y muestra el motivo.
+
+Todo se guarda al momento en `logs/panel/<fecha>/`:
+
+| Archivo o carpeta | Contenido |
+|---|---|
+| `resultados.jsonl` y `resultados.csv` | Una fila por intento |
+| `grabaciones/` | Audio de la placa |
+| `respuestas/` | Audio de cada respuesta |
+| `corpus.csv` | El corpus ya etiquetado, para repetir la medición con `python -m src.benchmark.e2e --corpus logs/panel/<fecha>/corpus.csv` |
+| `informe.md` | El informe generado |
+
+El resto de esta guía describe la medición por lotes, que reproduce un corpus ya grabado sin hablar en directo.
+
 ## 0. Requisitos
 
 ```powershell

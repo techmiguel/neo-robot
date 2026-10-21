@@ -35,12 +35,15 @@ def describir() -> dict:
     stt = os.getenv("STT_PROVIDER", "groq")
     llm = os.getenv("LLM_PROVIDER", "groq")
     tts = os.getenv("TTS_PROVIDER", "edge")
+    # WHISPER_MODEL_SIZE puede ser un tamaño ("base") o la ruta a un modelo descargado
+    whisper = Path(os.getenv("WHISPER_MODEL_SIZE", "base")).name
+    whisper = whisper if whisper.startswith("whisper") else f"whisper-{whisper}"
     perfil = os.getenv("NEO_PERFIL") or next(
         (n for n, p in PERFILES.items()
          if p == {"STT_PROVIDER": stt, "LLM_PROVIDER": llm, "TTS_PROVIDER": tts}), "mixto")
     return {
         "perfil": perfil,
-        "stt": f"{stt}:" + (f"whisper-{os.getenv('WHISPER_MODEL_SIZE', 'base')}" if stt == "local" else GROQ_STT_MODEL),
+        "stt": f"{stt}:" + (whisper if stt == "local" else GROQ_STT_MODEL),
         "llm": f"{llm}:" + (os.getenv("OLLAMA_MODEL", OLLAMA_MODEL_DEFAULT) if llm == "ollama"
                             else os.getenv("GROQ_LLM_MODEL", GROQ_LLM_DEFAULT)),
         "tts": f"{tts}:" + (Path(os.getenv("PIPER_MODEL", "")).stem if tts == "local" else VOZ_DEFAULT),

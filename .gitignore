@@ -33,3 +33,6 @@ servidor/logs/
 secrets.h
 config_local.h
 servidor/set_hf_secrets.py
+
+# Logs del monitor serie de la placa (pio device monitor --filter log2file)
+firmware/platformio-device-monitor-*.log

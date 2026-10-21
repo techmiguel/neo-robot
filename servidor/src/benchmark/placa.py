@@ -37,6 +37,7 @@ from src.benchmark.metricas import resumen
 VAD_HOLD_MS = 1500   # igual que firmware/src/main.cpp
 
 RE_TIMING = re.compile(r"\[TIMING\] (\w+) (\d+)")
+RE_HORA_PC = re.compile(r"^\s*(\d{1,2}):(\d{2}):(\d{2})[.,](\d{3})\s*>")   # prefijo de --filter time
 RE_SILENCIO = re.compile(r"\[VAD\] Silencio prolongado")
 RE_ERROR = re.compile(r'"cmd":\s*"error"|Sin respuesta del servidor|Corte durante envío')
 
@@ -45,16 +46,28 @@ HITOS = ["grabacion_inicio", "grabacion_fin", "envio_ws_fin", "primer_chunk_reci
 METRICAS = ["percibida", "silencio_vad", "subida", "servidor_red", "descarga", "reproduccion"]
 
 
+def hora_pc(linea: str) -> float | None:
+    """Segundos desde medianoche del prefijo "HH:MM:SS.mmm >" de --filter time."""
+    if m := RE_HORA_PC.match(linea):
+        h, mi, s, ms = map(int, m.groups())
+        return h * 3600 + mi * 60 + s + ms / 1000
+    return None
+
+
 def leer_turnos(ruta: Path) -> list[dict]:
+    """Turnos de conversación del log. "t": millis de la placa por hito;
+    "pc": hora del PC por hito, si el log tiene el prefijo de --filter time."""
     turnos, actual = [], None
     for linea in ruta.read_text(encoding="utf-8", errors="replace").splitlines():
         if m := RE_TIMING.search(linea):
             hito, ms = m.group(1), int(m.group(2))
             if hito == "grabacion_inicio":
-                actual = {"t": {}, "corte_silencio": False, "error": False}
+                actual = {"t": {}, "pc": {}, "corte_silencio": False, "error": False}
                 turnos.append(actual)
-            if actual is not None and hito in HITOS:
-                actual["t"].setdefault(hito, ms)
+            if actual is not None and hito in HITOS and hito not in actual["t"]:
+                actual["t"][hito] = ms
+                if (h := hora_pc(linea)) is not None:
+                    actual["pc"][hito] = h
         elif actual is not None and RE_SILENCIO.search(linea):
             actual["corte_silencio"] = True
         elif actual is not None and RE_ERROR.search(linea):
