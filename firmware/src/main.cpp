@@ -12,6 +12,7 @@
  */
 
 #include <Arduino.h>
+#include <algorithm>
 #include <cstring>
 #include <esp_heap_caps.h>
 #include <esp_task_wdt.h>
@@ -113,6 +114,9 @@ static const float    WAKE_FACTOR_FIN    = 2.0f;   // RMS < noise×2 → cuenta 
 static const uint32_t WAKE_SILENCIO_MS   = 700;    // ms de silencio para cortar captura
 static const uint32_t WAKE_MAX_MS        = 2500;   // duración máxima de captura
 static const uint32_t WAKE_RESULTADO_MS  = 1500;   // ms que se muestra el resultado
+// Piso del ruido de fondo (RMS). En silencio medido es 13–27; sin piso, en una sala muy
+// callada el ruido tiende a 0 y cualquier chasquido supera noise×factor.
+static const float    VAD_RUIDO_MIN      = 15.0f;
 
 // volatile: escritos por tareaWs (Core 0), leídos por loop (Core 1).
 static volatile size_t play_bytes = 0;
@@ -247,6 +251,9 @@ static const uint8_t  VAD_BLOQUES_INICIO_CONSEC = 3;
 static const uint32_t VAD_SIN_VOZ_MS    = 2500;
 static const uint32_t VAD_MAX_GRAB_MS   = 30000;
 static const uint32_t VAD_MIN_GRAB_MS   = 400;
+// Pre-roll: bloques previos a la detección que se conservan (~300 ms a 16 ms/bloque).
+// El VAD exige 3 bloques seguidos sobre el umbral: sin esto se perdía la primera sílaba.
+static const size_t   VAD_PREROLL_BLOQUES = 19;
 
 // ── Consulta directa ──────────────────────────────────────────────────────────
 void consultarToque() {
@@ -288,7 +295,7 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     for (uint16_t i = 0; i < VAD_BLOQUES_CAL; i++) {
         if (mic->leer(tmp)) suma_cal += Microphone::rms(tmp);
     }
-    const float noise_floor   = suma_cal / VAD_BLOQUES_CAL;
+    const float noise_floor   = max(suma_cal / VAD_BLOQUES_CAL, VAD_RUIDO_MIN);
     const float umbral_inicio = noise_floor * VAD_FACTOR_INICIO;
     const float umbral_fin    = noise_floor * VAD_FACTOR_FIN;
 
@@ -299,10 +306,14 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     const uint32_t t_espera = millis();
     bool voz_detectada = false;
     uint8_t bloques_consecutivos = 0;
+    size_t  bloques_espera = 0;   // los primeros VAD_PREROLL_BLOQUES de audio_buf son un búfer circular
 
     while (millis() - t_espera < escucha_ms) {
         if (!mic->leer(tmp)) continue;
         pintarCara("Escuchando");   // mantiene los ojos vivos mientras espera
+        memcpy(audio_buf + (bloques_espera % VAD_PREROLL_BLOQUES) * Microphone::BLOCK_SIZE,
+               tmp, sizeof(tmp));
+        bloques_espera++;
 
         if (Microphone::rms(tmp) > umbral_inicio) {
             if (bloques_consecutivos < 255) bloques_consecutivos++;
@@ -325,8 +336,13 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     Serial.printf("[TIMING] grabacion_inicio %lu\n", (unsigned long)millis());
     Serial.println("[VAD] Voz detectada — grabando");
 
-    size_t offset = Microphone::BLOCK_SIZE;
-    memcpy(audio_buf, tmp, offset * sizeof(int16_t));
+    // Ordenar el búfer circular (el bloque más antiguo primero); incluye el bloque actual.
+    if (bloques_espera > VAD_PREROLL_BLOQUES) {
+        const size_t mas_antiguo = bloques_espera % VAD_PREROLL_BLOQUES;
+        std::rotate(audio_buf, audio_buf + mas_antiguo * Microphone::BLOCK_SIZE,
+                    audio_buf + VAD_PREROLL_BLOQUES * Microphone::BLOCK_SIZE);
+    }
+    size_t offset = min(bloques_espera, VAD_PREROLL_BLOQUES) * Microphone::BLOCK_SIZE;
 
     const size_t   max_muestras = audio_buf_cap / sizeof(int16_t);
     const uint32_t t_inicio     = millis();
@@ -961,7 +977,7 @@ void loop() {
     if (s_wake_state == WakeState::OYENDO) {
         // Actualizar noise floor solo cuando no hay inferencia activa
         if (!s_inf_busy) {
-            s_wake_noise = s_wake_noise * 0.98f + rms * 0.02f;
+            s_wake_noise = max(s_wake_noise * 0.98f + rms * 0.02f, VAD_RUIDO_MIN);
         }
 
         // En REPOSO la pantalla está apagada (ahorro): no se dibuja la barra de
