@@ -191,7 +191,7 @@ The LLM is only used for free-form queries that don't match any keyword pattern.
 | **No server** (LAN + cloud down) | ESP32 shows "WS lost" on OLED, returns to REST | Wake word still works, but queries get no response |
 | **No network** (WiFi down) | ESP32 tries to reconnect, shows "No WiFi..." on OLED | Wake word still works locally, but queries fail |
 | **Empty LLM response** | Server guard: returns "No tengo una respuesta clara para eso." | User hears fallback message instead of silence |
-| **Wake word false positive** | Model threshold (0.49) filters most false positives; single confirmation (CONF_MINIMAS=1) | Rare false wakes; user can ignore and wait for 10s timeout |
+| **Wake word false positive** | Model threshold (0.7618) filters most false positives; single confirmation (CONF_MINIMAS=1) | Rare false wakes; user can ignore and wait for 10s timeout |
 | **STT timeout** | Groq API timeout → exception caught, error sent to ESP32 | OLED shows "Server error", returns to REST |
 | **TTS failure** | edge-tts exception → error sent to ESP32 | OLED shows "Server error", returns to REST |
 
@@ -209,31 +209,62 @@ The LLM is only used for free-form queries that don't match any keyword pattern.
 
 - **No conversation memory** (yet). Each query is independent. See
   [docs/diseno-memoria.md](docs/diseno-memoria.md) for the design evaluation.
-- **No battery backup**. The ESP32 must be plugged in via USB. A hardware block is
-  planned to add Li-Po support on a protoboard.
+- **Battery power is marginal**. NEO runs from one 18650 cell through an MT3608 boost
+  converter into its 5V pin, but the converter cannot hold 5 V above ~350 mA: the line
+  sags to ~3.8 V when the speaker starts and the ESP32-S3 can reset (brownout). Peaks
+  of ~0.8 A were measured while speaking, so the supply needs ≥ 1 A at 5 V (e.g. 2S
+  cells with a buck converter).
 - **No OTA updates**. Firmware must be flashed via USB. OTA could be added but isn't
   critical for a prototype.
 - **Single language** (Spanish). The STT, LLM prompt, and TTS are all Spanish-only.
   Adding multilingual support would require changes across the pipeline.
-- **No local STT/LLM fallback** (yet). The server uses Groq (cloud) for STT and LLM.
-  Faster-Whisper and Ollama are implemented as fallbacks but not wired into the main
-  pipeline.
+- **Local profile is less accurate than the cloud one.** The server can run fully
+  local (Faster-Whisper small + Ollama `qwen2.5:3b` + Piper) or in the cloud (Groq +
+  edge-tts); locally the transcription error rate is higher and the small LLM makes
+  factual mistakes.
 
-## Latency metrics
+## Measured results
 
-Instrumentation is in place (see [docs/experimento-latencia.md](docs/experimento-latencia.md)):
-- **Server:** structured JSONL logs with per-stage timestamps (STT, LLM, TTS, pipeline).
-- **Firmware:** serial timestamps at key milestones (wake detect, record start/end,
-  WS send, first chunk received, playback start/end).
+All numbers come from the board, not from simulation. Raw data and method are linked.
 
-Baseline measurements are pending. Once collected, they will be summarized here.
+**Wake word "Hola NEO"** (two speakers, CNN int8 on the ESP32-S3;
+[method](firmware/models/experimentos/2026-10-20/RESUMEN.md))
+
+| Metric | Value |
+|---|---|
+| Test accuracy (int8, 302 clips) | 95.7 % |
+| True positive rate / false positive rate (threshold 0.7618) | 95.6 % / 0.6 % |
+| Detection latency on the board, end of phrase → confirmed ([data](docs/metrics/latencia_wake_20261023/)) | **3.33 s** median (p90 3.38 s), of which inference 2.6 s |
+
+**Conversation latency**, end of recording → full reply received, same audio sent to both
+profiles, 31 phrases read to the board ([data](docs/metrics/validacion_20261023/))
+
+| Profile | Word error rate | Intent accuracy | Free questions, median (p90) | Commands, median (p90) |
+|---|---|---|---|---|
+| Local (Whisper small + qwen2.5:3b + Piper) | 18.5 % | 96.8 % | 7.0 s (9.5 s) | 3.6 s (5.7 s) |
+| Cloud (Groq + edge-tts) | 10.8 % | 100 % | 7.2 s (54 s, VPN spikes) | 5.2 s (7.7 s) |
+
+**Power draw at 5 V per state** (INA219 on NEO's 5V pin, preliminary: one 5.5-min
+session with 12 question/answer turns; [method](docs/experimento-consumo.md),
+[data](docs/metrics/consumo_20261024_preliminar/))
+
+| State | Mean current | Peak (0.53 ms) | Mean power |
+|---|---|---|---|
+| Rest (screen off, listening for the wake word) | 119 mA | 249 mA | 0.60 W |
+| Wake word capture + inference | 137 mA | 255 mA | 0.69 W |
+| Active listening | 131 mA | 634 mA | 0.65 W |
+| Sending audio over WiFi | 153 mA | 408 mA | 0.76 W |
+| Waiting for the reply | 135 mA | 497 mA | 0.67 W |
+| Speaking (speaker on) | 302 mA | 797 mA | 1.44 W |
+
+![Current during one interaction](docs/metrics/consumo_20261024_preliminar/traza_interaccion.png)
 
 ## Development notes
 
 - Random PSRAM access during MFCC extraction with active WiFi triggered the *task
   watchdog*; inference buffers are allocated in **internal SRAM**.
-- The local model is kept small (channels 8/16/32) so inference takes ~2.7s and
-  doesn't crash the core.
+- The local model is kept small (channels 8/16/32) so inference takes ~2.6 s and
+  doesn't crash the core; that inference is 78 % of the wake word latency.
 - Groq's reasoning models need `max_tokens` set high; low values cause empty content
   responses.
 

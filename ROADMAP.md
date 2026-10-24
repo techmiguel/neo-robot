@@ -13,7 +13,7 @@ El plan se organiza en dos entregas con fecha. Las fases originales completadas 
 
 | Entrega | Fecha | Alcance | Estado |
 |---|---|---|---|
-| Entrega 1 | viernes 23/10/2026 | Wake word con métricas, conversación con latencia medida, batería 18650, consumo por estado, documentación y vídeo | EN CURSO |
+| Entrega 1 | viernes 23/10/2026 | Wake word con métricas, conversación con latencia medida, batería 18650, consumo por estado, documentación y vídeo | EN CURSO (cierre parcial 24/10, ver abajo) |
 | Entrega 2 | viernes 30/10/2026 | Modo sin conexión, relé ESP-12F por voz, autonomía real; opcionales: segundo micrófono, reconocimiento facial | PENDIENTE |
 
 ---
@@ -70,7 +70,7 @@ Notas para la documentación:
 - Latencia desglosada por etapa (detección, transcripción, respuesta del LLM, síntesis, primer audio reproducido) y total, con N interacciones y estadísticos (mediana y p90 como mínimo).
 
 **Artefactos:** datos crudos en `docs/metrics/` (continuación de `latency_data_20260911.json`) y resumen en el README.  
-**Estado: EN CURSO** (instrumentación en servidor y firmware hecha; falta la línea base medida en el flujo con wake word).
+**Estado: EN CURSO** (medidas por separado: detección del wake word 3,33 s y respuesta del servidor ~7 s de mediana; falta medirlas juntas en el flujo completo con wake word, con el primer audio reproducido en la placa).
 
 Se miden los dos perfiles con el mismo audio: `local` (faster-whisper + Ollama + Piper, sin internet) y `nube` (Groq STT + Groq LLM + edge-tts), con la velocidad de internet en el informe y la calidad del STT (WER, CER, intención correcta). Herramientas y guía en `servidor/benchmark/README.md`:
 1. Grabar el corpus (31 frases de `servidor/benchmark/frases.csv`) con la placa, con `GUARDAR_AUDIO_DIR`.
@@ -121,14 +121,33 @@ Corregido (2026-10-21): `percentile()` de `servidor/scripts/neo_metrics_tool.py`
 - Esquema del montaje (carga, protección y regulación a 3V3) documentado.
 
 **Nota:** la PSRAM octal exige un pico de corriente en el arranque (ver Notas de desarrollo); el regulador debe soportarlo sin hundir la línea de 3V3.  
-**Estado: PENDIENTE**
+**Estado: EN CURSO.** El 24/10 NEO arrancó y completó 12 turnos de conversación solo con una 18650 y un elevador MT3608 en su pin 5V, sin USB. Pero el MT3608 no sostiene los 5 V por encima de ~350 mA: la línea cae a 3,8–4,2 V al arrancar el altavoz o en ráfagas WiFi y el ESP32-S3 se reinicia por brownout (`rst:0xf`, dos veces en una sesión de 3,5 min). Con picos medidos de ~0,8 A hablando, la fuente debe dar ≥ 1 A a 5 V: por ejemplo 2 celdas en serie con un reductor (MP1584 / LM2596). Pendiente: esa fuente, el nivel de carga por ADC en la OLED y el esquema.
 
 ### 1.4 Consumo medido por estado
 **Descripción:** consumo medido en cada estado: reposo, escucha activa y conversación.  
 **Dependencias:** 1.3.  
 **Criterio de aceptación:** corriente media y pico por estado, con el instrumento y el método de medida documentados.  
 **Artefactos:** tabla en `docs/metrics/` y en el README.  
-**Estado: PENDIENTE**
+**Estado: EN CURSO (medida preliminar el 24/10).** Método: INA219 a la salida del elevador (5 V → pin 5V de NEO), leído por un D1 Mini que también recibe el log de NEO, con un solo reloj. Firmware del registrador en el env `consumo_logger`, análisis con `firmware/tools/consumo.py`, protocolo en `docs/experimento-consumo.md`, datos en `docs/metrics/consumo_20261024_preliminar/`.
+
+Preliminar: una sesión de 5,5 min con batería, 3 conversaciones y 12 turnos de pregunta y respuesta; offset sin restar.
+
+| Estado | Tramos | Tiempo | I media | I p95 | I máx (0,53 ms) | P media |
+|---|---|---|---|---|---|---|
+| Reposo (pantalla apagada) | 6 | 50 s | **119 mA** | 151 mA | 249 mA | 0,60 W |
+| Captura + inferencia del wake word | 5 | 19 s | **137 mA** | 176 mA | 255 mA | 0,69 W |
+| Saludo «¡Hola!» | 3 | 5 s | **176 mA** | 401 mA | 711 mA | 0,87 W |
+| Escucha activa | 15 | 123 s | **131 mA** | 165 mA | 634 mA | 0,65 W |
+| Envío por WiFi | 12 | 16 s | **153 mA** | 216 mA | 408 mA | 0,76 W |
+| Espera de la respuesta | 12 | 90 s | **135 mA** | 188 mA | 497 mA | 0,67 W |
+| Hablando | 12 | 27 s | **302 mA** | 486 mA | 797 mA | 1,44 W |
+| **Agregado reposo / escucha activa / conversación** | | | **124 / 131 / 171 mA** | | 255 / 634 / 797 mA | 0,62 / 0,65 / 0,84 W |
+
+- Hablar es el estado de mayor consumo (2,5 × el reposo) y el único que hunde la tensión del elevador (mín. 4,08 V).
+- El reposo ya consume 0,6 W: el ESP32-S3 con WiFi activo no duerme (se ven los beacons del WiFi cada ~100 ms en la traza). Es lo que más pesa en la autonomía.
+- El amplificador de clase D mete ruido en los cables de I2C y del log mientras suena; el registrador fecha las líneas por su salto de línea y el análisis usa marcas redundantes para no perder estados.
+
+Pendiente para cerrar 1.4: las sesiones completas del protocolo (offset, 5 arranques, 10 min de reposo en silencio y con ruido, 15 interacciones) con la fuente corregida, y la autonomía estimada con la capacidad medida de la batería.
 
 ### 1.5 Documentación y vídeo
 **Descripción:** README en inglés, arquitectura, decisiones de diseño, personalidad del prompt, estado actual y limitaciones, y un vídeo corto.  
@@ -138,7 +157,17 @@ Corregido (2026-10-21): `percentile()` de `servidor/scripts/neo_metrics_tool.py`
 - Estado actual y limitaciones, coherentes con este roadmap.
 - Vídeo corto de una conversación completa con wake word y batería.
 
-**Estado: EN CURSO** (README en inglés existente; faltan personalidad del prompt, resultados medidos y vídeo).
+**Estado: EN CURSO** (README en inglés con los resultados medidos de 1.1, 1.2 y 1.4 y la limitación de la alimentación, actualizado el 24/10; faltan la sección de personalidad del prompt y el vídeo).
+
+### Cierre de la Entrega 1 (24/10)
+
+| Punto | Estado | Medido | Falta |
+|---|---|---|---|
+| 1.1 Wake word | Casi completo | Test int8 95,7 %, TPR 95,6 % / FP 0,6 %; latencia en la placa 3,33 s (p90 3,38 s) | FP/hora en la placa (≥ 2 h) y matriz de confusión en la placa |
+| 1.2 Conversación y latencia | Casi completo | 31 frases con la placa: local 7,0 s / nube 7,2 s de mediana; WER 18,5 % / 10,8 % | Flujo completo con wake word en una sesión, primer audio en la placa |
+| 1.3 Batería 18650 | En curso | Conversa sin USB, pero brownout por encima de ~350 mA | Fuente ≥ 1 A a 5 V, nivel de carga en la OLED, esquema |
+| 1.4 Consumo por estado | Preliminar | Tabla por estado (1 sesión, 12 turnos) | Sesiones completas del protocolo y autonomía |
+| 1.5 Documentación y vídeo | En curso | README con resultados | Personalidad del prompt, vídeo |
 
 ---
 

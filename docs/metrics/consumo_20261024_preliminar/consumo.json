@@ -1,0 +1,362 @@
+{
+  "fecha": "2026-10-24 12:37",
+  "offset_ma": 0.0,
+  "capacidad_mah": null,
+  "v_bateria": 3.7,
+  "eficiencia_supuesta": 0.85,
+  "punto_de_medida": "salida del elevador (5 V) → pin 5V de NEO",
+  "instrumento": "INA219, shunt 0,1 Ω, 12 bit (532 µs), ~1 kHz, ventanas de 10 ms",
+  "total": {
+    "estados": {
+      "reposo": {
+        "tiempo_s": 50.03,
+        "i_media_ma": 118.9,
+        "i_p95_ma": 151.2,
+        "i_max_ma": 249.1,
+        "p_media_mw": 596.0,
+        "v_media_v": 5.009,
+        "v_min_v": 4.882,
+        "energia_j": 29.79,
+        "carga_mah": 1.653,
+        "tramos": 6
+      },
+      "captura_inferencia": {
+        "tiempo_s": 19.4,
+        "i_media_ma": 137.4,
+        "i_p95_ma": 175.7,
+        "i_max_ma": 254.9,
+        "p_media_mw": 688.0,
+        "v_media_v": 5.008,
+        "v_min_v": 4.884,
+        "energia_j": 13.34,
+        "carga_mah": 0.74,
+        "tramos": 5
+      },
+      "saludo": {
+        "tiempo_s": 5.01,
+        "i_media_ma": 176.4,
+        "i_p95_ma": 401.4,
+        "i_max_ma": 711.4,
+        "p_media_mw": 869.0,
+        "v_media_v": 4.962,
+        "v_min_v": 4.432,
+        "energia_j": 4.36,
+        "carga_mah": 0.246,
+        "tramos": 3
+      },
+      "escucha_activa": {
+        "tiempo_s": 123.25,
+        "i_media_ma": 131.0,
+        "i_p95_ma": 165.3,
+        "i_max_ma": 633.5,
+        "p_media_mw": 651.0,
+        "v_media_v": 4.968,
+        "v_min_v": 4.403,
+        "energia_j": 80.18,
+        "carga_mah": 4.485,
+        "tramos": 15
+      },
+      "envio": {
+        "tiempo_s": 16.42,
+        "i_media_ma": 153.1,
+        "i_p95_ma": 216.0,
+        "i_max_ma": 407.6,
+        "p_media_mw": 756.0,
+        "v_media_v": 4.945,
+        "v_min_v": 4.828,
+        "energia_j": 12.41,
+        "carga_mah": 0.698,
+        "tramos": 12
+      },
+      "espera_respuesta": {
+        "tiempo_s": 90.38,
+        "i_media_ma": 135.1,
+        "i_p95_ma": 187.5,
+        "i_max_ma": 496.9,
+        "p_media_mw": 670.0,
+        "v_media_v": 4.961,
+        "v_min_v": 4.802,
+        "energia_j": 60.54,
+        "carga_mah": 3.393,
+        "tramos": 12
+      },
+      "hablando": {
+        "tiempo_s": 26.81,
+        "i_media_ma": 301.7,
+        "i_p95_ma": 486.4,
+        "i_max_ma": 796.7,
+        "p_media_mw": 1441.0,
+        "v_media_v": 4.816,
+        "v_min_v": 4.081,
+        "energia_j": 38.63,
+        "carga_mah": 2.247,
+        "tramos": 12
+      },
+      "desconocido": {
+        "tiempo_s": 1.74,
+        "i_media_ma": 145.3,
+        "i_p95_ma": 176.2,
+        "i_max_ma": 206.6,
+        "p_media_mw": 729.0,
+        "v_media_v": 5.02,
+        "v_min_v": 4.986,
+        "energia_j": 1.27,
+        "carga_mah": 0.07,
+        "tramos": 1
+      }
+    },
+    "agregados": {
+      "reposo": {
+        "tiempo_s": 69.43,
+        "i_media_ma": 124.1,
+        "i_p95_ma": 158.1,
+        "i_max_ma": 254.9,
+        "p_media_mw": 621.0,
+        "v_media_v": 5.009,
+        "v_min_v": 4.882,
+        "energia_j": 43.14,
+        "carga_mah": 2.393
+      },
+      "escucha activa": {
+        "tiempo_s": 123.25,
+        "i_media_ma": 131.0,
+        "i_p95_ma": 165.3,
+        "i_max_ma": 633.5,
+        "p_media_mw": 651.0,
+        "v_media_v": 4.968,
+        "v_min_v": 4.403,
+        "energia_j": 80.18,
+        "carga_mah": 4.485
+      },
+      "conversación": {
+        "tiempo_s": 138.62,
+        "i_media_ma": 171.0,
+        "i_p95_ma": 397.0,
+        "i_max_ma": 796.7,
+        "p_media_mw": 836.0,
+        "v_media_v": 4.931,
+        "v_min_v": 4.081,
+        "energia_j": 115.94,
+        "carga_mah": 6.583
+      }
+    },
+    "interacciones": {
+      "duracion_s": {
+        "n": 3,
+        "media": 87.29,
+        "p50": 47.99,
+        "p90": 178.86,
+        "min": 35.02,
+        "max": 178.86
+      },
+      "energia_j": {
+        "n": 3,
+        "media": 65.373,
+        "p50": 35.65,
+        "p90": 131.94,
+        "min": 28.53,
+        "max": 131.94
+      },
+      "carga_mah": {
+        "n": 3,
+        "media": 3.69,
+        "p50": 2.025,
+        "p90": 7.452,
+        "min": 1.592,
+        "max": 7.452
+      },
+      "i_media_ma": {
+        "n": 3,
+        "media": 155.167,
+        "p50": 151.9,
+        "p90": 163.6,
+        "min": 150.0,
+        "max": 163.6
+      }
+    },
+    "arranque": null,
+    "autonomia_estimada": null
+  },
+  "sesiones": [
+    {
+      "duracion_s": 333.0,
+      "ventanas": 33056,
+      "estados": {
+        "reposo": {
+          "tiempo_s": 50.03,
+          "i_media_ma": 118.9,
+          "i_p95_ma": 151.2,
+          "i_max_ma": 249.1,
+          "p_media_mw": 596.0,
+          "v_media_v": 5.009,
+          "v_min_v": 4.882,
+          "energia_j": 29.79,
+          "carga_mah": 1.653,
+          "tramos": 6
+        },
+        "captura_inferencia": {
+          "tiempo_s": 19.4,
+          "i_media_ma": 137.4,
+          "i_p95_ma": 175.7,
+          "i_max_ma": 254.9,
+          "p_media_mw": 688.0,
+          "v_media_v": 5.008,
+          "v_min_v": 4.884,
+          "energia_j": 13.34,
+          "carga_mah": 0.74,
+          "tramos": 5
+        },
+        "saludo": {
+          "tiempo_s": 5.01,
+          "i_media_ma": 176.4,
+          "i_p95_ma": 401.4,
+          "i_max_ma": 711.4,
+          "p_media_mw": 869.0,
+          "v_media_v": 4.962,
+          "v_min_v": 4.432,
+          "energia_j": 4.36,
+          "carga_mah": 0.246,
+          "tramos": 3
+        },
+        "escucha_activa": {
+          "tiempo_s": 123.25,
+          "i_media_ma": 131.0,
+          "i_p95_ma": 165.3,
+          "i_max_ma": 633.5,
+          "p_media_mw": 651.0,
+          "v_media_v": 4.968,
+          "v_min_v": 4.403,
+          "energia_j": 80.18,
+          "carga_mah": 4.485,
+          "tramos": 15
+        },
+        "envio": {
+          "tiempo_s": 16.42,
+          "i_media_ma": 153.1,
+          "i_p95_ma": 216.0,
+          "i_max_ma": 407.6,
+          "p_media_mw": 756.0,
+          "v_media_v": 4.945,
+          "v_min_v": 4.828,
+          "energia_j": 12.41,
+          "carga_mah": 0.698,
+          "tramos": 12
+        },
+        "espera_respuesta": {
+          "tiempo_s": 90.38,
+          "i_media_ma": 135.1,
+          "i_p95_ma": 187.5,
+          "i_max_ma": 496.9,
+          "p_media_mw": 670.0,
+          "v_media_v": 4.961,
+          "v_min_v": 4.802,
+          "energia_j": 60.54,
+          "carga_mah": 3.393,
+          "tramos": 12
+        },
+        "hablando": {
+          "tiempo_s": 26.81,
+          "i_media_ma": 301.7,
+          "i_p95_ma": 486.4,
+          "i_max_ma": 796.7,
+          "p_media_mw": 1441.0,
+          "v_media_v": 4.816,
+          "v_min_v": 4.081,
+          "energia_j": 38.63,
+          "carga_mah": 2.247,
+          "tramos": 12
+        },
+        "desconocido": {
+          "tiempo_s": 1.74,
+          "i_media_ma": 145.3,
+          "i_p95_ma": 176.2,
+          "i_max_ma": 206.6,
+          "p_media_mw": 729.0,
+          "v_media_v": 5.02,
+          "v_min_v": 4.986,
+          "energia_j": 1.27,
+          "carga_mah": 0.07,
+          "tramos": 1
+        }
+      },
+      "agregados": {
+        "reposo": {
+          "tiempo_s": 69.43,
+          "i_media_ma": 124.1,
+          "i_p95_ma": 158.1,
+          "i_max_ma": 254.9,
+          "p_media_mw": 621.0,
+          "v_media_v": 5.009,
+          "v_min_v": 4.882,
+          "energia_j": 43.14,
+          "carga_mah": 2.393
+        },
+        "escucha activa": {
+          "tiempo_s": 123.25,
+          "i_media_ma": 131.0,
+          "i_p95_ma": 165.3,
+          "i_max_ma": 633.5,
+          "p_media_mw": 651.0,
+          "v_media_v": 4.968,
+          "v_min_v": 4.403,
+          "energia_j": 80.18,
+          "carga_mah": 4.485
+        },
+        "conversación": {
+          "tiempo_s": 138.62,
+          "i_media_ma": 171.0,
+          "i_p95_ma": 397.0,
+          "i_max_ma": 796.7,
+          "p_media_mw": 836.0,
+          "v_media_v": 4.931,
+          "v_min_v": 4.081,
+          "energia_j": 115.94,
+          "carga_mah": 6.583
+        }
+      },
+      "interacciones": [
+        {
+          "tiempo_s": 35.02,
+          "i_media_ma": 163.6,
+          "i_p95_ma": 393.2,
+          "i_max_ma": 711.4,
+          "p_media_mw": 815.0,
+          "v_media_v": 5.008,
+          "v_min_v": 4.338,
+          "energia_j": 28.53,
+          "carga_mah": 1.592,
+          "completa": true,
+          "t_inicio_s": 39.45
+        },
+        {
+          "tiempo_s": 178.86,
+          "i_media_ma": 150.0,
+          "i_p95_ma": 298.2,
+          "i_max_ma": 796.7,
+          "p_media_mw": 738.0,
+          "v_media_v": 4.944,
+          "v_min_v": 4.081,
+          "energia_j": 131.94,
+          "carga_mah": 7.452,
+          "completa": true,
+          "t_inicio_s": 105.27
+        },
+        {
+          "tiempo_s": 47.99,
+          "i_media_ma": 151.9,
+          "i_p95_ma": 321.8,
+          "i_max_ma": 670.7,
+          "p_media_mw": 743.0,
+          "v_media_v": 4.92,
+          "v_min_v": 4.22,
+          "energia_j": 35.65,
+          "carga_mah": 2.025,
+          "completa": true,
+          "t_inicio_s": 306.64
+        }
+      ],
+      "arranques": [],
+      "log": "20261024_123019_prueba_estados.log"
+    }
+  ]
+}
