@@ -2,17 +2,23 @@
 Módulo 2.2 — TTS: texto → PCM crudo 16 kHz mono 16-bit.
 Backend según TTS_PROVIDER (.env):
   edge  — edge-tts (Microsoft Neural, gratuito, requiere internet). Default.
-  local — Piper (offline). Voz .onnx en PIPER_MODEL.
+          Si falla (sin internet, 403, tiempo agotado) y hay PIPER_MODEL, responde Piper:
+          NEO habla siempre con Manuel salvo que no pueda.
+  local — solo Piper (offline). Voz .onnx en PIPER_MODEL.
 """
 
 import asyncio
 import io
+import logging
 import os
 import miniaudio
 import edge_tts
 
 VOZ_DEFAULT = "es-CU-ManuelNeural"
 SAMPLE_RATE  = 16000  # igual que el micrófono → el ESP32 usa un solo rate para I2S
+EDGE_TIMEOUT_S = 15   # sin internet edge-tts puede colgarse en el handshake
+
+log = logging.getLogger(__name__)
 
 _piper_voz = None   # se carga una vez (tarda ~1 s)
 
@@ -48,16 +54,24 @@ async def synthesize(texto: str, voz: str = VOZ_DEFAULT) -> bytes:
     silencio corto en vez de reventar en miniaudio ("failed to decode data").
     Así el pipeline siempre emite un fin_respuesta válido al ESP32.
     """
+    silencio = b"\x00" * (SAMPLE_RATE // 5 * 2)   # 200 ms
     if not texto or not texto.strip():
-        return b"\x00" * (SAMPLE_RATE // 5 * 2)   # 200 ms de silencio
+        return silencio
 
     if os.getenv("TTS_PROVIDER", "edge") == "local":
         pcm = await asyncio.to_thread(_sintetizar_piper, texto)   # CPU: no bloquear el loop
-        return pcm or b"\x00" * (SAMPLE_RATE // 5 * 2)
+        return pcm or silencio
 
-    mp3 = await _sintetizar_mp3(texto, voz)
-    if not mp3:
-        return b"\x00" * (SAMPLE_RATE // 5 * 2)
+    try:
+        mp3 = await asyncio.wait_for(_sintetizar_mp3(texto, voz), EDGE_TIMEOUT_S)
+        if not mp3:
+            raise RuntimeError("edge-tts no devolvió audio")
+    except Exception as e:
+        if not os.path.isfile(os.getenv("PIPER_MODEL") or ""):
+            raise   # sin respaldo: el pipeline avisa al ESP32 con un error
+        log.warning(f"[TTS] edge-tts falló ({type(e).__name__}: {e}) — respondo con Piper")
+        pcm = await asyncio.to_thread(_sintetizar_piper, texto)
+        return pcm or silencio
 
     decoded = miniaudio.decode(
         mp3,

@@ -283,14 +283,14 @@ async def _precalentar():
     no se nota; mejor que escuche y que el error salga en el log y en la consulta."""
     from src.stt.transcriber import transcribe
     from src.llm.client      import precargar_ollama
-    from src.tts.synthesizer import synthesize
     pasos = []
     if os.getenv("STT_PROVIDER") == "local":
         pasos.append(("Whisper", lambda: asyncio.to_thread(transcribe, b"\x00" * MIC_SAMPLE_RATE, MIC_SAMPLE_RATE)))
     if os.getenv("LLM_PROVIDER") == "ollama":
         pasos.append(("Ollama", lambda: asyncio.to_thread(precargar_ollama)))
-    if os.getenv("TTS_PROVIDER") == "local":
-        pasos.append(("Piper", lambda: synthesize("Hola")))
+    if os.path.isfile(os.getenv("PIPER_MODEL") or ""):   # también es el respaldo de edge-tts
+        from src.tts.synthesizer import _sintetizar_piper
+        pasos.append(("Piper", lambda: asyncio.to_thread(_sintetizar_piper, "Hola")))
     t0 = time.time()
     for nombre, paso in pasos:
         t = time.time()

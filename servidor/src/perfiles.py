@@ -1,8 +1,9 @@
 """
 Perfiles de proveedores del pipeline (STT + LLM + TTS).
 
-  local — todo en el PC: faster-whisper, Ollama y Piper. Sin internet, salvo
-          los handlers de comandos (clima, cripto, noticias, El Toque).
+  local — STT y LLM en el PC: faster-whisper y Ollama. La voz es Manuel (edge-tts)
+          para que NEO suene igual que su saludo; sin internet responde Piper
+          (ver tts/synthesizer.py). Los handlers de comandos sí necesitan internet.
   nube  — todo en servicios externos: Groq Whisper, Groq LLM y edge-tts.
 
 Un perfil solo fija los tres *_PROVIDER; los modelos concretos siguen en .env
@@ -15,7 +16,7 @@ import os
 from pathlib import Path
 
 PERFILES = {
-    "local": {"STT_PROVIDER": "local", "LLM_PROVIDER": "ollama", "TTS_PROVIDER": "local"},
+    "local": {"STT_PROVIDER": "local", "LLM_PROVIDER": "ollama", "TTS_PROVIDER": "edge"},
     "nube":  {"STT_PROVIDER": "groq",  "LLM_PROVIDER": "groq",   "TTS_PROVIDER": "edge"},
 }
 
