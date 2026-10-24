@@ -110,6 +110,24 @@ Hallazgos:
 - **`qwen2.5:3b` sigue cometiendo errores de hecho**, por ejemplo atribuye *Neuromante* a Neal Stephenson (la nube responde William Gibson).
 - **Faltan datos:** la latencia percibida en la placa sigue sin medirse (el log del monitor no estaba disponible), y la medición de red no se combinó entre las dos tandas.
 
+**Tercera medición con la placa (24/10, nueva estrategia de software, 31 frases).** El firmware tiene ESP-NN, VAD con piso de ruido y pre-roll de 300 ms, red bajo demanda y frases pregrabadas. El perfil local habla con Manuel (edge-tts) y deja Piper de respaldo. Detalle en `docs/estrategia-software.md`; informe, datos y comparación en `docs/metrics/validacion_20261024/`.
+
+| | WER (sin tildes) | Intención | Preguntas libres (mediana / p90) | Comandos (mediana / p90) |
+|---|---|---|---|---|
+| Local | 9,7 % (6,2 %) | 96,8 % | 8,8 s / 9,6 s (STT 2,3 s, LLM 3,7 s, TTS 2,5 s) | 6,2 s / 9,5 s |
+| Nube | 4,6 % (3,1 %) | 96,8 % | 5,7 s / 8,0 s (STT 1,7 s, LLM 1,2 s, TTS 2,5 s) | 5,1 s / 6,1 s |
+
+Hallazgos:
+- **El pre-roll reduce el WER a la mitad** (local 18,5 → 9,7 %, nube 10,8 → 4,6 %). Las frases con la primera palabra perdida o cambiada bajan de 12 a 3 (local) y de 8 a 2 (nube).
+- **Las tildes son 3,5 puntos del WER local** («que» por «qué», «como» por «cómo»…), que al TTS y a la intención no les afectan. El informe ahora da también el WER sin tildes.
+- **La voz única cuesta ~2,2 s en el perfil local:** edge-tts tarda 2,5 s y Piper tardaba 0,25 s. Se recuperaría transmitiendo el audio de edge-tts por fragmentos.
+- **Wake word en la placa con ESP-NN:** la inferencia pasa de 2,6 s a 0,32–0,40 s, con las mismas puntuaciones (0,98–0,996). Detección estimada en ~1,1 s (antes, 3,33 s medidos); falta medirla con `latencia_wake.py`.
+- **Por corregir:**
+  - qwen2.5:3b responde en chino en 2 de 24 preguntas.
+  - El clima respondía por Ciudad de México por el `.env`; ya está cambiado a La Habana.
+  - El Toque no encuentra el euro.
+  - Las noticias salen sesgadas a criptomonedas.
+
 Corregido (2026-10-21): `percentile()` de `servidor/scripts/neo_metrics_tool.py` no ordenaba los valores por etapa, por eso los p50/p95 de STT/LLM/TTS de `docs/metrics/README.md` (11/09) no son válidos. Hay que regenerarlos con los logs originales del PC.
 
 ### 1.3 Alimentación con batería 18650
@@ -163,8 +181,8 @@ Pendiente para cerrar 1.4: las sesiones completas del protocolo (offset, 5 arran
 
 | Punto | Estado | Medido | Falta |
 |---|---|---|---|
-| 1.1 Wake word | Casi completo | Test int8 95,7 %, TPR 95,6 % / FP 0,6 %; latencia en la placa 3,33 s (p90 3,38 s) | FP/hora en la placa (≥ 2 h) y matriz de confusión en la placa |
-| 1.2 Conversación y latencia | Casi completo | 31 frases con la placa: local 7,0 s / nube 7,2 s de mediana; WER 18,5 % / 10,8 % | Flujo completo con wake word en una sesión, primer audio en la placa |
+| 1.1 Wake word | Casi completo | Test int8 95,7 %, TPR 95,6 % / FP 0,6 %; latencia en la placa 3,33 s (p90 3,38 s); con ESP-NN (24/10), inferencia 0,32–0,40 s | FP/hora en la placa (≥ 2 h), matriz de confusión en la placa, repetir la latencia con ESP-NN |
+| 1.2 Conversación y latencia | Casi completo | 31 frases con la placa (24/10): local 8,8 s / nube 5,7 s de mediana; WER 9,7 % / 4,6 % (sin tildes 6,2 % / 3,1 %) | Flujo completo con wake word en una sesión, primer audio en la placa |
 | 1.3 Batería 18650 | En curso | Conversa sin USB, pero brownout por encima de ~350 mA | Fuente ≥ 1 A a 5 V, nivel de carga en la OLED, esquema |
 | 1.4 Consumo por estado | Preliminar | Tabla por estado (1 sesión, 12 turnos) | Sesiones completas del protocolo y autonomía |
 | 1.5 Documentación y vídeo | En curso | README con resultados | Personalidad del prompt, vídeo |

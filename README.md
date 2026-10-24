@@ -234,15 +234,23 @@ All numbers come from the board, not from simulation. Raw data and method are li
 |---|---|
 | Test accuracy (int8, 302 clips) | 95.7 % |
 | True positive rate / false positive rate (threshold 0.7618) | 95.6 % / 0.6 % |
-| Detection latency on the board, end of phrase → confirmed ([data](docs/metrics/latencia_wake_20261023/)) | **3.33 s** median (p90 3.38 s), of which inference 2.6 s |
+| Detection latency on the board, end of phrase → confirmed ([data](docs/metrics/latencia_wake_20261023/)) | **3.33 s** median (p90 3.38 s), of which inference 2.6 s (reference kernels) |
+| Inference with ESP-NN kernels (24/10, 8 runs on the board) | **0.32–0.40 s**, same scores; detection ≈ 1.1 s estimated, to be re-measured |
 
 **Conversation latency**, end of recording → full reply received, same audio sent to both
-profiles, 31 phrases read to the board ([data](docs/metrics/validacion_20261023/))
+profiles, 31 phrases read to the board ([data](docs/metrics/validacion_20261024/),
+[comparison](docs/metrics/validacion_20261024/ANALISIS.md)). Since 24/10 the firmware keeps
+300 ms of pre-roll before the voice onset, and NEO speaks with one voice (edge-tts Manuel,
+Piper only as fallback) — see [software strategy](docs/estrategia-software.md).
 
-| Profile | Word error rate | Intent accuracy | Free questions, median (p90) | Commands, median (p90) |
+| Profile | Word error rate (ignoring accents) | Intent accuracy | Free questions, median (p90) | Commands, median (p90) |
 |---|---|---|---|---|
-| Local (Whisper small + qwen2.5:3b + Piper) | 18.5 % | 96.8 % | 7.0 s (9.5 s) | 3.6 s (5.7 s) |
-| Cloud (Groq + edge-tts) | 10.8 % | 100 % | 7.2 s (54 s, VPN spikes) | 5.2 s (7.7 s) |
+| Local (Whisper small + qwen2.5:3b + edge-tts) | 9.7 % (6.2 %) | 96.8 % | 8.8 s (9.6 s) | 6.2 s (9.5 s) |
+| Cloud (Groq + edge-tts) | 4.6 % (3.1 %) | 96.8 % | 5.7 s (8.0 s) | 5.1 s (6.1 s) |
+
+Before the pre-roll (23/10, [data](docs/metrics/validacion_20261023/)) the word error rate was
+18.5 % local / 10.8 % cloud: the VAD cut the first word of 12 / 8 phrases. Using edge-tts in the
+local profile costs ~2.2 s versus Piper (0.25 s TTS, 7.0 s median reply on 23/10).
 
 **Power draw at 5 V per state** (INA219 on NEO's 5V pin, preliminary: one 5.5-min
 session with 12 question/answer turns; [method](docs/experimento-consumo.md),
@@ -263,8 +271,9 @@ session with 12 question/answer turns; [method](docs/experimento-consumo.md),
 
 - Random PSRAM access during MFCC extraction with active WiFi triggered the *task
   watchdog*; inference buffers are allocated in **internal SRAM**.
-- The local model is kept small (channels 8/16/32) so inference takes ~2.6 s and
-  doesn't crash the core; that inference is 78 % of the wake word latency.
+- The local model is kept small (channels 8/16/32). With TFLite Micro's reference kernels
+  inference took ~2.6 s (78 % of the wake word latency); the ESP-NN kernels (S3 SIMD) bring
+  it to ~0.4 s. In PlatformIO they need `scripts/parche_tflite.py` (see the script).
 - Groq's reasoning models need `max_tokens` set high; low values cause empty content
   responses.
 
