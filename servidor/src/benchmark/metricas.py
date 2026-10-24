@@ -4,7 +4,9 @@ Métricas: calidad de transcripción (WER, CER) y estadísticos de latencia.
 Normalización antes de comparar (la misma para referencia e hipótesis):
 minúsculas, sin signos de puntuación (¿?¡!.,;:«»"…), espacios colapsados.
 Las tildes SE CONSERVAN: "esta" frente a "está" cuenta como error, porque
-cambia la palabra. Los números escritos con cifras tampoco se convierten, así
+cambia la palabra. Aparte se da el WER sin tildes (la ñ se conserva): la
+diferencia entre ambos son las palabras reconocidas bien salvo por la tilde,
+que al TTS y a la intención casi no les afectan. Los números escritos con cifras tampoco se convierten, así
 que las frases del corpus evitan cifras.
 
 WER y CER del corpus = errores totales / palabras (o caracteres) totales de las
@@ -26,6 +28,12 @@ def normalizar(texto: str) -> str:
     return " ".join(texto.split())
 
 
+def sin_tildes(texto: str) -> str:
+    """Quita tildes y diéresis (á→a, ü→u) pero no la ñ, que es otra letra."""
+    nfd = unicodedata.normalize("NFD", texto)
+    return unicodedata.normalize("NFC", "".join(c for c in nfd if c not in "́̈"))
+
+
 def distancia(ref: list, hip: list) -> int:
     """Distancia de Levenshtein (sustituciones + borrados + inserciones)."""
     previa = list(range(len(hip) + 1))
@@ -43,6 +51,7 @@ def errores_transcripcion(referencia: str, hipotesis: str) -> dict:
     return {
         "errores_palabra": distancia(ref.split(), hip.split()),
         "palabras": len(ref.split()),
+        "errores_palabra_sin_tildes": distancia(sin_tildes(ref).split(), sin_tildes(hip).split()),
         "errores_caracter": distancia(list(ref), list(hip)),
         "caracteres": len(ref),
         "exacta": ref == hip,
@@ -60,6 +69,8 @@ def resumen_transcripcion(filas: list[dict]) -> dict:
         "wer": sum(f["errores_palabra"] for f in filas) / palabras if palabras else None,
         "cer": sum(f["errores_caracter"] for f in filas) / caracteres if caracteres else None,
         "frases_exactas": sum(f["exacta"] for f in filas) / len(filas),
+        "wer_sin_tildes": (sum(f.get("errores_palabra_sin_tildes", f["errores_palabra"]) for f in filas)
+                           / palabras if palabras else None),
     }
 
 

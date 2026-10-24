@@ -326,8 +326,9 @@ def informe(res: dict) -> str:
 
     L += ["", "## Calidad de la transcripción", "",
           "WER y CER sobre el corpus completo (errores / palabras o caracteres de referencia); "
-          "minúsculas y sin puntuación, con tildes.", "", cab, sep,
+          "minúsculas y sin puntuación, con tildes; el WER sin tildes cuenta como acierto una palabra que solo difiere en la tilde (la ñ se conserva).", "", cab, sep,
           "| WER | " + " | ".join(_pct(p["resumen"]["stt"].get("wer")) for p in perfs) + " |",
+          "| WER sin tildes | " + " | ".join(_pct(p["resumen"]["stt"].get("wer_sin_tildes")) for p in perfs) + " |",
           "| CER | " + " | ".join(_pct(p["resumen"]["stt"].get("cer")) for p in perfs) + " |",
           "| Frases exactas | " + " | ".join(_pct(p["resumen"]["stt"].get("frases_exactas")) for p in perfs) + " |",
           "| Intención correcta | " + " | ".join(_pct(p["resumen"]["intencion_acierto"]) for p in perfs) + " |",

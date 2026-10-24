@@ -34,6 +34,9 @@ def test_wer_cuenta_tildes_y_suma_por_corpus():
     r = metricas.resumen_transcripcion([a, b])
     assert r["wer"] == pytest.approx(1 / 7)   # errores totales / palabras totales
     assert r["frases_exactas"] == 0.5
+    assert r["wer_sin_tildes"] == 0            # «que» por «qué» es solo la tilde
+    c = metricas.errores_transcripcion("Mañana llueve", "manana llueve")
+    assert c["errores_palabra_sin_tildes"] == 1   # la ñ no es una tilde: sigue siendo error
 
 
 def test_distancia_inserciones_y_borrados():
