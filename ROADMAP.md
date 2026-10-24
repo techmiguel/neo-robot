@@ -78,9 +78,23 @@ Riesgos: Groq rechaza (403) algunas IPs de Proton VPN, y el banco de pruebas lo 
 
 Hallazgos:
 - **El VAD de la placa corta la primera palabra** en 7 de 29 frases, en ambos perfiles. Hace falta pre-roll en el firmware.
-- **`qwen2.5-coder:3b` comete errores de hecho**; hay que probar `qwen2.5:3b` y Whisper `small`.
+- **`qwen2.5-coder:3b` comete errores de hecho**; hay que probar `qwen2.5:3b` y Whisper `small` (probados el 23/10, ver abajo).
 - **Faltan datos:** la latencia percibida en la placa (no se encontró su log).
 - **Handlers por corregir:** ciudad del clima, euro de El Toque y búsqueda de noticias.
+
+**Segunda medición con la placa (23/10, modelos locales nuevos, 31 frases válidas: 24 preguntas libres y 7 comandos).** Perfil local con Whisper `small` + `qwen2.5:3b` + Piper `es_ES-sharvard-medium`; nube sin cambios. Se grabó en dos tandas con la misma configuración (f01–f10 el 21/10 y f11–c07 el 23/10, tras caerse la red de la VPN) y se combinaron en un solo informe, con un intento por frase y sin transcripciones de eco. Informe y datos en `docs/metrics/validacion_20261023/`.
+
+| | WER | Intención | Preguntas libres (mediana / p90) | Comandos (mediana / p90) |
+|---|---|---|---|---|
+| Local | 18,5 % | 96,8 % | 7,0 s / 9,5 s (STT 2,5 s, LLM 3,9 s, TTS 0,25 s) | 3,6 s / 5,7 s |
+| Nube | 10,8 % | 100 % | 7,2 s / 54,1 s (STT 2,5 s, LLM 2,2 s, TTS 3,4 s) | 5,2 s / 7,7 s |
+
+Hallazgos:
+- **Whisper `small` reduce el WER local de 29 % a 18,5 %** y la intención correcta sube de 83 % a 97 %, a cambio de ~1,6 s más de STT. `qwen2.5:3b` responde en 3,9 s frente a 5,1 s de `qwen2.5-coder:3b`.
+- **Local y nube empatan en la mediana (7,0 s frente a 7,2 s), pero el local es mucho más estable:** su p90 es 9,5 s; el de la nube, 54 s, por picos de la VPN (STT de Groq de hasta 50 s). En comandos, el local es 1,6 s más rápido.
+- **El único comando fallado en local es c05:** Whisper escribe «bitcóin» y el keyword de cripto solo acepta «bitcoin».
+- **`qwen2.5:3b` sigue cometiendo errores de hecho**, por ejemplo atribuye *Neuromante* a Neal Stephenson (la nube responde William Gibson).
+- **Faltan datos:** la latencia percibida en la placa sigue sin medirse (el log del monitor no estaba disponible), y la medición de red no se combinó entre las dos tandas.
 
 Corregido (2026-10-21): `percentile()` de `servidor/scripts/neo_metrics_tool.py` no ordenaba los valores por etapa, por eso los p50/p95 de STT/LLM/TTS de `docs/metrics/README.md` (11/09) no son válidos. Hay que regenerarlos con los logs originales del PC.
 
