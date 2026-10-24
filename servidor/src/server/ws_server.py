@@ -13,7 +13,8 @@ Protocolo (texto = JSON, binario = PCM crudo):
     {"cmd":"keepalive"}      — latido durante procesamiento (evita timeout del proxy móvil)
     bytes                    — chunk de audio PCM respuesta (16 kHz, mono, 16-bit)
     {"cmd":"fin_respuesta"}  — último chunk enviado
-    {"cmd":"error","msg":"…"}
+    {"cmd":"error","codigo":"sin_internet"|"no_entendi"|"interno","msg":"…"}
+                             — el ESP32 elige la frase pregrabada según codigo
 """
 
 import argparse
@@ -22,6 +23,7 @@ import http
 import json
 import logging
 import os
+import socket
 import time
 import uuid
 from datetime import datetime
@@ -77,6 +79,20 @@ async def _enviar_json(ws, data: dict):
     await ws.send(json.dumps(data, ensure_ascii=False))
 
 
+def _codigo_error(e: BaseException) -> str:
+    """sin_internet si la causa es de red (Groq, edge-tts, APIs de los handlers); si no, interno."""
+    while e is not None:
+        de_red = isinstance(e, (ConnectionError, TimeoutError, socket.gaierror))
+        if de_red or any(n in type(e).__name__ for n in ("Connect", "Timeout")):
+            return "sin_internet"
+        e = e.__cause__ or e.__context__
+    return "interno"
+
+
+async def _enviar_error(ws, e: BaseException):
+    await _enviar_json(ws, {"cmd": "error", "codigo": _codigo_error(e), "msg": str(e)})
+
+
 async def _iniciar_keepalive(ws, intervalo: int = 2) -> asyncio.Task:
     """Envía {"cmd":"keepalive"} cada `intervalo` segundos.
 
@@ -119,7 +135,7 @@ async def _modo_consulta(ws, tipo: str, args: dict):
     except Exception as e:
         ka.cancel()
         log.error(f"[consulta:{tipo}] error: {e}")
-        await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
+        await _enviar_error(ws, e)
 
 
 async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
@@ -155,6 +171,13 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
         if GUARDAR_AUDIO_DIR:
             _guardar_audio(bytes(buffer), transcripcion, perfil)
         log.info(f"[STT] {timer.duration('stt_start', 'stt_end'):.2f}s → \"{transcripcion}\"")
+        if not transcripcion.strip():
+            ka.cancel()
+            timer.mark("pipeline_end")
+            timer.set_metadata("error", "transcripción vacía")
+            timer.save()
+            await _enviar_json(ws, {"cmd": "error", "codigo": "no_entendi", "msg": "transcripción vacía"})
+            return
 
         timer.mark("intencion_start")
         tipo, args = _router.detectar_intencion(transcripcion)
@@ -207,7 +230,7 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
         timer.set_metadata("error", str(e))
         timer.save()
         log.error(f"[pipeline] error: {e}")
-        await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
+        await _enviar_error(ws, e)
 
 
 async def handler(ws):
@@ -237,7 +260,7 @@ async def handler(ws):
                             await _modo_pipeline(ws, buffer, session_id)
                     except Exception as e:
                         log.error(f"[fin_grabacion] excepción no capturada: {e}", exc_info=True)
-                        await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
+                        await _enviar_error(ws, e)
                     buffer.clear()
 
                 elif cmd == "consulta":
