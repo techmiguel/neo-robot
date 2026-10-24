@@ -38,10 +38,24 @@ Hecho (2026-10-20/21):
 - Evaluación fuera de la placa (int8, 302 clips de test): exactitud 95,7 %; con umbral 0,7618, TPR 95,6 % y FP 2/348 (0,6 %); 0 disparos con palabras nunca vistas ("el toque", "noticias").
 - Modelo en el firmware completo (`main`, env `esp32dev`) y probado informalmente en la placa con buen resultado.
 
+Hecho (2026-10-23): **latencia de detección medida en la placa** con voz en vivo (h1, 50 cm, de frente; 12 detecciones válidas de 15 intentos con la placa en reposo). Método: env `esp32dev_latencia` (firmware completo + nivel de cada bloque de 16 ms del micrófono) y `firmware/tools/latencia_wake.py`, todo con el reloj de la placa; protocolo en `docs/experimento-latencia-wake.md`, datos en `docs/metrics/latencia_wake_20261023/`.
+
+| Tramo | Mediana | p90 | Rango |
+|---|---|---|---|
+| **Fin de la frase → wake word confirmado** | **3,33 s** | 3,38 s | 3,31–3,40 s |
+| Espera del VAD (fin de la frase → captura) | 0,74 s | 0,77 s | 0,72–0,78 s |
+| Inferencia + cola (captura → confirmado) | 2,61 s | 2,61 s | 2,59–2,62 s |
+
+- **La inferencia es el 78 % de la latencia** (MFCC + TFLite, 2,6 s, muy estable). Es lo que hay que optimizar para reaccionar antes, no el VAD.
+- La estimación de `analizar_log_wake.py` (captura − 700 ms) da 3,31 s: válida, solo 30 ms por debajo de la medida.
+- Detección orientativa en esta corrida: 12/15 (80 %); la tasa de acierto la da la matriz de confusión.
+- Descartado reproducir clips del dataset por el altavoz del PC: 0/20 detecciones, porque el altavoz altera el audio (detalle en el protocolo).
+
 Pendiente:
 - Falsos positivos por hora en la placa (≥ 2 h de fondo realista).
 - Matriz de confusión en la placa: ~20 intentos por hablante y distancia, más sesiones negativas.
-- Latencia de detección en la placa (la última medida, con el modelo anterior, fue ~2,57 s con 3 muestras).
+- Latencia en más condiciones (h1 a 1 m, h2 a 50 cm) con `latencia_wake.py`.
+- Con la sala muy silenciosa el ruido de fondo de la placa llega a 0 y el VAD se dispara con cualquier ruido mínimo (umbral = ruido × 4): falta un umbral mínimo en el firmware.
 
 Notas para la documentación:
 - `CONF_MINIMAS = 1` en `firmware/src/main.cpp`: basta una detección para activar, no dos seguidas. Las cifras válidas son las de una sola ventana (TPR 95,6 %), no el "TPR² 91,4 %" del RESUMEN. El comentario de esa línea aún cita el umbral antiguo (0,49).
