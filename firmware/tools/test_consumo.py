@@ -103,3 +103,12 @@ def test_autonomia():
     r = c.autonomia(p_reposo_mw=500, e_int_j=10, t_int_s=10, capacidad_mah=2000, v_bateria=3.7, eficiencia=0.85)
     assert r["0_interacciones_h"]["horas"] == round(2000 * 3.7 * 0.85 / 500, 1)
     assert r["30_interacciones_h"]["p_media_mw"] > 500
+
+
+def test_reposo_profundo_y_avisos():
+    """Red apagada → reposo profundo; una captura sin wake vuelve a él; un aviso de error es hablar."""
+    assert c.estado_de("[CPU] 80 MHz") == c.REPOSO_PROF
+    assert c.estado_de("[CPU] 240 MHz") is None
+    assert c.estado_de("[NEO] Frase 1.2: 31000 muestras (1.95s)") == c.HABLANDO
+    assert c.estado_de("[NEO] Frase 0.1: 8000 muestras (0.50s)") is None   # saludo: ya es SALUDO
+    assert c.AGREGADO[c.REPOSO_PROF] == "reposo"

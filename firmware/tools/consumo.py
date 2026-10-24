@@ -38,15 +38,17 @@ RAIZ = Path(__file__).resolve().parent.parent
 
 # ── Estados ───────────────────────────────────────────────────────────────────
 APAGADO, ARRANQUE, REPOSO, CAPTURA = "apagado", "arranque", "reposo", "captura_inferencia"
+REPOSO_PROF = "reposo_profundo"
 SALUDO, ESCUCHA, ENVIO, ESPERA, HABLANDO = "saludo", "escucha_activa", "envio", "espera_respuesta", "hablando"
 DESCONOCIDO = "desconocido"
-ORDEN = [ARRANQUE, REPOSO, CAPTURA, SALUDO, ESCUCHA, ENVIO, ESPERA, HABLANDO, APAGADO, DESCONOCIDO]
+ORDEN = [ARRANQUE, REPOSO, REPOSO_PROF, CAPTURA, SALUDO, ESCUCHA, ENVIO, ESPERA, HABLANDO, APAGADO, DESCONOCIDO]
 NOMBRE = {ARRANQUE: "Arranque (encendido → Listo)", REPOSO: "Reposo (pantalla apagada, VAD escuchando)",
+          REPOSO_PROF: "Reposo profundo (sin WiFi, CPU a 80 MHz, VAD escuchando)",
           CAPTURA: "Captura + inferencia del wake word", SALUDO: "Saludo «¡Hola!» por el altavoz",
           ESCUCHA: "Escucha activa (espera de voz + grabación)", ENVIO: "Envío del audio por WiFi",
           ESPERA: "Espera de la respuesta", HABLANDO: "Hablando (TTS por el altavoz)",
           APAGADO: "Apagado (sin alimentación)", DESCONOCIDO: "Sin estado (antes de la primera marca)"}
-AGREGADO = {REPOSO: "reposo", CAPTURA: "reposo", ESCUCHA: "escucha activa",
+AGREGADO = {REPOSO: "reposo", REPOSO_PROF: "reposo", CAPTURA: "reposo", ESCUCHA: "escucha activa",
             SALUDO: "conversación", ENVIO: "conversación", ESPERA: "conversación", HABLANDO: "conversación"}
 
 # Marca de NEO → estado en el que entra (la primera que coincida)
@@ -67,6 +69,10 @@ MARCAS = [
     # empezar a sonar (visto el 24/10); estas marcas llegan unos ms después.
     (re.compile(r"\[NEO\] Reproduciendo:"), HABLANDO),
     (re.compile(r"\[NEO\] Reproducci.n completa"), ESCUCHA),
+    # Red bajo demanda: la CPU baja a 80 MHz solo en reposo con la red apagada; vuelve
+    # a 240 al captar, así que tras cada inferencia sin wake se reentra aquí.
+    (re.compile(r"\[CPU\] 80 MHz"), REPOSO_PROF),
+    (re.compile(r"\[NEO\] Frase [1-9]"), HABLANDO),           # aviso de error (la 0 es el saludo)
 ]
 UMBRAL_APAGADO_MA = 2.0     # por debajo, NEO no está alimentado
 APAGADO_MIN_S = 0.3         # tiempo mínimo bajo el umbral para contar como apagado
@@ -239,7 +245,7 @@ def analizar_sesion(m, eventos, offset_ma=0.0):
     for k, (e, ini, _) in enumerate(tr):
         if e != SALUDO:
             continue
-        fin = next((f0 for x, f0, _ in tr[k + 1:] if x in (REPOSO, APAGADO, CAPTURA)), None)
+        fin = next((f0 for x, f0, _ in tr[k + 1:] if x in (REPOSO, REPOSO_PROF, APAGADO, CAPTURA)), None)
         if fin is None:
             continue
         s = estadisticas(m, slice(ini, fin), dt)
@@ -249,7 +255,7 @@ def analizar_sesion(m, eventos, offset_ma=0.0):
     for e, ini, fin in tr:
         if e == ARRANQUE:
             s = estadisticas(m, slice(ini, fin), dt)
-            s["completo"] = fin < len(est) and est[fin] == REPOSO
+            s["completo"] = fin < len(est) and est[fin] in (REPOSO, REPOSO_PROF)
             res["arranques"].append(s)
     return res, m, est, dt
 
@@ -448,7 +454,7 @@ def informe(res):
     return "\n".join(L) + "\n"
 
 
-COLORES = {ARRANQUE: "#999999", REPOSO: "#cfe8cf", CAPTURA: "#8fd18f", SALUDO: "#ffd27f", ESCUCHA: "#9ec5fe",
+COLORES = {ARRANQUE: "#999999", REPOSO: "#cfe8cf", REPOSO_PROF: "#e6f4e6", CAPTURA: "#8fd18f", SALUDO: "#ffd27f", ESCUCHA: "#9ec5fe",
            ENVIO: "#c29ffa", ESPERA: "#e0c3fc", HABLANDO: "#ff9f80", APAGADO: "#ffffff", DESCONOCIDO: "#ffffff"}
 
 
@@ -462,7 +468,7 @@ def trazar(global_m, ruta):
         for k, (e, ini, _) in enumerate(tr):
             if e != SALUDO:
                 continue
-            fin = next((f0 for x, f0, _ in tr[k + 1:] if x in (REPOSO, APAGADO, CAPTURA)), None)
+            fin = next((f0 for x, f0, _ in tr[k + 1:] if x in (REPOSO, REPOSO_PROF, APAGADO, CAPTURA)), None)
             if fin is None or not any(x == HABLANDO for x, f0, _ in tr[k + 1:] if f0 < fin):
                 continue
             t0 = m["t"][ini]
