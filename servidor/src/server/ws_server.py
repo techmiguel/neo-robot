@@ -11,11 +11,12 @@ Protocolo (texto = JSON, binario = PCM crudo):
     {"cmd":"listo"}          — conexión aceptada, listo para recibir audio
     {"cmd":"procesando"}     — STT+LLM+TTS en curso
     {"cmd":"keepalive"}      — latido durante procesamiento (evita timeout del proxy móvil)
-    bytes                    — chunk de audio PCM respuesta (24 kHz, mono, 16-bit)
+    bytes                    — chunk de audio PCM respuesta (16 kHz, mono, 16-bit)
     {"cmd":"fin_respuesta"}  — último chunk enviado
     {"cmd":"error","msg":"…"}
 """
 
+import argparse
 import asyncio
 import http
 import json
@@ -23,6 +24,8 @@ import logging
 import os
 import time
 import uuid
+from datetime import datetime
+from pathlib import Path
 
 import websockets
 from dotenv import load_dotenv
@@ -32,6 +35,7 @@ load_dotenv()
 from src.commands.router import CommandRouter
 from src.server.timing import get_timer
 from src.server.memory import memory
+from src import perfiles
 _router = CommandRouter()
 
 MIC_SAMPLE_RATE = 16000  # rate del INMP441 en el ESP32
@@ -41,7 +45,7 @@ log = logging.getLogger("ws_server")
 
 HOST  = "0.0.0.0"
 PORT  = int(os.getenv("WS_PORT", "8765"))
-CHUNK = 4096   # bytes por chunk al enviar audio de vuelta (~85 ms a 24 kHz)
+CHUNK = 4096   # bytes por chunk al enviar audio de vuelta (128 ms a 16 kHz)
 
 # — Modo de operación —————————————————————————————————————————————————
 # "echo":     devuelve los bytes recibidos tal cual (prueba de conectividad)
@@ -52,6 +56,21 @@ MODO = os.getenv("WS_MODO", "pipeline")
 # "local": servidor en LAN (PC del desarrollador)
 # "nube": servidor en HuggingFace Spaces
 SERVER_TYPE = os.getenv("SERVER_TYPE", "local")
+
+# — Corpus de audio ————————————————————————————————————————————————————————
+# Si está definido, cada consulta recibida se guarda como WAV + JSON con la
+# transcripción: así se arma el corpus de src.benchmark con el micrófono real.
+GUARDAR_AUDIO_DIR = os.getenv("GUARDAR_AUDIO_DIR")
+
+
+def _guardar_audio(pcm: bytes, transcripcion: str, perfil: dict):
+    from src.stt.transcriber import _pcm_a_wav_bytes
+    carpeta = Path(GUARDAR_AUDIO_DIR)
+    carpeta.mkdir(parents=True, exist_ok=True)
+    base = carpeta / datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    base.with_suffix(".wav").write_bytes(_pcm_a_wav_bytes(pcm, MIC_SAMPLE_RATE))
+    base.with_suffix(".json").write_text(json.dumps(
+        {"transcripcion": transcripcion, "perfil": perfil}, ensure_ascii=False), encoding="utf-8")
 
 
 async def _enviar_json(ws, data: dict):
@@ -121,6 +140,9 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
     timer.mark("pipeline_start")
     timer.set_metadata("longitud_audio_bytes", len(buffer))
     timer.set_metadata("tipo_servidor", SERVER_TYPE)
+    timer.set_metadata("duracion_audio_s", len(buffer) / 2 / MIC_SAMPLE_RATE)
+    perfil = perfiles.describir()
+    timer.set_metadata("perfil", perfil)
 
     await _enviar_json(ws, {"cmd": "procesando"})
     ka = await _iniciar_keepalive(ws)
@@ -129,6 +151,9 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
         timer.mark("stt_start")
         transcripcion = await asyncio.to_thread(transcribe, bytes(buffer), MIC_SAMPLE_RATE)
         timer.mark("stt_end")
+        timer.set_metadata("transcripcion", transcripcion)
+        if GUARDAR_AUDIO_DIR:
+            _guardar_audio(bytes(buffer), transcripcion, perfil)
         log.info(f"[STT] {timer.duration('stt_start', 'stt_end'):.2f}s → \"{transcripcion}\"")
 
         timer.mark("intencion_start")
@@ -151,11 +176,13 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
             timer.mark("llm_end")
             log.info(f"[LLM] {timer.duration('llm_start', 'llm_end'):.2f}s → \"{respuesta}\"")
 
+        timer.set_metadata("respuesta", respuesta)
         timer.set_metadata("longitud_respuesta_texto", len(respuesta))
         timer.mark("tts_start")
         pcm_salida = await synthesize(respuesta)
         timer.mark("tts_end")
         timer.set_metadata("longitud_respuesta_pcm", len(pcm_salida))
+        timer.set_metadata("duracion_respuesta_s", len(pcm_salida) / 2 / MIC_SAMPLE_RATE)
         log.info(f"[TTS] {timer.duration('tts_start', 'tts_end'):.2f}s → {len(pcm_salida)//2} muestras")
 
         # Agregar turnos al historial de memoria (solo si fue LLM libre, no handlers)
@@ -165,6 +192,7 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
 
         ka.cancel()
 
+        timer.mark("envio_start")
         for i in range(0, len(pcm_salida), CHUNK):
             await ws.send(pcm_salida[i:i + CHUNK])
 
@@ -249,21 +277,33 @@ async def _health(connection, request):
 
 async def _precalentar():
     """Carga los modelos locales antes de aceptar conexiones: la primera carga
-    (Whisper ~15 s, Ollama ~50 s, Piper ~7 s) superaría el timeout del ESP32."""
+    (Whisper ~15 s, Ollama 50–90 s en frío, Piper ~7 s) superaría el timeout del ESP32.
+
+    Un fallo aquí no tumba el servidor: si cae, la placa se va sola a la nube y
+    no se nota; mejor que escuche y que el error salga en el log y en la consulta."""
     from src.stt.transcriber import transcribe
-    from src.llm.client      import ask
+    from src.llm.client      import precargar_ollama
     from src.tts.synthesizer import synthesize
-    t0 = time.time()
+    pasos = []
     if os.getenv("STT_PROVIDER") == "local":
-        await asyncio.to_thread(transcribe, b"\x00" * MIC_SAMPLE_RATE, MIC_SAMPLE_RATE)
+        pasos.append(("Whisper", lambda: asyncio.to_thread(transcribe, b"\x00" * MIC_SAMPLE_RATE, MIC_SAMPLE_RATE)))
     if os.getenv("LLM_PROVIDER") == "ollama":
-        await asyncio.to_thread(ask, "Hola")
+        pasos.append(("Ollama", lambda: asyncio.to_thread(precargar_ollama)))
     if os.getenv("TTS_PROVIDER") == "local":
-        await synthesize("Hola")
-    log.info(f"[precarga] modelos locales listos en {time.time() - t0:.1f}s")
+        pasos.append(("Piper", lambda: synthesize("Hola")))
+    t0 = time.time()
+    for nombre, paso in pasos:
+        t = time.time()
+        try:
+            await paso()
+            log.info(f"[precarga] {nombre} listo en {time.time() - t:.1f}s")
+        except Exception as e:
+            log.error(f"[precarga] {nombre} FALLÓ ({type(e).__name__}: {e}); las consultas que lo usen darán error")
+    log.info(f"[precarga] terminada en {time.time() - t0:.1f}s")
 
 
 async def main():
+    log.info(f"[perfil] {perfiles.describir()}")
     if MODO == "pipeline":
         await _precalentar()
     log.info(f"Servidor NEO WebSocket en ws://{HOST}:{PORT}  modo={MODO}")
@@ -282,4 +322,10 @@ async def main():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Servidor WebSocket de NEO")
+    parser.add_argument("--perfil", choices=sorted(perfiles.PERFILES),
+                        help="fija STT/LLM/TTS: local (PC, sin internet) o nube (Groq + edge-tts)")
+    args = parser.parse_args()
+    if args.perfil:
+        perfiles.aplicar(args.perfil)
     asyncio.run(main())

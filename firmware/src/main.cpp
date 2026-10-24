@@ -832,6 +832,11 @@ void loop() {
     if (!mic->leer(bloque)) return;
 
     float rms = (float)Microphone::rms(bloque);
+#if LOG_NIVEL_WAKE
+    // Nivel de cada bloque (16 ms) con su millis(): tools/latencia_wake.py calcula con él
+    // el fin de la frase, independiente de la decisión del VAD. Solo en env esp32dev_latencia.
+    Serial.printf("[NIV] %lu %.0f\n", (unsigned long)millis(), rms);
+#endif
 
     // ── Consumir resultado de inferencia si está listo ────────────────────────
     InfResultado inf_res;
@@ -914,6 +919,7 @@ void loop() {
                 memset(s_wake_buf + s_wake_pos, 0,
                        ((int)MFCC_AUDIO_SAMPLES - s_wake_pos) * sizeof(int16_t));
             }
+            Serial.printf("[TIMING] captura_lista %lu\n", (unsigned long)millis());
             Serial.printf("[WW] Captura lista: %d muestras (%.2fs) [%s] → tareaInf\n",
                           s_wake_pos, s_wake_pos / 16000.0f,
                           fin_sil ? "silencio" : "max");

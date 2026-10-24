@@ -69,7 +69,7 @@ El ESP32-S3 tiene 8MB de PSRAM, pero el stack de WiFi causa conflictos de acceso
 | TTS (edge-tts) | 5.22s | 3.02s | 0.46s* |
 | **Total** | **18.82s** | **9.17s** | **69.65s** |
 
-*Nota: Los valores P95 de STT/LLM/TTS parecen incorrectos (menores que P50). Esto indica posible error en el cálculo o datos atípicos que distorsionan los percentiles.
+*Nota: los P95 de STT/LLM/TTS son incorrectos (menores que P50). Causa: `percentile()` de `servidor/scripts/neo_metrics_tool.py` no ordenaba los valores de cada etapa (solo los del total). Corregido el 2026-10-21; para obtener los valores reales hay que volver a ejecutar `python scripts/neo_metrics_tool.py logs/pipeline_timing.jsonl` sobre los logs originales, que no están en el repositorio. El P50 tampoco es fiable por la misma causa; el promedio y la fila Total sí lo son.
 
 **Contexto:**
 - 48 conversaciones completas

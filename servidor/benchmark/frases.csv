@@ -1,0 +1,32 @@
+id,frase,intencion
+f01,¿Cuál es la capital de Japón?,
+f02,¿Quién escribió Don Quijote de la Mancha?,
+f03,¿Por qué el cielo es azul?,
+f04,Explícame qué es la fotosíntesis en pocas palabras.,
+f05,¿Cuál es el planeta más grande del sistema solar?,
+f06,Dame una idea para cenar esta noche.,
+f07,¿Qué diferencia hay entre un virus y una bacteria?,
+f08,Cuéntame un chiste corto.,
+f09,¿Cómo se dice gracias en francés?,
+f10,¿Quién fue José Martí?,
+f11,Recomiéndame un libro de ciencia ficción.,
+f12,¿Qué es la inteligencia artificial?,
+f13,¿Cuál es el río más largo del mundo?,
+f14,¿Qué come un colibrí?,
+f15,Dime una frase motivadora para empezar el día.,
+f16,¿Cómo funciona un microcontrolador?,
+f17,¿Por qué se forman los huracanes?,
+f18,¿Qué significa la palabra resiliencia?,
+f19,¿Cuál es el animal más rápido del planeta?,
+f20,¿Qué puedo hacer si no puedo dormir?,
+f21,Explícame qué es un algoritmo como si fuera un niño.,
+f22,¿Quién pintó la Mona Lisa?,
+f23,¿De qué está hecho el sol?,
+f24,¿Qué opinas de los robots que hablan?,
+c01,¿Cómo está el clima hoy?,clima
+c02,¿Va a llover mañana en La Habana?,clima
+c03,¿A cuánto está el dólar hoy?,toque
+c04,¿Cuál es la tasa del euro en el mercado informal?,toque
+c05,¿Cuánto vale el bitcoin?,cripto
+c06,Dime las noticias de hoy.,noticias
+c07,"Hola, ¿cómo estás?",hola

@@ -15,3 +15,6 @@
 *.pdf    binary
 *.bin    binary
 *.elf    binary
+
+# Scripts de Windows: cmd necesita CRLF
+*.bat    text eol=crlf

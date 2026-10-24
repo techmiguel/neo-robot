@@ -57,8 +57,11 @@ class PipelineTimer:
             "metadata": self.metadata,
             "durations": {
                 "stt": self.duration("stt_start", "stt_end"),
+                "intencion": self.duration("intencion_start", "intencion_end"),
                 "llm": self.duration("llm_start", "llm_end"),
+                "handler": self.duration("handler_start", "handler_end"),
                 "tts": self.duration("tts_start", "tts_end"),
+                "envio": self.duration("envio_start", "pipeline_end"),
                 "pipeline": self.duration("pipeline_start", "pipeline_end"),
             },
         }
