@@ -2,8 +2,10 @@
  * wifi_manager.cpp — WiFi con portal de configuración en AP mode.
  *
  * Flujo:
- *   begin() → lee NVS → intenta STA → OK: retorna true
- *                                   → Falla: levanta AP + HTTP server → retorna false
+ *   begin() → lee NVS → sin credenciales: levanta AP + HTTP server → retorna false
+ *                     → intenta STA → OK, o la red no está (router apagado): retorna true
+ *                                   → clave rechazada: levanta el portal → retorna false
+ *   conectar() → reintenta STA con las credenciales ya leídas (red bajo demanda)
  *   tick()  → atiende peticiones HTTP del portal
  *             → si timeout (3 min sin configurar): ESP.restart()
  */
@@ -49,12 +51,20 @@ static const char PORTAL_HTML[] PROGMEM = R"html(
 bool WifiManager::begin(Oled& oled) {
     _oled = &oled;
 
-    String ssid, pass;
-    if (_cargar(ssid, pass) && _intentarConexion(ssid, pass)) {
-        String ipStr = "WiFi: " + ip();
-        _oled->mostrar("NEO", ipStr.c_str());
-        Serial.printf("[WiFi] Conectado. IP: %s\n", ip().c_str());
-        return true;
+    if (_cargar(_ssid, _pass)) {
+        _oled->mostrarEstado("Conectando WiFi...");
+        if (_intentarConexion(_ssid, _pass)) {
+            String ipStr = "WiFi: " + ip();
+            _oled->mostrar("NEO", ipStr.c_str());
+            Serial.printf("[WiFi] Conectado. IP: %s\n", ip().c_str());
+            return true;
+        }
+        // shortcut: WL_CONNECT_FAILED es como el core suele reportar una clave rechazada;
+        // si un router la reporta distinto, NEO sigue sin red en vez de abrir el portal.
+        if (WiFi.status() != WL_CONNECT_FAILED) {
+            Serial.println("[WiFi] Red no disponible — sigo sin WiFi; reintento al despertar");
+            return true;
+        }
     }
 
     _iniciarPortal();
@@ -72,6 +82,10 @@ void WifiManager::tick() {
     }
 }
 
+bool WifiManager::conectar() {
+    return _ssid.length() > 0 && _intentarConexion(_ssid, _pass);
+}
+
 bool WifiManager::conectado() const {
     return WiFi.status() == WL_CONNECTED;
 }
@@ -84,14 +98,12 @@ String WifiManager::ip() const {
 
 bool WifiManager::_intentarConexion(const String& ssid, const String& pass) {
     Serial.printf("[WiFi] Conectando a %s ...\n", ssid.c_str());
-    _oled->mostrarEstado("Conectando WiFi...");
-
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid.c_str(), pass.c_str());
 
     const uint32_t inicio = millis();
     while (WiFi.status() != WL_CONNECTED) {
-        if (millis() - inicio > 12000) {
+        if (millis() - inicio > TIMEOUT_STA_MS) {
             Serial.println("[WiFi] Timeout de conexión");
             return false;
         }
