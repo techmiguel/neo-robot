@@ -31,7 +31,7 @@ def diag_apis():
         try:
             r = requests.get(
                 "https://api.openweathermap.org/data/2.5/weather",
-                params={"q": "Ciudad de México", "appid": key, "units": "metric", "lang": "es"},
+                params={"q": "La Habana", "appid": key, "units": "metric", "lang": "es"},
                 timeout=8,
             )
             print(f"  HTTP {r.status_code}")
