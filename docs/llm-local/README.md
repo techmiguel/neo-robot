@@ -30,14 +30,13 @@ históricos.
 
 | Elemento | Valor | Consecuencia |
 |---|---|---|
-| CPU | Intel Core i5 de 8.ª generación (AVX2, sin AVX-512) | Inferencia solo en CPU; prefill limitado por cómputo, generación limitada por ancho de banda de memoria |
+| CPU | Intel Core i5-8250U (portátil, 4 núcleos / 8 hilos, 15 W, AVX2, sin AVX-512) | Inferencia solo en CPU; prefill limitado por cómputo, generación limitada por ancho de banda de memoria. Mismo segmento que el i5-8350U usado en la calibración |
 | RAM | 16 GB DDR4 | Compartida con Windows, faster-whisper, Piper y el servidor |
 | GPU | Ninguna | Sin offload; descarta modelos densos > ~5B por velocidad |
-| Disco | SSD | Carga de modelo en segundos; las páginas mapeadas se recargan rápido |
+| Disco | HDD (HGST HTS541010B7E610, 5400 rpm) | Carga en frío lenta (~1 min o más para varios GB); si Windows libera páginas mapeadas del modelo, recargarlas desde el HDD provoca picos de latencia. Mantener el modelo residente (`keep_alive=-1`) es obligatorio |
 | SO / runtime | Windows 10, Ollama | Modelo debe existir en la librería de Ollama o importarse como GGUF |
 
-Sin confirmar: si el i5 es de portátil (p. ej. i5-8250U/8350U, 4 núcleos) o de
-escritorio (i5-8400, 6 núcleos), y si la RAM trabaja en doble canal. Con un solo
+Sin confirmar: si la RAM trabaja en doble canal. Con un solo
 módulo de RAM la velocidad de generación cae aproximadamente a la mitad; conviene
 verificarlo en el Administrador de tareas → Rendimiento → Memoria → "Ranuras
 usadas".
