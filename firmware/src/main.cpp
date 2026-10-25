@@ -84,7 +84,7 @@ static bool         wifiOk     = false;
 static int16_t* s_wake_buf   = nullptr;
 static int      s_wake_pos   = 0;
 static uint8_t  s_conf_count = 0;
-// Una sola detección basta: el umbral del modelo (0.49) ya filtra falsos positivos.
+// Una sola detección basta: el umbral del modelo (0.7618, FP 0,6 % en test) ya filtra falsos positivos.
 // Doble confirmación obligaba a decir "Hola NEO" dos veces → parecía no funcionar.
 static const uint8_t CONF_MINIMAS = 1;
 
@@ -350,11 +350,16 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     pintarCara("Escuchando");
     Serial.println("[VAD] Calibrando ruido de fondo...");
 
-    float suma_cal = 0;
+    // Percentil 25 en vez de la media: tras el saludo la persona suele empezar a
+    // hablar dentro de esta ventana, y su voz inflaba la media (25/10: ruido 203 en
+    // vez de ~55, umbral ×6 → se perdía el inicio de la frase o la frase entera).
+    float rms_cal[VAD_BLOQUES_CAL];
+    uint16_t n_cal = 0;
     for (uint16_t i = 0; i < VAD_BLOQUES_CAL; i++) {
-        if (mic->leer(tmp)) suma_cal += Microphone::rms(tmp);
+        if (mic->leer(tmp)) rms_cal[n_cal++] = Microphone::rms(tmp);
     }
-    const float noise_floor   = max(suma_cal / VAD_BLOQUES_CAL, VAD_RUIDO_MIN);
+    std::sort(rms_cal, rms_cal + n_cal);
+    const float noise_floor   = max(n_cal ? rms_cal[n_cal / 4] : VAD_RUIDO_MIN, VAD_RUIDO_MIN);
     const float umbral_inicio = noise_floor * VAD_FACTOR_INICIO;
     const float umbral_fin    = noise_floor * VAD_FACTOR_FIN;
 
