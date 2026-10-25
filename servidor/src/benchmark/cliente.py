@@ -2,9 +2,11 @@
 Cliente WebSocket que imita a la placa (tareaWs en firmware/src/main.cpp).
 
 La placa envía el audio en chunks de 4096 bytes con 10 ms entre chunks, espera
-200 ms y manda {"cmd":"fin_grabacion"}. Después acumula el audio de respuesta
-y empieza a reproducir solo al recibir {"cmd":"fin_respuesta"}. Por eso la
-latencia que importa termina en fin_respuesta, no en el primer chunk.
+200 ms y manda {"cmd":"fin_grabacion"}. Después empieza a reproducir con los
+primeros ~256 ms de audio, sin esperar a {"cmd":"fin_respuesta"}. Con un
+servidor en streaming la latencia que importa es la del primer chunk; sin
+streaming (RESPUESTA_STREAMING=0) todo el audio llega junto al final y vuelve
+a ser la de fin_respuesta.
 """
 
 import asyncio

@@ -177,15 +177,15 @@ function tarjetaPerfil(p, intento) {
   const audio = f.audio_respuesta ? `<audio controls preload="none" src="/archivos/${f.audio_respuesta}" style="width:100%;margin-top:6px"></audio>` : "";
   return `<div class="tarjeta perfil">
     <h3>${p} ${intento.responde === p ? '<span class="chip">respondió a la placa</span>' : ""} ${f.ok ? "" : '<span class="chip mal">error</span>'}</h3>
-    <div class="config">${esc(cfg ? `${cfg.stt} · ${cfg.llm} · ${cfg.tts}` : "")}</div>
+    <div class="config">${esc(cfg ? `${cfg.stt} · ${cfg.llm} · ${cfg.tts}${cfg.respuesta ? " · " + cfg.respuesta : ""}` : "")}</div>
     <div class="etiqueta">Transcripción · ${f.errores_palabra ?? "?"} errores en ${f.palabras ?? "?"} palabras · WER ${pct(f.errores_palabra, f.palabras)}</div>
     <div class="diff">${diff}</div>
     <div class="etiqueta">Intención</div>
     <div>${intOk == null ? "—" : intOk ? `<span class="chip ok">correcta</span>` : `<span class="chip mal">esperada ${intento.intencion || "LLM"}, detectada ${f.intencion_detectada || "LLM"}</span>`}</div>
     <div class="etiqueta">Respuesta</div>
     <div class="respuesta">${f.ok ? esc(f.respuesta) : `<span style="color:var(--mal)">${esc(f.error)}</span>`}</div>${audio}
-    <div class="etiqueta">Latencia: respuesta completa desde fin_grabacion</div>
-    <div class="total">${seg(total)} <small>servidor ${seg(servidor)}</small></div>
+    <div class="etiqueta">Latencia desde fin_grabacion: empieza a hablar${f.streaming ? " (primer audio)" : ""}</div>
+    <div class="total">${seg(f.inicio_audio ?? total)} <small>respuesta completa ${seg(total)} · servidor ${seg(servidor)}</small></div>
     <div class="barra">${barra}</div><div class="leyenda">${leyenda}</div>
     ${percibida}
   </div>`;
@@ -194,12 +194,12 @@ function tarjetaPerfil(p, intento) {
 function pintarTabla(nombres) {
   const ultimoPorFrase = {};
   E.intentos.forEach((it, pos) => { if (!it.descartado || !ultimoPorFrase[it.id]) ultimoPorFrase[it.id] = {...it, pos}; });
-  const cab = nombres.map(p => `<th class="num">WER ${p}</th><th class="num">Resp. ${p}</th><th class="num">Percibida ${p}</th>`).join("");
+  const cab = nombres.map(p => `<th class="num">WER ${p}</th><th class="num">Habla ${p}</th><th class="num">Percibida ${p}</th>`).join("");
   const filas = E.frases.map((fr, i) => {
     const it = ultimoPorFrase[fr.id];
     const celdas = nombres.map(p => {
       const f = it && it.perfiles[p];
-      return f ? `<td class="num">${pct(f.errores_palabra, f.palabras)}</td><td class="num">${seg(f.respuesta_completa)}</td>` +
+      return f ? `<td class="num">${pct(f.errores_palabra, f.palabras)}</td><td class="num">${seg(f.inicio_audio ?? f.respuesta_completa)}</td>` +
                  `<td class="num">${f.percibida != null ? seg(f.percibida) + (f.percibida_estimada ? "*" : "") : "—"}</td>`
                : `<td></td><td></td><td></td>`;
     }).join("");

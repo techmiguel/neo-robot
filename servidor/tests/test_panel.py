@@ -112,7 +112,8 @@ async def test_panel_de_punta_a_punta(tmp_path):
         assert (await web.get("/archivos/../../etc/passwd")).status == 404
         informe = (await (await web.post("/api/informe")).json())["texto"]
         assert "# Validación frase a frase con la placa" in informe and "Percibida total, local" in informe
-        assert "| WER |" in informe and "Respuesta completa** (desde fin de grabación)" in informe
+        assert "| WER |" in informe and "Empieza a hablar** (desde fin_grabacion)" in informe
+        assert "Respuesta completa (desde fin de grabación)" in informe
         assert "Subida del audio" not in informe
         await web.post("/api/descartar")
         assert pnl.intentos[0]["descartado"] and pnl.indice == 0

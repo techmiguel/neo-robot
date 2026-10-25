@@ -12,9 +12,12 @@ Por turno se calcula (todo con el reloj de la placa, sin depender del PC):
   silencio_vad   espera de silencio antes de cortar la grabación: VAD_HOLD_MS
                  (1.5 s) si cortó por "Silencio prolongado"; 0 en otro caso.
   subida         grabacion_fin → envio_ws_fin (WiFi + pausas de envío del firmware).
-  servidor_red   envio_ws_fin → primer_chunk_recibido (pipeline del servidor + red).
-  descarga       primer_chunk_recibido → playback_inicio (la placa espera la
-                 respuesta completa antes de reproducir).
+  servidor_red   envio_ws_fin → primer_chunk_recibido (pipeline del servidor + red;
+                 con respuesta en streaming, solo hasta el primer fragmento).
+  descarga       primer_chunk_recibido → playback_inicio: con streaming, lo que
+                 tarda en llenarse el colchón de ~256 ms (o en llegar
+                 fin_respuesta si la respuesta es más corta); sin streaming en el
+                 servidor, la descarga de la respuesta completa.
   percibida      fin real del habla (grabacion_fin − silencio_vad) → playback_inicio:
                  lo que espera la persona desde que calla hasta oír a NEO.
 
@@ -106,8 +109,11 @@ def analizar(log: Path, timing: Path | None = None) -> dict:
                         handler=d.get("handler") or None, tts=d.get("tts") or None,
                         servidor=d.get("pipeline") or None, tipo=m.get("tipo_consulta"),
                         perfil=m.get("perfil"), transcripcion=m.get("transcripcion"))
-            if fila["servidor_red"] is not None and fila["servidor"]:
-                fila["red_y_espera"] = fila["servidor_red"] - fila["servidor"]
+            # Con streaming el primer chunk sale antes de que acabe el pipeline:
+            # comparar con el primer audio del servidor, no con su total.
+            hasta_primer = d.get("primer_audio") or fila["servidor"]
+            if fila["servidor_red"] is not None and hasta_primer:
+                fila["red_y_espera"] = fila["servidor_red"] - hasta_primer
 
     completos = [f for f in filas if f["completo"]]
     claves = METRICAS + (["servidor", "stt", "llm", "handler", "tts", "red_y_espera"] if timing else [])

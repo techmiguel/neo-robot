@@ -5,8 +5,9 @@ Reproduce el mismo corpus de audio (grabado con la placa) contra cada perfil
 de proveedores y mide, consulta a consulta:
 
   · Latencia vista por el cliente, que imita a la placa (src/benchmark/cliente.py):
-    subida del audio → fin_grabacion → respuesta completa (la placa reproduce
-    al recibir fin_respuesta).
+    subida del audio → fin_grabacion → primer audio → respuesta completa. Con
+    la respuesta en streaming la placa empieza a hablar con el primer audio;
+    con RESPUESTA_STREAMING=0, al recibir fin_respuesta.
   · Desglose del servidor (logs/pipeline_timing.jsonl): STT, intención,
     LLM o handler, TTS y envío.
   · Calidad del STT: WER, CER, frases exactas e intención detectada, contra el
@@ -17,6 +18,9 @@ Uso (desde servidor/):
     python -m src.benchmark.e2e                       # perfiles local y nube
     python -m src.benchmark.e2e --perfiles local --repeticiones 3
     python -m src.benchmark.e2e --limite 3 --sin-red  # prueba rápida
+    python -m src.benchmark.e2e --perfiles "" \
+        --variante "gemma=local,OLLAMA_MODEL=gemma4:e2b" \
+        --variante "qwen-completa=local,OLLAMA_MODEL=qwen2.5:3b,RESPUESTA_STREAMING=0"
 
 Cada perfil arranca su propio servidor (python -m src.server.ws_server
 --perfil X) en --puerto, con sus logs en la carpeta de salida; el servidor que
@@ -56,9 +60,10 @@ from src.benchmark import cliente, corpus, red
 from src.benchmark.metricas import errores_transcripcion, resumen, resumen_transcripcion
 
 RAIZ = corpus.RAIZ
-ETAPAS = ["stt", "intencion", "llm", "handler", "tts", "envio", "servidor"]
-LATENCIAS_LIBRE = ["e2e", "cliente_subida", "cliente_espera", "servidor", "stt", "llm", "tts", "envio"]
-LATENCIAS_COMANDO = ["e2e", "servidor", "stt", "handler", "tts"]
+ETAPAS = ["stt", "intencion", "llm", "llm_primer_token", "handler", "tts", "envio", "servidor"]
+LATENCIAS_LIBRE = ["inicio_audio", "e2e", "cliente_subida", "cliente_primer_audio", "cliente_espera",
+                   "servidor", "stt", "llm_primer_token", "llm", "tts", "envio"]
+LATENCIAS_COMANDO = ["inicio_audio", "e2e", "cliente_primer_audio", "servidor", "stt", "handler", "tts"]
 
 
 # ── Comprobaciones previas ────────────────────────────────────────────────────
@@ -112,11 +117,19 @@ def comprobar(perfil: str, env: dict) -> list[str]:
 # ── Servidor por perfil ───────────────────────────────────────────────────────
 
 @contextmanager
-def lanzar_servidor(perfil: str, puerto: int, carpeta: Path, env: dict, timeout_arranque: float = 300):
-    """Arranca el servidor del perfil y espera a que acepte conexiones."""
+def lanzar_servidor(perfil: str, puerto: int, carpeta: Path, env: dict, timeout_arranque: float = 300,
+                    variante: tuple[str, dict] | None = None):
+    """Arranca el servidor del perfil y espera a que acepte conexiones.
+
+    variante=(nombre, variables): las variables se aplican encima del perfil
+    base y el servidor etiqueta sus métricas con ese nombre."""
     carpeta.mkdir(parents=True, exist_ok=True)
     env = dict(env, NEO_PERFIL=perfil, WS_PORT=str(puerto), WS_MODO="pipeline",
                TIMING_LOG_DIR=str(carpeta), PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8")
+    env.pop("NEO_VARIANTE", None)
+    env.pop("NEO_VARIANTE_ENV", None)
+    if variante:
+        env.update(variante[1], NEO_VARIANTE=variante[0], NEO_VARIANTE_ENV=json.dumps(variante[1]))
     env.pop("GUARDAR_AUDIO_DIR", None)
     log_path = carpeta / "servidor.log"
     with open(log_path, "w", encoding="utf-8") as log:
@@ -177,7 +190,14 @@ def construir_fila(item: dict, repeticion: int, c: dict, reg: dict | None) -> di
     for etapa in ETAPAS:
         clave = "pipeline" if etapa == "servidor" else etapa
         fila[etapa] = d.get(clave) or None
-    if fila["tts"] and fila["duracion_respuesta_s"]:
+    # Cuándo empieza a hablar la placa, desde fin_grabacion: con streaming, al
+    # llegar el primer audio; sin streaming (o servidor anterior), al terminar.
+    fila["streaming"] = bool(m.get("streaming"))
+    fila["inicio_audio"] = c.get("primer_audio") if fila["streaming"] else c.get("espera")
+    if not c.get("ok"):
+        fila["inicio_audio"] = None
+    # Con streaming el TTS se solapa con el LLM: su duración no es tiempo de síntesis.
+    if fila["tts"] and fila["duracion_respuesta_s"] and not fila["streaming"]:
         fila["rtf_tts"] = fila["tts"] / fila["duracion_respuesta_s"]
     if fila["transcripcion"] is not None:
         fila.update(errores_transcripcion(item["referencia"], fila["transcripcion"]))
@@ -220,8 +240,8 @@ def resumir(filas: list[dict]) -> dict:
         "consultas": len(filas),
         "errores": len(filas) - len(ok),
         "mensajes_error": dict(collections.Counter(f["error"] for f in filas if not f["ok"])),
-        "latencia_libre": {k: resumen([f[k] for f in libres]) for k in LATENCIAS_LIBRE},
-        "latencia_comandos": {k: resumen([f[k] for f in comandos]) for k in LATENCIAS_COMANDO},
+        "latencia_libre": {k: resumen([f.get(k) for f in libres]) for k in LATENCIAS_LIBRE},
+        "latencia_comandos": {k: resumen([f.get(k) for f in comandos]) for k in LATENCIAS_COMANDO},
         "rtf_tts": resumen([f.get("rtf_tts") for f in ok]),
         "stt": resumen_transcripcion(con_stt),
         "stt_latencia": resumen([f["stt"] for f in con_stt]),
@@ -269,10 +289,11 @@ def informe(res: dict) -> str:
               f"{res['corpus']['comandos']} comandos), {res['repeticiones']} repetición(es), "
               f"cliente {'con el ritmo de envío de la placa' if res['como_placa'] else 'sin pausas'}.", ""]
 
-    L += ["## Configuración", "", "| Perfil | STT | LLM | TTS |", "|---|---|---|---|"]
+    L += ["## Configuración", "", "| Perfil | STT | LLM | TTS | Respuesta |", "|---|---|---|---|---|"]
     for p in res["perfiles"]:
         c = p.get("config") or {}
-        L.append(f"| {p['nombre']} | {c.get('stt', '—')} | {c.get('llm', '—')} | {c.get('tts', '—')} |")
+        L.append(f"| {p['nombre']} | {c.get('stt', '—')} | {c.get('llm', '—')} | {c.get('tts', '—')} | "
+                 f"{c.get('respuesta', 'completa' if c else '—')} |")
     for p in res["perfiles"]:
         if p.get("omitido"):
             L.append(f"\n**{p['nombre']} no se midió:** " + "; ".join(p["omitido"]))
@@ -296,15 +317,17 @@ def informe(res: dict) -> str:
 
     cab = "| Métrica | " + " | ".join(p["nombre"] for p in perfs) + " |"
     sep = "|---" * (len(perfs) + 1) + "|"
-    nombres = {"e2e": "**End-to-end** (subida → respuesta completa)", "cliente_subida": "Subida del audio",
-               "cliente_espera": "Espera tras fin_grabacion", "servidor": "Servidor (pipeline)",
-               "stt": "STT", "llm": "LLM", "handler": "Handler (API externa)", "tts": "TTS",
-               "envio": "Envío de la respuesta"}
+    nombres = {"inicio_audio": "**Empieza a hablar** (desde fin_grabacion)",
+               "e2e": "End-to-end (subida → respuesta completa)", "cliente_subida": "Subida del audio",
+               "cliente_primer_audio": "Primer audio recibido (desde fin_grabacion)",
+               "cliente_espera": "Respuesta completa (desde fin_grabacion)", "servidor": "Servidor (pipeline)",
+               "stt": "STT", "llm_primer_token": "LLM, primer token", "llm": "LLM, respuesta completa",
+               "handler": "Handler (API externa)", "tts": "TTS", "envio": "Envío de la respuesta"}
 
     L += ["", "## Latencia de preguntas libres (STT → LLM → TTS)", "",
           "Segundos, mediana (p90).", "", cab, sep]
     if panel:
-        nombres["e2e"] = "**Respuesta completa** (desde fin de grabación)"
+        nombres["e2e"] = "Respuesta completa (desde fin de grabación)"
     for k in LATENCIAS_LIBRE:
         if panel and k in ("cliente_subida", "cliente_espera"):
             continue
@@ -313,6 +336,10 @@ def informe(res: dict) -> str:
             for p in perfs) + " |")
     L.append("| n | " + " | ".join(str(p["resumen"]["latencia_libre"]["e2e"].get("n", 0)) for p in perfs) + " |")
     L.append("| Factor de tiempo real del TTS (mediana) | " + " | ".join(_s(p["resumen"]["rtf_tts"]) for p in perfs) + " |")
+    if any((p.get("config") or {}).get("respuesta") == "streaming" for p in perfs):
+        L += ["", "Con respuesta en streaming, «Empieza a hablar» es la llegada del primer audio y el TTS "
+              "va del primer al último fragmento, solapado con el LLM: STT + LLM + TTS ya no suman el total, "
+              "y el factor de tiempo real del TTS no se calcula."]
     L += ["", "La latencia percibida en la placa está en la última sección." if panel else
           "En la placa hay que sumar la espera de silencio del VAD (1.5 s, `VAD_HOLD_MS`) y el WiFi "
           "placa↔PC; ver `python -m src.benchmark.placa`."]
@@ -358,7 +385,9 @@ def informe(res: dict) -> str:
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--perfiles", default="local,nube", help="lista separada por comas (local,nube)")
+    p.add_argument("--perfiles", default="local,nube", help="lista separada por comas (local,nube); \"\" para solo variantes")
+    p.add_argument("--variante", action="append", default=[], metavar="NOMBRE=PERFIL,VAR=VALOR,...",
+                   help="perfil base con variables propias; se puede repetir")
     p.add_argument("--corpus", type=Path, default=corpus.CORPUS)
     p.add_argument("--repeticiones", type=int, default=1)
     p.add_argument("--calentamiento", type=int, default=1, help="consultas descartadas por perfil")
@@ -396,17 +425,20 @@ def main():
                       "comandos": sum(bool(i["intencion"]) for i in items)},
            "perfiles": []}
     todas = []
-    nombres = ["externo"] if args.url else [n.strip() for n in args.perfiles.split(",") if n.strip()]
+    try:
+        variantes = [("externo", None, {})] if args.url else [
+            perfiles.parsear_variante(v) for v in
+            [n for n in args.perfiles.split(",") if n.strip()] + args.variante]
+    except ValueError as e:
+        sys.exit(str(e))
 
-    for nombre in nombres:
+    for nombre, base, variables in variantes:
         print(f"\n== Perfil {nombre} ==")
         entrada = {"nombre": nombre}
         res["perfiles"].append(entrada)
         if not args.url:
-            if nombre not in perfiles.PERFILES:
-                sys.exit(f"Perfil desconocido: {nombre} (opciones: {', '.join(perfiles.PERFILES)})")
-            env_perfil = dict(env, **perfiles.PERFILES[nombre])
-            problemas = comprobar(nombre, env_perfil)
+            env_perfil = dict(env, **perfiles.PERFILES[base], **variables)
+            problemas = comprobar(base, env_perfil)
             if problemas and not args.forzar:
                 print("  omitido:\n    - " + "\n    - ".join(problemas))
                 entrada["omitido"] = problemas
@@ -419,7 +451,8 @@ def main():
                 filas = asyncio.run(ejecutar(items, args.url, args.timing_log, args.repeticiones,
                                              args.calentamiento, not args.sin_pausas))
             else:
-                with lanzar_servidor(nombre, args.puerto, salida / nombre, env_perfil) as (url, timing):
+                with lanzar_servidor(base, args.puerto, salida / nombre, env_perfil,
+                                     variante=(nombre, variables)) as (url, timing):
                     filas = asyncio.run(ejecutar(items, url, timing, args.repeticiones,
                                                  args.calentamiento, not args.sin_pausas))
         except RuntimeError as e:

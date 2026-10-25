@@ -229,3 +229,44 @@ async def test_precarga_no_tumba_el_servidor_si_ollama_falla(monkeypatch, caplog
     with caplog.at_level("INFO"):
         await ws_server._precalentar()
     assert "[precarga] Ollama FALLÓ" in caplog.text and "[precarga] terminada" in caplog.text
+
+
+# ── Variantes y respuesta en streaming ────────────────────────────────────────
+
+def test_parsear_variante():
+    from src import perfiles
+    assert perfiles.parsear_variante("local") == ("local", "local", {})
+    assert perfiles.parsear_variante("gemma=local,OLLAMA_MODEL=gemma4:e2b,RESPUESTA_STREAMING=1") == \
+        ("gemma", "local", {"OLLAMA_MODEL": "gemma4:e2b", "RESPUESTA_STREAMING": "1"})
+    with pytest.raises(ValueError):
+        perfiles.parsear_variante("x=marte")
+    with pytest.raises(ValueError):
+        perfiles.parsear_variante("x=local,SIN_VALOR")
+
+
+def test_inicio_del_audio_segun_streaming():
+    """Con streaming la placa habla con el primer audio; sin él, al final. El
+    factor de tiempo real del TTS solo tiene sentido sin streaming."""
+    item = {"id": "f01", "archivo": "x.wav", "referencia": "Hola", "intencion": None, "pcm": _pcm(500)}
+    c = {"ok": True, "subida": 0.1, "espera": 4.0, "primer_audio": 1.5, "total": 4.1,
+         "duracion_respuesta_s": 2.0}
+    reg = lambda streaming: {"durations": {"tts": 1.0, "pipeline": 3.9},
+                             "metadata": {"tipo_consulta": "llm_libre", "streaming": streaming}}
+    con = e2e.construir_fila(item, 0, c, reg(True))
+    sin = e2e.construir_fila(item, 0, c, reg(False))
+    assert con["inicio_audio"] == 1.5 and "rtf_tts" not in con
+    assert sin["inicio_audio"] == 4.0 and sin["rtf_tts"] == pytest.approx(0.5)
+    # Servidor anterior (sin metadato streaming): como sin streaming.
+    assert e2e.construir_fila(item, 0, c, None)["inicio_audio"] == 4.0
+
+
+def test_lanzar_servidor_con_variante(tmp_path):
+    """Las variables de la variante pisan las del perfil base, incluso los proveedores."""
+    env = dict(os.environ, GROQ_API_KEY="")
+    variante = ("nube-piper", {"TTS_PROVIDER": "local", "RESPUESTA_STREAMING": "0"})
+    with e2e.lanzar_servidor("nube", _puerto_libre(), tmp_path / "v", env, timeout_arranque=60,
+                             variante=variante):
+        pass
+    log = (tmp_path / "v" / "servidor.log").read_text(encoding="utf-8")
+    linea = next(l for l in log.splitlines() if "[perfil]" in l)
+    assert "'perfil': 'nube-piper'" in linea and "'tts': 'local:" in linea and "'respuesta': 'completa'" in linea

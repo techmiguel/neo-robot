@@ -128,7 +128,8 @@ class Panel:
 
         campos = ["id", "intento", "descartado", "referencia"]
         por_perfil = ["transcripcion", "errores_palabra", "palabras", "intencion_ok", "respuesta",
-                      "stt", "llm", "handler", "tts", "servidor", "respuesta_completa", "percibida"]
+                      "stt", "llm_primer_token", "llm", "handler", "tts", "servidor", "streaming",
+                      "primer_audio", "respuesta_completa", "inicio_audio", "percibida"]
         nombres = list(self.upstream)
         campos += [f"{p}_{c}" for p in nombres for c in por_perfil]
         with open(self.carpeta / "resultados.csv", "w", encoding="utf-8-sig", newline="") as f:
@@ -262,6 +263,7 @@ class Panel:
             reg = None if sin_conexion else await e2e.esperar_registro(up["timing"], previos)
             fila = e2e.construir_fila(item, n - 1, c, reg)
             fila["respuesta_completa"] = c.get("espera")
+            fila["primer_audio"] = c.get("primer_audio")
             fila["diff"] = diff_palabras(frase["frase"], fila["transcripcion"])
             if c.get("pcm"):
                 ruta = f"respuestas/{frase['id']}_{n}_{perfil}.wav"
@@ -318,11 +320,13 @@ class Panel:
         m = placa.metricas_turno(turno)
         intento["placa"] = m
         resp = intento["perfiles"].get(intento["responde"], {})
+        # inicio_audio: cuándo empieza a hablar la placa con ese perfil (primer
+        # audio con streaming, respuesta completa sin él), desde fin_grabacion.
         for perfil, fila in intento["perfiles"].items():
             if perfil == intento["responde"]:
                 fila["percibida"], fila["percibida_estimada"] = m["percibida"], False
-            elif m["percibida"] is not None and resp.get("respuesta_completa") and fila.get("respuesta_completa"):
-                fila["percibida"] = m["percibida"] - resp["respuesta_completa"] + fila["respuesta_completa"]
+            elif m["percibida"] is not None and resp.get("inicio_audio") and fila.get("inicio_audio"):
+                fila["percibida"] = m["percibida"] - resp["inicio_audio"] + fila["inicio_audio"]
                 fila["percibida_estimada"] = True
         self.guardar()
         await self.difundir()
@@ -364,14 +368,16 @@ class Panel:
         L = ["", "## Latencia percibida en la placa", "",
              "Desde que la persona deja de hablar hasta que NEO empieza a responder, medida con el "
              "log de la placa. Para el perfil que no respondió a la placa es una estimación "
-             "(percibida real − respuesta del que respondió + respuesta del otro).", ""]
+             "(percibida real − inicio del audio del que respondió + inicio del audio del otro; el inicio "
+             "es el primer audio con streaming y la respuesta completa sin él).", ""]
         con_placa = [i for i in validos if i.get("placa")]
         if not con_placa:
             L.append("Sin datos: el log de la placa no estaba disponible.")
         else:
             L += ["| Tramo | Mediana | p90 | n |", "|---|---|---|---|"]
             tramos = {"silencio_vad": "Espera de silencio del VAD", "subida": "Subida por WiFi (placa → PC)",
-                      "servidor_red": "Servidor + red", "descarga": "Descarga de la respuesta"}
+                      "servidor_red": "Servidor + red (hasta el primer audio)",
+                      "descarga": "Primer audio → empieza a sonar"}
             for k, nombre in tramos.items():
                 r = resumen([i["placa"].get(k) for i in con_placa])
                 if r["n"]:
@@ -474,7 +480,9 @@ async def servir(panel: Panel, puerto_placa: int, puerto_web: int, medir_red: bo
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--perfiles", default="local,nube")
+    p.add_argument("--perfiles", default="local,nube", help="lista separada por comas; \"\" para solo variantes")
+    p.add_argument("--variante", action="append", default=[], metavar="NOMBRE=PERFIL,VAR=VALOR,...",
+                   help="perfil base con variables propias (ver src/perfiles.py); se puede repetir")
     p.add_argument("--responde", default="local", help="perfil cuya respuesta oye la placa")
     p.add_argument("--puerto-placa", type=int, default=8765)
     p.add_argument("--puerto-web", type=int, default=8080)
@@ -499,29 +507,38 @@ def main():
 
     with contextlib.ExitStack() as pila:
         upstream = {}
-        for nombre in [n.strip() for n in args.perfiles.split(",") if n.strip()]:
-            if nombre not in perfiles.PERFILES:
-                sys.exit(f"Perfil desconocido: {nombre}")
+        try:
+            variantes = [perfiles.parsear_variante(v) for v in
+                         [n for n in args.perfiles.split(",") if n.strip()] + args.variante]
+        except ValueError as e:
+            sys.exit(str(e))
+        if args.responde not in [v[0] for v in variantes]:
+            args.responde = variantes[0][0]
+        for i, (nombre, base, variables) in enumerate(variantes):
             print(f"== Perfil {nombre} ==")
-            env_perfil = dict(env, **perfiles.PERFILES[nombre])
-            problemas = e2e.comprobar(nombre, env_perfil)
+            env_perfil = dict(env, **perfiles.PERFILES[base], **variables)
+            problemas = e2e.comprobar(base, env_perfil)
             if problemas:
                 print("  no disponible:\n    - " + "\n    - ".join(problemas))
                 upstream[nombre] = {"motivo": "; ".join(problemas)}
                 continue
+            puerto = PUERTOS_INTERNOS.get(nombre, 8800 + i)
             try:
                 url, timing = pila.enter_context(
-                    e2e.lanzar_servidor(nombre, PUERTOS_INTERNOS.get(nombre, 8796), carpeta / f"servidor_{nombre}", env_perfil))
+                    e2e.lanzar_servidor(base, puerto, carpeta / f"servidor_{nombre}", env_perfil,
+                                        variante=(nombre, variables)))
             except RuntimeError as e:
                 lineas = [l for l in str(e).splitlines() if l.strip()]
                 upstream[nombre] = {"motivo": lineas[-1] if lineas else str(e)}
                 print(f"  {e}")
                 continue
-            os.environ.update(perfiles.PERFILES[nombre], NEO_PERFIL=nombre)
-            for var in ("OLLAMA_MODEL", "WHISPER_MODEL_SIZE", "GROQ_LLM_MODEL", "PIPER_MODEL"):
-                if var in env_perfil:
-                    os.environ[var] = env_perfil[var]
-            upstream[nombre] = {"url": url, "timing": timing, "config": perfiles.describir()}
+            # describir() lee el entorno: el de esta variante, sin contaminar las siguientes
+            previo = dict(os.environ)
+            os.environ.update(env_perfil, NEO_PERFIL=nombre)
+            config = perfiles.describir()
+            os.environ.clear()
+            os.environ.update(previo)
+            upstream[nombre] = {"url": url, "timing": timing, "config": config}
 
         if not any("url" in u for u in upstream.values()):
             sys.exit("Ningún perfil disponible; revisa los motivos de arriba.")
