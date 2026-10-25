@@ -47,8 +47,9 @@ variación entre días (red, cómo se leyó el corpus).
    las palabras de la respuesta (decenas de tokens, no cientos). Si Ollama rechaza `think`,
    poner `OLLAMA_THINK=` (vacío) en `.env` y repetir; si entonces razona, la medición no es
    válida para gemma4:e2b.
-3. Dos modelos de Ollama a la vez en un PC con disco duro: con `OLLAMA_KEEP_ALIVE=-1` en
-   `.env` los dos quedan cargados (gemma4:e2b ~4.4 GB de pico, qwen2.5:3b ~3.5 GB). Antes de
+3. Dos modelos de Ollama a la vez en un PC con disco duro: con `OLLAMA_KEEP_ALIVE=-1m` en
+   `.env` los dos quedan cargados (con unidad: el cliente lo envía como texto y Ollama
+   rechaza `"-1"` con «missing unit in duration») (gemma4:e2b ~4.4 GB de pico, qwen2.5:3b ~3.5 GB). Antes de
    leer la primera frase, `ollama ps` debe mostrar ambos. Si Windows libera la memoria
    mapeada, la siguiente consulta lee el modelo del disco y la latencia se dispara. En el
    informe se ve como un p90 muy por encima de la mediana. Si pasa, medir `qwen-ref` en una
