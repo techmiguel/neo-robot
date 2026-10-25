@@ -1,0 +1,242 @@
+[WS] Evento: desconectado  heap DRAM: 27064
+[WS-TASK] WS caído (fallos=0)
+[ 58667][I][WiFiClient.cpp:260] connect(): select returned due to timeout 5000 ms for fd 48
+[WS] Evento: desconectado  heap DRAM: 27064
+[ 64187][I][WiFiClient.cpp:260] connect(): select returned due to timeout 5000 ms for fd 48
+[WS] Error al conectar a 172.20.10.8:8765/ws
+[WS] Evento: desconectado  heap DRAM: 27064
+[WS] Iniciando WSS a techmigue-neo-servidor.hf.space:443  heap DRAM: 27064
+[ 64831][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 64841][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 26604
+[ 65547][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 65557][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 26380
+[ 66264][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 66274][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 26156
+[ 66981][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 66991][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 25932
+[ 67698][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 67708][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 25708
+[ 68414][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 68425][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 25484
+[ 69132][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 69142][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 25260
+[ 69848][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 69858][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 25036
+[ 70565][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 70575][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 24812
+[ 71282][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 71292][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 24588
+[ 71998][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 72009][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 24364
+[ 72715][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 72725][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 24140
+[ 73432][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 73442][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23916
+[ 74149][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 74159][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23692
+[ 74866][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 74876][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23468
+[ 75582][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 75593][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23244
+[ 76299][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 76309][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23244
+[ 77016][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 77027][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23244
+[ 77733][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 77743][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23244
+[ 78449][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 78459][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23244
+[ 79166][E][ssl_client.cpp:37] _handle_error(): [start_ssl_client():264]: (-32512) SSL - Memory allocation failed
+[ 79176][E][WiFiClientSecure.cpp:144] connect(): start_ssl_client: -32512
+[WS] Evento: desconectado  heap DRAM: 23244
+[WS] Error al conectar (seguro) a wss://techmigue-neo-servidor.hf.space:443/ws  heap DRAM: 23392
+[NEO] Frase 2.1: 52866 muestras (3.30s)
+[NEO] Aviso de red dicho — vuelvo al reposo
+[WS-TASK] WS caído (fallos=1)
+[WS] Evento: conectado
+[WS] Conectado al servidor LOCAL (LAN)
+[WS-TASK] WS conectado OK
+[RED] lista 30838 ms
+[WS] {"cmd": "listo"}
+[NEO] Frase 7.0: 29647 muestras (1.85s)
+[NEO] Aviso de red dicho — vuelvo al reposo
+[WW] Captando: rms=569  noise=26
+[TIMING] captura_lista 104725
+[WW] Captura lista: 13312 muestras (0.83s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21504
+[INF] tareaInf: clasificando...
+[INF] top=1 (desconocido) score=0.941
+[INF] tareaInf: listo en 207ms  cmd=0  scores=[0.012, 0.941, 0.047]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=1 (desconocido)  score=0.941  cmd=0
+[WW] Captando: rms=3424  noise=94
+[TIMING] captura_lista 105845
+[WW] Captura lista: 15616 muestras (0.98s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21240
+[INF] tareaInf: clasificando...
+[INF] top=1 (desconocido) score=0.887
+[INF] tareaInf: listo en 355ms  cmd=0  scores=[0.113, 0.887, 0.000]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=1 (desconocido)  score=0.887  cmd=0
+[WW] Captando: rms=79  noise=18
+[TIMING] captura_lista 124515
+[WW] Captura lista: 17152 muestras (1.07s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21304
+[INF] tareaInf: clasificando...
+[INF] top=1 (desconocido) score=0.738
+[INF] tareaInf: listo en 375ms  cmd=0  scores=[0.148, 0.738, 0.117]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=1 (desconocido)  score=0.738  cmd=0
+[WW] Captando: rms=72  noise=17
+[TIMING] captura_lista 128498
+[WW] Captura lista: 18432 muestras (1.15s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21304
+[INF] tareaInf: clasificando...
+[INF] top=1 (desconocido) score=0.559
+[INF] tareaInf: listo en 388ms  cmd=0  scores=[0.441, 0.559, 0.000]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=1 (desconocido)  score=0.559  cmd=0
+[WW] Captando: rms=68  noise=17
+[TIMING] captura_lista 130802
+[WW] Captura lista: 12800 muestras (0.80s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21304
+[INF] tareaInf: clasificando...
+[INF] top=1 (desconocido) score=0.871
+[INF] tareaInf: listo en 324ms  cmd=0  scores=[0.086, 0.871, 0.043]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=1 (desconocido)  score=0.871  cmd=0
+[WW] Captando: rms=77  noise=17
+[TIMING] captura_lista 135250
+[WW] Captura lista: 16384 muestras (1.02s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21304
+[INF] tareaInf: clasificando...
+[INF] top=1 (desconocido) score=0.707
+[INF] tareaInf: listo en 365ms  cmd=0  scores=[0.223, 0.707, 0.070]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=1 (desconocido)  score=0.707  cmd=0
+[WW] Captando: rms=75  noise=17
+[TIMING] captura_lista 137506
+[WW] Captura lista: 12544 muestras (0.78s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21304
+[INF] tareaInf: clasificando...
+[INF] top=0 (hola_neo) score=0.594
+[INF] tareaInf: listo en 322ms  cmd=0  scores=[0.594, 0.375, 0.031]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=0 (hola_neo)  score=0.594  cmd=0
+[WW] Captando: rms=149  noise=19
+[TIMING] captura_lista 147217
+[WW] Captura lista: 17408 muestras (1.09s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21304
+[INF] tareaInf: clasificando...
+[INF] top=1 (desconocido) score=0.996
+[INF] tareaInf: listo en 375ms  cmd=0  scores=[0.000, 0.996, 0.000]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+[WW] Captando: rms=75  noise=18
+[TIMING] captura_lista 152176
+[WW] Captura lista: 16384 muestras (1.02s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21304
+[INF] tareaInf: clasificando...
+[INF] top=0 (hola_neo) score=0.910
+[INF] tareaInf: listo en 365ms  cmd=1  scores=[0.910, 0.090, 0.000]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=0 (hola_neo)  score=0.910  cmd=1
+[TIMING] wake_detectado 152563
+[WW] Wake word confirmado — enciendo pantalla, saludo y converso
+[FACE] begin() — llamando _render
+[FACE] _render() completado
+[NEO] Frase 0.2: 34131 muestras (2.13s)
+[VAD] Calibrando ruido de fondo...
+[VAD] Ruido base: 104.1  umbral inicio: 624.4  fin: 260.2
+[VAD] Timeout — sin voz detectada
+[NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+[WW] Captando: rms=66  noise=16
+[TIMING] captura_lista 178029
+[WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=21264
+[INF] tareaInf: clasificando...
+[INF] top=2 (silencio) score=0.996
+[INF] tareaInf: listo en 446ms  cmd=0  scores=[0.000, 0.000, 0.996]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=2 (silencio)  score=0.996  cmd=0
+[WW] Captando: rms=85  noise=17
+[TIMING] captura_lista 202556
+[WW] Captura lista: 15872 muestras (0.99s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24624
+[INF] tareaInf: clasificando...
+[INF] top=1 (desconocido) score=0.977
+[INF] tareaInf: listo en 359ms  cmd=0  scores=[0.000, 0.977, 0.023]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=1 (desconocido)  score=0.977  cmd=0
+[WW] Captando: rms=73  noise=17
+[TIMING] captura_lista 220937
+[WW] Captura lista: 22784 muestras (1.42s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24624
+[INF] tareaInf: clasificando...
+[INF] top=2 (silencio) score=0.969
+[INF] tareaInf: listo en 438ms  cmd=0  scores=[0.000, 0.031, 0.969]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=2 (silencio)  score=0.969  cmd=0
+[WW] Captando: rms=232  noise=19
+[TIMING] captura_lista 233368
+[WW] Captura lista: 21248 muestras (1.33s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24624
+[INF] tareaInf: clasificando...

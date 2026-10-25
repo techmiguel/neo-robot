@@ -1,0 +1,83 @@
+============================================================
+  NEO — Entrenamiento wake word
+============================================================
+  Fecha           : 2026-10-15 19:43
+  Args            : {'dataset': 'dataset', 'epocas': 80, 'output': 'models/experimentos/2026-10-15/desplegado', 'augment': True, 'alinear': True, 'seed': 42, 'shift': 'roll', 'umbral_criterio': 'youden', 'fpr_objetivo': 0.01, 'umbral_minimo': 0.5, 'cv': 0, 'leave_speaker_out': False, 'solo_evaluar': 'models'}
+  TF 2.21.0  numpy 1.26.4
+
+[1/5] Cargando dataset desde 'dataset'...
+  hola_neo            :  606 archivos
+  desconocido         :  120 archivos
+  silencio            :   60 archivos
+  negativos externos  : clima=80  cripto=80  dado=80  el_toque=80  noticias=80  (solo calibración/evaluación, nunca entrenamiento)
+
+  Longitud fija   : 24000 muestras  (1.50 s)
+  Clases          : 3  ['hola_neo', 'desconocido', 'silencio']
+  Alineación      : sí (onset de voz, igual que el VAD)
+  Augmentation    : sí, shift=roll
+
+  ── TEST — models\modelo_float.tflite ──
+  Accuracy 96.20%   NLL 0.1205   Brier 0.0583   ECE 0.0273
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo          118            3            1
+    desconocido            0           24            0
+       silencio            1            1           10
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.992     0.967     0.979       122
+   desconocido      0.857     1.000     0.923        24
+      silencio      0.909     0.833     0.870        12
+  
+      accuracy                          0.962       158
+     macro avg      0.919     0.934     0.924       158
+  weighted avg      0.965     0.962     0.962       158
+
+  ── TEST — models\modelo_int8.tflite ──
+  Accuracy 91.77%   NLL 0.3866   Brier 0.1278   ECE 0.0413
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo          113            9            0
+    desconocido            0           24            0
+       silencio            3            1            8
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.974     0.926     0.950       122
+   desconocido      0.706     1.000     0.828        24
+      silencio      1.000     0.667     0.800        12
+  
+      accuracy                          0.918       158
+     macro avg      0.893     0.864     0.859       158
+  weighted avg      0.935     0.918     0.920       158
+
+  Pérdida por cuantización: +4.43 pp
+
+  ── Umbral de hola_neo (scores del modelo int8) ──
+  Negativos para calibrar: 269 (val 29 + externos 240)   FPR objetivo 1.0%
+  Negativos para evaluar : 196 (test 36 + externos 160)   Positivos test: 122
+  criterio                umbral    TPR test   FPR test+ext  cota95%    TPR²  FPR² (indep.)
+  youden (val, float)     0.5706       91.8%     1/196  0.5%     2.4%   84.3%          0.00%
+  fpr (solo val)          0.5000       92.6%     1/196  0.5%     2.4%   85.8%          0.00%
+  fpr (val+externos)      0.9727       73.8%     0/196  0.0%     1.5%   54.4%          0.00%
+  desplegado 0.5706       0.5706       91.8%     1/196  0.5%     2.4%   84.3%          0.00%
+  fijo 0.60               0.6000       91.8%     1/196  0.5%     2.4%   84.3%          0.00%
+  fijo 0.70               0.7000       88.5%     0/196  0.0%     1.5%   78.4%          0.00%
+  fijo 0.80               0.8000       84.4%     0/196  0.0%     1.5%   71.3%          0.00%
+  fijo 0.90               0.9000       81.1%     0/196  0.0%     1.5%   65.8%          0.00%
+  (cota95% = Clopper-Pearson una cola; TPR²/FPR² = CONF_MINIMAS=2 suponiendo independencia entre dos frases seguidas)
+  Umbral elegido (youden): 0.5706
+
+  TPR en test por condición (umbral 0.5706, int8):
+    distancia=d050          29/31   93.5%
+    distancia=d100          25/27   92.6%
+    distancia=d200          25/25  100.0%
+    locutor=h1              38/41   92.7%
+    locutor=h2              41/42   97.6%
+    locutor=legacy          33/39   84.6%
+    orientación=frente      47/49   95.9%
+    orientación=lat90       32/34   94.1%
+
+  Salidas en : B:\embedded_ai_systems\neo\firmware\models\experimentos\2026-10-15\desplegado
+============================================================

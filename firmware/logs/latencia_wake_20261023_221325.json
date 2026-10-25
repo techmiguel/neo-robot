@@ -1,0 +1,226 @@
+{
+  "fecha": "2026-10-23 22:20",
+  "condicion": "h1_d050_frente",
+  "detectados": 13,
+  "intentos_con_voz": 17,
+  "intentos": 20,
+  "latencia_s": {
+    "n": 13,
+    "media": 3.285,
+    "p50": 3.333,
+    "p90": 3.378,
+    "min": 2.602,
+    "max": 3.399
+  },
+  "espera_vad_s": {
+    "n": 13,
+    "media": 0.681,
+    "p50": 0.736,
+    "p90": 0.768,
+    "min": 0.0,
+    "max": 0.784
+  },
+  "inferencia_s": {
+    "n": 13,
+    "media": 2.604,
+    "p50": 2.602,
+    "p90": 2.614,
+    "min": 2.593,
+    "max": 2.615
+  },
+  "latencia_estimada_log_s": {
+    "n": 13,
+    "media": 3.304,
+    "p50": 3.302,
+    "p90": 3.314,
+    "min": 3.293,
+    "max": 3.315
+  },
+  "detalle": [
+    {
+      "detectado": false,
+      "ruido": 20.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2541,
+      "voz": true
+    },
+    {
+      "detectado": false,
+      "ruido": 0.0,
+      "voz": false
+    },
+    {
+      "detectado": true,
+      "ruido": 19.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2565,
+      "latencia": 3.344,
+      "espera_vad": 0.736,
+      "inferencia": 2.608,
+      "latencia_estimada": 3.308,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.2,
+      "fin_captura": "silencio",
+      "inf_ms": 2583,
+      "latencia": 3.399,
+      "espera_vad": 0.784,
+      "inferencia": 2.615,
+      "latencia_estimada": 3.315,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2582,
+      "latencia": 3.35,
+      "espera_vad": 0.736,
+      "inferencia": 2.614,
+      "latencia_estimada": 3.314,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 16.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2557,
+      "latencia": 3.32,
+      "espera_vad": 0.721,
+      "inferencia": 2.599,
+      "latencia_estimada": 3.299,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 18.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2561,
+      "latencia": 3.313,
+      "espera_vad": 0.72,
+      "inferencia": 2.593,
+      "latencia_estimada": 3.293,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.2,
+      "fin_captura": "silencio",
+      "inf_ms": 2565,
+      "latencia": 3.333,
+      "espera_vad": 0.736,
+      "inferencia": 2.597,
+      "latencia_estimada": 3.297,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 16.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2563,
+      "latencia": 3.315,
+      "espera_vad": 0.72,
+      "inferencia": 2.595,
+      "latencia_estimada": 3.295,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 18.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2564,
+      "latencia": 3.332,
+      "espera_vad": 0.736,
+      "inferencia": 2.596,
+      "latencia_estimada": 3.296,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 16.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2571,
+      "latencia": 3.334,
+      "espera_vad": 0.72,
+      "inferencia": 2.614,
+      "latencia_estimada": 3.314,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 16.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2556,
+      "latencia": 3.319,
+      "espera_vad": 0.721,
+      "inferencia": 2.598,
+      "latencia_estimada": 3.298,
+      "voz": true
+    },
+    {
+      "detectado": false,
+      "ruido": 0.0,
+      "inf_ms": 2543,
+      "voz": true
+    },
+    {
+      "detectado": false,
+      "ruido": 17.0,
+      "fin_captura": "max",
+      "inf_ms": 2613,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2568,
+      "latencia": 3.362,
+      "espera_vad": 0.752,
+      "inferencia": 2.61,
+      "latencia_estimada": 3.31,
+      "voz": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2568,
+      "latencia": 3.378,
+      "espera_vad": 0.768,
+      "inferencia": 2.61,
+      "latencia_estimada": 3.31,
+      "voz": true
+    },
+    {
+      "detectado": false,
+      "ruido": 0.0,
+      "voz": false
+    },
+    {
+      "detectado": false,
+      "ruido": 0.0,
+      "voz": false
+    },
+    {
+      "detectado": true,
+      "ruido": 0.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2560,
+      "latencia": 2.602,
+      "espera_vad": 0.0,
+      "inferencia": 2.602,
+      "latencia_estimada": 3.302,
+      "voz": true
+    },
+    {
+      "detectado": false,
+      "ruido": 17.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2561,
+      "voz": true
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce3808,len:0x4bc
+load:0x403c9700,len:0xbd8
+load:0x403cc700,len:0x2a0c
+entry 0x403c98d0
+[   394][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+
+
+=== NEO BOOT ===
+[NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+[DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+[NEO] Buffer de audio: PSRAM (30s)
+[   931][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+[   944][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+[OLED] Inicializado correctamente
+[WiFi] Conectando a @techmigue ...
+[WiFi] Conectado. IP: 172.20.10.2
+[DNS] Configurado: 8.8.8.8 / 1.1.1.1  IP: 172.20.10.2
+[MIC] Inicializado (ONLY_LEFT, APLL, DMA limpio)
+[SPK] Inicializado correctamente
+[DIAG] Creando tareas FreeRTOS...
+[DIAG] tareaWs creada: OK
+[WS-TASK] WS caído (fallos=0)
+[INF] tareaInf: esperando semáforo...
+[DIAG] tareaInf creada: OK
+[DIAG] heap después de crear tareas: 205248
+[INF] Entrada  scale=0.1855467  zero_point=88
+[INF] Salida   scale=0.0039062  zero_point=-128  clases=3
+[INF] Modelo cargado. Arena: 150 KB. MFCC buf: 23 KB
+[DIAG] inference->begin() OK  |  wake_buf=ok  |  PSRAM libre: 7362659 bytes
+[NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque
+[WS] Evento: conectado
+[WS] Conectado al servidor LOCAL (LAN)
+[WS-TASK] WS conectado OK
+[RED] lista 99 ms
+[WS] {"cmd": "listo"}

@@ -1,0 +1,952 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792530750.990628   13788 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792530761.202481   13788 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+============================================================
+  NEO — Entrenamiento wake word
+============================================================
+  Fecha           : 2026-10-20 17:12
+  Args            : {'dataset': 'dataset', 'epocas': 80, 'output': 'models/experimentos/2026-10-20/lodo_cmn', 'augment': True, 'alinear': True, 'seed': 42, 'shift': 'pequeno', 'umbral_criterio': 'fpr', 'fpr_objetivo': 0.01, 'umbral_minimo': 0.5, 'cv': 0, 'leave_speaker_out': True, 'velocidad': '', 'cmn': True, 'por_distancia': True, 'loso_estricto': False, 'solo_evaluar': None, 'neg_entrenar': '', 'neg_peso': 'balanceado'}
+  TF 2.21.0  numpy 1.26.4
+
+[1/5] Cargando dataset desde 'dataset'...
+  hola_neo            :  570 archivos
+    + neg_similares   :  318 archivos  (-> desconocido)
+    + neg_libre       :  298 archivos  (-> desconocido)
+  desconocido         :  736 archivos
+    + neg_ambiente    :  140 archivos  (-> silencio)
+  silencio            :  200 archivos
+  negativos externos  : clima=80  cripto=80  dado=80  el_toque=80  noticias=80  (solo calibración/evaluación, nunca entrenamiento)
+
+  Longitud fija   : 24000 muestras  (1.50 s)
+  Clases          : 3  ['hola_neo', 'desconocido', 'silencio']
+  Alineación      : sí (onset de voz, igual que el VAD)
+  Augmentation    : sí, shift=pequeno
+  Grupos hola_neo: d050=343  d100=313  d200=332  legacy=198
+
+############################################################
+  TEST = locutor d050
+############################################################
+  Originales  ->  Train: 879  Val: 220  Test: 407
+    hola_neo       train  346  val   86  test  138
+    desconocido    train  405  val  102  test  229
+    silencio       train  128  val   32  test   40
+I0000 00:00:1792530768.018789   13788 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE3 SSE4.1 SSE4.2 AVX AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+  Tras augmentation ->  Train: 19554  Val: 220  Test: 407
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+  Class weights: {'hola_neo': '1.35', 'desconocido': '0.54', 'silencio': '2.55'}
+Epoch 1/80
+E0000 00:00:1792531098.122592   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_16}}
+E0000 00:00:1792531126.745945   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_15}}
+612/612 - 29s - 48ms/step - accuracy: 0.5900 - loss: 0.7061 - val_accuracy: 0.6455 - val_loss: 0.6567 - learning_rate: 0.0010
+Epoch 2/80
+612/612 - 24s - 39ms/step - accuracy: 0.7541 - loss: 0.4842 - val_accuracy: 0.8273 - val_loss: 0.4363 - learning_rate: 0.0010
+Epoch 3/80
+612/612 - 23s - 38ms/step - accuracy: 0.8179 - loss: 0.3891 - val_accuracy: 0.6773 - val_loss: 0.7887 - learning_rate: 0.0010
+Epoch 4/80
+612/612 - 24s - 39ms/step - accuracy: 0.8464 - loss: 0.3367 - val_accuracy: 0.8818 - val_loss: 0.3026 - learning_rate: 0.0010
+Epoch 5/80
+612/612 - 23s - 37ms/step - accuracy: 0.8695 - loss: 0.2891 - val_accuracy: 0.9182 - val_loss: 0.2432 - learning_rate: 0.0010
+Epoch 6/80
+612/612 - 23s - 38ms/step - accuracy: 0.8817 - loss: 0.2678 - val_accuracy: 0.9136 - val_loss: 0.2460 - learning_rate: 0.0010
+Epoch 7/80
+612/612 - 22s - 36ms/step - accuracy: 0.8924 - loss: 0.2457 - val_accuracy: 0.9045 - val_loss: 0.2274 - learning_rate: 0.0010
+Epoch 8/80
+612/612 - 23s - 37ms/step - accuracy: 0.9019 - loss: 0.2277 - val_accuracy: 0.8909 - val_loss: 0.3295 - learning_rate: 0.0010
+Epoch 9/80
+612/612 - 24s - 39ms/step - accuracy: 0.9069 - loss: 0.2119 - val_accuracy: 0.8909 - val_loss: 0.2985 - learning_rate: 0.0010
+Epoch 10/80
+612/612 - 23s - 38ms/step - accuracy: 0.9150 - loss: 0.1976 - val_accuracy: 0.8545 - val_loss: 0.4206 - learning_rate: 0.0010
+Epoch 11/80
+612/612 - 25s - 41ms/step - accuracy: 0.9193 - loss: 0.1844 - val_accuracy: 0.9182 - val_loss: 0.2345 - learning_rate: 0.0010
+Epoch 12/80
+612/612 - 24s - 39ms/step - accuracy: 0.9243 - loss: 0.1769 - val_accuracy: 0.9182 - val_loss: 0.2934 - learning_rate: 0.0010
+Epoch 13/80
+612/612 - 25s - 41ms/step - accuracy: 0.9266 - loss: 0.1676 - val_accuracy: 0.9182 - val_loss: 0.3178 - learning_rate: 0.0010
+Epoch 14/80
+
+Epoch 14: ReduceLROnPlateau reducing learning rate to 0.0003000000142492354.
+612/612 - 25s - 41ms/step - accuracy: 0.9310 - loss: 0.1568 - val_accuracy: 0.9227 - val_loss: 0.2809 - learning_rate: 0.0010
+Epoch 15/80
+612/612 - 25s - 41ms/step - accuracy: 0.9460 - loss: 0.1256 - val_accuracy: 0.9182 - val_loss: 0.2278 - learning_rate: 3.0000e-04
+Epoch 16/80
+612/612 - 25s - 41ms/step - accuracy: 0.9496 - loss: 0.1189 - val_accuracy: 0.9273 - val_loss: 0.2161 - learning_rate: 3.0000e-04
+Epoch 17/80
+612/612 - 23s - 38ms/step - accuracy: 0.9520 - loss: 0.1158 - val_accuracy: 0.9273 - val_loss: 0.2235 - learning_rate: 3.0000e-04
+Epoch 18/80
+612/612 - 24s - 39ms/step - accuracy: 0.9522 - loss: 0.1149 - val_accuracy: 0.9136 - val_loss: 0.2829 - learning_rate: 3.0000e-04
+Epoch 19/80
+612/612 - 25s - 40ms/step - accuracy: 0.9537 - loss: 0.1091 - val_accuracy: 0.9273 - val_loss: 0.2610 - learning_rate: 3.0000e-04
+Epoch 20/80
+612/612 - 43s - 71ms/step - accuracy: 0.9546 - loss: 0.1085 - val_accuracy: 0.9227 - val_loss: 0.2220 - learning_rate: 3.0000e-04
+Epoch 21/80
+612/612 - 80s - 131ms/step - accuracy: 0.9574 - loss: 0.1028 - val_accuracy: 0.9227 - val_loss: 0.2143 - learning_rate: 3.0000e-04
+Epoch 22/80
+612/612 - 44s - 71ms/step - accuracy: 0.9572 - loss: 0.1027 - val_accuracy: 0.9227 - val_loss: 0.2507 - learning_rate: 3.0000e-04
+Epoch 23/80
+612/612 - 42s - 69ms/step - accuracy: 0.9576 - loss: 0.1018 - val_accuracy: 0.9182 - val_loss: 0.2634 - learning_rate: 3.0000e-04
+Epoch 24/80
+612/612 - 83s - 135ms/step - accuracy: 0.9565 - loss: 0.0980 - val_accuracy: 0.9318 - val_loss: 0.2241 - learning_rate: 3.0000e-04
+Epoch 25/80
+612/612 - 42s - 69ms/step - accuracy: 0.9615 - loss: 0.0922 - val_accuracy: 0.9318 - val_loss: 0.2371 - learning_rate: 3.0000e-04
+Epoch 26/80
+612/612 - 41s - 67ms/step - accuracy: 0.9598 - loss: 0.0932 - val_accuracy: 0.9091 - val_loss: 0.3460 - learning_rate: 3.0000e-04
+Epoch 27/80
+612/612 - 43s - 70ms/step - accuracy: 0.9628 - loss: 0.0894 - val_accuracy: 0.9273 - val_loss: 0.2399 - learning_rate: 3.0000e-04
+Epoch 28/80
+
+Epoch 28: ReduceLROnPlateau reducing learning rate to 9.000000427477062e-05.
+612/612 - 45s - 73ms/step - accuracy: 0.9621 - loss: 0.0888 - val_accuracy: 0.9227 - val_loss: 0.2336 - learning_rate: 3.0000e-04
+Epoch 29/80
+612/612 - 45s - 74ms/step - accuracy: 0.9670 - loss: 0.0809 - val_accuracy: 0.9273 - val_loss: 0.2263 - learning_rate: 9.0000e-05
+Epoch 30/80
+612/612 - 27s - 44ms/step - accuracy: 0.9675 - loss: 0.0783 - val_accuracy: 0.9364 - val_loss: 0.2208 - learning_rate: 9.0000e-05
+Epoch 31/80
+612/612 - 42s - 69ms/step - accuracy: 0.9678 - loss: 0.0768 - val_accuracy: 0.9364 - val_loss: 0.2276 - learning_rate: 9.0000e-05
+  Épocas ejecutadas: 31   Mejor época (pesos restaurados): 16   early stopping
+  En la mejor época: loss 0.1189  acc 0.9496  val_loss 0.2161  val_acc 0.9273
+
+  Historial (época  loss  acc  val_loss  val_acc  lr):
+      1  0.7061  0.5900  0.6567  0.6455  1.0e-03
+      2  0.4842  0.7541  0.4363  0.8273  1.0e-03
+      3  0.3891  0.8179  0.7887  0.6773  1.0e-03
+      4  0.3367  0.8464  0.3026  0.8818  1.0e-03
+      5  0.2891  0.8695  0.2432  0.9182  1.0e-03
+      6  0.2678  0.8817  0.2460  0.9136  1.0e-03
+      7  0.2457  0.8924  0.2274  0.9045  1.0e-03
+      8  0.2277  0.9019  0.3295  0.8909  1.0e-03
+      9  0.2119  0.9069  0.2985  0.8909  1.0e-03
+     10  0.1976  0.9150  0.4206  0.8545  1.0e-03
+     11  0.1844  0.9193  0.2345  0.9182  1.0e-03
+     12  0.1769  0.9243  0.2934  0.9182  1.0e-03
+     13  0.1676  0.9266  0.3178  0.9182  1.0e-03
+     14  0.1568  0.9310  0.2809  0.9227  1.0e-03
+     15  0.1256  0.9460  0.2278  0.9182  3.0e-04
+     16  0.1189  0.9496  0.2161  0.9273  3.0e-04  ? mejor
+     17  0.1158  0.9520  0.2235  0.9273  3.0e-04
+     18  0.1149  0.9522  0.2829  0.9136  3.0e-04
+     19  0.1091  0.9537  0.2610  0.9273  3.0e-04
+     20  0.1085  0.9546  0.2220  0.9227  3.0e-04
+     21  0.1028  0.9574  0.2143  0.9227  3.0e-04
+     22  0.1027  0.9572  0.2507  0.9227  3.0e-04
+     23  0.1018  0.9576  0.2634  0.9182  3.0e-04
+     24  0.0980  0.9565  0.2241  0.9318  3.0e-04
+     25  0.0922  0.9615  0.2371  0.9318  3.0e-04
+     26  0.0932  0.9598  0.3460  0.9091  3.0e-04
+     27  0.0894  0.9628  0.2399  0.9273  3.0e-04
+     28  0.0888  0.9621  0.2336  0.9227  3.0e-04
+     29  0.0809  0.9670  0.2263  0.9273  9.0e-05
+     30  0.0783  0.9675  0.2208  0.9364  9.0e-05
+     31  0.0768  0.9678  0.2276  0.9364  9.0e-05
+Saved artifact at 'C:\Users\MIGUEL~1\AppData\Local\Temp\tmp3k3zmobx'. The following endpoints are available:
+
+* Endpoint 'serve'
+  args_0 (POSITIONAL_ONLY): TensorSpec(shape=(None, 148, 40, 1), dtype=tf.float32, name='keras_tensor')
+Output Type:
+  TensorSpec(shape=(None, 3), dtype=tf.float32, name=None)
+Captures:
+  1585663891184: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663889072: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663897520: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663888016: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663895056: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663901040: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663888896: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920558880: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920562752: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920564512: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920559936: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920562224: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920568560: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920569264: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920570672: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920573136: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920569616: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920571904: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920647840: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920645904: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920649776: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920650480: TensorSpec(shape=(), dtype=tf.resource, name=None)
+W0000 00:00:1792532180.375724   13788 tf_tfl_flatbuffer_helpers.cc:364] Ignored output_format.
+W0000 00:00:1792532180.375920   13788 tf_tfl_flatbuffer_helpers.cc:367] Ignored drop_control_dependency.
+I0000 00:00:1792532180.379023   13788 reader.cc:83] Reading SavedModel from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp3k3zmobx
+I0000 00:00:1792532180.390149   13788 reader.cc:52] Reading meta graph with tags { serve }
+I0000 00:00:1792532180.390370   13788 reader.cc:147] Reading SavedModel debug info (if present) from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp3k3zmobx
+I0000 00:00:1792532180.454854   13788 mlir_graph_optimization_pass.cc:437] MLIR V1 optimization pass is not enabled
+I0000 00:00:1792532180.463503   13788 loader.cc:236] Restoring SavedModel bundle.
+I0000 00:00:1792532180.983713   13788 loader.cc:220] Running initialization op on SavedModel bundle at path: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp3k3zmobx
+I0000 00:00:1792532181.094302   13788 loader.cc:471] SavedModel load for tags { serve }; Status: success: OK. Took 715314 microseconds.
+I0000 00:00:1792532181.206052   13788 dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+Saved artifact at 'C:\Users\MIGUEL~1\AppData\Local\Temp\tmpljb5cd86'. The following endpoints are available:
+
+* Endpoint 'serve'
+  args_0 (POSITIONAL_ONLY): TensorSpec(shape=(None, 148, 40, 1), dtype=tf.float32, name='keras_tensor')
+Output Type:
+  TensorSpec(shape=(None, 3), dtype=tf.float32, name=None)
+Captures:
+  1585663891184: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663889072: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663897520: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663888016: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663895056: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663901040: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663888896: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920558880: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920562752: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920564512: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920559936: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920562224: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920568560: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920569264: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920570672: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920573136: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920569616: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920571904: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920647840: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920645904: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920649776: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920650480: TensorSpec(shape=(), dtype=tf.resource, name=None)
+C:\Python310\lib\site-packages\tensorflow\lite\python\convert.py:846: UserWarning: Statistics for quantized inputs were expected, but not specified; continuing anyway.
+  warnings.warn(
+W0000 00:00:1792532187.402231   13788 tf_tfl_flatbuffer_helpers.cc:364] Ignored output_format.
+W0000 00:00:1792532187.402686   13788 tf_tfl_flatbuffer_helpers.cc:367] Ignored drop_control_dependency.
+I0000 00:00:1792532187.404863   13788 reader.cc:83] Reading SavedModel from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmpljb5cd86
+I0000 00:00:1792532187.422262   13788 reader.cc:52] Reading meta graph with tags { serve }
+I0000 00:00:1792532187.423534   13788 reader.cc:147] Reading SavedModel debug info (if present) from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmpljb5cd86
+I0000 00:00:1792532187.503206   13788 loader.cc:236] Restoring SavedModel bundle.
+I0000 00:00:1792532188.347035   13788 loader.cc:220] Running initialization op on SavedModel bundle at path: C:\Users\MIGUEL~1\AppData\Local\Temp\tmpljb5cd86
+I0000 00:00:1792532188.520283   13788 loader.cc:471] SavedModel load for tags { serve }; Status: success: OK. Took 1115435 microseconds.
+fully_quantize: 0, inference_type: 6, input_inference_type: INT8, output_inference_type: INT8
+W0000 00:00:1792532190.342389   13788 flatbuffer_export.cc:3851] Skipping runtime version metadata in the model. This will be generated by the exporter.
+  modelo_float.tflite :   33.3 KB
+  modelo_int8.tflite  :   15.6 KB
+E0000 00:00:1792532190.798294   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+
+  ?? TEST — modelo Keras (float) ??
+  Accuracy 93.86%   NLL 0.2457   Brier 0.1043   ECE 0.0413
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo          133            5            0
+    desconocido           11          213            5
+       silencio            0            4           36
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.924     0.964     0.943       138
+   desconocido      0.959     0.930     0.945       229
+      silencio      0.878     0.900     0.889        40
+  
+      accuracy                          0.939       407
+     macro avg      0.920     0.931     0.926       407
+  weighted avg      0.939     0.939     0.939       407
+
+  ?? TEST — modelo_int8.tflite (entrada cuantizada como en el firmware) ??
+  Accuracy 93.12%   NLL 0.3561   Brier 0.1100   ECE 0.0414
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo          133            5            0
+    desconocido           13          210            6
+       silencio            0            4           36
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.911     0.964     0.937       138
+   desconocido      0.959     0.917     0.938       229
+      silencio      0.857     0.900     0.878        40
+  
+      accuracy                          0.931       407
+     macro avg      0.909     0.927     0.917       407
+  weighted avg      0.933     0.931     0.931       407
+
+  Pérdida por cuantización (acc float.tflite ? int8): +0.74 pp   acuerdo de predicción 99.3%   |?p| máx 0.279
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+
+  ?? Umbral de hola_neo (scores del modelo int8) ??
+  Negativos para calibrar: 374 (val 134 + externos 240)   FPR objetivo 1.0%
+  Negativos para evaluar : 429 (test 269 + externos 160)   Positivos test: 138
+  criterio                umbral    TPR test   FPR test+ext  cota95%    TPR²  FPR² (indep.)
+  youden (val, float)     0.7914       94.9%    14/429  3.3%     5.1%   90.1%          0.11%
+  fpr (solo val)          0.9805       89.1%     1/429  0.2%     1.1%   79.4%          0.00%
+  fpr (val+externos)      0.9961        0.0%     0/429  0.0%     0.7%    0.0%          0.00%
+  desplegado 0.5706       0.5706       96.4%    19/429  4.4%     6.4%   92.9%          0.20%
+  fijo 0.60               0.6000       96.4%    19/429  4.4%     6.4%   92.9%          0.20%
+  fijo 0.70               0.7000       94.9%    14/429  3.3%     5.1%   90.1%          0.11%
+  fijo 0.80               0.8000       94.9%    14/429  3.3%     5.1%   90.1%          0.11%
+  fijo 0.90               0.9000       93.5%     9/429  2.1%     3.6%   87.4%          0.04%
+  (cota95% = Clopper-Pearson una cola; TPR²/FPR² = CONF_MINIMAS=2 suponiendo independencia entre dos frases seguidas)
+  Umbral elegido (fpr): 0.9961
+  Negativos por origen (score efectivo máx · disparos ? umbral elegido):
+    val            n= 134  máx 0.996  disparos 0  ?0.5: 5
+    cal_externos   n= 240  máx 0.996  disparos 0  ?0.5: 52
+    test           n= 269  máx 0.992  disparos 0  ?0.5: 13
+    eval_externos  n= 160  máx 0.980  disparos 0  ?0.5: 8
+
+  TPR en test por condición (umbral 0.9961, int8):
+    distancia=d050           0/138   0.0%
+    locutor=h1               0/69    0.0%
+    locutor=h2               0/69    0.0%
+    orientación=frente       0/69    0.0%
+    orientación=lat90        0/69    0.0%
+
+  Falsos positivos por palabra (int8, score ? umbral):
+    palabra       origen    n  0.5706     0.7     0.8     0.9     máx
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+    clima       excluida   80      45      35      32      26   0.996
+    cripto      excluida   80       4       4       2       2   0.992
+    dado        excluida   80       0       0       0       0   0.000
+    el_toque    excluida   80       0       0       0       0   0.000
+    noticias    excluida   80       8       5       5       3   0.980
+
+############################################################
+  TEST = locutor d100
+############################################################
+  Originales  ->  Train: 903  Val: 226  Test: 377
+    hola_neo       train  367  val   92  test  111
+    desconocido    train  408  val  102  test  226
+    silencio       train  128  val   32  test   40
+  Tras augmentation ->  Train: 19938  Val: 226  Test: 377
+  Class weights: {'hola_neo': '1.29', 'desconocido': '0.54', 'silencio': '2.60'}
+Epoch 1/80
+E0000 00:00:1792533006.935219   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_16}}
+E0000 00:00:1792533035.019147   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_15}}
+624/624 - 29s - 47ms/step - accuracy: 0.5904 - loss: 0.7255 - val_accuracy: 0.7788 - val_loss: 0.5896 - learning_rate: 0.0010
+Epoch 2/80
+624/624 - 24s - 38ms/step - accuracy: 0.7324 - loss: 0.4881 - val_accuracy: 0.8142 - val_loss: 0.4449 - learning_rate: 0.0010
+Epoch 3/80
+624/624 - 25s - 40ms/step - accuracy: 0.7872 - loss: 0.4052 - val_accuracy: 0.8097 - val_loss: 0.4636 - learning_rate: 0.0010
+Epoch 4/80
+624/624 - 24s - 38ms/step - accuracy: 0.8154 - loss: 0.3537 - val_accuracy: 0.7965 - val_loss: 0.5249 - learning_rate: 0.0010
+Epoch 5/80
+624/624 - 23s - 37ms/step - accuracy: 0.8393 - loss: 0.3176 - val_accuracy: 0.8805 - val_loss: 0.2920 - learning_rate: 0.0010
+Epoch 6/80
+624/624 - 23s - 37ms/step - accuracy: 0.8585 - loss: 0.2906 - val_accuracy: 0.8363 - val_loss: 0.4151 - learning_rate: 0.0010
+Epoch 7/80
+624/624 - 42s - 67ms/step - accuracy: 0.8673 - loss: 0.2660 - val_accuracy: 0.9204 - val_loss: 0.2073 - learning_rate: 0.0010
+Epoch 8/80
+624/624 - 24s - 39ms/step - accuracy: 0.8768 - loss: 0.2457 - val_accuracy: 0.9204 - val_loss: 0.2054 - learning_rate: 0.0010
+Epoch 9/80
+624/624 - 24s - 38ms/step - accuracy: 0.8862 - loss: 0.2314 - val_accuracy: 0.9115 - val_loss: 0.2889 - learning_rate: 0.0010
+Epoch 10/80
+624/624 - 27s - 44ms/step - accuracy: 0.8952 - loss: 0.2159 - val_accuracy: 0.9248 - val_loss: 0.2247 - learning_rate: 0.0010
+Epoch 11/80
+624/624 - 22s - 35ms/step - accuracy: 0.8949 - loss: 0.2109 - val_accuracy: 0.9027 - val_loss: 0.2326 - learning_rate: 0.0010
+Epoch 12/80
+624/624 - 22s - 35ms/step - accuracy: 0.9035 - loss: 0.1936 - val_accuracy: 0.9204 - val_loss: 0.2563 - learning_rate: 0.0010
+Epoch 13/80
+624/624 - 22s - 36ms/step - accuracy: 0.9059 - loss: 0.1864 - val_accuracy: 0.9292 - val_loss: 0.2445 - learning_rate: 0.0010
+Epoch 14/80
+624/624 - 21s - 33ms/step - accuracy: 0.9120 - loss: 0.1783 - val_accuracy: 0.9381 - val_loss: 0.1792 - learning_rate: 0.0010
+Epoch 15/80
+624/624 - 21s - 34ms/step - accuracy: 0.9153 - loss: 0.1713 - val_accuracy: 0.9336 - val_loss: 0.2291 - learning_rate: 0.0010
+Epoch 16/80
+624/624 - 21s - 34ms/step - accuracy: 0.9202 - loss: 0.1639 - val_accuracy: 0.8628 - val_loss: 0.5010 - learning_rate: 0.0010
+Epoch 17/80
+624/624 - 21s - 34ms/step - accuracy: 0.9205 - loss: 0.1614 - val_accuracy: 0.9159 - val_loss: 0.2134 - learning_rate: 0.0010
+Epoch 18/80
+624/624 - 21s - 33ms/step - accuracy: 0.9286 - loss: 0.1484 - val_accuracy: 0.9336 - val_loss: 0.2053 - learning_rate: 0.0010
+Epoch 19/80
+624/624 - 21s - 34ms/step - accuracy: 0.9296 - loss: 0.1447 - val_accuracy: 0.9336 - val_loss: 0.2143 - learning_rate: 0.0010
+Epoch 20/80
+624/624 - 21s - 34ms/step - accuracy: 0.9306 - loss: 0.1438 - val_accuracy: 0.9336 - val_loss: 0.1884 - learning_rate: 0.0010
+Epoch 21/80
+
+Epoch 21: ReduceLROnPlateau reducing learning rate to 0.0003000000142492354.
+624/624 - 21s - 34ms/step - accuracy: 0.9328 - loss: 0.1367 - val_accuracy: 0.9071 - val_loss: 0.2614 - learning_rate: 0.0010
+Epoch 22/80
+624/624 - 21s - 34ms/step - accuracy: 0.9474 - loss: 0.1105 - val_accuracy: 0.9336 - val_loss: 0.1979 - learning_rate: 3.0000e-04
+Epoch 23/80
+624/624 - 22s - 35ms/step - accuracy: 0.9510 - loss: 0.1050 - val_accuracy: 0.9425 - val_loss: 0.1752 - learning_rate: 3.0000e-04
+Epoch 24/80
+624/624 - 22s - 36ms/step - accuracy: 0.9508 - loss: 0.1039 - val_accuracy: 0.9513 - val_loss: 0.1660 - learning_rate: 3.0000e-04
+Epoch 25/80
+624/624 - 22s - 35ms/step - accuracy: 0.9539 - loss: 0.0991 - val_accuracy: 0.9248 - val_loss: 0.2185 - learning_rate: 3.0000e-04
+Epoch 26/80
+624/624 - 23s - 37ms/step - accuracy: 0.9542 - loss: 0.0966 - val_accuracy: 0.9425 - val_loss: 0.1977 - learning_rate: 3.0000e-04
+Epoch 27/80
+624/624 - 23s - 37ms/step - accuracy: 0.9571 - loss: 0.0952 - val_accuracy: 0.9602 - val_loss: 0.1805 - learning_rate: 3.0000e-04
+Epoch 28/80
+624/624 - 22s - 35ms/step - accuracy: 0.9556 - loss: 0.0963 - val_accuracy: 0.9336 - val_loss: 0.2162 - learning_rate: 3.0000e-04
+Epoch 29/80
+624/624 - 21s - 34ms/step - accuracy: 0.9585 - loss: 0.0903 - val_accuracy: 0.9513 - val_loss: 0.1575 - learning_rate: 3.0000e-04
+Epoch 30/80
+624/624 - 21s - 34ms/step - accuracy: 0.9589 - loss: 0.0924 - val_accuracy: 0.9425 - val_loss: 0.1812 - learning_rate: 3.0000e-04
+Epoch 31/80
+624/624 - 21s - 34ms/step - accuracy: 0.9585 - loss: 0.0888 - val_accuracy: 0.9646 - val_loss: 0.1700 - learning_rate: 3.0000e-04
+Epoch 32/80
+624/624 - 23s - 36ms/step - accuracy: 0.9598 - loss: 0.0885 - val_accuracy: 0.9204 - val_loss: 0.2767 - learning_rate: 3.0000e-04
+Epoch 33/80
+624/624 - 22s - 36ms/step - accuracy: 0.9593 - loss: 0.0884 - val_accuracy: 0.9115 - val_loss: 0.2674 - learning_rate: 3.0000e-04
+Epoch 34/80
+624/624 - 23s - 36ms/step - accuracy: 0.9604 - loss: 0.0867 - val_accuracy: 0.9248 - val_loss: 0.2219 - learning_rate: 3.0000e-04
+Epoch 35/80
+624/624 - 21s - 34ms/step - accuracy: 0.9625 - loss: 0.0845 - val_accuracy: 0.9513 - val_loss: 0.1845 - learning_rate: 3.0000e-04
+Epoch 36/80
+
+Epoch 36: ReduceLROnPlateau reducing learning rate to 9.000000427477062e-05.
+624/624 - 21s - 34ms/step - accuracy: 0.9650 - loss: 0.0801 - val_accuracy: 0.9248 - val_loss: 0.2574 - learning_rate: 3.0000e-04
+Epoch 37/80
+624/624 - 34s - 54ms/step - accuracy: 0.9653 - loss: 0.0764 - val_accuracy: 0.9558 - val_loss: 0.1837 - learning_rate: 9.0000e-05
+Epoch 38/80
+624/624 - 33s - 52ms/step - accuracy: 0.9666 - loss: 0.0744 - val_accuracy: 0.9558 - val_loss: 0.1842 - learning_rate: 9.0000e-05
+Epoch 39/80
+624/624 - 20s - 32ms/step - accuracy: 0.9682 - loss: 0.0731 - val_accuracy: 0.9513 - val_loss: 0.1834 - learning_rate: 9.0000e-05
+Epoch 40/80
+624/624 - 37s - 60ms/step - accuracy: 0.9696 - loss: 0.0697 - val_accuracy: 0.9602 - val_loss: 0.1832 - learning_rate: 9.0000e-05
+Epoch 41/80
+624/624 - 38s - 60ms/step - accuracy: 0.9684 - loss: 0.0722 - val_accuracy: 0.9602 - val_loss: 0.1949 - learning_rate: 9.0000e-05
+Epoch 42/80
+624/624 - 34s - 54ms/step - accuracy: 0.9687 - loss: 0.0709 - val_accuracy: 0.9602 - val_loss: 0.1798 - learning_rate: 9.0000e-05
+Epoch 43/80
+
+Epoch 43: ReduceLROnPlateau reducing learning rate to 2.700000040931627e-05.
+624/624 - 20s - 32ms/step - accuracy: 0.9695 - loss: 0.0705 - val_accuracy: 0.9558 - val_loss: 0.1927 - learning_rate: 9.0000e-05
+Epoch 44/80
+624/624 - 33s - 53ms/step - accuracy: 0.9703 - loss: 0.0692 - val_accuracy: 0.9690 - val_loss: 0.1962 - learning_rate: 2.7000e-05
+  Épocas ejecutadas: 44   Mejor época (pesos restaurados): 29   early stopping
+  En la mejor época: loss 0.0903  acc 0.9585  val_loss 0.1575  val_acc 0.9513
+
+  Historial (época  loss  acc  val_loss  val_acc  lr):
+      1  0.7255  0.5904  0.5896  0.7788  1.0e-03
+      2  0.4881  0.7324  0.4449  0.8142  1.0e-03
+      3  0.4052  0.7872  0.4636  0.8097  1.0e-03
+      4  0.3537  0.8154  0.5249  0.7965  1.0e-03
+      5  0.3176  0.8393  0.2920  0.8805  1.0e-03
+      6  0.2906  0.8585  0.4151  0.8363  1.0e-03
+      7  0.2660  0.8673  0.2073  0.9204  1.0e-03
+      8  0.2457  0.8768  0.2054  0.9204  1.0e-03
+      9  0.2314  0.8862  0.2889  0.9115  1.0e-03
+     10  0.2159  0.8952  0.2247  0.9248  1.0e-03
+     11  0.2109  0.8949  0.2326  0.9027  1.0e-03
+     12  0.1936  0.9035  0.2563  0.9204  1.0e-03
+     13  0.1864  0.9059  0.2445  0.9292  1.0e-03
+     14  0.1783  0.9120  0.1792  0.9381  1.0e-03
+     15  0.1713  0.9153  0.2291  0.9336  1.0e-03
+     16  0.1639  0.9202  0.5010  0.8628  1.0e-03
+     17  0.1614  0.9205  0.2134  0.9159  1.0e-03
+     18  0.1484  0.9286  0.2053  0.9336  1.0e-03
+     19  0.1447  0.9296  0.2143  0.9336  1.0e-03
+     20  0.1438  0.9306  0.1884  0.9336  1.0e-03
+     21  0.1367  0.9328  0.2614  0.9071  1.0e-03
+     22  0.1105  0.9474  0.1979  0.9336  3.0e-04
+     23  0.1050  0.9510  0.1752  0.9425  3.0e-04
+     24  0.1039  0.9508  0.1660  0.9513  3.0e-04
+     25  0.0991  0.9539  0.2185  0.9248  3.0e-04
+     26  0.0966  0.9542  0.1977  0.9425  3.0e-04
+     27  0.0952  0.9571  0.1805  0.9602  3.0e-04
+     28  0.0963  0.9556  0.2162  0.9336  3.0e-04
+     29  0.0903  0.9585  0.1575  0.9513  3.0e-04  ? mejor
+     30  0.0924  0.9589  0.1812  0.9425  3.0e-04
+     31  0.0888  0.9585  0.1700  0.9646  3.0e-04
+     32  0.0885  0.9598  0.2767  0.9204  3.0e-04
+     33  0.0884  0.9593  0.2674  0.9115  3.0e-04
+     34  0.0867  0.9604  0.2219  0.9248  3.0e-04
+     35  0.0845  0.9625  0.1845  0.9513  3.0e-04
+     36  0.0801  0.9650  0.2574  0.9248  3.0e-04
+     37  0.0764  0.9653  0.1837  0.9558  9.0e-05
+     38  0.0744  0.9666  0.1842  0.9558  9.0e-05
+     39  0.0731  0.9682  0.1834  0.9513  9.0e-05
+     40  0.0697  0.9696  0.1832  0.9602  9.0e-05
+     41  0.0722  0.9684  0.1949  0.9602  9.0e-05
+     42  0.0709  0.9687  0.1798  0.9602  9.0e-05
+     43  0.0705  0.9695  0.1927  0.9558  9.0e-05
+     44  0.0692  0.9703  0.1962  0.9690  2.7e-05
+Saved artifact at 'C:\Users\MIGUEL~1\AppData\Local\Temp\tmp3ka7_uzl'. The following endpoints are available:
+
+* Endpoint 'serve'
+  args_0 (POSITIONAL_ONLY): TensorSpec(shape=(None, 148, 40, 1), dtype=tf.float32, name='keras_tensor_17')
+Output Type:
+  TensorSpec(shape=(None, 3), dtype=tf.float32, name=None)
+Captures:
+  1586845434624: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845839456: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845834000: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845841920: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845836992: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845835760: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845841744: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846026384: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846030256: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846032016: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846027440: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846029728: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846036064: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846036944: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846106896: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846028672: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846039232: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846106192: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845438496: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846114464: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846116752: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846117456: TensorSpec(shape=(), dtype=tf.resource, name=None)
+W0000 00:00:1792534086.267440   13788 tf_tfl_flatbuffer_helpers.cc:364] Ignored output_format.
+W0000 00:00:1792534086.267555   13788 tf_tfl_flatbuffer_helpers.cc:367] Ignored drop_control_dependency.
+I0000 00:00:1792534086.268961   13788 reader.cc:83] Reading SavedModel from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp3ka7_uzl
+I0000 00:00:1792534086.274512   13788 reader.cc:52] Reading meta graph with tags { serve }
+I0000 00:00:1792534086.274708   13788 reader.cc:147] Reading SavedModel debug info (if present) from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp3ka7_uzl
+I0000 00:00:1792534086.379348   13788 loader.cc:236] Restoring SavedModel bundle.
+I0000 00:00:1792534086.842175   13788 loader.cc:220] Running initialization op on SavedModel bundle at path: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp3ka7_uzl
+I0000 00:00:1792534086.981622   13788 loader.cc:471] SavedModel load for tags { serve }; Status: success: OK. Took 712681 microseconds.
+Saved artifact at 'C:\Users\MIGUEL~1\AppData\Local\Temp\tmpn8qtvx6w'. The following endpoints are available:
+
+* Endpoint 'serve'
+  args_0 (POSITIONAL_ONLY): TensorSpec(shape=(None, 148, 40, 1), dtype=tf.float32, name='keras_tensor_17')
+Output Type:
+  TensorSpec(shape=(None, 3), dtype=tf.float32, name=None)
+Captures:
+  1586845434624: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845839456: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845834000: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845841920: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845836992: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845835760: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845841744: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846026384: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846030256: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846032016: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846027440: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846029728: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846036064: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846036944: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846106896: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846028672: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846039232: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846106192: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586845438496: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846114464: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846116752: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586846117456: TensorSpec(shape=(), dtype=tf.resource, name=None)
+C:\Python310\lib\site-packages\tensorflow\lite\python\convert.py:846: UserWarning: Statistics for quantized inputs were expected, but not specified; continuing anyway.
+  warnings.warn(
+W0000 00:00:1792534092.173249   13788 tf_tfl_flatbuffer_helpers.cc:364] Ignored output_format.
+W0000 00:00:1792534092.173344   13788 tf_tfl_flatbuffer_helpers.cc:367] Ignored drop_control_dependency.
+I0000 00:00:1792534092.174405   13788 reader.cc:83] Reading SavedModel from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmpn8qtvx6w
+I0000 00:00:1792534092.178005   13788 reader.cc:52] Reading meta graph with tags { serve }
+I0000 00:00:1792534092.178088   13788 reader.cc:147] Reading SavedModel debug info (if present) from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmpn8qtvx6w
+I0000 00:00:1792534092.200616   13788 loader.cc:236] Restoring SavedModel bundle.
+I0000 00:00:1792534092.386730   13788 loader.cc:220] Running initialization op on SavedModel bundle at path: C:\Users\MIGUEL~1\AppData\Local\Temp\tmpn8qtvx6w
+I0000 00:00:1792534092.486693   13788 loader.cc:471] SavedModel load for tags { serve }; Status: success: OK. Took 312298 microseconds.
+fully_quantize: 0, inference_type: 6, input_inference_type: INT8, output_inference_type: INT8
+W0000 00:00:1792534093.645306   13788 flatbuffer_export.cc:3851] Skipping runtime version metadata in the model. This will be generated by the exporter.
+  modelo_float.tflite :   33.4 KB
+  modelo_int8.tflite  :   15.7 KB
+E0000 00:00:1792534094.094348   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+
+  ?? TEST — modelo Keras (float) ??
+  Accuracy 92.57%   NLL 0.3786   Brier 0.1303   ECE 0.0576
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo          101            6            4
+    desconocido           11          209            6
+       silencio            0            1           39
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.902     0.910     0.906       111
+   desconocido      0.968     0.925     0.946       226
+      silencio      0.796     0.975     0.876        40
+  
+      accuracy                          0.926       377
+     macro avg      0.888     0.937     0.909       377
+  weighted avg      0.930     0.926     0.927       377
+
+  ?? TEST — modelo_int8.tflite (entrada cuantizada como en el firmware) ??
+  Accuracy 92.04%   NLL 0.5206   Brier 0.1398   ECE 0.0638
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo          101            6            4
+    desconocido           13          207            6
+       silencio            0            1           39
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.886     0.910     0.898       111
+   desconocido      0.967     0.916     0.941       226
+      silencio      0.796     0.975     0.876        40
+  
+      accuracy                          0.920       377
+     macro avg      0.883     0.934     0.905       377
+  weighted avg      0.925     0.920     0.921       377
+
+  Pérdida por cuantización (acc float.tflite ? int8): +0.53 pp   acuerdo de predicción 99.5%   |?p| máx 0.550
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+
+  ?? Umbral de hola_neo (scores del modelo int8) ??
+  Negativos para calibrar: 374 (val 134 + externos 240)   FPR objetivo 1.0%
+  Negativos para evaluar : 426 (test 266 + externos 160)   Positivos test: 111
+  criterio                umbral    TPR test   FPR test+ext  cota95%    TPR²  FPR² (indep.)
+  youden (val, float)     0.9076       91.0%     8/426  1.9%     3.4%   82.8%          0.04%
+  fpr (solo val)          0.9336       91.0%     5/426  1.2%     2.5%   82.8%          0.01%
+  fpr (val+externos)      0.9961        0.0%     0/426  0.0%     0.7%    0.0%          0.00%
+  desplegado 0.5706       0.5706       91.0%    14/426  3.3%     5.1%   82.8%          0.11%
+  fijo 0.60               0.6000       91.0%    14/426  3.3%     5.1%   82.8%          0.11%
+  fijo 0.70               0.7000       91.0%    13/426  3.1%     4.8%   82.8%          0.09%
+  fijo 0.80               0.8000       91.0%    11/426  2.6%     4.2%   82.8%          0.07%
+  fijo 0.90               0.9000       91.0%     8/426  1.9%     3.4%   82.8%          0.04%
+  (cota95% = Clopper-Pearson una cola; TPR²/FPR² = CONF_MINIMAS=2 suponiendo independencia entre dos frases seguidas)
+  Umbral elegido (fpr): 0.9961
+  Negativos por origen (score efectivo máx · disparos ? umbral elegido):
+    val            n= 134  máx 0.957  disparos 0  ?0.5: 5
+    cal_externos   n= 240  máx 0.996  disparos 0  ?0.5: 52
+    test           n= 266  máx 0.996  disparos 0  ?0.5: 13
+    eval_externos  n= 160  máx 0.996  disparos 0  ?0.5: 2
+
+  TPR en test por condición (umbral 0.9961, int8):
+    distancia=d100           0/111   0.0%
+    locutor=h1               0/48    0.0%
+    locutor=h2               0/63    0.0%
+    orientación=frente       0/65    0.0%
+    orientación=lat90        0/46    0.0%
+
+  Falsos positivos por palabra (int8, score ? umbral):
+    palabra       origen    n  0.5706     0.7     0.8     0.9     máx
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+    clima       excluida   80      39      32      27      21   0.996
+    cripto      excluida   80       9       8       4       4   0.992
+    dado        excluida   80       1       0       0       0   0.574
+    el_toque    excluida   80       0       0       0       0   0.000
+    noticias    excluida   80       2       2       2       1   0.996
+
+############################################################
+  TEST = locutor d200
+############################################################
+  Originales  ->  Train: 888  Val: 222  Test: 396
+    hola_neo       train  358  val   89  test  123
+    desconocido    train  402  val  101  test  233
+    silencio       train  128  val   32  test   40
+  Tras augmentation ->  Train: 19632  Val: 222  Test: 396
+  Class weights: {'hola_neo': '1.31', 'desconocido': '0.54', 'silencio': '2.56'}
+Epoch 1/80
+E0000 00:00:1792535219.146667   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_16}}
+E0000 00:00:1792535249.054820   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_15}}
+614/614 - 31s - 51ms/step - accuracy: 0.6486 - loss: 0.6503 - val_accuracy: 0.8378 - val_loss: 0.4661 - learning_rate: 0.0010
+Epoch 2/80
+614/614 - 25s - 41ms/step - accuracy: 0.7738 - loss: 0.4485 - val_accuracy: 0.7883 - val_loss: 0.5093 - learning_rate: 0.0010
+Epoch 3/80
+614/614 - 25s - 40ms/step - accuracy: 0.8226 - loss: 0.3767 - val_accuracy: 0.7523 - val_loss: 0.5435 - learning_rate: 0.0010
+Epoch 4/80
+614/614 - 25s - 40ms/step - accuracy: 0.8520 - loss: 0.3253 - val_accuracy: 0.8604 - val_loss: 0.3504 - learning_rate: 0.0010
+Epoch 5/80
+614/614 - 25s - 40ms/step - accuracy: 0.8705 - loss: 0.2911 - val_accuracy: 0.9279 - val_loss: 0.2502 - learning_rate: 0.0010
+Epoch 6/80
+614/614 - 25s - 40ms/step - accuracy: 0.8838 - loss: 0.2664 - val_accuracy: 0.9324 - val_loss: 0.2266 - learning_rate: 0.0010
+Epoch 7/80
+614/614 - 25s - 40ms/step - accuracy: 0.8964 - loss: 0.2431 - val_accuracy: 0.9099 - val_loss: 0.2717 - learning_rate: 0.0010
+Epoch 8/80
+614/614 - 25s - 40ms/step - accuracy: 0.9017 - loss: 0.2330 - val_accuracy: 0.8739 - val_loss: 0.3098 - learning_rate: 0.0010
+Epoch 9/80
+614/614 - 24s - 39ms/step - accuracy: 0.9091 - loss: 0.2132 - val_accuracy: 0.9324 - val_loss: 0.2232 - learning_rate: 0.0010
+Epoch 10/80
+614/614 - 25s - 40ms/step - accuracy: 0.9143 - loss: 0.2020 - val_accuracy: 0.9099 - val_loss: 0.2970 - learning_rate: 0.0010
+Epoch 11/80
+614/614 - 24s - 39ms/step - accuracy: 0.9174 - loss: 0.1892 - val_accuracy: 0.9099 - val_loss: 0.2764 - learning_rate: 0.0010
+Epoch 12/80
+614/614 - 24s - 38ms/step - accuracy: 0.9245 - loss: 0.1756 - val_accuracy: 0.8514 - val_loss: 0.4596 - learning_rate: 0.0010
+Epoch 13/80
+614/614 - 23s - 38ms/step - accuracy: 0.9284 - loss: 0.1680 - val_accuracy: 0.9279 - val_loss: 0.2678 - learning_rate: 0.0010
+Epoch 14/80
+614/614 - 24s - 39ms/step - accuracy: 0.9313 - loss: 0.1613 - val_accuracy: 0.8829 - val_loss: 0.3038 - learning_rate: 0.0010
+Epoch 15/80
+614/614 - 25s - 41ms/step - accuracy: 0.9346 - loss: 0.1544 - val_accuracy: 0.8468 - val_loss: 0.5423 - learning_rate: 0.0010
+Epoch 16/80
+
+Epoch 16: ReduceLROnPlateau reducing learning rate to 0.0003000000142492354.
+614/614 - 26s - 42ms/step - accuracy: 0.9375 - loss: 0.1535 - val_accuracy: 0.7027 - val_loss: 1.4476 - learning_rate: 0.0010
+Epoch 17/80
+614/614 - 25s - 40ms/step - accuracy: 0.9525 - loss: 0.1210 - val_accuracy: 0.9505 - val_loss: 0.1697 - learning_rate: 3.0000e-04
+Epoch 18/80
+614/614 - 24s - 38ms/step - accuracy: 0.9561 - loss: 0.1103 - val_accuracy: 0.9279 - val_loss: 0.2532 - learning_rate: 3.0000e-04
+Epoch 19/80
+614/614 - 23s - 38ms/step - accuracy: 0.9571 - loss: 0.1099 - val_accuracy: 0.9189 - val_loss: 0.2234 - learning_rate: 3.0000e-04
+Epoch 20/80
+614/614 - 24s - 38ms/step - accuracy: 0.9593 - loss: 0.1040 - val_accuracy: 0.9009 - val_loss: 0.3852 - learning_rate: 3.0000e-04
+Epoch 21/80
+614/614 - 23s - 37ms/step - accuracy: 0.9586 - loss: 0.1044 - val_accuracy: 0.9279 - val_loss: 0.2813 - learning_rate: 3.0000e-04
+Epoch 22/80
+614/614 - 24s - 38ms/step - accuracy: 0.9594 - loss: 0.1007 - val_accuracy: 0.9189 - val_loss: 0.2532 - learning_rate: 3.0000e-04
+Epoch 23/80
+614/614 - 24s - 39ms/step - accuracy: 0.9605 - loss: 0.1007 - val_accuracy: 0.9369 - val_loss: 0.2259 - learning_rate: 3.0000e-04
+Epoch 24/80
+
+Epoch 24: ReduceLROnPlateau reducing learning rate to 9.000000427477062e-05.
+614/614 - 23s - 38ms/step - accuracy: 0.9605 - loss: 0.0989 - val_accuracy: 0.9189 - val_loss: 0.2597 - learning_rate: 3.0000e-04
+Epoch 25/80
+614/614 - 25s - 41ms/step - accuracy: 0.9645 - loss: 0.0889 - val_accuracy: 0.9459 - val_loss: 0.1653 - learning_rate: 9.0000e-05
+Epoch 26/80
+614/614 - 24s - 39ms/step - accuracy: 0.9667 - loss: 0.0857 - val_accuracy: 0.9550 - val_loss: 0.1708 - learning_rate: 9.0000e-05
+Epoch 27/80
+614/614 - 25s - 41ms/step - accuracy: 0.9665 - loss: 0.0849 - val_accuracy: 0.9550 - val_loss: 0.1670 - learning_rate: 9.0000e-05
+Epoch 28/80
+614/614 - 25s - 40ms/step - accuracy: 0.9668 - loss: 0.0841 - val_accuracy: 0.9369 - val_loss: 0.1787 - learning_rate: 9.0000e-05
+Epoch 29/80
+614/614 - 23s - 38ms/step - accuracy: 0.9687 - loss: 0.0827 - val_accuracy: 0.9459 - val_loss: 0.1705 - learning_rate: 9.0000e-05
+Epoch 30/80
+614/614 - 23s - 37ms/step - accuracy: 0.9678 - loss: 0.0823 - val_accuracy: 0.9369 - val_loss: 0.1805 - learning_rate: 9.0000e-05
+Epoch 31/80
+614/614 - 22s - 36ms/step - accuracy: 0.9688 - loss: 0.0819 - val_accuracy: 0.9369 - val_loss: 0.1775 - learning_rate: 9.0000e-05
+Epoch 32/80
+
+Epoch 32: ReduceLROnPlateau reducing learning rate to 2.700000040931627e-05.
+614/614 - 22s - 37ms/step - accuracy: 0.9688 - loss: 0.0809 - val_accuracy: 0.9459 - val_loss: 0.1910 - learning_rate: 9.0000e-05
+  Épocas ejecutadas: 32   Mejor época (pesos restaurados): 17   early stopping
+  En la mejor época: loss 0.1210  acc 0.9525  val_loss 0.1697  val_acc 0.9505
+
+  Historial (época  loss  acc  val_loss  val_acc  lr):
+      1  0.6503  0.6486  0.4661  0.8378  1.0e-03
+      2  0.4485  0.7738  0.5093  0.7883  1.0e-03
+      3  0.3767  0.8226  0.5435  0.7523  1.0e-03
+      4  0.3253  0.8520  0.3504  0.8604  1.0e-03
+      5  0.2911  0.8705  0.2502  0.9279  1.0e-03
+      6  0.2664  0.8838  0.2266  0.9324  1.0e-03
+      7  0.2431  0.8964  0.2717  0.9099  1.0e-03
+      8  0.2330  0.9017  0.3098  0.8739  1.0e-03
+      9  0.2132  0.9091  0.2232  0.9324  1.0e-03
+     10  0.2020  0.9143  0.2970  0.9099  1.0e-03
+     11  0.1892  0.9174  0.2764  0.9099  1.0e-03
+     12  0.1756  0.9245  0.4596  0.8514  1.0e-03
+     13  0.1680  0.9284  0.2678  0.9279  1.0e-03
+     14  0.1613  0.9313  0.3038  0.8829  1.0e-03
+     15  0.1544  0.9346  0.5423  0.8468  1.0e-03
+     16  0.1535  0.9375  1.4476  0.7027  1.0e-03
+     17  0.1210  0.9525  0.1697  0.9505  3.0e-04  ? mejor
+     18  0.1103  0.9561  0.2532  0.9279  3.0e-04
+     19  0.1099  0.9571  0.2234  0.9189  3.0e-04
+     20  0.1040  0.9593  0.3852  0.9009  3.0e-04
+     21  0.1044  0.9586  0.2813  0.9279  3.0e-04
+     22  0.1007  0.9594  0.2532  0.9189  3.0e-04
+     23  0.1007  0.9605  0.2259  0.9369  3.0e-04
+     24  0.0989  0.9605  0.2597  0.9189  3.0e-04
+     25  0.0889  0.9645  0.1653  0.9459  9.0e-05
+     26  0.0857  0.9667  0.1708  0.9550  9.0e-05
+     27  0.0849  0.9665  0.1670  0.9550  9.0e-05
+     28  0.0841  0.9668  0.1787  0.9369  9.0e-05
+     29  0.0827  0.9687  0.1705  0.9459  9.0e-05
+     30  0.0823  0.9678  0.1805  0.9369  9.0e-05
+     31  0.0819  0.9688  0.1775  0.9369  9.0e-05
+     32  0.0809  0.9688  0.1910  0.9459  9.0e-05
+Saved artifact at 'C:\Users\MIGUEL~1\AppData\Local\Temp\tmp4eqyyx8e'. The following endpoints are available:
+
+* Endpoint 'serve'
+  args_0 (POSITIONAL_ONLY): TensorSpec(shape=(None, 148, 40, 1), dtype=tf.float32, name='keras_tensor_34')
+Output Type:
+  TensorSpec(shape=(None, 3), dtype=tf.float32, name=None)
+Captures:
+  1586187674096: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587876189760: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849879264: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849879088: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849875744: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849881200: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849880144: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587865632464: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663818592: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663804160: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587865627888: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663803632: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663809440: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867678176: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867673776: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867680288: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867680464: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867677824: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867679232: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867671488: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867667616: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920911920: TensorSpec(shape=(), dtype=tf.resource, name=None)
+W0000 00:00:1792535997.067073   13788 tf_tfl_flatbuffer_helpers.cc:364] Ignored output_format.
+W0000 00:00:1792535997.067154   13788 tf_tfl_flatbuffer_helpers.cc:367] Ignored drop_control_dependency.
+I0000 00:00:1792535997.067946   13788 reader.cc:83] Reading SavedModel from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp4eqyyx8e
+I0000 00:00:1792535997.071094   13788 reader.cc:52] Reading meta graph with tags { serve }
+I0000 00:00:1792535997.071167   13788 reader.cc:147] Reading SavedModel debug info (if present) from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp4eqyyx8e
+I0000 00:00:1792535997.088784   13788 loader.cc:236] Restoring SavedModel bundle.
+I0000 00:00:1792535997.212053   13788 loader.cc:220] Running initialization op on SavedModel bundle at path: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp4eqyyx8e
+I0000 00:00:1792535997.249243   13788 loader.cc:471] SavedModel load for tags { serve }; Status: success: OK. Took 181310 microseconds.
+Saved artifact at 'C:\Users\MIGUEL~1\AppData\Local\Temp\tmp9uym3553'. The following endpoints are available:
+
+* Endpoint 'serve'
+  args_0 (POSITIONAL_ONLY): TensorSpec(shape=(None, 148, 40, 1), dtype=tf.float32, name='keras_tensor_34')
+Output Type:
+  TensorSpec(shape=(None, 3), dtype=tf.float32, name=None)
+Captures:
+  1586187674096: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587876189760: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849879264: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849879088: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849875744: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849881200: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1586849880144: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587865632464: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663818592: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663804160: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587865627888: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663803632: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585663809440: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867678176: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867673776: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867680288: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867680464: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867677824: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867679232: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867671488: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1587867667616: TensorSpec(shape=(), dtype=tf.resource, name=None)
+  1585920911920: TensorSpec(shape=(), dtype=tf.resource, name=None)
+C:\Python310\lib\site-packages\tensorflow\lite\python\convert.py:846: UserWarning: Statistics for quantized inputs were expected, but not specified; continuing anyway.
+  warnings.warn(
+W0000 00:00:1792535998.957945   13788 tf_tfl_flatbuffer_helpers.cc:364] Ignored output_format.
+W0000 00:00:1792535998.958010   13788 tf_tfl_flatbuffer_helpers.cc:367] Ignored drop_control_dependency.
+I0000 00:00:1792535998.958839   13788 reader.cc:83] Reading SavedModel from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp9uym3553
+I0000 00:00:1792535998.961066   13788 reader.cc:52] Reading meta graph with tags { serve }
+I0000 00:00:1792535998.961130   13788 reader.cc:147] Reading SavedModel debug info (if present) from: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp9uym3553
+I0000 00:00:1792535998.984191   13788 loader.cc:236] Restoring SavedModel bundle.
+I0000 00:00:1792535999.122219   13788 loader.cc:220] Running initialization op on SavedModel bundle at path: C:\Users\MIGUEL~1\AppData\Local\Temp\tmp9uym3553
+I0000 00:00:1792535999.151325   13788 loader.cc:471] SavedModel load for tags { serve }; Status: success: OK. Took 192497 microseconds.
+fully_quantize: 0, inference_type: 6, input_inference_type: INT8, output_inference_type: INT8
+W0000 00:00:1792535999.625087   13788 flatbuffer_export.cc:3851] Skipping runtime version metadata in the model. This will be generated by the exporter.
+  modelo_float.tflite :   33.4 KB
+  modelo_int8.tflite  :   15.7 KB
+E0000 00:00:1792535999.736520   13788 node_def_util.cc:682] NodeDef mentions attribute use_unbounded_threadpool which is not in the op definition: Op<name=MapDataset; signature=input_dataset:variant, other_arguments: -> handle:variant; attr=f:func; attr=Targuments:list(type),min=0; attr=output_types:list(type),min=1; attr=output_shapes:list(shape),min=1; attr=use_inter_op_parallelism:bool,default=true; attr=preserve_cardinality:bool,default=false; attr=force_synchronous:bool,default=false; attr=metadata:string,default=""> This may be expected if your graph generating binary is newer  than this binary. Unknown attributes will be ignored. NodeDef: {{node ParallelMapDatasetV2/_14}}
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+
+  ?? TEST — modelo Keras (float) ??
+  Accuracy 90.91%   NLL 0.2564   Brier 0.1474   ECE 0.0501
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo           98           25            0
+    desconocido            2          228            3
+       silencio            0            6           34
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.980     0.797     0.879       123
+   desconocido      0.880     0.979     0.927       233
+      silencio      0.919     0.850     0.883        40
+  
+      accuracy                          0.909       396
+     macro avg      0.926     0.875     0.896       396
+  weighted avg      0.915     0.909     0.908       396
+
+  ?? TEST — modelo_int8.tflite (entrada cuantizada como en el firmware) ??
+  Accuracy 89.90%   NLL 0.2663   Brier 0.1548   ECE 0.0625
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo           95           28            0
+    desconocido            2          227            4
+       silencio            0            6           34
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.979     0.772     0.864       123
+   desconocido      0.870     0.974     0.919       233
+      silencio      0.895     0.850     0.872        40
+  
+      accuracy                          0.899       396
+     macro avg      0.915     0.866     0.885       396
+  weighted avg      0.906     0.899     0.897       396
+
+  Pérdida por cuantización (acc float.tflite ? int8): +1.01 pp   acuerdo de predicción 99.0%   |?p| máx 0.335
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+
+  ?? Umbral de hola_neo (scores del modelo int8) ??
+  Negativos para calibrar: 373 (val 133 + externos 240)   FPR objetivo 1.0%
+  Negativos para evaluar : 433 (test 273 + externos 160)   Positivos test: 123
+  criterio                umbral    TPR test   FPR test+ext  cota95%    TPR²  FPR² (indep.)
+  youden (val, float)     0.6275       74.8%     3/433  0.7%     1.8%   55.9%          0.00%
+  fpr (solo val)          0.5938       74.8%     3/433  0.7%     1.8%   55.9%          0.00%
+  fpr (val+externos)      0.9454       52.8%     0/433  0.0%     0.7%   27.9%          0.00%
+  desplegado 0.5706       0.5706       76.4%     3/433  0.7%     1.8%   58.4%          0.00%
+  fijo 0.60               0.6000       74.8%     3/433  0.7%     1.8%   55.9%          0.00%
+  fijo 0.70               0.7000       74.0%     2/433  0.5%     1.4%   54.7%          0.00%
+  fijo 0.80               0.8000       67.5%     1/433  0.2%     1.1%   45.5%          0.00%
+  fijo 0.90               0.9000       61.0%     0/433  0.0%     0.7%   37.2%          0.00%
+  (cota95% = Clopper-Pearson una cola; TPR²/FPR² = CONF_MINIMAS=2 suponiendo independencia entre dos frases seguidas)
+  Umbral elegido (fpr): 0.9454
+  Negativos por origen (score efectivo máx · disparos ? umbral elegido):
+    val            n= 133  máx 0.980  disparos 1  ?0.5: 4
+    cal_externos   n= 240  máx 0.992  disparos 2  ?0.5: 17
+    test           n= 273  máx 0.852  disparos 0  ?0.5: 2
+    eval_externos  n= 160  máx 0.652  disparos 0  ?0.5: 1
+
+  TPR en test por condición (umbral 0.9454, int8):
+    distancia=d200          65/123  52.8%
+    locutor=h1              14/60   23.3%
+    locutor=h2              51/63   81.0%
+    orientación=frente      33/59   55.9%
+    orientación=lat90       32/64   50.0%
+
+  Falsos positivos por palabra (int8, score ? umbral):
+    palabra       origen    n  0.5706     0.7     0.8     0.9     máx
+C:\Python310\lib\site-packages\tensorflow\lite\python\interpreter.py:457: UserWarning:     Warning: tf.lite.Interpreter is deprecated and is scheduled for deletion in
+    TF 2.20. Please use the LiteRT interpreter from the ai_edge_litert package.
+    See the [migration guide](https://ai.google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WARNING)
+    clima       excluida   80      11       9       8       5   0.992
+    cripto      excluida   80       1       1       0       0   0.730
+    dado        excluida   80       0       0       0       0   0.000
+    el_toque    excluida   80       0       0       0       0   0.000
+    noticias    excluida   80       1       0       0       0   0.652
+
+============================================================
+  Leave-one-speaker-out (hola_neo): 3 folds (media ± desv. estándar)
+============================================================
+  mejor_epoca         20.6667 ± 7.2342   [16.000, 29.000, 17.000]
+  acc_float            0.9245 ± 0.0148   [0.939, 0.926, 0.909]
+  acc_int8             0.9169 ± 0.0164   [0.931, 0.920, 0.899]
+  perdida_cuant_pp     0.7592 ± 0.2406   [0.737, 0.531, 1.010]
+  nll_float            0.2936 ± 0.0739   [0.246, 0.379, 0.256]
+  ece_float            0.0496 ± 0.0082   [0.041, 0.058, 0.050]
+  nll_int8             0.3810 ± 0.1290   [0.356, 0.521, 0.266]
+  umbral_youden        0.7755 ± 0.1407   [0.791, 0.908, 0.627]
+  umbral_fpr           0.9792 ± 0.0293   [0.996, 0.996, 0.945]
+  tpr@umbral_fpr       0.1762 ± 0.3051   [0.000, 0.000, 0.528]
+  fpr@umbral_fpr       0.0000 ± 0.0000   [0.000, 0.000, 0.000]
+  tpr@youden           0.8691 ± 0.1067   [0.949, 0.910, 0.748]
+  fpr@youden           0.0194 ± 0.0129   [0.033, 0.019, 0.007]
+
+  Salidas en : B:\embedded_ai_systems\neo\firmware\models\experimentos\2026-10-20\lodo_cmn
+============================================================

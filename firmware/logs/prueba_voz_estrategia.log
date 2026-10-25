@@ -1,0 +1,102 @@
+[TIMING] grabacion_inicio 157171
+[VAD] Voz detectada — grabando
+[TIMING] grabacion_fin 159145
+[VAD] Silencio prolongado — fin de grabación
+[NEO] Grabado: 36608 muestras (2.29s)
+[WS-TASK] Enviando 73216 bytes
+[TIMING] envio_ws_fin 159592
+[WS-TASK] fin_grabacion enviado
+[WS] {"cmd": "procesando"}
+[WS] {"cmd": "keepalive"}
+[WS] {"cmd": "keepalive"}
+[WS] {"cmd": "keepalive"}
+[TIMING] primer_chunk_recibido 166400
+[WS] {"cmd": "fin_respuesta"}
+[TIMING] playback_inicio 166428
+[NEO] Reproduciendo: 14116 bytes (0.44s)
+[TIMING] playback_fin 166599
+[NEO] Reproducción completa
+[VAD] Calibrando ruido de fondo...
+[VAD] Ruido base: 153.2  umbral inicio: 919.1  fin: 383.0
+[VAD] Timeout — sin voz detectada
+[NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+[WW] Captando: rms=96  noise=20
+[TIMING] captura_lista 183447
+[WW] Captura lista: 19200 muestras (1.20s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24716
+[INF] tareaInf: clasificando...
+[INF] top=0 (hola_neo) score=0.996
+[INF] tareaInf: listo en 395ms  cmd=1  scores=[0.996, 0.000, 0.000]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=0 (hola_neo)  score=0.996  cmd=1
+[TIMING] wake_detectado 183864
+[WW] Wake word confirmado — enciendo pantalla, saludo y converso
+[FACE] begin() — llamando _render
+[FACE] _render() completado
+[NEO] Frase 0.0: 7868 muestras (0.49s)
+[VAD] Calibrando ruido de fondo...
+[VAD] Ruido base: 42.4  umbral inicio: 254.4  fin: 106.0
+[TIMING] grabacion_inicio 186886
+[VAD] Voz detectada — grabando
+[TIMING] grabacion_fin 189574
+[VAD] Silencio prolongado — fin de grabación
+[NEO] Grabado: 47872 muestras (2.99s)
+[WS-TASK] Enviando 95744 bytes
+[TIMING] envio_ws_fin 191421
+[WS-TASK] fin_grabacion enviado
+[WS] {"cmd": "procesando"}
+[WS] {"cmd": "keepalive"}
+[WS] {"cmd": "keepalive"}
+[WS] {"cmd": "keepalive"}
+[TIMING] primer_chunk_recibido 199286
+[WS] {"cmd": "fin_respuesta"}
+[TIMING] playback_inicio 199532
+[NEO] Reproduciendo: 150092 bytes (4.69s)
+[TIMING] playback_fin 203962
+[NEO] Reproducción completa
+[VAD] Calibrando ruido de fondo...
+[VAD] Ruido base: 74.2  umbral inicio: 444.9  fin: 185.4
+[TIMING] grabacion_inicio 210260
+[VAD] Voz detectada — grabando
+[TIMING] grabacion_fin 213684
+[VAD] Silencio prolongado — fin de grabación
+[NEO] Grabado: 59648 muestras (3.73s)
+[WS-TASK] Enviando 119296 bytes
+[TIMING] envio_ws_fin 215679
+[WS-TASK] fin_grabacion enviado
+[WS] {"cmd": "procesando"}
+[WS] {"cmd": "keepalive"}
+[WS] {"cmd": "keepalive"}
+[WS] {"cmd": "keepalive"}
+[TIMING] primer_chunk_recibido 224047
+[WS] {"cmd": "fin_respuesta"}
+[TIMING] playback_inicio 224245
+[NEO] Reproduciendo: 138948 bytes (4.34s)
+[TIMING] playback_fin 228360
+[NEO] Reproducción completa
+[VAD] Calibrando ruido de fondo...
+[VAD] Ruido base: 79.9  umbral inicio: 479.4  fin: 199.8
+[VAD] Timeout — sin voz detectada
+[NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+[WW] Captando: rms=83  noise=16
+[TIMING] captura_lista 264911
+[WW] Captura lista: 19712 muestras (1.23s) [silencio] → tareaInf
+[WW] Dando semáforo a tareaInf...
+[INF] tareaInf: semáforo recibido
+[INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24716
+[INF] tareaInf: clasificando...
+[INF] top=0 (hola_neo) score=0.996
+[INF] tareaInf: listo en 404ms  cmd=1  scores=[0.996, 0.000, 0.000]
+[INF] tareaInf: esperando semáforo...
+[WW] Semáforo dado, esperando resultado...
+[WW] Resultado: clase=0 (hola_neo)  score=0.996  cmd=1
+[TIMING] wake_detectado 265337
+[WW] Wake word confirmado — enciendo pantalla, saludo y converso
+[FACE] begin() — llamando _render
+[FACE] _render() completado
+[NEO] Frase 0.1: 8979 muestras (0.56s)
+[VAD] Calibrando ruido de fondo...
+[VAD] Ruido base: 46.5  umbral inicio: 279.2  fin: 116.3

@@ -1,0 +1,147 @@
+============================================================
+  NEO — Entrenamiento wake word
+============================================================
+  Fecha           : 2026-10-15 19:51
+  Args            : {'dataset': 'dataset', 'epocas': 80, 'output': 'models/experimentos/2026-10-15/shift_pequeno', 'augment': True, 'alinear': True, 'seed': 42, 'shift': 'pequeno', 'umbral_criterio': 'fpr', 'fpr_objetivo': 0.01, 'umbral_minimo': 0.5, 'cv': 0, 'leave_speaker_out': False, 'solo_evaluar': None}
+  TF 2.21.0  numpy 1.26.4
+
+[1/5] Cargando dataset desde 'dataset'...
+  hola_neo            :  606 archivos
+  desconocido         :  120 archivos
+  silencio            :   60 archivos
+  negativos externos  : clima=80  cripto=80  dado=80  el_toque=80  noticias=80  (solo calibración/evaluación, nunca entrenamiento)
+
+  Longitud fija   : 24000 muestras  (1.50 s)
+  Clases          : 3  ['hola_neo', 'desconocido', 'silencio']
+  Alineación      : sí (onset de voz, igual que el VAD)
+  Augmentation    : sí, shift=pequeno
+
+[2/5] Dividiendo originales en train / val / test ...
+
+[3-5/5] Entrenando, evaluando y exportando...
+  Originales  ->  Train: 502  Val: 126  Test: 158
+    hola_neo       train  387  val   97  test  122
+    desconocido    train   77  val   19  test   24
+    silencio       train   38  val   10  test   12
+  Tras augmentation ->  Train: 8488  Val: 126  Test: 158
+  Class weights: {'hola_neo': '0.52', 'desconocido': '1.22', 'silencio': '3.72'}
+  Épocas ejecutadas: 46   Mejor época (pesos restaurados): 31   early stopping
+  En la mejor época: loss 0.0692  acc 0.9747  val_loss 0.0536  val_acc 0.9921
+
+  Historial (época  loss  acc  val_loss  val_acc  lr):
+      1  0.7417  0.6135  0.8017  0.5000  1.0e-03
+      2  0.4749  0.7670  0.4366  0.8889  1.0e-03
+      3  0.3742  0.8256  0.2799  0.8968  1.0e-03
+      4  0.3195  0.8537  0.3016  0.9206  1.0e-03
+      5  0.2836  0.8724  0.4274  0.8095  1.0e-03
+      6  0.2586  0.8852  0.1261  0.9444  1.0e-03
+      7  0.2341  0.8934  0.1668  0.9524  1.0e-03
+      8  0.2173  0.9070  0.1420  0.9444  1.0e-03
+      9  0.2149  0.9056  0.1076  0.9683  1.0e-03
+     10  0.1957  0.9119  0.2460  0.9365  1.0e-03
+     11  0.1803  0.9246  0.1015  0.9683  1.0e-03
+     12  0.1653  0.9307  0.4590  0.8889  1.0e-03
+     13  0.1606  0.9294  0.4435  0.8889  1.0e-03
+     14  0.1475  0.9359  0.1473  0.9603  1.0e-03
+     15  0.1378  0.9439  0.1416  0.9524  1.0e-03
+     16  0.1503  0.9366  0.1104  0.9603  1.0e-03
+     17  0.1276  0.9458  0.3478  0.9206  1.0e-03
+     18  0.1303  0.9467  0.3083  0.9206  1.0e-03
+     19  0.1000  0.9586  0.0749  0.9762  3.0e-04
+     20  0.0961  0.9642  0.0757  0.9762  3.0e-04
+     21  0.0887  0.9663  0.0903  0.9762  3.0e-04
+     22  0.0865  0.9650  0.0708  0.9762  3.0e-04
+     23  0.0822  0.9691  0.0913  0.9683  3.0e-04
+     24  0.0803  0.9680  0.0876  0.9762  3.0e-04
+     25  0.0805  0.9681  0.0651  0.9762  3.0e-04
+     26  0.0806  0.9678  0.0601  0.9683  3.0e-04
+     27  0.0789  0.9695  0.0646  0.9683  3.0e-04
+     28  0.0782  0.9695  0.0915  0.9683  3.0e-04
+     29  0.0751  0.9713  0.0562  0.9841  3.0e-04
+     30  0.0727  0.9708  0.1299  0.9762  3.0e-04
+     31  0.0692  0.9747  0.0536  0.9921  3.0e-04  ← mejor
+     32  0.0724  0.9734  0.0565  0.9921  3.0e-04
+     33  0.0667  0.9755  0.0920  0.9762  3.0e-04
+     34  0.0651  0.9760  0.1158  0.9762  3.0e-04
+     35  0.0681  0.9744  0.0810  0.9762  3.0e-04
+     36  0.0634  0.9774  0.0664  0.9683  3.0e-04
+     37  0.0587  0.9770  0.1320  0.9762  3.0e-04
+     38  0.0639  0.9764  0.1056  0.9762  3.0e-04
+     39  0.0556  0.9795  0.0522  0.9841  9.0e-05
+     40  0.0541  0.9807  0.0776  0.9762  9.0e-05
+     41  0.0566  0.9815  0.0739  0.9762  9.0e-05
+     42  0.0514  0.9836  0.0838  0.9762  9.0e-05
+     43  0.0513  0.9815  0.0742  0.9762  9.0e-05
+     44  0.0521  0.9815  0.0725  0.9762  9.0e-05
+     45  0.0537  0.9808  0.0945  0.9762  9.0e-05
+     46  0.0495  0.9815  0.0672  0.9762  9.0e-05
+
+  ── TEST — modelo Keras (float) ──
+  Accuracy 95.57%   NLL 0.1021   Brier 0.0568   ECE 0.0287
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo          119            3            0
+    desconocido            0           24            0
+       silencio            2            2            8
+
+                precision    recall  f1-score   support
+  
+      hola_neo      0.983     0.975     0.979       122
+   desconocido      0.828     1.000     0.906        24
+      silencio      1.000     0.667     0.800        12
+  
+      accuracy                          0.956       158
+     macro avg      0.937     0.881     0.895       158
+  weighted avg      0.961     0.956     0.955       158
+
+  ── TEST — modelo_int8.tflite (entrada cuantizada como en el firmware) ──
+  Accuracy 91.77%   NLL 0.4590   Brier 0.1587   ECE 0.0661
+  Matriz de confusión (filas=real, columnas=predicho):
+                    hola_neo  desconocido     silencio
+       hola_neo          113            9            0
+    desconocido            0           24            0
+       silencio            0            4            8
+
+                precision    recall  f1-score   support
+  
+      hola_neo      1.000     0.926     0.962       122
+   desconocido      0.649     1.000     0.787        24
+      silencio      1.000     0.667     0.800        12
+  
+      accuracy                          0.918       158
+     macro avg      0.883     0.864     0.850       158
+  weighted avg      0.947     0.918     0.923       158
+
+  Pérdida por cuantización (acc float.tflite − int8): +3.80 pp   acuerdo de predicción 94.9%   |Δp| máx 0.853
+
+  ── Umbral de hola_neo (scores del modelo int8) ──
+  Negativos para calibrar: 269 (val 29 + externos 240)   FPR objetivo 1.0%
+  Negativos para evaluar : 196 (test 36 + externos 160)   Positivos test: 122
+  criterio                umbral    TPR test   FPR test+ext  cota95%    TPR²  FPR² (indep.)
+  youden (val, float)     0.8601       79.5%     0/196  0.0%     1.5%   63.2%          0.00%
+  fpr (solo val)          0.5000       91.8%     4/196  2.0%     4.6%   84.3%          0.04%
+  fpr (val+externos)      0.9766       66.4%     0/196  0.0%     1.5%   44.1%          0.00%
+  desplegado 0.5706       0.5706       90.2%     3/196  1.5%     3.9%   81.3%          0.02%
+  fijo 0.60               0.6000       90.2%     3/196  1.5%     3.9%   81.3%          0.02%
+  fijo 0.70               0.7000       86.1%     1/196  0.5%     2.4%   74.1%          0.00%
+  fijo 0.80               0.8000       81.1%     1/196  0.5%     2.4%   65.8%          0.00%
+  fijo 0.90               0.9000       77.9%     0/196  0.0%     1.5%   60.6%          0.00%
+  (cota95% = Clopper-Pearson una cola; TPR²/FPR² = CONF_MINIMAS=2 suponiendo independencia entre dos frases seguidas)
+  Umbral elegido (fpr): 0.9766
+
+  TPR en test por condición (umbral 0.9766, int8):
+    distancia=d050          23/31   74.2%
+    distancia=d100          23/27   85.2%
+    distancia=d200          17/25   68.0%
+    locutor=h1              30/41   73.2%
+    locutor=h2              33/42   78.6%
+    locutor=legacy          18/39   46.2%
+    orientación=frente      36/49   73.5%
+    orientación=lat90       27/34   79.4%
+
+  Umbrales guardados: models\experimentos\2026-10-15\shift_pequeno\umbrales.json
+  Regenera el header del firmware:
+    python tools/gen_vocabulario.py --umbrales models\experimentos\2026-10-15\shift_pequeno\umbrales.json
+
+  Salidas en : B:\embedded_ai_systems\neo\firmware\models\experimentos\2026-10-15\shift_pequeno
+============================================================

@@ -1,0 +1,1195 @@
+18:16:47.857 > [WW] Captando: rms=103  noise=16
+18:16:48.692 > [WW] Captura lista: 13312 muestras (0.83s) [silencio] → tareaInf
+18:16:48.698 > [WW] Dando semáforo a tareaInf...
+18:16:48.698 > [INF] tareaInf: semáforo recibido
+18:16:48.704 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=134936
+18:16:48.708 > [INF] tareaInf: clasificando...
+18:16:51.200 > [INF] top=1 (desconocido) score=0.613
+18:16:51.200 > [INF] tareaInf: listo en 2498ms  cmd=0  scores=[0.195, 0.613, 0.195]
+18:16:51.206 > [INF] tareaInf: esperando semáforo...
+18:16:51.211 > [WW] Semáforo dado, esperando resultado...
+18:16:51.217 > [WW] Resultado: clase=1 (desconocido)  score=0.613  cmd=0
+18:16:54.834 > ESP-ROM:esp32s3-20210327
+18:16:54.842 > Build:Mar 27 2021
+18:16:54.843 > rst:0x1 (POWERON),boot:0x2c (SPI_FAST_FLASH_BOOT)
+18:16:54.848 > SPIWP:0xee
+18:16:54.848 > mode:DIO, clock div:1
+18:16:54.848 > load:0x3fce3808,len:0x4bc
+18:16:54.854 > load:0x403c9700,len:0xbd8
+18:16:54.854 > load:0x403cc700,len:0x2a0c
+18:16:54.854 > entry 0x403c98d0
+18:16:55.081 > [   246][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+18:16:55.607 > 
+18:16:55.607 > 
+18:16:55.607 > === NEO BOOT ===
+18:16:55.607 > [NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+18:16:55.613 > [DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+18:16:55.619 > [NEO] Buffer de audio: PSRAM (30s)
+18:16:55.619 > [   782][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+18:16:55.632 > [   796][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+18:16:55.662 > [OLED] Inicializado correctamente
+18:16:55.689 > [WiFi] Conectando a @techmigue ...
+18:16:55.997 > [WiFi] Conectado. IP: 172.20.10.2
+18:16:56.310 > [DNS] Configurado: 8.8.8.8 / 1.1.1.1  IP: 172.20.10.2
+18:16:56.696 > [MIC] Inicializado (ONLY_LEFT, APLL, DMA limpio)
+18:16:56.696 > [SPK] Inicializado correctamente
+18:16:56.720 > [NEO] Iniciando conexión WebSocket...
+18:16:57.721 > [NEO] Intento WS #1  heap DRAM: 239396  PSRAM libre: 7410675
+18:16:57.722 > [NEO] Intentando conectar a servidor local...
+18:16:57.803 > [WS] Evento: conectado
+18:16:57.817 > [WS] Conectado al servidor LOCAL (LAN)
+18:16:57.818 > [NEO] WS conectado exitosamente
+18:16:57.823 > [NEO] Servidor activo: LAN  heap: 236892
+18:16:57.823 > [DIAG] Creando tareas FreeRTOS...
+18:16:57.829 > [DIAG] tareaWs creada: OK
+18:16:57.829 > [INF] tareaInf: esperando semáforo...
+18:16:57.834 > [DIAG] tareaInf creada: OK
+18:16:57.834 > [DIAG] heap después de crear tareas: 202916
+18:16:57.840 > [INF] Entrada  scale=0.1855467  zero_point=88
+18:16:57.845 > [INF] Salida   scale=0.0039062  zero_point=-128  clases=3
+18:16:57.851 > [INF] Modelo cargado. Arena: 150 KB. MFCC buf: 23 KB
+18:16:57.851 > [DIAG] inference->begin() OK  |  wake_buf=ok  |  PSRAM libre: 7362659 bytes
+18:16:57.878 > [NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque
+18:16:58.162 > [WS] {"cmd": "listo"}
+18:17:00.341 > [WW] Captando: rms=205  noise=30
+18:17:01.463 > [WW] Captura lista: 17920 muestras (1.12s) [silencio] → tareaInf
+18:17:01.470 > [WW] Dando semáforo a tareaInf...
+18:17:01.470 > [INF] tareaInf: semáforo recibido
+18:17:01.475 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24896
+18:17:01.480 > [INF] tareaInf: clasificando...
+18:17:04.012 > [INF] top=0 (hola_neo) score=0.996
+18:17:04.013 > [INF] tareaInf: listo en 2538ms  cmd=1  scores=[0.996, 0.004, 0.000]
+18:17:04.018 > [INF] tareaInf: esperando semáforo...
+18:17:04.024 > [WW] Semáforo dado, esperando resultado...
+18:17:04.024 > [WW] Resultado: clase=0 (hola_neo)  score=0.996  cmd=1
+18:17:04.029 > [TIMING] wake_detectado 9187
+18:17:04.034 > [WW] Wake word confirmado — enciendo pantalla, saludo y converso
+18:17:04.040 > [FACE] begin() — llamando _render
+18:17:04.069 > [FACE] _render() completado
+18:17:04.069 > [NEO] Ack wake: 29952 muestras (1.87s)
+18:17:05.725 > [VAD] Calibrando ruido de fondo...
+18:17:06.118 > [VAD] Ruido base: 15.5  umbral inicio: 93.2  fin: 38.8
+18:17:08.134 > [TIMING] grabacion_inicio 13298
+18:17:08.135 > [VAD] Voz detectada — grabando
+18:17:10.646 > [TIMING] grabacion_fin 15810
+18:17:10.647 > [VAD] Silencio prolongado — fin de grabación
+18:17:10.652 > [NEO] Grabado: 40448 muestras (2.53s)
+18:17:10.652 > [WS-TASK] Enviando 80896 bytes
+18:17:11.179 > [TIMING] envio_ws_fin 16343
+18:17:11.179 > [WS-TASK] fin_grabacion enviado
+18:17:11.197 > [WS] {"cmd": "procesando"}
+18:17:13.215 > [WS] {"cmd": "keepalive"}
+18:17:15.263 > [WS] {"cmd": "keepalive"}
+18:17:16.712 > [TIMING] primer_chunk_recibido 21878
+18:17:17.027 > [WS] {"cmd": "fin_respuesta"}
+18:17:17.049 > [TIMING] playback_inicio 22213
+18:17:17.049 > [NEO] Reproduciendo: 166812 bytes (5.21s)
+18:17:22.020 > [TIMING] playback_fin 27184
+18:17:22.020 > [NEO] Reproducción completa
+18:17:22.020 > [VAD] Calibrando ruido de fondo...
+18:17:22.405 > [VAD] Ruido base: 188.5  umbral inicio: 1130.8  fin: 471.2
+18:17:32.420 > [VAD] Timeout — sin voz detectada
+18:17:32.420 > [NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+18:17:42.720 > [WW] Captando: rms=117  noise=29
+18:17:43.971 > [WW] Captura lista: 19968 muestras (1.25s) [silencio] → tareaInf
+18:17:43.977 > [WW] Dando semáforo a tareaInf...
+18:17:43.977 > [INF] tareaInf: semáforo recibido
+18:17:43.983 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24592
+18:17:43.987 > [INF] tareaInf: clasificando...
+18:17:46.542 > [INF] top=1 (desconocido) score=0.961
+18:17:46.542 > [INF] tareaInf: listo en 2560ms  cmd=0  scores=[0.000, 0.961, 0.039]
+18:17:46.548 > [INF] tareaInf: esperando semáforo...
+18:17:46.554 > [WW] Semáforo dado, esperando resultado...
+18:17:46.560 > [WW] Resultado: clase=1 (desconocido)  score=0.961  cmd=0
+18:17:52.719 > [WW] Captando: rms=84  noise=20
+18:17:54.114 > [WW] Captura lista: 22272 muestras (1.39s) [silencio] → tareaInf
+18:17:54.120 > [WW] Dando semáforo a tareaInf...
+18:17:54.120 > [INF] tareaInf: semáforo recibido
+18:17:54.126 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24592
+18:17:54.130 > [INF] tareaInf: clasificando...
+18:17:56.711 > [INF] top=2 (silencio) score=0.984
+18:17:56.712 > [INF] tareaInf: listo en 2586ms  cmd=0  scores=[0.000, 0.016, 0.984]
+18:17:56.718 > [INF] tareaInf: esperando semáforo...
+18:17:56.727 > [WW] Semáforo dado, esperando resultado...
+18:17:56.727 > [WW] Resultado: clase=2 (silencio)  score=0.984  cmd=0
+18:18:31.148 > [WW] Captando: rms=145  noise=30
+18:18:32.159 > [WW] Captura lista: 16128 muestras (1.01s) [silencio] → tareaInf
+18:18:32.165 > [WW] Dando semáforo a tareaInf...
+18:18:32.165 > [INF] tareaInf: semáforo recibido
+18:18:32.171 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24592
+18:18:32.175 > [INF] tareaInf: clasificando...
+18:18:34.686 > [INF] top=1 (desconocido) score=0.996
+18:18:34.686 > [INF] tareaInf: listo en 2516ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:18:34.692 > [INF] tareaInf: esperando semáforo...
+18:18:34.697 > [WW] Semáforo dado, esperando resultado...
+18:18:34.704 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:18:43.722 > [WW] Captando: rms=192  noise=17
+18:18:45.085 > [WW] Captura lista: 21760 muestras (1.36s) [silencio] → tareaInf
+18:18:45.091 > [WW] Dando semáforo a tareaInf...
+18:18:45.091 > [INF] tareaInf: semáforo recibido
+18:18:45.097 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24592
+18:18:45.101 > [INF] tareaInf: clasificando...
+18:18:47.675 > [INF] top=2 (silencio) score=0.992
+18:18:47.675 > [INF] tareaInf: listo en 2579ms  cmd=0  scores=[0.000, 0.008, 0.992]
+18:18:47.681 > [INF] tareaInf: esperando semáforo...
+18:18:47.686 > [WW] Semáforo dado, esperando resultado...
+18:18:47.686 > [WW] Resultado: clase=2 (silencio)  score=0.992  cmd=0
+18:18:49.466 > [WW] Captando: rms=249  noise=19
+18:18:50.973 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:18:50.974 > [WW] Dando semáforo a tareaInf...
+18:18:50.979 > [INF] tareaInf: semáforo recibido
+18:18:50.985 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=22584
+18:18:50.989 > [INF] tareaInf: clasificando...
+18:18:53.623 > [INF] top=2 (silencio) score=0.996
+18:18:53.624 > [INF] tareaInf: listo en 2640ms  cmd=0  scores=[0.000, 0.000, 0.996]
+18:18:53.629 > [INF] tareaInf: esperando semáforo...
+18:18:53.634 > [WW] Semáforo dado, esperando resultado...
+18:18:53.634 > [WW] Resultado: clase=2 (silencio)  score=0.996  cmd=0
+18:18:55.878 > [WS] Evento: desconectado  heap DRAM: 22736
+18:18:55.879 > [WS-TASK] WS caído (fallos=0)
+18:18:57.256 > [122420][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 200 - BEACON_TIMEOUT
+18:18:57.365 > [122422][E][WiFiClient.cpp:275] connect(): socket error on fd 48, errno: 113, "Software caused connection abort"
+18:18:57.365 > [WS] Evento: desconectado  heap DRAM: 26116
+18:18:57.785 > [122949][E][WiFiClient.cpp:249] connect(): connect on fd 48, errno: 118, "Host is unreachable"
+18:18:57.791 > [WW] Captando: rms=135  noise=16
+18:18:57.804 > [WS] Evento: desconectado  heap DRAM: 26712
+18:18:58.308 > [123471][E][WiFiClient.cpp:249] connect(): connect on fd 48, errno: 118, "Host is unreachable"
+18:18:58.324 > [WS] Evento: desconectado  heap DRAM: 26712
+18:18:58.826 > [123990][E][WiFiClient.cpp:249] connect(): connect on fd 48, errno: 118, "Host is unreachable"
+18:18:58.843 > [WS] Evento: desconectado  heap DRAM: 26712
+18:18:59.291 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:18:59.292 > [WW] Dando semáforo a tareaInf...
+18:18:59.297 > [INF] tareaInf: semáforo recibido
+18:18:59.302 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=26712
+18:18:59.306 > [INF] tareaInf: clasificando...
+18:18:59.345 > [124510][E][WiFiClient.cpp:249] connect(): connect on fd 48, errno: 118, "Host is unreachable"
+18:18:59.362 > [WS] Evento: desconectado  heap DRAM: 26712
+18:18:59.683 > [124847][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:18:59.863 > [125028][E][WiFiClient.cpp:249] connect(): connect on fd 48, errno: 118, "Host is unreachable"
+18:18:59.880 > [WS] Evento: desconectado  heap DRAM: 26712
+18:19:00.383 > [125547][E][WiFiClient.cpp:249] connect(): connect on fd 48, errno: 118, "Host is unreachable"
+18:19:00.400 > [WS] Evento: desconectado  heap DRAM: 26712
+18:19:00.902 > [126066][E][WiFiClient.cpp:249] connect(): connect on fd 48, errno: 118, "Host is unreachable"
+18:19:00.919 > [WS] Evento: desconectado  heap DRAM: 26712
+18:19:01.421 > [126585][E][WiFiClient.cpp:249] connect(): connect on fd 48, errno: 118, "Host is unreachable"
+18:19:01.438 > [WS] Evento: desconectado  heap DRAM: 26712
+18:19:01.908 > [WS] Error al conectar a 172.20.10.8:8765/ws
+18:19:01.914 > [INF] top=2 (silencio) score=0.832
+18:19:01.914 > [INF] tareaInf: listo en 2611ms  cmd=0  scores=[0.000, 0.168, 0.832]
+18:19:01.920 > [INF] tareaInf: esperando semáforo...
+18:19:01.925 > [WW] Semáforo dado, esperando resultado...
+18:19:01.925 > [WW] Resultado: clase=2 (silencio)  score=0.832  cmd=0
+18:19:02.100 > [127264][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:02.110 > [WS] Iniciando WSS a techmigue-neo-servidor.hf.space:443  heap DRAM: 26712
+18:19:04.516 > [129680][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:06.932 > [132095][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:08.104 > [WW] Captando: rms=91  noise=16
+18:19:08.550 > ESP-ROM:esp32s3-20210327
+18:19:08.559 > Build:Mar 27 2021
+18:19:08.559 > rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+18:19:08.565 > SPIWP:0xee
+18:19:08.565 > mode:DIO, clock div:1
+18:19:08.565 > load:0x3fce3808,len:0x4bc
+18:19:08.570 > load:0x403c9700,len:0xbd8
+18:19:08.570 > load:0x403cc700,len:0x2a0c
+18:19:08.570 > entry 0x403c98d0
+18:19:08.799 > [   246][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+18:19:09.324 > 
+18:19:09.325 > 
+18:19:09.325 > === NEO BOOT ===
+18:19:09.325 > [NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+18:19:09.329 > [DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+18:19:09.336 > [NEO] Buffer de audio: PSRAM (30s)
+18:19:09.336 > [   782][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+18:19:09.349 > [   796][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+18:19:09.380 > [OLED] Inicializado correctamente
+18:19:09.406 > [WiFi] Conectando a @techmigue ...
+18:19:11.896 > [  3343][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:14.315 > [  5763][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:16.735 > [  8182][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:19.155 > [ 10602][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:21.575 > [ 13022][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:21.690 > [WiFi] Timeout de conexión
+18:19:21.691 > [WiFi] Iniciando portal de configuración AP
+18:19:21.730 > [WiFi] AP activo. IP: 192.168.4.1
+18:19:43.889 > ESP-ROM:esp32s3-20210327
+18:19:43.898 > Build:Mar 27 2021
+18:19:43.898 > rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+18:19:43.904 > SPIWP:0xee
+18:19:43.904 > mode:DIO, clock div:1
+18:19:43.904 > load:0x3fce3808,len:0x4bc
+18:19:43.910 > load:0x403c9700,len:0xbd8
+18:19:43.910 > load:0x403cc700,len:0x2a0c
+18:19:43.910 > entry 0x403c98d0
+18:19:44.138 > [   246][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+18:19:44.664 > 
+18:19:44.665 > 
+18:19:44.665 > === NEO BOOT ===
+18:19:44.665 > [NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+18:19:44.670 > [DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+18:19:44.676 > [NEO] Buffer de audio: PSRAM (30s)
+18:19:44.676 > [   782][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+18:19:44.689 > [   796][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+18:19:44.720 > [OLED] Inicializado correctamente
+18:19:44.745 > [WiFi] Conectando a @techmigue ...
+18:19:47.239 > [  3345][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:49.658 > [  5765][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:52.078 > [  8185][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:54.498 > [ 10605][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:56.917 > [ 13024][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:19:57.032 > [WiFi] Timeout de conexión
+18:19:57.032 > [WiFi] Iniciando portal de configuración AP
+18:19:57.064 > [WiFi] AP activo. IP: 192.168.4.1
+18:20:04.833 > ESP-ROM:esp32s3-20210327
+18:20:04.843 > Build:Mar 27 2021
+18:20:04.843 > rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+18:20:04.852 > SPIWP:0xee
+18:20:04.852 > mode:DIO, clock div:1
+18:20:04.852 > load:0x3fce3808,len:0x4bc
+18:20:04.854 > load:0x403c9700,len:0xbd8
+18:20:04.854 > load:0x403cc700,len:0x2a0c
+18:20:04.854 > entry 0x403c98d0
+18:20:05.082 > [   246][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+18:20:05.607 > 
+18:20:05.608 > 
+18:20:05.608 > === NEO BOOT ===
+18:20:05.608 > [NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+18:20:05.613 > [DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+18:20:05.619 > [NEO] Buffer de audio: PSRAM (30s)
+18:20:05.619 > [   782][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+18:20:05.632 > [   796][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+18:20:05.662 > [OLED] Inicializado correctamente
+18:20:05.689 > [WiFi] Conectando a @techmigue ...
+18:20:08.182 > [  3346][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:20:10.602 > [  5766][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:20:13.022 > [  8185][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:20:15.442 > [ 10605][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:20:17.862 > [ 13025][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:20:17.977 > [WiFi] Timeout de conexión
+18:20:17.977 > [WiFi] Iniciando portal de configuración AP
+18:20:18.009 > [WiFi] AP activo. IP: 192.168.4.1
+18:23:18.039 > [WiFi] Timeout portal — reiniciando
+18:23:18.119 > ESP-ROM:esp32s3-20210327
+18:23:18.119 > Build:Mar 27 2021
+18:23:18.119 > rst:0xc (RTC_SW_CPU_RST),boot:0xc (SPI_FAST_FLASH_BOOT)
+18:23:18.124 > Saved PC:0x420ac406
+18:23:18.124 > SPIWP:0xee
+18:23:18.130 > mode:DIO, clock div:1
+18:23:18.130 > load:0x3fce3808,len:0x4bc
+18:23:18.130 > load:0x403c9700,len:0xbd8
+18:23:18.136 > load:0x403cc700,len:0x2a0c
+18:23:18.136 > entry 0x403c98d0
+18:23:18.364 > [   251][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+18:23:18.890 > 
+18:23:18.890 > 
+18:23:18.890 > === NEO BOOT ===
+18:23:18.890 > [NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+18:23:18.896 > [DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+18:23:18.900 > [NEO] Buffer de audio: PSRAM (30s)
+18:23:18.900 > [   788][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+18:23:18.914 > [   801][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+18:23:18.944 > [OLED] Inicializado correctamente
+18:23:18.971 > [WiFi] Conectando a @techmigue ...
+18:23:21.464 > [  3351][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:23:23.883 > [  5770][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:23:26.303 > [  8190][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:23:28.722 > [ 10610][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:23:31.058 > [WiFi] Timeout de conexión
+18:23:31.058 > [WiFi] Iniciando portal de configuración AP
+18:23:31.090 > [WiFi] AP activo. IP: 192.168.4.1
+18:26:31.119 > [WiFi] Timeout portal — reiniciando
+18:26:31.119 > ���ESP-ROM:esp32s3-20210327
+18:26:31.131 > Build:Mar 27 2021
+18:26:31.131 > rst:0xc (RTC_SW_CPU_RST),boot:0xc (SPI_FAST_FLASH_BOOT)
+18:26:31.136 > Saved PC:0x420ac406
+18:26:31.136 > SPIWP:0xee
+18:26:31.142 > mode:DIO, clock div:1
+18:26:31.142 > load:0x3fce3808,len:0x4bc
+18:26:31.142 > load:0x403c9700,len:0xbd8
+18:26:31.150 > load:0x403cc700,len:0x2a0c
+18:26:31.150 > entry 0x403c98d0
+18:26:31.376 > [   251][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+18:26:31.902 > 
+18:26:31.902 > 
+18:26:31.902 > === NEO BOOT ===
+18:26:31.902 > [NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+18:26:31.908 > [DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+18:26:31.912 > [NEO] Buffer de audio: PSRAM (30s)
+18:26:31.912 > [   788][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+18:26:31.926 > [   801][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+18:26:31.956 > [OLED] Inicializado correctamente
+18:26:31.982 > [WiFi] Conectando a @techmigue ...
+18:26:34.476 > [  3351][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:26:36.896 > [  5771][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:26:39.315 > [  8190][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:26:41.735 > [ 10610][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:26:44.155 > [ 13030][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 201 - NO_AP_FOUND
+18:26:44.269 > [WiFi] Timeout de conexión
+18:26:44.270 > [WiFi] Iniciando portal de configuración AP
+18:26:44.302 > [WiFi] AP activo. IP: 192.168.4.1
+18:28:43.556 > ESP-ROM:esp32s3-20210327
+18:28:43.565 > Build:Mar 27 2021
+18:28:43.566 > rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+18:28:43.571 > SPIWP:0xee
+18:28:43.571 > mode:DIO, clock div:1
+18:28:43.571 > load:0x3fce3808,len:0x4bc
+18:28:43.579 > load:0x403c9700,len:0xbd8
+18:28:43.579 > load:0x403cc700,len:0x2a0c
+18:28:43.579 > entry 0x403c98d0
+18:28:43.805 > [   246][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+18:28:44.329 > 
+18:28:44.330 > 
+18:28:44.330 > === NEO BOOT ===
+18:28:44.330 > [NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+18:28:44.335 > [DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+18:28:44.341 > [NEO] Buffer de audio: PSRAM (30s)
+18:28:44.341 > [   782][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+18:28:44.354 > [   796][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+18:28:44.385 > [OLED] Inicializado correctamente
+18:28:44.412 > [WiFi] Conectando a @techmigue ...
+18:28:44.722 > [WiFi] Conectado. IP: 172.20.10.2
+18:28:45.034 > [DNS] Configurado: 8.8.8.8 / 1.1.1.1  IP: 172.20.10.2
+18:28:45.419 > [MIC] Inicializado (ONLY_LEFT, APLL, DMA limpio)
+18:28:45.419 > [SPK] Inicializado correctamente
+18:28:45.443 > [NEO] Iniciando conexión WebSocket...
+18:28:46.446 > [NEO] Intento WS #1  heap DRAM: 239384  PSRAM libre: 7410675
+18:28:46.446 > [NEO] Intentando conectar a servidor local...
+18:28:46.538 > [WS] Evento: conectado
+18:28:46.552 > [WS] Conectado al servidor LOCAL (LAN)
+18:28:46.552 > [NEO] WS conectado exitosamente
+18:28:46.557 > [NEO] Servidor activo: LAN  heap: 236876
+18:28:46.557 > [DIAG] Creando tareas FreeRTOS...
+18:28:46.564 > [DIAG] tareaWs creada: OK
+18:28:46.564 > [INF] tareaInf: esperando semáforo...
+18:28:46.568 > [DIAG] tareaInf creada: OK
+18:28:46.568 > [DIAG] heap después de crear tareas: 202900
+18:28:46.574 > [WS] {"cmd": "listo"}
+18:28:46.574 > [INF] Entrada  scale=0.1855467  zero_point=88
+18:28:46.579 > [INF] Salida   scale=0.0039062  zero_point=-128  clases=3
+18:28:46.585 > [INF] Modelo cargado. Arena: 150 KB. MFCC buf: 23 KB
+18:28:46.590 > [DIAG] inference->begin() OK  |  wake_buf=ok  |  PSRAM libre: 7362659 bytes
+18:28:46.623 > [NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque
+18:28:49.753 > [WW] Captando: rms=306  noise=76
+18:28:50.492 > [WW] Captura lista: 11776 muestras (0.74s) [silencio] → tareaInf
+18:28:50.498 > [WW] Dando semáforo a tareaInf...
+18:28:50.498 > [INF] tareaInf: semáforo recibido
+18:28:50.503 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24888
+18:28:50.509 > [INF] tareaInf: clasificando...
+18:28:52.968 > [INF] top=1 (desconocido) score=0.926
+18:28:52.968 > [INF] tareaInf: listo en 2467ms  cmd=0  scores=[0.027, 0.926, 0.047]
+18:28:52.973 > [INF] tareaInf: esperando semáforo...
+18:28:52.980 > [WW] Semáforo dado, esperando resultado...
+18:28:52.985 > [WW] Resultado: clase=1 (desconocido)  score=0.926  cmd=0
+18:28:55.784 > [WW] Captando: rms=83  noise=19
+18:28:57.019 > [WW] Captura lista: 19712 muestras (1.23s) [silencio] → tareaInf
+18:28:57.024 > [WW] Dando semáforo a tareaInf...
+18:28:57.024 > [INF] tareaInf: semáforo recibido
+18:28:57.030 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24584
+18:28:57.035 > [INF] tareaInf: clasificando...
+18:28:59.586 > [INF] top=2 (silencio) score=0.613
+18:28:59.586 > [INF] tareaInf: listo en 2557ms  cmd=0  scores=[0.000, 0.387, 0.613]
+18:28:59.591 > [INF] tareaInf: esperando semáforo...
+18:28:59.597 > [WW] Semáforo dado, esperando resultado...
+18:28:59.597 > [WW] Resultado: clase=2 (silencio)  score=0.613  cmd=0
+18:29:20.501 > [WW] Captando: rms=63  noise=15
+18:29:21.241 > [WW] Captura lista: 11776 muestras (0.74s) [silencio] → tareaInf
+18:29:21.246 > [WW] Dando semáforo a tareaInf...
+18:29:21.246 > [INF] tareaInf: semáforo recibido
+18:29:21.252 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24584
+18:29:21.257 > [INF] tareaInf: clasificando...
+18:29:23.718 > [INF] top=1 (desconocido) score=0.496
+18:29:23.718 > [INF] tareaInf: listo en 2467ms  cmd=0  scores=[0.004, 0.496, 0.496]
+18:29:23.724 > [INF] tareaInf: esperando semáforo...
+18:29:23.729 > [WW] Semáforo dado, esperando resultado...
+18:29:23.734 > [WW] Resultado: clase=1 (desconocido)  score=0.496  cmd=0
+18:29:39.715 > [WW] Captando: rms=106  noise=20
+18:29:40.582 > [WW] Captura lista: 13824 muestras (0.86s) [silencio] → tareaInf
+18:29:40.589 > [WW] Dando semáforo a tareaInf...
+18:29:40.589 > [INF] tareaInf: semáforo recibido
+18:29:40.594 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24584
+18:29:40.598 > [INF] tareaInf: clasificando...
+18:29:43.084 > [INF] top=1 (desconocido) score=0.992
+18:29:43.084 > [INF] tareaInf: listo en 2492ms  cmd=0  scores=[0.000, 0.992, 0.008]
+18:29:43.090 > [INF] tareaInf: esperando semáforo...
+18:29:43.095 > [WW] Semáforo dado, esperando resultado...
+18:29:43.101 > [WW] Resultado: clase=1 (desconocido)  score=0.992  cmd=0
+18:29:43.187 > [WW] Captando: rms=103  noise=22
+18:29:43.975 > [WW] Captura lista: 12544 muestras (0.78s) [silencio] → tareaInf
+18:29:43.980 > [WW] Dando semáforo a tareaInf...
+18:29:43.980 > [INF] tareaInf: semáforo recibido
+18:29:43.985 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24584
+18:29:43.990 > [INF] tareaInf: clasificando...
+18:29:46.461 > [INF] top=2 (silencio) score=0.973
+18:29:46.461 > [INF] tareaInf: listo en 2476ms  cmd=0  scores=[0.000, 0.023, 0.973]
+18:29:46.467 > [INF] tareaInf: esperando semáforo...
+18:29:46.472 > [WW] Semáforo dado, esperando resultado...
+18:29:46.472 > [WW] Resultado: clase=2 (silencio)  score=0.973  cmd=0
+18:31:16.954 > [WW] Captando: rms=81  noise=19
+18:31:18.157 > [WW] Captura lista: 19200 muestras (1.20s) [silencio] → tareaInf
+18:31:18.163 > [WW] Dando semáforo a tareaInf...
+18:31:18.163 > [INF] tareaInf: semáforo recibido
+18:31:18.168 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24616
+18:31:18.173 > [INF] tareaInf: clasificando...
+18:31:20.718 > [INF] top=1 (desconocido) score=0.664
+18:31:20.720 > [INF] tareaInf: listo en 2551ms  cmd=0  scores=[0.004, 0.664, 0.332]
+18:31:20.725 > [INF] tareaInf: esperando semáforo...
+18:31:20.730 > [WW] Semáforo dado, esperando resultado...
+18:31:20.736 > [WW] Resultado: clase=1 (desconocido)  score=0.664  cmd=0
+18:31:35.704 > [WW] Captando: rms=101  noise=18
+18:31:36.475 > [WW] Captura lista: 12288 muestras (0.77s) [silencio] → tareaInf
+18:31:36.481 > [WW] Dando semáforo a tareaInf...
+18:31:36.481 > [INF] tareaInf: semáforo recibido
+18:31:36.487 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24616
+18:31:36.491 > [INF] tareaInf: clasificando...
+18:31:38.959 > [INF] top=1 (desconocido) score=0.895
+18:31:38.959 > [INF] tareaInf: listo en 2472ms  cmd=0  scores=[0.020, 0.895, 0.090]
+18:31:38.965 > [INF] tareaInf: esperando semáforo...
+18:31:38.970 > [WW] Semáforo dado, esperando resultado...
+18:31:38.976 > [WW] Resultado: clase=1 (desconocido)  score=0.895  cmd=0
+18:31:53.079 > [WW] Captando: rms=157  noise=28
+18:31:54.074 > [WW] Captura lista: 15872 muestras (0.99s) [silencio] → tareaInf
+18:31:54.080 > [WW] Dando semáforo a tareaInf...
+18:31:54.080 > [INF] tareaInf: semáforo recibido
+18:31:54.086 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24616
+18:31:54.090 > [INF] tareaInf: clasificando...
+18:31:56.597 > [INF] top=1 (desconocido) score=0.996
+18:31:56.598 > [INF] tareaInf: listo en 2513ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:31:56.604 > [INF] tareaInf: esperando semáforo...
+18:31:56.610 > [WW] Semáforo dado, esperando resultado...
+18:31:56.615 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:31:59.014 > [WW] Captando: rms=83  noise=20
+18:32:00.521 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:32:00.522 > [WW] Dando semáforo a tareaInf...
+18:32:00.528 > [INF] tareaInf: semáforo recibido
+18:32:00.533 > [INF] tareaInf: wake_buf=0x3d8ef230  inference=0x3fc9bd60  heap=24616
+18:32:00.537 > [INF] tareaInf: clasificando...
+18:32:03.131 > [INF] top=1 (desconocido) score=0.969
+18:32:03.132 > [INF] tareaInf: listo en 2600ms  cmd=0  scores=[0.031, 0.969, 0.000]
+18:32:03.138 > [INF] tareaInf: esperando semáforo...
+18:32:03.143 > [WW] Semáforo dado, esperando resultado...
+18:32:03.151 > [WW] Resultado: clase=1 (desconocido)  score=0.969  cmd=0
+18:32:10.764 > ESP-ROM:esp32s3-20210327
+18:32:10.783 > Build:Mar 27 2021
+18:32:10.783 > rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+18:32:10.783 > SPIWP:0xee
+18:32:10.783 > mode:DIO, clock div:1
+18:32:10.783 > load:0x3fce3808,len:0x4bc
+18:32:10.784 > load:0x403c9700,len:0xbd8
+18:32:10.784 > load:0x403cc700,len:0x2a0c
+18:32:10.784 > entry 0x403c98d0
+18:32:11.013 > [   246][I][esp32-hal-psram.c:96] psramInit(): PSRAM enabled
+18:32:11.539 > 
+18:32:11.539 > 
+18:32:11.539 > === NEO BOOT ===
+18:32:11.539 > [NEO] FreeRTOS: tareaWs en Core 0, loop en Core 1
+18:32:11.544 > [DIAG] PSRAM total: 8386279 bytes (8.0 MB)  libre: 8386035 bytes
+18:32:11.550 > [NEO] Buffer de audio: PSRAM (30s)
+18:32:11.550 > [   782][I][esp32-hal-i2c.c:75] i2cInit(): Initialising I2C Master: sda=46 scl=42 freq=100000
+18:32:11.562 > [   796][W][Wire.cpp:301] begin(): Bus already started in Master Mode.
+18:32:11.594 > [OLED] Inicializado correctamente
+18:32:11.619 > [WiFi] Conectando a @techmigue ...
+18:32:21.722 > [ 10954][W][WiFiGeneric.cpp:1062] _eventCallback(): Reason: 204 - HANDSHAKE_TIMEOUT
+18:32:21.928 > [WiFi] Conectado. IP: 172.20.10.2
+18:32:22.240 > [DNS] Configurado: 8.8.8.8 / 1.1.1.1  IP: 172.20.10.2
+18:32:22.625 > [MIC] Inicializado (ONLY_LEFT, APLL, DMA limpio)
+18:32:22.625 > [SPK] Inicializado correctamente
+18:32:22.649 > [NEO] Iniciando conexión WebSocket...
+18:32:23.652 > [NEO] Intento WS #1  heap DRAM: 239396  PSRAM libre: 7410675
+18:32:23.652 > [NEO] Intentando conectar a servidor local...
+18:32:23.728 > [WS] Evento: conectado
+18:32:23.743 > [WS] Conectado al servidor LOCAL (LAN)
+18:32:23.747 > [NEO] WS conectado exitosamente
+18:32:23.749 > [NEO] Servidor activo: LAN  heap: 236848
+18:32:23.749 > [DIAG] Creando tareas FreeRTOS...
+18:32:23.755 > [DIAG] tareaWs creada: OK
+18:32:23.755 > [INF] tareaInf: esperando semáforo...
+18:32:23.763 > [DIAG] tareaInf creada: OK
+18:32:23.763 > [DIAG] heap[ 12987][I][WiFiClient.cpp:539] connected(): Unexpected: RES: 0, ERR: 0
+18:32:23.771 >  después de crear tareas: 202872
+18:32:23.771 > [INF] Entrada  scale=0.1855467  zero_point=88
+18:32:23.777 > [INF] Salida   scale=0.0039062  zero_point=-128  clases=3
+18:32:23.783 > [INF] Modelo cargado. Arena: 150 KB. MFCC buf: 23 KB
+18:32:23.788 > [DIAG] inference->begin() OK  |  wake_buf=ok  |  PSRAM libre: 7360331 bytes
+18:32:23.795 > [ 13028][I][WiFiClient.cpp:539] connected(): Unexpected: RES: 0, ERR: 0
+18:32:23.802 > [ 13034][I][WiFiClient.cpp:539] connected(): Unexpected: RES: 0, ERR: 0
+18:32:23.808 > [ 13041][I][WiFiClient.cpp:539] connected(): Unexpected: RES: 0, ERR: 0
+18:32:23.814 > [NEO] Listo — toca BOOT para grabar, mantén 1.5s para El Toque
+18:32:23.817 > [WS] {"cmd": "listo"}
+18:32:24.735 > [WW] Captando: rms=462  noise=111
+18:32:25.826 > [WW] Captura lista: 17408 muestras (1.09s) [silencio] → tareaInf
+18:32:25.832 > [WW] Dando semáforo a tareaInf...
+18:32:25.832 > [INF] tareaInf: semáforo recibido
+18:32:25.838 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24900
+18:32:25.842 > [INF] tareaInf: clasificando...
+18:32:28.365 > [INF] top=0 (hola_neo) score=0.996
+18:32:28.365 > [INF] tareaInf: listo en 2529ms  cmd=1  scores=[0.996, 0.000, 0.000]
+18:32:28.371 > [INF] tareaInf: esperando semáforo...
+18:32:28.376 > [WW] Semáforo dado, esperando resultado...
+18:32:28.376 > [WW] Resultado: clase=0 (hola_neo)  score=0.996  cmd=1
+18:32:28.382 > [TIMING] wake_detectado 17609
+18:32:28.387 > [WW] Wake word confirmado — enciendo pantalla, saludo y converso
+18:32:28.393 > [FACE] begin() — llamando _render
+18:32:28.412 > [FACE] _render() completado
+18:32:28.412 > [NEO] Ack wake: 29952 muestras (1.87s)
+18:32:30.090 > [VAD] Calibrando ruido de fondo...
+18:32:30.481 > [VAD] Ruido base: 351.4  umbral inicio: 2108.2  fin: 878.4
+18:32:40.496 > [VAD] Timeout — sin voz detectada
+18:32:40.497 > [NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+18:32:40.518 > [WW] Captando: rms=621  noise=121
+18:32:42.016 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:32:42.016 > [WW] Dando semáforo a tareaInf...
+18:32:42.022 > [INF] tareaInf: semáforo recibido
+18:32:42.028 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24596
+18:32:42.035 > [INF] tareaInf: clasificando...
+18:32:44.626 > [INF] top=0 (hola_neo) score=0.996
+18:32:44.627 > [INF] tareaInf: listo en 2600ms  cmd=1  scores=[0.996, 0.000, 0.000]
+18:32:44.632 > [INF] tareaInf: esperando semáforo...
+18:32:44.637 > [WW] Semáforo dado, esperando resultado...
+18:32:44.637 > [WW] Resultado: clase=0 (hola_neo)  score=0.996  cmd=1
+18:32:44.643 > [TIMING] wake_detectado 33870
+18:32:44.649 > [WW] Wake word confirmado — enciendo pantalla, saludo y converso
+18:32:44.656 > [FACE] begin() — llamando _render
+18:32:44.683 > [FACE] _render() completado
+18:32:44.684 > [NEO] Ack wake: 29952 muestras (1.87s)
+18:32:46.344 > [VAD] Calibrando ruido de fondo...
+18:32:46.735 > [VAD] Ruido base: 399.8  umbral inicio: 2398.5  fin: 999.4
+18:32:56.750 > [VAD] Timeout — sin voz detectada
+18:32:56.751 > [NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+18:32:59.868 > [WW] Captando: rms=92  noise=18
+18:33:00.655 > [WW] Captura lista: 12544 muestras (0.78s) [silencio] → tareaInf
+18:33:00.661 > [WW] Dando semáforo a tareaInf...
+18:33:00.661 > [INF] tareaInf: semáforo recibido
+18:33:00.669 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24596
+18:33:00.671 > [INF] tareaInf: clasificando...
+18:33:03.140 > [INF] top=1 (desconocido) score=0.609
+18:33:03.141 > [INF] tareaInf: listo en 2475ms  cmd=0  scores=[0.008, 0.609, 0.383]
+18:33:03.146 > [INF] tareaInf: esperando semáforo...
+18:33:03.152 > [WW] Semáforo dado, esperando resultado...
+18:33:03.157 > [WW] Resultado: clase=1 (desconocido)  score=0.609  cmd=0
+18:33:03.179 > [WW] Captando: rms=297  noise=23
+18:33:04.686 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:33:04.686 > [WW] Dando semáforo a tareaInf...
+18:33:04.691 > [INF] tareaInf: semáforo recibido
+18:33:04.697 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24596
+18:33:04.701 > [INF] tareaInf: clasificando...
+18:33:07.295 > [INF] top=1 (desconocido) score=0.906
+18:33:07.295 > [INF] tareaInf: listo en 2600ms  cmd=0  scores=[0.000, 0.906, 0.090]
+18:33:07.301 > [INF] tareaInf: esperando semáforo...
+18:33:07.310 > [WW] Semáforo dado, esperando resultado...
+18:33:07.312 > [WW] Resultado: clase=1 (desconocido)  score=0.906  cmd=0
+18:33:08.059 > [WW] Captando: rms=92  noise=19
+18:33:09.342 > [WW] Captura lista: 20480 muestras (1.28s) [silencio] → tareaInf
+18:33:09.347 > [WW] Dando semáforo a tareaInf...
+18:33:09.347 > [INF] tareaInf: semáforo recibido
+18:33:09.353 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24596
+18:33:09.357 > [INF] tareaInf: clasificando...
+18:33:11.916 > [INF] top=1 (desconocido) score=0.996
+18:33:11.917 > [INF] tareaInf: listo en 2564ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:33:11.922 > [INF] tareaInf: esperando semáforo...
+18:33:11.929 > [WW] Semáforo dado, esperando resultado...
+18:33:11.933 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:33:19.225 > [WW] Captando: rms=151  noise=18
+18:33:20.429 > [WW] Captura lista: 19200 muestras (1.20s) [silencio] → tareaInf
+18:33:20.435 > [WW] Dando semáforo a tareaInf...
+18:33:20.435 > [INF] tareaInf: semáforo recibido
+18:33:20.440 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24596
+18:33:20.447 > [INF] tareaInf: clasificando...
+18:33:22.988 > [INF] top=0 (hola_neo) score=0.613
+18:33:22.988 > [INF] tareaInf: listo en 2549ms  cmd=0  scores=[0.613, 0.387, 0.000]
+18:33:22.993 > [INF] tareaInf: esperando semáforo...
+18:33:23.000 > [WW] Semáforo dado, esperando resultado...
+18:33:23.000 > [WW] Resultado: clase=0 (hola_neo)  score=0.613  cmd=0
+18:33:29.592 > [WW] Captando: rms=135  noise=22
+18:33:31.099 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:33:31.099 > [WW] Dando semáforo a tareaInf...
+18:33:31.105 > [INF] tareaInf: semáforo recibido
+18:33:31.111 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24596
+18:33:31.114 > [INF] tareaInf: clasificando...
+18:33:33.708 > [INF] top=0 (hola_neo) score=0.996
+18:33:33.715 > [INF] tareaInf: listo en 2599ms  cmd=1  scores=[0.996, 0.000, 0.000]
+18:33:33.715 > [INF] tareaInf: esperando semáforo...
+18:33:33.720 > [WW] Semáforo dado, esperando resultado...
+18:33:33.720 > [WW] Resultado: clase=0 (hola_neo)  score=0.996  cmd=1
+18:33:33.756 > [TIMING] wake_detectado 82953
+18:33:33.756 > [WW] Wake word confirmado — enciendo pantalla, saludo y converso
+18:33:33.756 > [FACE] begin() — llamando _render
+18:33:33.766 > [FACE] _render() completado
+18:33:33.770 > [NEO] Ack wake: 29952 muestras (1.87s)
+18:33:35.396 > [VAD] Calibrando ruido de fondo...
+18:49:02.024 > [VAD] Ruido base: 372.7  umbral inicio: 2235.9  fin: 931.6
+18:49:02.024 > [VAD] Timeout — sin voz detectada
+18:49:02.024 > [NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+18:49:02.024 > [WW] Captando: rms=144  noise=23
+18:49:02.024 > [WW] Captura lista: 18944 muestras (1.18s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24596
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=0 (hola_neo) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2548ms  cmd=1  scores=[0.996, 0.000, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=0 (hola_neo)  score=0.996  cmd=1
+18:49:02.024 > [TIMING] wake_detectado 102004
+18:49:02.024 > [WW] Wake word confirmado — enciendo pantalla, saludo y converso
+18:49:02.024 > [FACE] begin() — llamando _render
+18:49:02.024 > [FACE] _render() completado
+18:49:02.024 > [NEO] Ack wake: 29952 muestras (1.87s)
+18:49:02.024 > [VAD] Calibrando ruido de fondo...
+18:49:02.024 > [VAD] Ruido base: 192.9  umbral inicio: 1157.6  fin: 482.3
+18:49:02.024 > [VAD] Timeout — sin voz detectada
+18:49:02.024 > [NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+18:49:02.024 > [WW] Captando: rms=52  noise=11
+18:49:02.024 > [WW] Captura lista: 12288 muestras (0.77s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24596
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.934
+18:49:02.024 > [INF] tareaInf: listo en 2471ms  cmd=0  scores=[0.008, 0.934, 0.059]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.934  cmd=0
+18:49:02.024 > [WW] Captando: rms=51  noise=13
+18:49:02.024 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2600ms  cmd=0  scores=[0.000, 0.004, 0.996]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=93  noise=19
+18:49:02.024 > [WW] Captura lista: 13056 muestras (0.82s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.922
+18:49:02.024 > [INF] tareaInf: listo en 2482ms  cmd=0  scores=[0.004, 0.922, 0.074]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.922  cmd=0
+18:49:02.024 > [WW] Captando: rms=62  noise=15
+18:49:02.024 > [WW] Captura lista: 18688 muestras (1.17s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.977
+18:49:02.024 > [INF] tareaInf: listo en 2543ms  cmd=0  scores=[0.000, 0.977, 0.023]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.977  cmd=0
+18:49:02.024 > [WW] Captando: rms=47  noise=11
+18:49:02.024 > [WW] Captura lista: 13568 muestras (0.85s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.855
+18:49:02.024 > [INF] tareaInf: listo en 2487ms  cmd=0  scores=[0.008, 0.855, 0.137]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.855  cmd=0
+18:49:02.024 > [WW] Captando: rms=61  noise=15
+18:49:02.024 > [WW] Captura lista: 11776 muestras (0.74s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.934
+18:49:02.024 > [INF] tareaInf: listo en 2467ms  cmd=0  scores=[0.008, 0.934, 0.059]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.934  cmd=0
+18:49:02.024 > [WW] Captando: rms=55  noise=13
+18:49:02.024 > [WW] Captura lista: 13312 muestras (0.83s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.758
+18:49:02.024 > [INF] tareaInf: listo en 2486ms  cmd=0  scores=[0.238, 0.758, 0.004]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.758  cmd=0
+18:49:02.024 > [WW] Captando: rms=58  noise=14
+18:49:02.024 > [WW] Captura lista: 11520 muestras (0.72s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.664
+18:49:02.024 > [INF] tareaInf: listo en 2463ms  cmd=0  scores=[0.004, 0.664, 0.332]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.664  cmd=0
+18:49:02.024 > [WW] Captando: rms=247  noise=19
+18:49:02.024 > [WW] Captura lista: 13568 muestras (0.85s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2487ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=189  noise=15
+18:49:02.024 > [WW] Captura lista: 19712 muestras (1.23s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=0 (hola_neo) score=0.992
+18:49:02.024 > [INF] tareaInf: listo en 2557ms  cmd=1  scores=[0.992, 0.008, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=0 (hola_neo)  score=0.992  cmd=1
+18:49:02.024 > [TIMING] wake_detectado 230353
+18:49:02.024 > [WW] Wake word confirmado — enciendo pantalla, saludo y converso
+18:49:02.024 > [FACE] begin() — llamando _render
+18:49:02.024 > [FACE] _render() completado
+18:49:02.024 > [NEO] Ack wake: 29952 muestras (1.87s)
+18:49:02.024 > [VAD] Calibrando ruido de fondo...
+18:49:02.024 > [VAD] Ruido base: 10.6  umbral inicio: 63.6  fin: 26.5
+18:49:02.024 > [TIMING] grabacion_inicio 232829
+18:49:02.024 > [VAD] Voz detectada — grabando
+18:49:02.024 > [TIMING] grabacion_fin 235533
+18:49:02.024 > [VAD] Silencio prolongado — fin de grabación
+18:49:02.024 > [NEO] Grabado: 43520 muestras (2.72s)
+18:49:02.024 > [WS-TASK] Enviando 87040 bytes
+18:49:02.024 > [TIMING] envio_ws_fin 236066
+18:49:02.024 > [WS-TASK] fin_grabacion enviado
+18:49:02.024 > [WS] {"cmd": "procesando"}
+18:49:02.024 > [WS] {"cmd": "keepalive"}
+18:49:02.024 > [WS] {"cmd": "keepalive"}
+18:49:02.024 > [WS] {"cmd": "keepalive"}
+18:49:02.024 > [TIMING] primer_chunk_recibido 242698
+18:49:02.024 > [WS] {"cmd": "fin_respuesta"}
+18:49:02.024 > [TIMING] playback_inicio 242832
+18:49:02.024 > [NEO] Reproduciendo: 67244 bytes (2.10s)
+18:49:02.024 > [TIMING] playback_fin 244661
+18:49:02.024 > [NEO] Reproducción completa
+18:49:02.024 > [VAD] Calibrando ruido de fondo...
+18:49:02.024 > [VAD] Ruido base: 143.2  umbral inicio: 859.5  fin: 358.1
+18:49:02.024 > [VAD] Timeout — sin voz detectada
+18:49:02.024 > [NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+18:49:02.024 > [WW] Captando: rms=1330  noise=41
+18:49:02.024 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=0 (hola_neo) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2600ms  cmd=1  scores=[0.996, 0.000, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=0 (hola_neo)  score=0.996  cmd=1
+18:49:02.024 > [TIMING] wake_detectado 259209
+18:49:02.024 > [WW] Wake word confirmado — enciendo pantalla, saludo y converso
+18:49:02.024 > [FACE] begin() — llamando _render
+18:49:02.024 > [FACE] _render() completado
+18:49:02.024 > [NEO] Ack wake: 29952 muestras (1.87s)
+18:49:02.024 > [VAD] Calibrando ruido de fondo...
+18:49:02.024 > [VAD] Ruido base: 61.2  umbral inicio: 366.9  fin: 152.9
+18:49:02.024 > [TIMING] grabacion_inicio 263355
+18:49:02.024 > [VAD] Voz detectada — grabando
+18:49:02.024 > [TIMING] grabacion_fin 266362
+18:49:02.024 > [VAD] Silencio prolongado — fin de grabación
+18:49:02.024 > [NEO] Grabado: 48384 muestras (3.02s)
+18:49:02.024 > [WS-TASK] Enviando 96768 bytes
+18:49:02.024 > [TIMING] envio_ws_fin 266941
+18:49:02.024 > [WS-TASK] fin_grabacion enviado
+18:49:02.024 > [WS] {"cmd": "procesando"}
+18:49:02.024 > [WS] {"cmd": "keepalive"}
+18:49:02.024 > [WS] {"cmd": "keepalive"}
+18:49:02.024 > [WS] {"cmd": "keepalive"}
+18:49:02.024 > [WS] {"cmd": "keepalive"}
+18:49:02.024 > [TIMING] primer_chunk_recibido 275667
+18:49:02.024 > [WS] {"cmd": "fin_respuesta"}
+18:49:02.024 > [TIMING] playback_inicio 275937
+18:49:02.024 > [NEO] Reproduciendo: 185758 bytes (5.80s)
+18:49:02.024 > [TIMING] playback_fin 281482
+18:49:02.024 > [NEO] Reproducción completa
+18:49:02.024 > [VAD] Calibrando ruido de fondo...
+18:49:02.024 > [VAD] Ruido base: 302.3  umbral inicio: 1814.1  fin: 755.9
+18:49:02.024 > [VAD] Timeout — sin voz detectada
+18:49:02.024 > [NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')
+18:49:02.024 > [WW] Captando: rms=83  noise=21
+18:49:02.024 > [WW] Captura lista: 23808 muestras (1.49s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2601ms  cmd=0  scores=[0.000, 0.000, 0.996]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=60  noise=14
+18:49:02.024 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2600ms  cmd=0  scores=[0.000, 0.000, 0.996]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=51  noise=12
+18:49:02.024 > [WW] Captura lista: 12032 muestras (0.75s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.418
+18:49:02.024 > [INF] tareaInf: listo en 2470ms  cmd=0  scores=[0.164, 0.418, 0.418]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.418  cmd=0
+18:49:02.024 > [WW] Captando: rms=163  noise=30
+18:49:02.024 > [WW] Captura lista: 24000 muestras (1.50s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.980
+18:49:02.024 > [INF] tareaInf: listo en 2600ms  cmd=0  scores=[0.016, 0.980, 0.004]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.980  cmd=0
+18:49:02.024 > [WW] Captando: rms=155  noise=28
+18:49:02.024 > [WW] Captura lista: 20736 muestras (1.30s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.832
+18:49:02.024 > [INF] tareaInf: listo en 2567ms  cmd=0  scores=[0.000, 0.832, 0.168]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.832  cmd=0
+18:49:02.024 > [WW] Captando: rms=89  noise=19
+18:49:02.024 > [WW] Captura lista: 11776 muestras (0.74s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.988
+18:49:02.024 > [INF] tareaInf: listo en 2466ms  cmd=0  scores=[0.004, 0.988, 0.012]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.988  cmd=0
+18:49:02.024 > [WW] Captando: rms=675  noise=31
+18:49:02.024 > [WW] Captura lista: 13056 muestras (0.82s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=0 (hola_neo) score=0.547
+18:49:02.024 > [INF] tareaInf: listo en 2481ms  cmd=0  scores=[0.547, 0.434, 0.016]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=0 (hola_neo)  score=0.547  cmd=0
+18:49:02.024 > [WW] Captando: rms=74  noise=17
+18:49:02.024 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2601ms  cmd=0  scores=[0.000, 0.004, 0.996]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=65  noise=15
+18:49:02.024 > [WW] Captura lista: 15104 muestras (0.94s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.988
+18:49:02.024 > [INF] tareaInf: listo en 2505ms  cmd=0  scores=[0.000, 0.012, 0.988]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.988  cmd=0
+18:49:02.024 > [WW] Captando: rms=79  noise=17
+18:49:02.024 > [WW] Captura lista: 12032 muestras (0.75s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.961
+18:49:02.024 > [INF] tareaInf: listo en 2473ms  cmd=0  scores=[0.000, 0.039, 0.961]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.961  cmd=0
+18:49:02.024 > [WW] Captando: rms=192  noise=17
+18:49:02.024 > [WW] Captura lista: 12288 muestras (0.77s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.543
+18:49:02.024 > [INF] tareaInf: listo en 2473ms  cmd=0  scores=[0.027, 0.430, 0.543]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.543  cmd=0
+18:49:02.024 > [WW] Captando: rms=89  noise=15
+18:49:02.024 > [WW] Captura lista: 12032 muestras (0.75s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.945
+18:49:02.024 > [INF] tareaInf: listo en 2471ms  cmd=0  scores=[0.008, 0.047, 0.945]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.945  cmd=0
+18:49:02.024 > [WW] Captando: rms=167  noise=19
+18:49:02.024 > [WW] Captura lista: 18432 muestras (1.15s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.926
+18:49:02.024 > [INF] tareaInf: listo en 2542ms  cmd=0  scores=[0.000, 0.074, 0.926]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.926  cmd=0
+18:49:02.024 > [WW] Captando: rms=80  noise=16
+18:49:02.024 > [WW] Captura lista: 11520 muestras (0.72s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.848
+18:49:02.024 > [INF] tareaInf: listo en 2463ms  cmd=0  scores=[0.016, 0.848, 0.133]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.848  cmd=0
+18:49:02.024 > [WW] Captando: rms=231  noise=20
+18:49:02.024 > [WW] Captura lista: 20480 muestras (1.28s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2564ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=64  noise=15
+18:49:02.024 > [WW] Captura lista: 21248 muestras (1.33s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2575ms  cmd=0  scores=[0.000, 0.000, 0.996]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=111  noise=16
+18:49:02.024 > [WW] Captura lista: 14336 muestras (0.90s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=0 (hola_neo) score=0.570
+18:49:02.024 > [INF] tareaInf: listo en 2494ms  cmd=0  scores=[0.570, 0.285, 0.145]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=0 (hola_neo)  score=0.570  cmd=0
+18:49:02.024 > [WW] Captando: rms=183  noise=37
+18:49:02.024 > [WW] Captura lista: 11776 muestras (0.74s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2466ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=287  noise=70
+18:49:02.024 > [WW] Captura lista: 12288 muestras (0.77s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.926
+18:49:02.024 > [INF] tareaInf: listo en 2471ms  cmd=0  scores=[0.035, 0.926, 0.035]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.926  cmd=0
+18:49:02.024 > [WW] Captando: rms=125  noise=28
+18:49:02.024 > [WW] Captura lista: 19200 muestras (1.20s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2550ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=151  noise=33
+18:49:02.024 > [WW] Captura lista: 12288 muestras (0.77s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2473ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=79  noise=20
+18:49:02.024 > [WW] Captura lista: 14848 muestras (0.93s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=23044
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2502ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=190  noise=45
+18:49:02.024 > [WW] Captura lista: 14848 muestras (0.93s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2501ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=134  noise=31
+18:49:02.024 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2600ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=448  noise=79
+18:49:02.024 > [WW] Captura lista: 11776 muestras (0.74s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2468ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=210  noise=52
+18:49:02.024 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2601ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=55  noise=14
+18:49:02.024 > [WW] Captura lista: 11776 muestras (0.74s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.926
+18:49:02.024 > [INF] tareaInf: listo en 2467ms  cmd=0  scores=[0.000, 0.074, 0.926]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.926  cmd=0
+18:49:02.024 > [WW] Captando: rms=74  noise=18
+18:49:02.024 > [WW] Captura lista: 24000 muestras (1.50s) [max] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.996
+18:49:02.024 > [INF] tareaInf: listo en 2600ms  cmd=0  scores=[0.000, 0.996, 0.000]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.996  cmd=0
+18:49:02.024 > [WW] Captando: rms=110  noise=17
+18:49:02.024 > [WW] Captura lista: 12544 muestras (0.78s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.469
+18:49:02.024 > [INF] tareaInf: listo en 2476ms  cmd=0  scores=[0.059, 0.469, 0.469]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.469  cmd=0
+18:49:02.024 > [WW] Captando: rms=67  noise=14
+18:49:02.024 > [WW] Captura lista: 11776 muestras (0.74s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24628
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.781
+18:49:02.024 > [INF] tareaInf: listo en 2466ms  cmd=0  scores=[0.062, 0.156, 0.781]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.781  cmd=0
+18:49:02.024 > [WW] Captando: rms=81  noise=15
+18:49:02.024 > [WW] Captura lista: 12288 muestras (0.77s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24540
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.754
+18:49:02.024 > [INF] tareaInf: listo en 2473ms  cmd=0  scores=[0.008, 0.238, 0.754]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.754  cmd=0
+18:49:02.024 > [WW] Captando: rms=77  noise=18
+18:49:02.024 > [WW] Captura lista: 12544 muestras (0.78s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24540
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=1 (desconocido) score=0.875
+18:49:02.024 > [INF] tareaInf: listo en 2475ms  cmd=0  scores=[0.055, 0.875, 0.070]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=1 (desconocido)  score=0.875  cmd=0
+18:49:02.024 > [WW] Captando: rms=76  noise=15
+18:49:02.024 > [WW] Captura lista: 13568 muestras (0.85s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24540
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.578
+18:49:02.024 > [INF] tareaInf: listo en 2487ms  cmd=0  scores=[0.059, 0.363, 0.578]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.578  cmd=0
+18:49:02.024 > [WW] Captando: rms=312  noise=26
+18:49:02.024 > [WW] Captura lista: 12544 muestras (0.78s) [silencio] → tareaInf
+18:49:02.024 > [WW] Dando semáforo a tareaInf...
+18:49:02.024 > [INF] tareaInf: semáforo recibido
+18:49:02.024 > [INF] tareaInf: wake_buf=0x3d8efb48  inference=0x3fc9bd60  heap=24540
+18:49:02.024 > [INF] tareaInf: clasificando...
+18:49:02.024 > [INF] top=2 (silencio) score=0.832
+18:49:02.024 > [INF] tareaInf: listo en 2475ms  cmd=0  scores=[0.000, 0.168, 0.832]
+18:49:02.024 > [INF] tareaInf: esperando semáforo...
+18:49:02.024 > [WW] Semáforo dado, esperando resultado...
+18:49:02.024 > [WW] Resultado: clase=2 (silencio)  score=0.832  cmd=0
