@@ -26,7 +26,11 @@ añade el desglose STT / LLM / TTS: los registros se emparejan por orden con los
 turnos que llegaron a enviar audio, así que conviene que ese archivo contenga
 solo esa sesión (TIMING_LOG_DIR=logs/sesion_X al arrancar el servidor).
 
-Grabar el log:  pio device monitor -e esp32dev --filter log2file
+También: latencia de cada wake word confirmado (captura_lista → wake_detectado más
+el silencio del VAD) y el grupo "tras_wake", la primera pregunta después de cada
+«Hola NEO»: el flujo completo wake word → STT → LLM → TTS → primer audio.
+
+Grabar el log:  pio device monitor -e esp32dev   (filtros time + log2file en platformio.ini)
 Uso:            python -m src.benchmark.placa placa.log --timing logs/sesion_X/pipeline_timing.jsonl
 """
 
@@ -37,7 +41,8 @@ from pathlib import Path
 
 from src.benchmark.metricas import resumen
 
-VAD_HOLD_MS = 1500   # igual que firmware/src/main.cpp
+VAD_HOLD_MS = 1500        # igual que firmware/src/main.cpp
+WAKE_SILENCIO_MS = 700    # silencio que cierra la captura del wake word (main.cpp)
 
 RE_TIMING = re.compile(r"\[TIMING\] (\w+) (\d+)")
 RE_HORA_PC = re.compile(r"^\s*(\d{1,2}):(\d{2}):(\d{2})[.,](\d{3})\s*>")   # prefijo de --filter time
@@ -59,14 +64,18 @@ def hora_pc(linea: str) -> float | None:
 
 def leer_turnos(ruta: Path) -> list[dict]:
     """Turnos de conversación del log. "t": millis de la placa por hito;
-    "pc": hora del PC por hito, si el log tiene el prefijo de --filter time."""
-    turnos, actual = [], None
+    "pc": hora del PC por hito, si el log tiene el prefijo de --filter time.
+    "tras_wake": el turno es la primera pregunta después de un «Hola NEO»."""
+    turnos, actual, wake = [], None, False
     for linea in ruta.read_text(encoding="utf-8", errors="replace").splitlines():
         if m := RE_TIMING.search(linea):
             hito, ms = m.group(1), int(m.group(2))
+            if hito == "wake_detectado":
+                wake = True
             if hito == "grabacion_inicio":
-                actual = {"t": {}, "pc": {}, "corte_silencio": False, "error": False}
+                actual = {"t": {}, "pc": {}, "corte_silencio": False, "error": False, "tras_wake": wake}
                 turnos.append(actual)
+                wake = False
             if actual is not None and hito in HITOS and hito not in actual["t"]:
                 actual["t"][hito] = ms
                 if (h := hora_pc(linea)) is not None:
@@ -76,6 +85,25 @@ def leer_turnos(ruta: Path) -> list[dict]:
         elif actual is not None and RE_ERROR.search(linea):
             actual["error"] = True
     return turnos
+
+
+def leer_detecciones(ruta: Path) -> list[float]:
+    """Latencia de cada wake word confirmado, en segundos: fin de la frase → confirmado.
+
+    El VAD cierra la captura tras WAKE_SILENCIO_MS de silencio (captura_lista) y la
+    inferencia confirma (wake_detectado); el fin real de «Hola NEO» es captura_lista
+    menos ese silencio. tools/latencia_wake.py lo mide con el nivel de cada bloque.
+    """
+    detecciones, captura = [], None
+    for linea in ruta.read_text(encoding="utf-8", errors="replace").splitlines():
+        if m := RE_TIMING.search(linea):
+            hito, ms = m.group(1), int(m.group(2))
+            if hito == "captura_lista":
+                captura = ms
+            elif hito == "wake_detectado" and captura is not None:
+                detecciones.append((WAKE_SILENCIO_MS + ms - captura) / 1000)
+                captura = None
+    return detecciones
 
 
 def metricas_turno(turno: dict) -> dict:
@@ -91,6 +119,7 @@ def metricas_turno(turno: dict) -> dict:
         "duracion_grabacion": dif("grabacion_inicio", "grabacion_fin"),
         "completo": "playback_inicio" in t and not turno["error"],
         "envio": "envio_ws_fin" in t,
+        "tras_wake": turno.get("tras_wake", False),
     }
     total = dif("grabacion_fin", "playback_inicio")
     res["percibida"] = total + silencio if total is not None else None
@@ -117,7 +146,7 @@ def analizar(log: Path, timing: Path | None = None) -> dict:
 
     completos = [f for f in filas if f["completo"]]
     claves = METRICAS + (["servidor", "stt", "llm", "handler", "tts", "red_y_espera"] if timing else [])
-    grupos = {"todos": completos}
+    grupos = {"todos": completos, "tras_wake": [f for f in completos if f["tras_wake"]]}
     if timing:
         grupos["libres"] = [f for f in completos if f.get("tipo") == "llm_libre"]
         grupos["comandos"] = [f for f in completos if f.get("tipo") == "keyword"]
@@ -127,6 +156,7 @@ def analizar(log: Path, timing: Path | None = None) -> dict:
         "registros_servidor": len(registros) if timing else None,
         "perfil": next((f["perfil"] for f in filas if f.get("perfil")), None),
         "resumen": {g: {k: resumen([f.get(k) for f in fs]) for k in claves} for g, fs in grupos.items()},
+        "deteccion_wake": resumen(leer_detecciones(log)),
         "filas": filas,
     }
 
@@ -148,10 +178,16 @@ def informe(res: dict) -> str:
         if res["registros_servidor"] != sum(f["envio"] for f in res["filas"]):
             L.append("**Aviso:** el número de registros del servidor no coincide con los turnos enviados; "
                      "el emparejamiento por orden puede estar desplazado.")
+    if (d := res.get("deteccion_wake", {})).get("n"):
+        L += ["", "## Wake word", "",
+              f"Detección (fin de «Hola NEO» → confirmado, = {WAKE_SILENCIO_MS} ms de silencio del VAD + "
+              f"inferencia): mediana {d['p50']:.2f} s, p90 {d['p90']:.2f} s, n = {d['n']}."]
+    titulos = {"todos": "Todos los turnos", "tras_wake": "Primera pregunta tras «Hola NEO» (flujo completo)",
+               "libres": "Preguntas libres", "comandos": "Comandos"}
     for grupo, r in res["resumen"].items():
         if not r["percibida"].get("n"):
             continue
-        L += ["", f"## {grupo.capitalize()}", "", "| Tramo | Mediana | p90 | Media | n |", "|---|---|---|---|---|"]
+        L += ["", f"## {titulos[grupo]}", "", "| Tramo | Mediana | p90 | Media | n |", "|---|---|---|---|---|"]
         for k, v in r.items():
             if v.get("n"):
                 L.append(f"| {nombres[k]} | {v['p50']:.2f} | {v['p90']:.2f} | {v['media']:.2f} | {v['n']} |")

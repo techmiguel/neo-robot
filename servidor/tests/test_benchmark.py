@@ -26,17 +26,18 @@ def test_normalizar_quita_puntuacion_y_conserva_tildes():
     assert metricas.normalizar("¡Hola!… «José Martí»") == "hola josé martí"
 
 
-def test_wer_cuenta_tildes_y_suma_por_corpus():
-    a = metricas.errores_transcripcion("¿Qué hora es?", "que hora es")   # sin tilde: 1 error
-    b = metricas.errores_transcripcion("Cuéntame un chiste corto.", "cuéntame un chiste corto")
-    assert (a["errores_palabra"], a["palabras"], a["exacta"]) == (1, 3, False)
-    assert b["exacta"] and b["errores_palabra"] == 0
+def test_wer_ignora_tildes_y_suma_por_corpus():
+    a = metricas.errores_transcripcion("¿Qué hora es?", "que hora es")   # solo la tilde: acierto
+    b = metricas.errores_transcripcion("Cuéntame un chiste corto.", "cuéntame un chiste")
+    assert (a["errores_palabra"], a["palabras"], a["exacta"]) == (0, 3, True)
+    assert a["errores_palabra_con_tildes"] == 1
+    assert not b["exacta"] and b["errores_palabra"] == 1
     r = metricas.resumen_transcripcion([a, b])
     assert r["wer"] == pytest.approx(1 / 7)   # errores totales / palabras totales
+    assert r["wer_con_tildes"] == pytest.approx(2 / 7)
     assert r["frases_exactas"] == 0.5
-    assert r["wer_sin_tildes"] == 0            # «que» por «qué» es solo la tilde
     c = metricas.errores_transcripcion("Mañana llueve", "manana llueve")
-    assert c["errores_palabra_sin_tildes"] == 1   # la ñ no es una tilde: sigue siendo error
+    assert c["errores_palabra"] == 1   # la ñ no es una tilde: sigue siendo error
 
 
 def test_distancia_inserciones_y_borrados():
@@ -63,7 +64,7 @@ def test_frases_del_corpus_tienen_la_intencion_declarada():
 
 FRASES = {  # duración del audio (ms) → lo que "transcribe" el STT simulado
     600: "¿Cuál es la capital de Japón?",
-    700: "Quien escribio Don Quijote de la Mancha",   # sin tildes ni signos: errores reales
+    700: "Quien escribio Don Quijote de la Manta",   # sin tildes (acierto) y un error real
     800: "¿Cómo está el clima hoy?",
 }
 
@@ -129,7 +130,7 @@ async def test_ciclo_completo(servidor):
     libre, errores, comando = resultado[:3]
     assert libre["tipo"] == "llm_libre" and libre["respuesta"] == "Tokio, obviamente."
     assert libre["exacta"] and libre["intencion_ok"]
-    assert errores["errores_palabra"] == 2   # quién y escribió sin tilde
+    assert errores["errores_palabra"] == 1 and errores["errores_palabra_con_tildes"] == 3   # manta; + quién, escribió
     assert comando["tipo"] == "keyword" and comando["intencion_detectada"] == "clima"
     assert libre["perfil"]["perfil"] == "local" and libre["perfil"]["tts"] == "local:es_MX-ald-medium"
     # Con el ritmo de la placa, la subida de 600 ms (5 chunks) dura ≥ 5×10 ms + 200 ms.
@@ -140,12 +141,13 @@ async def test_ciclo_completo(servidor):
     assert res["errores"] == 0
     assert res["latencia_libre"]["e2e"]["n"] == 4 and res["latencia_comandos"]["e2e"]["n"] == 2
     assert res["intencion_acierto"] == 1.0
-    assert res["stt"]["wer"] == pytest.approx(4 / 36)   # 2 errores × 2 rep. / 18 palabras × 2 rep.
+    assert res["stt"]["wer"] == pytest.approx(2 / 36)   # 1 error × 2 rep. / 18 palabras × 2 rep.
 
     texto = e2e.informe({"fecha": "hoy", "repeticiones": 2, "como_placa": True,
                          "corpus": {"consultas": 3, "libres": 2, "comandos": 1},
                          "perfiles": [{"nombre": "local", "config": libre["perfil"], "resumen": res}]})
-    assert "| WER | 11.1 % |" in texto and "Peores transcripciones (local)" in texto
+    assert "| WER | 5.6 % |" in texto and "| WER con tildes | 16.7 % |" in texto
+    assert "Peores transcripciones (local)" in texto
 
 
 # ── Servidor real en subproceso ───────────────────────────────────────────────
@@ -175,6 +177,7 @@ def test_lanzar_servidor_y_registrar_error_de_proveedor(tmp_path):
 # ── Log de la placa ───────────────────────────────────────────────────────────
 
 LOG_PLACA = """\
+[TIMING] captura_lista 600
 [TIMING] wake_detectado 1000
 [TIMING] grabacion_inicio 2000
 [TIMING] grabacion_fin 5000
@@ -214,6 +217,10 @@ def test_placa_tramos_y_emparejado(tmp_path):
     assert res["filas"][1]["completo"] is False and res["filas"][1]["silencio_vad"] == 0.0
     texto = placa.informe(res)
     assert "Perfil del servidor: **local**" in texto and "| STT | 1.00 |" in texto
+    # Wake word: 700 ms de silencio del VAD + 400 ms hasta confirmar; solo el 1.er turno va tras él.
+    assert res["deteccion_wake"]["p50"] == pytest.approx(1.1)
+    assert [f["tras_wake"] for f in res["filas"]] == [True, False, False]
+    assert res["resumen"]["tras_wake"]["percibida"]["n"] == 1 and "flujo completo" in texto
 
 
 # ── Precarga del servidor ─────────────────────────────────────────────────────

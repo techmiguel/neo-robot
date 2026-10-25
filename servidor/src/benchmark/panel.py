@@ -41,7 +41,7 @@ from dotenv import load_dotenv
 
 from src import perfiles
 from src.benchmark import cliente, corpus, e2e, placa, red
-from src.benchmark.metricas import normalizar, resumen
+from src.benchmark.metricas import normalizar, resumen, sin_tildes
 from src.stt.transcriber import _pcm_a_wav_bytes
 
 RAIZ = corpus.RAIZ
@@ -54,10 +54,12 @@ ESPERA_PLAYBACK_S = 60.0
 
 
 def diff_palabras(referencia: str, hipotesis: str) -> list[dict]:
-    """Alineación por palabras (normalizadas) para pintar los errores."""
+    """Alineación por palabras (normalizadas) para pintar los errores; como el WER,
+    sin tildes al comparar, pero se muestran las palabras tal cual."""
     ref, hip = normalizar(referencia).split(), normalizar(hipotesis or "").split()
     salida = []
-    for op, i1, i2, j1, j2 in difflib.SequenceMatcher(a=ref, b=hip, autojunk=False).get_opcodes():
+    clave = lambda ws: [sin_tildes(w) for w in ws]
+    for op, i1, i2, j1, j2 in difflib.SequenceMatcher(a=clave(ref), b=clave(hip), autojunk=False).get_opcodes():
         if op == "equal":
             salida += [{"t": w, "op": "ok"} for w in hip[j1:j2]]
         if op in ("replace", "delete"):
@@ -285,7 +287,10 @@ class Panel:
         if self.log_placa:
             return self.log_placa
         if self.carpeta_logs_placa and self.carpeta_logs_placa.is_dir():
-            logs = sorted(self.carpeta_logs_placa.glob("platformio-device-monitor-*.log"),
+            # log2file escribe en firmware/; los logs movidos a firmware/logs/ también valen.
+            logs = sorted((p for carpeta in (self.carpeta_logs_placa, self.carpeta_logs_placa / "logs")
+                           for patron in ("platformio-device-monitor-*.log", "device-monitor-*.log")
+                           for p in carpeta.glob(patron)),
                           key=lambda p: p.stat().st_mtime)
             return logs[-1] if logs else None
         return None
@@ -371,8 +376,13 @@ class Panel:
              "(percibida real − inicio del audio del que respondió + inicio del audio del otro; el inicio "
              "es el primer audio con streaming y la respuesta completa sin él).", ""]
         con_placa = [i for i in validos if i.get("placa")]
+        log = self.archivo_log_placa()
+        if log and log.exists() and (d := resumen(placa.leer_detecciones(log))).get("n"):
+            L += [f"Wake word: fin de «Hola NEO» → confirmado, mediana {d['p50']:.2f} s "
+                  f"(p90 {d['p90']:.2f} s, n = {d['n']}), del log `{log.name}`.", ""]
         if not con_placa:
-            L.append("Sin datos: el log de la placa no estaba disponible.")
+            L.append("Sin datos: el log de la placa no estaba disponible "
+                     "(`pio device monitor -e esp32dev` en firmware/ mientras corre el panel).")
         else:
             L += ["| Tramo | Mediana | p90 | n |", "|---|---|---|---|"]
             tramos = {"silencio_vad": "Espera de silencio del VAD", "subida": "Subida por WiFi (placa → PC)",

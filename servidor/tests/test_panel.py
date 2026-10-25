@@ -19,7 +19,7 @@ from aiohttp.test_utils import TestClient, TestServer
 
 from src.benchmark import cliente, corpus, panel as P
 
-TRANSCRIPCION = {"local": "Cual es la capital de japon", "nube": "¿Cuál es la capital de Japón?"}
+TRANSCRIPCION = {"local": "Cual es la capital japon", "nube": "¿Cuál es la capital de Japón?"}
 DURACIONES = {"local": {"stt": 1.2, "llm": 2.0, "tts": 0.3, "pipeline": 3.6},
               "nube": {"stt": 0.4, "llm": 0.6, "tts": 0.9, "pipeline": 2.0}}
 
@@ -50,7 +50,7 @@ def upstream_simulado(perfil: str, timing):
 
 def test_diff_palabras_marca_errores_y_faltas():
     d = P.diff_palabras("¿Cuál es la capital de Japón?", "cual es la capital japón")
-    assert {"t": "cual", "op": "error"} in d and {"t": "cuál", "op": "falta"} in d
+    assert {"t": "cual", "op": "ok"} in d                     # solo la tilde: acierto, como en el WER
     assert {"t": "de", "op": "falta"} in d and {"t": "japón", "op": "ok"} in d
 
 
@@ -87,7 +87,7 @@ async def test_panel_de_punta_a_punta(tmp_path):
     intento = pnl.intentos[0]
     local, nube = intento["perfiles"]["local"], intento["perfiles"]["nube"]
     assert intento["id"] == "f01" and intento["responde"] == "local" and pnl.indice == 1
-    assert local["errores_palabra"] == 2 and nube["exacta"]            # cuál y japón sin tilde
+    assert local["errores_palabra"] == 1 and nube["exacta"]            # falta «de»; las tildes no cuentan
     assert local["respuesta"] == "Tokio, dice local." and local["stt"] == 1.2 and nube["servidor"] == 2.0
     assert local["audio_respuesta"] and nube["audio_respuesta"]
     # Percibida real: 1.5 s de silencio + 4.5 s de grabacion_fin → playback; la nube, estimada.
