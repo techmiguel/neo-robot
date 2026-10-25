@@ -1,0 +1,60 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  servidor:
+    name: Server tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.12"]
+    defaults:
+      run:
+        working-directory: servidor
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: pytest -q
+
+  herramientas:
+    name: Firmware tools tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: firmware/tools
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy pytest
+      - run: pytest -q
+
+  firmware:
+    name: Firmware build (${{ matrix.env }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [esp32dev, hw_test, wake_word_test]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            firmware/.pio/libdeps
+          key: pio-${{ matrix.env }}-${{ hashFiles('firmware/platformio.ini') }}
+      - run: pip install platformio
+      - run: pio run -e ${{ matrix.env }}
+        working-directory: firmware
