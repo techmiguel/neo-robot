@@ -17,21 +17,21 @@ breadboard for the price of a few modules, and **every number in this README was
 on the real board**, with the raw data in the repo.
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph board["ESP32-S3 board"]
-        mic["INMP441 mic"] --> ww["Wake word<br/>TFLite Micro + ESP-NN<br/>'Hola NEO'"]
-        ww --> vad["VAD + 300 ms pre-roll"]
-        spk["DAC + amp + speaker"]
-        oled["OLED: animated eyes"]
+        direction LR
+        mic["INMP441 mic"] --> ww["Wake word 'Hola NEO'<br/>TFLite Micro + ESP-NN"] --> vad["VAD<br/>300 ms pre-roll"]
+        spk["DAC + amp<br/>speaker"]
     end
-    subgraph server["Python server (your PC or Hugging Face Spaces)"]
-        stt["STT<br/>faster-whisper / Groq Whisper"] --> intent{"Intent<br/>keywords"}
-        intent -- command --> api["Weather · crypto · news<br/>exchange rates"]
-        intent -- free question --> llm["LLM<br/>Ollama (Gemma, Qwen) / Groq"]
+    subgraph server["Python server: your PC or Hugging Face Spaces"]
+        direction LR
+        stt["STT<br/>faster-whisper / Groq"] --> intent{"Intent"}
+        intent -- command --> api["Weather, crypto,<br/>news, rates"]
+        intent -- question --> llm["LLM<br/>Ollama / Groq"]
         api --> tts["TTS by fragments<br/>edge-tts / Piper"]
         llm -- tokens --> tts
     end
-    vad -- "PCM 16 kHz over WebSocket" --> stt
+    vad -- "PCM 16 kHz, WebSocket" --> stt
     tts -- "PCM, streamed" --> spk
 ```
 
