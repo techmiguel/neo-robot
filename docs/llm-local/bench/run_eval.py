@@ -26,6 +26,8 @@ SAMPLING = {
     "lowt-gemma4": {"temperature": 0.3, "top_p": 0.95, "top_k": 64},
     "qwen2.5": {"temperature": 0.7, "top_p": 0.8, "top_k": 20, "repeat_penalty": 1.05},
     "qwen3.5": {"temperature": 0.7, "top_p": 0.8, "top_k": 20, "presence_penalty": 1.5},
+    # Qwen3.5 en modo razonamiento (Modelfile oficial de Ollama).
+    "think-qwen3.5": {"temperature": 1.0, "top_p": 0.95, "top_k": 20, "presence_penalty": 1.5},
     "gemma4": {"temperature": 1.0, "top_p": 0.95, "top_k": 64},
     "granite4.2": {"temperature": 1.0, "top_p": 0.95},
     "granite4.0": {"temperature": 0.0},

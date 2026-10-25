@@ -369,7 +369,82 @@ GB) multiplicaría la velocidad de generación varias veces y permitiría E4B < 
 el backend Groq ya configurado tampoco garantiza < 1 s: `docs/metrics` registra
 1.40 s de mediana y 2.96 s de media, con picos por timeouts.
 
-## 7. Reproducir
+## 7. Agente con herramientas (MCP)
+
+Tercera fase (2026-10-25): NEO como agente que usa herramientas al estilo MCP.
+Banco en `bench/run_tools.py`, con 12 herramientas cuyos esquemas siguen el formato
+MCP/OpenAI (clima, cripto, El Toque, noticias, temporizador, hora, calendario,
+búsqueda web, leer y listar archivos, correo y luces) y resultados simulados
+deterministas. Son 24 tareas por semilla en siete categorías: simple, múltiple
+(dos herramientas), encadenada (leer un archivo y enviarlo por correo), contexto
+(seguimiento en una conversación), sin herramienta, manejo de error y aclaración
+cuando falta un dato. El bucle de agente admite hasta 5 pasos con llama-server y
+`tools` nativos. Una tarea solo cuenta como correcta si la herramienta, los
+argumentos y la respuesta final (basada en el resultado) son correctos.
+
+### 7.1 Resultados (3 semillas, 72 tareas por modelo)
+
+| Modelo | Tareas OK | Simple | Múltiple | Encadenada | Contexto | Sin herram. | Error | Aclaración | Tarea mediana / p90 | Prefill en frío |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Qwen3.5-4B con razonamiento (1 semilla) | 95.8 % | 100 | 100 | 100 | 100 | 100 | 100 | 50 | 40.0 / 59.0 s | 1259 tok, 31 s |
+| **Qwen3.5-4B** | **93.1 %** | 97 | 100 | 100 | 100 | 87 | 100 | 67 | 13.2 / 22.5 s | 1261 tok, 32 s |
+| **Gemma 4 E2B** | 76.4 % | 78 | 100 | 100 | 0 | 60 | 100 | 100 | **4.3 / 7.1 s** | 893 tok, 12.5 s |
+| Gemma 4 E4B QAT | 76.4 % | 72 | 100 | 0 | 0 | 93 | 100 | 100 | 8.2 / 12.5 s | 893 tok, 32.5 s |
+| Ministral 3 3B | 73.6 % | 61 | 50 | 67 | 100 | 100 | 67 | 100 | 10.2 / 19.1 s | 1093 tok, 21 s |
+| Qwen2.5-3B (actual) | 66.7 % | 83 | 83 | 0 | 0 | 67 | 100 | 0 | 6.8 / 10.4 s | 1166 tok, 24 s |
+| Granite 4.2 3B | 55.6 % | 50 | 17 | 0 | 67 | 87 | 0 | 100 | 7.9 / 14.7 s | 1195 tok, 26 s |
+
+Ningún modelo produjo JSON de argumentos inválido.
+
+### 7.2 Observaciones
+
+- **El system prompt decide si el modelo usa las herramientas.** Con una redacción
+  en la que las reglas de formato para voz ("sin markdown, se convierte en voz")
+  parecen aplicarse a todo, Gemma 4 E2B escribía las llamadas como texto ("crear_temporizador
+  segundos=300") y solo resolvía 5-9 de 24 tareas. Con la redacción final, en la
+  que esas reglas se refieren solo a la respuesta tras usar las herramientas,
+  resolvió 16 de 24. La redacción se eligió probando con E2B, lo que puede
+  favorecerlo ligeramente. Hay que enviar `think: false`: sin él, Gemma 4 se pone
+  a razonar antes de llamar a la herramienta.
+- **Qwen3.5-4B es el mejor agente local**, en línea con su ventaja publicada en
+  τ²-Bench (79.9 frente a 42.2 de Gemma 4 E4B). Encadena correctamente, sigue el
+  contexto y maneja errores. Su riesgo principal: en 2 de 72 tareas ejecutó
+  acciones con efecto (crear un evento, un temporizador) **con parámetros
+  inventados** en lugar de preguntar. Es lento porque sus respuestas finales son
+  largas (39 tokens de mediana frente a 24 de E2B).
+- **Gemma 4 E2B es rápido pero frágil como agente.** Falla siempre el seguimiento
+  contextual ("¿y en La Habana?" tras preguntar por Madrid: 0 de 3) y a veces
+  anuncia una acción ("buscaré esa información") sin ejecutarla. E4B, además,
+  **inventó el clima** de La Habana sin llamar a la herramienta y no completa la
+  tarea encadenada (pide el contenido del archivo en vez de leerlo).
+- **El razonamiento no compensa en esta CPU:** +2.7 puntos a cambio de triplicar
+  el tiempo por tarea.
+- **El prefill en frío de los esquemas cuesta 12-32 s.** Después se reutiliza la
+  caché, pero solo si el prefijo (system prompt y herramientas) es idéntico. Si
+  NEO alterna entre el prompt de conversación y el de agente, paga ese coste en
+  cada cambio. Hay dos soluciones: un único prefijo para ambos modos, o un slot de
+  caché por modo (`OLLAMA_NUM_PARALLEL=2`, con más memoria de KV). Con más
+  herramientas, el coste crece linealmente con el tamaño de los esquemas.
+
+### 7.3 Recomendación para el agente
+
+- **Agente local: Qwen3.5-4B (`qwen3.5:4b`) con `think: false` y `num_ctx` de
+  8192.** Es el único que supera el 90 % de tareas. Conviene añadir una
+  confirmación del usuario antes de ejecutar herramientas con efectos (correo,
+  calendario, temporizador, luces), porque a veces rellena parámetros que faltan
+  en lugar de preguntar. Cuesta ~13 s por tarea y ~32 s en la primera llamada.
+- **Si la prioridad es la rapidez:** Gemma 4 E2B (4.3 s por tarea), aceptando un
+  76 % de éxito y fallos en el seguimiento de la conversación.
+- **Un modelo para todo frente a dos:** cargar E2B para conversar y Qwen3.5-4B
+  para el agente suma ~9.4 GB de RSS, demasiado para 16 GB con Windows, Whisper y
+  un HDD que penaliza las recargas. Con un solo modelo, Qwen3.5-4B tiene la
+  ventaja de que las herramientas (hora, noticias, tasas) eliminan su principal
+  debilidad conversacional, que era inventar datos en tiempo real.
+- **Alternativa híbrida:** el backend Groq (`openai/gpt-oss-20b`, ya configurado)
+  para el bucle del agente y Gemma 4 E2B local para conversar. No se ha medido en
+  este banco.
+
+## 8. Reproducir
 
 Ver `docs/llm-local/bench/README.md`. Los resultados crudos (todas las respuestas
 con tiempos) están en `docs/llm-local/bench/results/`.

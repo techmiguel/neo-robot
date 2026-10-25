@@ -9,6 +9,8 @@ análisis y las conclusiones están en `../README.md`.
 | `run_eval.py` | Levanta `llama-server` con un GGUF, ejecuta los casos y guarda `results/<modelo>[.sN].jsonl` |
 | `judge.py` | Juez estricto por reglas (hechos, razonamiento, honestidad, multiturno, formato TTS, JSON); agrega semillas |
 | `score.py` | Métricas de formato y un verificador laxo por palabras clave (solo referencia) |
+| `run_tools.py` | Banco de agente con 12 herramientas estilo MCP, resultados simulados y bucle de hasta 5 pasos; guarda `results/tools-<modelo>[.sN].jsonl` |
+| `judge_tools.py` | Recalcula las verificaciones de herramientas con las reglas actuales y agrega por modelo |
 | `side_by_side.py` | Vuelca respuestas de varios modelos pregunta por pregunta, para revisión manual |
 | `results/` | Respuestas crudas con tiempos, `bench.jsonl` (salida de `llama-bench`) y `judge.json` |
 
@@ -38,6 +40,13 @@ análisis y las conclusiones están en `../README.md`.
    `"-md gemma4-e2b-draft.gguf --spec-type draft-mtp"` para decodificación
    especulativa) y `NEO_MAX_PALABRAS` cambia el límite de palabras del system
    prompt (20 por defecto).
+
+   Banco de herramientas (mismos argumentos; `--think` activa el razonamiento):
+
+   ```bash
+   python3 run_tools.py qwen3.5-4b models/Qwen3.5-4B-Q4_K_M.gguf --seed 7
+   python3 judge_tools.py
+   ```
 
 3. Puntuar:
 
