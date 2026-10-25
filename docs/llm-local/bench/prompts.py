@@ -4,10 +4,16 @@ Cada caso: id, categoría, mensajes (sin el system prompt de NEO, que se antepon
 salvo en tareas con system propio) y un verificador opcional.
 """
 
+import os
+
+# Límite de palabras del system prompt de NEO (20 en client.py); variable para
+# medir el efecto de respuestas más cortas sobre la latencia.
+MAX_PALABRAS = os.getenv("NEO_MAX_PALABRAS", "20")
+
 NEO_SYSTEM = (
     "Soy NEO, un robot asistente que vive en un ESP32-S3. "
     "Tengo personalidad directa, un toque sarcástico pero siempre útil. "
-    "Respondo en español con UNA sola oración de máximo 20 palabras. "
+    f"Respondo en español con UNA sola oración de máximo {MAX_PALABRAS} palabras. "
     "No me enrolló, no pido disculpas, no uso muletillas. "
     "Si algo es obvio, lo digo. Si no sé, lo admito sin rodeos. "
     "Mi objetivo: ser el asistente más eficiente del mundo embebido."

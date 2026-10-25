@@ -105,6 +105,13 @@ def main():
         row["tokens_resp_med"] = st.median(g for r in runs for g in r["gen_n"])
         row["lat_med_s"] = round(st.median(walls), 2)
         row["lat_p90_s"] = round(sorted(walls)[int(0.9 * len(walls)) - 1], 2)
+        row["total<1s%"] = round(100 * sum(w < 1.0 for w in walls) / len(walls))
+        # Tiempo hasta el primer token: prefill + un paso de decodificación.
+        ttft = sorted(pm + gm / max(gn, 1) for r in runs
+                      for pm, gm, gn in zip(r["prompt_ms"], r["gen_ms"], r["gen_n"]))
+        row["ttft_med_s"] = round(st.median(ttft) / 1000, 2)
+        row["ttft_p90_s"] = round(ttft[int(0.9 * len(ttft)) - 1] / 1000, 2)
+        row["ttft<1s%"] = round(100 * sum(t < 1000 for t in ttft) / len(ttft))
         table.append(row)
     table.sort(key=lambda r: -r["exactitud_total"])
     keys = list(table[0].keys())

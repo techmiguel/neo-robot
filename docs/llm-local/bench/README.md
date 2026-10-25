@@ -34,6 +34,11 @@ análisis y las conclusiones están en `../README.md`.
    python3 run_eval.py lfm2.5-8b-a1b models/LFM2.5-8B-A1B-Q4_K_M.gguf --think
    ```
 
+   Variables opcionales: `LLAMA_EXTRA_ARGS` pasa argumentos a llama-server (p. ej.
+   `"-md gemma4-e2b-draft.gguf --spec-type draft-mtp"` para decodificación
+   especulativa) y `NEO_MAX_PALABRAS` cambia el límite de palabras del system
+   prompt (20 por defecto).
+
 3. Puntuar:
 
    ```bash

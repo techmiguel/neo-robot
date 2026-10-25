@@ -1,7 +1,8 @@
 """Ejecuta el banco de NEO contra un GGUF vía llama-server y guarda JSONL.
 
 Uso: python3 run_eval.py <nombre> <ruta.gguf> [--think] [--seed N]
-Requiere llama-server (llama.cpp); ruta en LLAMA_SERVER.
+Requiere llama-server (llama.cpp); ruta en LLAMA_SERVER. Argumentos extra para
+llama-server (p. ej. decodificación especulativa) en LLAMA_EXTRA_ARGS.
 Los parámetros de muestreo salen de SAMPLING (recomendados por cada fabricante
 para modo sin razonamiento).
 """
@@ -27,6 +28,9 @@ SAMPLING = {
     "qwen3.5": {"temperature": 0.7, "top_p": 0.8, "top_k": 20, "presence_penalty": 1.5},
     "gemma4": {"temperature": 1.0, "top_p": 0.95, "top_k": 64},
     "granite4.2": {"temperature": 1.0, "top_p": 0.95},
+    "granite4.0": {"temperature": 0.0},
+    "gemma3": {"temperature": 1.0, "top_p": 0.95, "top_k": 64},
+    "euromoe": {"temperature": 0.6, "top_p": 0.9},
     "ministral3": {"temperature": 0.15},
     "lfm2.5-1.2b": {"temperature": 0.1, "top_k": 50, "repeat_penalty": 1.05},
     "lfm2.5-8b": {"temperature": 0.2, "top_k": 80, "repeat_penalty": 1.05},
@@ -98,7 +102,7 @@ def main():
     log = open(os.path.join(BASE, "results", f"{tag}.server.log"), "w")
     proc = subprocess.Popen(
         [SERVER, "-m", gguf, "-t", "4", "-c", "4096", "--port", str(PORT),
-         "--jinja", "-np", "1", "--no-webui"],
+         "--jinja", "-np", "1", "--no-webui", *os.getenv("LLAMA_EXTRA_ARGS", "").split()],
         stdout=log, stderr=subprocess.STDOUT)
     try:
         load_s = wait_ready(proc)

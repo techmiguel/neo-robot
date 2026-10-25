@@ -302,7 +302,75 @@ json={
   y Piper, la latencia total será mayor; la diferencia frente a hoy es de +1.9 s
   (mediana).
 
-## 6. Reproducir
+## 6. Objetivo de latencia < 1 s
+
+Segunda fase (2026-10-25): bajar la latencia del LLM a menos de 1 s con la mejor
+calidad posible en la misma PC, evaluando dos métricas: **respuesta completa** (el
+LLM entrega la oración entera) y **primer token** (TTFT, útil si el pipeline
+LLM → TTS pasa a streaming).
+
+### 6.1 Límite físico
+
+En el i5 sin GPU, procesar el turno nuevo (~19 tokens) ya cuesta ~0.5 s con Gemma
+4 E2B y ~1 s con E4B. Generar ~15 tokens a 13-14 tok/s suma otro ~1 s. Para una
+respuesta completa < 1 s hace falta ≥ 25 tok/s de generación y ≥ 100 tok/s de
+prefill, es decir, ≤ ~1B de parámetros activos.
+
+### 6.2 Palancas probadas
+
+| Opción | Exactitud | Honestidad | Latencia mediana | Respuesta < 1 s | TTFT mediana / p90 | TTFT < 1 s |
+|---|---|---|---|---|---|---|
+| **Gemma 4 E2B Q4_K_M** (`gemma4:e2b`, 3 semillas) | **86.9 %** | **100 %** | 1.50 s | 7 % | **0.50 / 0.76 s** | **97 %** |
+| Gemma 4 E2B Q4_K_M, límite de 12 palabras (3 semillas) | 84.5 % | 100 % | 1.28 s | 7 % | 0.49 / 0.77 s | 97 % |
+| Gemma 4 E2B QAT + decodificación especulativa MTP (3 semillas) | 82.1 % | 100 % | 1.59 s | 9 % | 0.55 / 0.91 s | 94 % |
+| Gemma 4 E2B QAT + MTP, temperatura 0.3 (3 semillas) | 84.5 % | 100 % | 1.62 s | 12 % | 0.54 / 0.94 s | 93 % |
+| Gemma 4 E4B QAT (referencia, 3 semillas) | 91.7 % | 100 % | 3.36 s | 0 % | 1.09 / 1.85 s | 22 % |
+| Granite 4.0 1B | 75.0 % | 75 % | 1.20 s | 33 % | 0.28 / 0.37 s | 100 % |
+| Qwen2.5-3B (actual, 3 semillas) | 64.3 % | 75 % | 1.51 s | 18 % | 0.50 / 0.85 s | 94 % |
+| EuroMoE-2.6B-A0.6B | 60.7 % | 75 % | 0.93 s | 53 % | 0.13 / 0.18 s | 100 % |
+| Qwen3.5-0.8B | 50.0 % | 50 % | 0.94 s | 61 % | 0.25 / 0.29 s | 100 % |
+| Gemma 3 1B | 67.9 % | 50 % | 2.14 s | 0 % | 1.06 / 1.20 s | 14 % |
+
+Hallazgos:
+
+- **La decodificación especulativa MTP no aporta en CPU.** El modelo *draft*
+  oficial de Gemma 4 (77M parámetros, el mismo que Ollama distribuye con
+  `gemma4`) funciona en llama.cpp (`--spec-type draft-mtp`), pero con ~45 % de
+  aceptación y el coste de la capa de salida de 262K tokens por token propuesto,
+  la latencia mediana no mejora (1.59 s frente a 1.49 s).
+- **Los modelos de ~1B activos no son una opción.** Los que bajan de 1 s
+  (EuroMoE, Qwen3.5-0.8B) rinden por debajo del modelo actual. Todos inventan la
+  hora y fallan hechos básicos ("el hueso más largo es la columna vertebral, de
+  170 cm"), y EuroMoE entra en bucles de repetición.
+- **Las respuestas más cortas ayudan poco.** Limitar a 12 palabras recorta ~0.2 s
+  (de 1.50 s a 1.28 s) a costa de 2.4 puntos de exactitud, sin bajar de 1 s.
+- **Gemma 4 E2B en Q4_K_M (la cuantización de Ollama) rinde mejor que la QAT**
+  en este banco: 86.9 % frente a 82.1 % con 3 semillas cada una. Sus fallos son de
+  aritmética de varios pasos. En JSON estricto envuelve a veces la salida en
+  bloques de código, así que el parser debe tolerarlos.
+
+### 6.3 Recomendación para < 1 s
+
+**Respuesta completa < 1 s: no es alcanzable en esta PC sin sacrificar calidad
+por debajo del modelo actual.** La opción más cercana es Gemma 4 E2B con límite de
+12 palabras (1.28 s de mediana, 84.5 % de exactitud).
+
+**Primer token < 1 s: Gemma 4 E2B (`gemma4:e2b`)**, con 0.50 s de mediana, 0.76 s
+de p90 y el 97 % de las respuestas por debajo de 1 s, manteniendo 86.9 % de
+exactitud y 100 % de honestidad (frente a 64 % y 75 % del modelo actual con la
+misma latencia). Para que el usuario lo perciba, el servidor debe pedir el LLM en
+streaming y sintetizar por fragmentos (por ejemplo, hasta la primera coma),
+enviando el audio mientras el LLM termina. Hoy `_modo_pipeline` espera la oración
+completa antes de llamar a `synthesize`. Gemma 4 E4B no cumple el TTFT < 1 s en un
+i5 de 4 núcleos (1.05-1.09 s de mediana); en un i5 de escritorio de 6 núcleos
+podría cumplirlo, pero no se ha medido.
+
+Alternativas fuera de la restricción de hardware: una GPU dedicada modesta (6-8
+GB) multiplicaría la velocidad de generación varias veces y permitiría E4B < 1 s;
+el backend Groq ya configurado tampoco garantiza < 1 s: `docs/metrics` registra
+1.40 s de mediana y 2.96 s de media, con picos por timeouts.
+
+## 7. Reproducir
 
 Ver `docs/llm-local/bench/README.md`. Los resultados crudos (todas las respuestas
 con tiempos) están en `docs/llm-local/bench/results/`.
