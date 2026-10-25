@@ -24,6 +24,20 @@ def test_groq_nunca_devuelve_el_razonamiento(monkeypatch):
     assert pedidos[0]["reasoning_effort"] == "low" and pedidos[0]["stream"]
 
 
+def test_prompt_corto_con_ollama_y_completo_con_groq(monkeypatch):
+    monkeypatch.delenv("NEO_SYSTEM_PROMPT", raising=False)
+    monkeypatch.delenv("NEO_PROMPT", raising=False)
+    monkeypatch.setenv("LLM_PROVIDER", "ollama")
+    assert client.system_prompt() == client.SYSTEM_PROMPT_CORTO
+    monkeypatch.setenv("LLM_PROVIDER", "groq")
+    assert client.system_prompt() == client.SYSTEM_PROMPT
+    monkeypatch.setenv("NEO_PROMPT", "corto")
+    assert client.system_prompt() == client.SYSTEM_PROMPT_CORTO
+    monkeypatch.setenv("NEO_SYSTEM_PROMPT", "Eres un loro.")
+    assert client.system_prompt() == "Eres un loro."
+    assert len(client.SYSTEM_PROMPT_CORTO) < len(client.SYSTEM_PROMPT) / 2
+
+
 def test_solo_latino():
     assert client.solo_latino("¿Qué? Ñandú, pingüino y 6.650 km.")
     assert not client.solo_latino("Miguel de Cervantes编写了《堂吉诃德》。")

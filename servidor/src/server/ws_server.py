@@ -283,7 +283,7 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
     el event loop (keepalives y pings deben seguir saliendo).
     """
     from src.stt.transcriber import transcribe
-    from src.llm.client      import ask_stream, SYSTEM_PROMPT
+    from src.llm.client      import ask_stream, system_prompt
 
     timer = get_timer()
     timer.mark("pipeline_start")
@@ -327,7 +327,7 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
         else:
             timer.set_metadata("tipo_consulta", "llm_libre")
             # Construir mensajes con historial conversacional
-            mensajes = memory.build_messages(session_id, SYSTEM_PROMPT, transcripcion)
+            mensajes = memory.build_messages(session_id, system_prompt(), transcripcion)
 
             async def _tokens_llm():
                 timer.mark("llm_start")

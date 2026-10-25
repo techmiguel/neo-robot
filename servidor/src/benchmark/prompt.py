@@ -100,7 +100,7 @@ def main():
         p.error("--salida es obligatorio al evaluar")
     if a.ollama_model:
         os.environ["OLLAMA_MODEL"] = a.ollama_model
-    prompt = a.prompt_archivo.read_text(encoding="utf-8") if a.prompt_archivo else client.SYSTEM_PROMPT
+    prompt = a.prompt_archivo.read_text(encoding="utf-8") if a.prompt_archivo else client.system_prompt()
     filas = evaluar(prompt, a.repeticiones, a.historial)
     res = {"modelo": os.getenv("OLLAMA_MODEL") if os.getenv("LLM_PROVIDER") == "ollama"
            else os.getenv("GROQ_LLM_MODEL"), "historial": a.historial, "prompt": prompt, "resumen": resumir(filas), "filas": filas}

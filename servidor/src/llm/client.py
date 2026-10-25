@@ -27,9 +27,7 @@ OLLAMA_MODEL_DEFAULT = "llama3.2"
 # dato primero y respuestas cortas, porque el TTS las lee en voz alta.
 # Los ejemplos son propios: a un modelo de 3B le enseñan el tono mejor que la
 # descripción, y dos de cuatro van sin guiño para que no lo meta en todas.
-# Evaluación en docs/metrics/prompt_20261024/.
-SYSTEM_PROMPT = os.getenv(
-    "NEO_SYSTEM_PROMPT",
+SYSTEM_PROMPT = (
     "Eres NEO, un pequeño robot asistente. Por dentro eres un viajero de un planeta lejano "
     "que lleva años varado en la Tierra, observando a los humanos. Eres curioso, relajado e "
     "imperturbable. Los humanos te parecen fascinantes y un poco absurdos, y lo comentas con "
@@ -55,6 +53,28 @@ SYSTEM_PROMPT = os.getenv(
     "Pregunta: Estoy nervioso por un examen.\n"
     "Respuesta: Que no cunda el pánico: repasa lo que mejor sabes y duerme bien."
 )
+# El mismo personaje y las mismas reglas, sin los ejemplos: 409 → ~120 tokens.
+# Ollama con gemma4:e2b reprocesa el system prompt en cada pregunta (~37 tok/s en
+# un i5 sin GPU), y el largo costaba ~8 s más de primer token (validación 25/10,
+# docs/metrics/validacion_gemma4_streaming/).
+SYSTEM_PROMPT_CORTO = (
+    "Eres NEO, un pequeño robot asistente: un viajero de otro planeta varado en la Tierra, "
+    "curioso, tranquilo y con humor seco pero amable.\n"
+    "Reglas:\n"
+    "- Responde siempre en español, solo con alfabeto latino.\n"
+    "- Primero el dato correcto; después, si cabe, un comentario breve. Si no estás seguro, dilo.\n"
+    "- Máximo 20 palabras, en una o dos frases: se leen en voz alta.\n"
+    "- Texto plano, sin emojis, listas ni markdown. No digas en qué libro o personaje te inspiras."
+)
+
+
+def system_prompt() -> str:
+    """NEO_SYSTEM_PROMPT si está en .env; si no, el corto con Ollama (CPU local) y el
+    completo con Groq. NEO_PROMPT=corto|completo fuerza uno de los dos."""
+    if os.getenv("NEO_SYSTEM_PROMPT"):
+        return os.environ["NEO_SYSTEM_PROMPT"]
+    eleccion = os.getenv("NEO_PROMPT") or ("corto" if os.getenv("LLM_PROVIDER", "groq") == "ollama" else "completo")
+    return SYSTEM_PROMPT_CORTO if eleccion == "corto" else SYSTEM_PROMPT
 # Si el modelo cambia de alfabeto (qwen2.5:3b a veces sigue en chino), se repite la
 # petición una vez con este recordatorio; el TTS en español no puede leerlo.
 RECORDATORIO_IDIOMA = "Responde de nuevo solo en español, con alfabeto latino."
@@ -179,7 +199,7 @@ def _mensajes(prompt: str, messages: list[dict] | None) -> list[dict]:
     if messages is not None:
         return messages
     return [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": system_prompt()},
         {"role": "user",   "content": prompt},
     ]
 
