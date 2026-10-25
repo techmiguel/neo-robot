@@ -85,15 +85,19 @@ def _stream_groq(messages: list[dict]) -> Iterator[str]:
 
 
 def _opciones_ollama() -> dict:
-    return {
+    opciones = {
         # NEO responde una oración corta: limitar tokens corta generaciones
         # desbocadas, que con un modelo local en CPU cuestan segundos.
         "num_predict": int(os.getenv("OLLAMA_NUM_PREDICT", "96")),
         # Contexto pequeño: menos RAM para la caché KV y prompt más rápido.
         # El historial (10 turnos cortos) cabe de sobra.
         "num_ctx": int(os.getenv("OLLAMA_NUM_CTX", "2048")),
-        "temperature": float(os.getenv("OLLAMA_TEMPERATURE", "0.7")),
     }
+    # Sin OLLAMA_TEMPERATURE se usa el muestreo del Modelfile (gemma4: el
+    # recomendado por Google, con el que se evaluó en docs/llm-local).
+    if os.getenv("OLLAMA_TEMPERATURE"):
+        opciones["temperature"] = float(os.environ["OLLAMA_TEMPERATURE"])
+    return opciones
 
 
 def _stream_ollama(messages: list[dict]) -> Iterator[str]:

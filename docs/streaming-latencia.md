@@ -55,6 +55,8 @@ ESP32 reproduce          ▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶�
 El protocolo WebSocket no cambia: mismos mensajes, mismo orden. Un firmware
 antiguo sigue funcionando (espera a `fin_respuesta`, sin ganancia en el
 primer audio); el nuevo firmware con un servidor antiguo también.
+`RESPUESTA_STREAMING=0` en el servidor vuelve al flujo anterior (respuesta
+completa, un solo TTS), útil para comparar y como marcha atrás.
 
 ## Gemma 4 E2B con Ollama
 
@@ -98,6 +100,12 @@ completa de una oración son 1–3 s, y el primer fragmento sale tras ~6–10 to
 ahí la ganancia del streaming es mayor.
 
 ## Cómo medirlo
+
+El protocolo completo con la placa y el panel de 31 frases, con variantes para
+separar el efecto del modelo del efecto del streaming, está en
+[`metrics/validacion_gemma4_streaming/PLAN.md`](metrics/validacion_gemma4_streaming/PLAN.md).
+El panel y `src.benchmark.e2e` informan «Empieza a hablar»: el primer audio con
+streaming y la respuesta completa sin él.
 
 El JSONL de timing registra nuevas marcas: `llm_primer_token`, `primer_audio`,
 y las duraciones `durations.llm_primer_token` y `durations.primer_audio`

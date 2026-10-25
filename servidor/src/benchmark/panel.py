@@ -480,7 +480,7 @@ async def servir(panel: Panel, puerto_placa: int, puerto_web: int, medir_red: bo
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--perfiles", default="local,nube", help="lista separada por comas; \"\" para solo variantes")
+    p.add_argument("--perfiles", help="lista separada por comas (por defecto local,nube; con --variante, ninguno)")
     p.add_argument("--variante", action="append", default=[], metavar="NOMBRE=PERFIL,VAR=VALOR,...",
                    help="perfil base con variables propias (ver src/perfiles.py); se puede repetir")
     p.add_argument("--responde", default="local", help="perfil cuya respuesta oye la placa")
@@ -509,7 +509,7 @@ def main():
         upstream = {}
         try:
             variantes = [perfiles.parsear_variante(v) for v in
-                         [n for n in args.perfiles.split(",") if n.strip()] + args.variante]
+                         [n for n in e2e._perfiles_por_defecto(args).split(",") if n.strip()] + args.variante]
         except ValueError as e:
             sys.exit(str(e))
         if args.responde not in [v[0] for v in variantes]:

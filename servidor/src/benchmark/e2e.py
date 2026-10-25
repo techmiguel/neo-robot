@@ -18,7 +18,7 @@ Uso (desde servidor/):
     python -m src.benchmark.e2e                       # perfiles local y nube
     python -m src.benchmark.e2e --perfiles local --repeticiones 3
     python -m src.benchmark.e2e --limite 3 --sin-red  # prueba rápida
-    python -m src.benchmark.e2e --perfiles "" \
+    python -m src.benchmark.e2e \
         --variante "gemma=local,OLLAMA_MODEL=gemma4:e2b" \
         --variante "qwen-completa=local,OLLAMA_MODEL=qwen2.5:3b,RESPUESTA_STREAMING=0"
 
@@ -383,9 +383,16 @@ def informe(res: dict) -> str:
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
+def _perfiles_por_defecto(args) -> str:
+    """Sin --perfiles: local y nube, salvo que se pidan variantes (entonces solo ellas)."""
+    if args.perfiles is not None:
+        return args.perfiles
+    return "" if args.variante else "local,nube"
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--perfiles", default="local,nube", help="lista separada por comas (local,nube); \"\" para solo variantes")
+    p.add_argument("--perfiles", help="lista separada por comas (por defecto local,nube; con --variante, ninguno)")
     p.add_argument("--variante", action="append", default=[], metavar="NOMBRE=PERFIL,VAR=VALOR,...",
                    help="perfil base con variables propias; se puede repetir")
     p.add_argument("--corpus", type=Path, default=corpus.CORPUS)
@@ -428,7 +435,7 @@ def main():
     try:
         variantes = [("externo", None, {})] if args.url else [
             perfiles.parsear_variante(v) for v in
-            [n for n in args.perfiles.split(",") if n.strip()] + args.variante]
+            [n for n in _perfiles_por_defecto(args).split(",") if n.strip()] + args.variante]
     except ValueError as e:
         sys.exit(str(e))
 
