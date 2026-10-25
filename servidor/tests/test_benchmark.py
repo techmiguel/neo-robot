@@ -133,8 +133,9 @@ async def test_ciclo_completo(servidor):
     assert errores["errores_palabra"] == 1 and errores["errores_palabra_con_tildes"] == 3   # manta; + quién, escribió
     assert comando["tipo"] == "keyword" and comando["intencion_detectada"] == "clima"
     assert libre["perfil"]["perfil"] == "local" and libre["perfil"]["tts"] == "local:es_MX-ald-medium"
-    # Con el ritmo de la placa, la subida de 600 ms (5 chunks) dura ≥ 5×10 ms + 200 ms.
-    assert libre["cliente_subida"] >= 0.25
+    # Con el ritmo de la placa, la subida de 600 ms (5 chunks) dura ~5×10 ms + 200 ms. En
+    # Windows asyncio.sleep puede volver hasta ~16 ms antes (resolución del reloj): margen.
+    assert libre["cliente_subida"] >= 0.25 - 6 * 0.016
     assert libre["e2e"] >= libre["cliente_subida"] + libre["servidor"] * 0.5
 
     res = e2e.resumir(resultado)

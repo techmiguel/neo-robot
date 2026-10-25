@@ -4,9 +4,10 @@ Prueba de eco WebSocket — Módulo 2.4.
 Verifica que el servidor devuelva exactamente los bytes enviados,
 sin pérdida y en orden, durante N rondas consecutivas.
 
-Uso:
-    pytest tests/test_ws_echo.py -v
-    (el servidor debe estar corriendo en modo echo: python -m src.server.ws_server)
+Test de integración: necesita un servidor en modo echo ya en marcha, así que solo
+corre si se define WS_URL (si no, se omite):
+    WS_MODO=echo python -m src.server.ws_server
+    WS_URL=ws://localhost:8765 pytest tests/test_ws_echo.py -v
 """
 
 import asyncio
@@ -17,7 +18,8 @@ import struct
 import pytest
 import websockets
 
-WS_URL = os.getenv("WS_URL", "ws://localhost:8765")
+WS_URL = os.getenv("WS_URL")
+pytestmark = pytest.mark.skipif(not WS_URL, reason="define WS_URL con un servidor en modo echo")
 RONDAS = 10          # número de rondas de eco a probar
 DURACION_S = 2       # segundos de audio simulado por ronda
 SAMPLE_RATE = 16000  # Hz (rate del micrófono ESP32)
