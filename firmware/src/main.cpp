@@ -32,10 +32,21 @@
 // ── Configuración del servidor ────────────────────────────────────────────────
 // Estrategia Local First: se intenta primero el servidor de la PC en la LAN;
 // si no responde en ~6 s, se cae a la nube (HuggingFace Spaces).
-static const char*    SERVIDOR_HOST   = "172.20.10.8";   // IP de la PC en la LAN
+// Cada instalación pone sus valores en src/config_local.h (no versionado; ver
+// src/config_local.example.h). Sin ese archivo se usan estos por defecto.
+#if __has_include("config_local.h")
+#include "config_local.h"
+#endif
+#ifndef NEO_SERVIDOR_HOST
+#define NEO_SERVIDOR_HOST "192.168.1.100"   // IP de la PC en la LAN
+#endif
+#ifndef NEO_SERVIDOR_HOST_NUBE
+#define NEO_SERVIDOR_HOST_NUBE ""           // p. ej. "usuario-neo-servidor.hf.space"; vacío = sin nube
+#endif
+static const char*    SERVIDOR_HOST   = NEO_SERVIDOR_HOST;
 static const uint16_t SERVIDOR_PORT   = 8765;
 
-static const char*    SERVIDOR_HOST_NUBE = "techmigue-neo-servidor.hf.space";
+static const char*    SERVIDOR_HOST_NUBE = NEO_SERVIDOR_HOST_NUBE;
 static const uint16_t SERVIDOR_PORT_NUBE = 443;
 
 enum class ServidorActivo : uint8_t { NINGUNO, LOCAL, NUBE };
@@ -163,7 +174,7 @@ static bool _wsConectar() {
         Serial.println("[WS] Conectado al servidor LOCAL (LAN)");
         return true;
     }
-    if (ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/ws")) {
+    if (SERVIDOR_HOST_NUBE[0] && ws->conectarSeguro(SERVIDOR_HOST_NUBE, SERVIDOR_PORT_NUBE, "/ws")) {
         s_servidor = ServidorActivo::NUBE;
         Serial.println("[WS] Servidor local no disponible — conectado a la NUBE (HF)");
         return true;
