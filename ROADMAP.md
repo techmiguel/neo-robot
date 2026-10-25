@@ -30,8 +30,8 @@ El plan se organiza en dos entregas con fecha. Las fases originales completadas 
 - Latencia de detección medida en el dispositivo: fin del enunciado → evento de detección.
 - Funcionando en el firmware completo, no solo en el entorno `wake_word_test`.
 
-**Artefactos:** resultados y metodología en `docs/metrics/`. Las métricas en la placa se calculan con `firmware/tools/analizar_log_wake.py` (modos `fp` y `matriz`) a partir de logs grabados con `pio device monitor -e esp32dev --filter time --filter log2file`.  
-**Estado: EN CURSO**
+**Artefactos:** resultados y metodología en `docs/metrics/`. Las métricas en la placa se calculan con `firmware/tools/analizar_log_wake.py` (modos `fp` y `matriz`) a partir de logs grabados con `pio device monitor -e esp32dev`; `platformio.ini` ya pone los filtros `time` y `log2file`.  
+**Estado: CASI COMPLETO** (solo faltan los falsos positivos por hora en la placa)
 
 Hecho (2026-10-20/21):
 - Reentrenado con dos hablantes (h1, h2) a 0,5/1/2 m y varias orientaciones: 570 hola_neo, 736 desconocido, 200 silencio. Normalización de volumen (c0 relativo) y CMN en entrenamiento y en `inference.cpp`, con paridad verificada (|Δ| < 2e-6). Detalle en `firmware/models/experimentos/2026-10-20/RESUMEN.md`.
@@ -51,14 +51,18 @@ Hecho (2026-10-23): **latencia de detección medida en la placa** con voz en viv
 - Detección orientativa en esta corrida: 12/15 (80 %); la tasa de acierto la da la matriz de confusión.
 - Descartado reproducir clips del dataset por el altavoz del PC: 0/20 detecciones, porque el altavoz altera el audio (detalle en el protocolo).
 
-Pendiente:
-- Falsos positivos por hora en la placa (≥ 2 h de fondo realista).
-- Matriz de confusión en la placa: ~20 intentos por hablante y distancia, más sesiones negativas.
-- Latencia en más condiciones (h1 a 1 m, h2 a 50 cm) con `latencia_wake.py`.
-- Con la sala muy silenciosa el ruido de fondo de la placa llega a 0 y el VAD se dispara con cualquier ruido mínimo (umbral = ruido × 4): falta un umbral mínimo en el firmware.
+Hecho (2026-10-24):
+- **Matriz de confusión del conjunto de prueba publicada** en `docs/metrics/wake_word_20261020/`, con figura, umbral, TPR por condición y FP por palabra. Recall int8: hola_neo 97,4 %, desconocido 96,6 %, silencio 87,5 %.
+- **Inferencia con ESP-NN:** 0,32–0,40 s, antes 2,6 s. La detección (fin de la frase → confirmado) en el log de la placa es de **1,11 s de mediana** (n = 4, con `servidor/src/benchmark/placa.py`), frente a 3,33 s.
+- **Umbral mínimo de ruido en el VAD** (RMS 15): ya no se dispara con cualquier ruido en una sala silenciosa.
+
+Pendiente (requiere la placa y una persona):
+- **Falsos positivos por hora en la placa:** ≥ 2 h de fondo realista (TV, charla, ruido de casa). El protocolo y el análisis están listos en `docs/experimento-falsos-positivos.md` (`analizar_log_wake.py fp`). Con 0 FP en 2 h, la cota del 95 % es 1,8 FP/h; para bajar de 1 FP/h hacen falta 3,7 h.
+- Repetir `latencia_wake.py` con ESP-NN (20 intentos) para cerrar la latencia medida con n suficiente.
+- Opcional: matriz de confusión en la placa (`analizar_log_wake.py matriz`), ~20 intentos por hablante y distancia.
 
 Notas para la documentación:
-- `CONF_MINIMAS = 1` en `firmware/src/main.cpp`: basta una detección para activar, no dos seguidas. Las cifras válidas son las de una sola ventana (TPR 95,6 %), no el "TPR² 91,4 %" del RESUMEN. El comentario de esa línea aún cita el umbral antiguo (0,49).
+- `CONF_MINIMAS = 1` en `firmware/src/main.cpp`: basta una detección para activar, no dos seguidas. Las cifras válidas son las de una sola ventana (TPR 95,6 %), no el "TPR² 91,4 %" del RESUMEN.
 - Generalización limitada: con un hablante no visto, TPR 71–77 % y FPR 7–11 %. Solo se corrige grabando más hablantes.
 - Posición no vista: dejando fuera todos los clips a 2 m, TPR 80 % a esa distancia.
 
@@ -70,7 +74,13 @@ Notas para la documentación:
 - Latencia desglosada por etapa (detección, transcripción, respuesta del LLM, síntesis, primer audio reproducido) y total, con N interacciones y estadísticos (mediana y p90 como mínimo).
 
 **Artefactos:** datos crudos en `docs/metrics/` (continuación de `latency_data_20260911.json`) y resumen en el README.  
-**Estado: EN CURSO** (medidas por separado: detección del wake word 3,33 s y respuesta del servidor ~7 s de mediana; falta medirlas juntas en el flujo completo con wake word, con el primer audio reproducido en la placa).
+**Estado: EN CURSO** (medidas por separado el 24/10: detección del wake word 1,11 s y respuesta del servidor 8,8 s local / 5,7 s nube de mediana; falta la sesión del flujo completo con wake word y el log de la placa, ya preparada en `docs/experimento-flujo-completo.md`).
+
+Preparado el 24/10 para cerrar 1.2:
+- `platformio.ini` graba el monitor con hora (`time`, `log2file`).
+- El panel encuentra el log también en `firmware/logs/` (antes la tabla «percibida en la placa» salía vacía) y añade la detección del wake word al informe.
+- `src.benchmark.placa` separa la primera pregunta después de cada «Hola NEO» (el flujo completo).
+- Falta: una sesión de las 31 frases, cada una con «Hola NEO» delante (~15 min).
 
 Se miden los dos perfiles con el mismo audio: `local` (faster-whisper + Ollama + Piper, sin internet) y `nube` (Groq STT + Groq LLM + edge-tts), con la velocidad de internet en el informe y la calidad del STT (WER, CER, intención correcta). Herramientas y guía en `servidor/benchmark/README.md`:
 1. Grabar el corpus (31 frases de `servidor/benchmark/frases.csv`) con la placa, con `GUARDAR_AUDIO_DIR`.

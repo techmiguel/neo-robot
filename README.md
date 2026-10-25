@@ -36,11 +36,18 @@ firmware.
 ### Conversation flow
 
 1. **REST** — OLED screen off (power saving); microphone + inference listening.
-2. **"Hola NEO"** — local model detects it; NEO turns on the screen (animated eyes +
-   connection status) and says **"¡Hola!"**.
-3. **CONVERSATION** — hands-free: records a question, sends it, plays the response,
-   and listens again.
+   After 10 min without activity the WiFi is switched off and the CPU drops to
+   80 MHz (deep rest); the wake word keeps listening.
+2. **"Hola NEO"** — local model detects it (~1.1 s after the phrase ends); NEO turns
+   on the screen (animated eyes + connection status) and greets with a prerecorded
+   phrase ("¡Hola!", "¡Dime!", "¿Sí? Te escucho."). If the network was off it
+   reconnects meanwhile.
+3. **CONVERSATION** — hands-free: records a question (with 300 ms of pre-roll),
+   sends it, plays the response, and listens again.
 4. **Silence > 10s** — NEO returns to REST and requires the wake word again.
+
+NEO always speaks with the same voice (edge-tts `es-CU-ManuelNeural`; Piper only if
+edge-tts fails). Details: [docs/estrategia-software.md](docs/estrategia-software.md).
 
 ## Hardware
 
@@ -132,11 +139,11 @@ After the wake word, NEO deduces intent from the transcribed audio:
 
 | Intent (keywords) | Action | Source |
 |-------------------|--------|--------|
-| weather / time / temperature | Current weather | OpenWeatherMap |
-| dollar / rate / euro / El Toque | Informal CUP rates | El Toque API |
+| weather / "qué tiempo hace" / temperature / forecast | Current weather (default city La Habana) | OpenWeatherMap |
+| dollar / euro / rate / El Toque | Informal CUP rates (El Toque publishes the euro as `ECU`) | El Toque API |
 | bitcoin / ethereum / crypto | Crypto price | CoinGecko |
-| news / headlines | Latest news | NewsAPI |
-| anything else | Free response | LLM (Groq) |
+| news / headlines | Tech news: Apple, Google, Microsoft, Nvidia, Meta, Amazon, Samsung, OpenAI… (Spanish press, last 2 days, one headline per outlet) | NewsAPI |
+| anything else | Free response in NEO's voice ([personality](#personality)) | LLM (Groq or Ollama) |
 
 ## Design decisions
 
@@ -186,14 +193,18 @@ The LLM is only used for free-form queries that don't match any keyword pattern.
 
 ## Failure modes
 
+All the messages below are prerecorded in the firmware (Manuel's voice, 2–3 variants each), so NEO can say them without a server.
+
 | Scenario | What happens | User experience |
 |----------|--------------|-----------------|
-| **No server** (LAN + cloud down) | ESP32 shows "WS lost" on OLED, returns to REST | Wake word still works, but queries get no response |
-| **No network** (WiFi down) | ESP32 tries to reconnect, shows "No WiFi..." on OLED | Wake word still works locally, but queries fail |
-| **Empty LLM response** | Server guard: returns "No tengo una respuesta clara para eso." | User hears fallback message instead of silence |
-| **Wake word false positive** | Model threshold (0.7618) filters most false positives; single confirmation (CONF_MINIMAS=1) | Rare false wakes; user can ignore and wait for 10s timeout |
-| **STT timeout** | Groq API timeout → exception caught, error sent to ESP32 | OLED shows "Server error", returns to REST |
-| **TTS failure** | edge-tts exception → error sent to ESP32 | OLED shows "Server error", returns to REST |
+| **No server** (LAN + cloud down) | tareaWs keeps retrying; a pending question is dropped | NEO says "No encuentro mi servidor" (once while resting) and "Ya estoy conectado y listo" when it is back |
+| **No network** (WiFi down) | Same, with the WiFi | "No puedo conectarme a la wifi" / "No encuentro la red wifi"; the wake word keeps working |
+| **No internet on the server** (Groq, edge-tts or a handler API) | Server sends `{"cmd":"error","codigo":"sin_internet"}` | "No puedo acceder a internet ahora" |
+| **Empty transcription** | Server sends `codigo: no_entendi` | "No te entendí, ¿me lo repites?" and NEO listens again |
+| **Server silent > 30 s** | Firmware timeout | "Está tardando demasiado, inténtalo otra vez" |
+| **edge-tts fails** | Server answers with Piper | Different voice for that answer, but an answer |
+| **LLM answers in another script** (qwen2.5:3b drifts into Chinese) | Server asks again once, then strips non-Latin text | Spanish answer, possibly shorter |
+| **Wake word false positive** | Threshold 0.7618, single confirmation (CONF_MINIMAS=1) | NEO greets, hears nothing for 10 s and goes back to rest |
 
 ## Security & limitations
 
@@ -207,8 +218,9 @@ The LLM is only used for free-form queries that don't match any keyword pattern.
 
 ### Limitations
 
-- **No conversation memory** (yet). Each query is independent. See
-  [docs/diseno-memoria.md](docs/diseno-memoria.md) for the design evaluation.
+- **Short conversation memory only.** The server keeps the last 10 messages (5 exchanges) per
+  WebSocket session, in RAM; the session ends when the network sleeps after 10 min, so
+  NEO forgets. See [docs/diseno-memoria.md](docs/diseno-memoria.md).
 - **Battery power is marginal**. NEO runs from one 18650 cell through an MT3608 boost
   converter into its 5V pin, but the converter cannot hold 5 V above ~350 mA: the line
   sags to ~3.8 V when the speaker starts and the ESP32-S3 can reset (brownout). Peaks
@@ -219,9 +231,9 @@ The LLM is only used for free-form queries that don't match any keyword pattern.
 - **Single language** (Spanish). The STT, LLM prompt, and TTS are all Spanish-only.
   Adding multilingual support would require changes across the pipeline.
 - **Local profile is less accurate than the cloud one.** The server can run fully
-  local (Faster-Whisper small + Ollama `qwen2.5:3b` + Piper) or in the cloud (Groq +
-  edge-tts); locally the transcription error rate is higher and the small LLM makes
-  factual mistakes.
+  local (Faster-Whisper small + Ollama `qwen2.5:3b`, edge-tts voice with Piper as
+  fallback) or in the cloud (Groq + edge-tts); locally the transcription error rate is
+  higher and the small LLM makes factual mistakes and keeps less of the personality.
 
 ## Measured results
 
