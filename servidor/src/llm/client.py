@@ -9,6 +9,8 @@ de que el LLM termine; ask() la devuelve completa (pruebas, precarga).
 
 import json
 import os
+import re
+import unicodedata
 from collections.abc import Iterator
 
 from dotenv import load_dotenv
@@ -18,18 +20,44 @@ load_dotenv()
 GROQ_LLM_DEFAULT     = "openai/gpt-oss-20b"
 OLLAMA_MODEL_DEFAULT = "llama3.2"
 
-# System prompt con personalidad distintiva de NEO.
-# Parametrizable por .env (NEO_SYSTEM_PROMPT) para ajustar sin tocar código.
-# La concisión es crítica: el TTS genera audio, y frases largas = latencia alta.
+# System prompt: personalidad de NEO inspirada en Ford Prefect (La guía del
+# autoestopista galáctico), pero sin nombrar el libro, el personaje ni la Guía: NEO
+# tiene ese carácter, no hace referencias a la obra. Parametrizable por .env
+# (NEO_SYSTEM_PROMPT). Las reglas van después del personaje y mandan sobre él: el
+# dato primero y respuestas cortas, porque el TTS las lee en voz alta.
+# Los ejemplos son propios: a un modelo de 3B le enseñan el tono mejor que la
+# descripción, y dos de cuatro van sin guiño para que no lo meta en todas.
+# Evaluación en docs/metrics/prompt_20261024/.
 SYSTEM_PROMPT = os.getenv(
     "NEO_SYSTEM_PROMPT",
-    "Soy NEO, un robot asistente que vive en un ESP32-S3. "
-    "Tengo personalidad directa, un toque sarcástico pero siempre útil. "
-    "Respondo en español con UNA sola oración de máximo 20 palabras. "
-    "No me enrolló, no pido disculpas, no uso muletillas. "
-    "Si algo es obvio, lo digo. Si no sé, lo admito sin rodeos. "
-    "Mi objetivo: ser el asistente más eficiente del mundo embebido."
+    "Eres NEO, un pequeño robot asistente. Por dentro eres un viajero de un planeta lejano "
+    "que lleva años varado en la Tierra, observando a los humanos. Eres curioso, relajado e "
+    "imperturbable. Los humanos te parecen fascinantes y un poco absurdos, y lo comentas con "
+    "humor seco pero amable. Nunca te alarmas: ante un problema, primero calma. Solo de vez "
+    "en cuando, si viene a cuento, haces un guiño a tu vida de viajero (tu toalla, tus viajes "
+    "a dedo por la galaxia, lo raros que son los terrícolas); la mayoría de tus respuestas "
+    "no lo llevan.\n"
+    "Reglas, por encima del personaje:\n"
+    "- Responde siempre en español, solo con alfabeto latino. Nunca escribas en chino, "
+    "inglés ni otro idioma.\n"
+    "- Primero el dato correcto; después, si cabe, un comentario breve. Si no estás seguro "
+    "del dato, dilo.\n"
+    "- Nunca hables de guías de viaje ni digas en qué libro o personaje te inspiras.\n"
+    "- Máximo 20 palabras en total, en una o dos frases: se leen en voz alta.\n"
+    "- Texto plano, sin emojis, listas ni markdown.\n"
+    "Ejemplos de tu estilo:\n"
+    "Pregunta: ¿Cuál es la capital de Francia?\n"
+    "Respuesta: París. Construyeron una torre de hierro solo para subir y mirar abajo; muy humano.\n"
+    "Pregunta: ¿Cuánto es siete por ocho?\n"
+    "Respuesta: Cincuenta y seis. Sin trucos.\n"
+    "Pregunta: ¿Cuánto mide la Luna?\n"
+    "Respuesta: Unos 3.474 kilómetros de diámetro. Vista desde la galaxia, una canica.\n"
+    "Pregunta: Estoy nervioso por un examen.\n"
+    "Respuesta: Que no cunda el pánico: repasa lo que mejor sabes y duerme bien."
 )
+# Si el modelo cambia de alfabeto (qwen2.5:3b a veces sigue en chino), se repite la
+# petición una vez con este recordatorio; el TTS en español no puede leerlo.
+RECORDATORIO_IDIOMA = "Responde de nuevo solo en español, con alfabeto latino."
 
 RESPUESTA_VACIA = "No tengo una respuesta clara para eso."
 
@@ -57,6 +85,11 @@ def _sesion_http():
 
 def _stream_groq(messages: list[dict]) -> Iterator[str]:
     modelo = os.getenv("GROQ_LLM_MODEL", GROQ_LLM_DEFAULT)
+    extra = {}
+    if modelo.startswith("openai/gpt-oss"):
+        # Razonamiento corto: con el de por defecto, gpt-oss se ponía a contar las
+        # palabras del límite y agotaba max_tokens antes de responder (24/10).
+        extra["reasoning_effort"] = os.getenv("GROQ_REASONING_EFFORT", "low")
     stream = _cliente_groq().chat.completions.create(
         model=modelo,
         messages=messages,
@@ -66,22 +99,13 @@ def _stream_groq(messages: list[dict]) -> Iterator[str]:
         max_tokens=512,
         temperature=0.7,
         stream=True,
+        **extra,
     )
-    razonamiento = []
-    hubo_contenido = False
+    # Solo el content. Nunca el campo de razonamiento, que es un borrador en inglés
+    # y el TTS lo leería en voz alta; sin content, ask_stream emite RESPUESTA_VACIA.
     for chunk in stream:
-        if not chunk.choices:
-            continue
-        delta = chunk.choices[0].delta
-        if delta.content:
-            hubo_contenido = True
-            yield delta.content
-        elif getattr(delta, "reasoning", None):
-            razonamiento.append(delta.reasoning)
-    # Algunos modelos ponen la respuesta solo en el campo de razonamiento si el
-    # content viene vacío.
-    if not hubo_contenido and "".join(razonamiento).strip():
-        yield "".join(razonamiento).strip()
+        if chunk.choices and chunk.choices[0].delta.content:
+            yield chunk.choices[0].delta.content
 
 
 def _opciones_ollama() -> dict:
@@ -101,7 +125,7 @@ def _opciones_ollama() -> dict:
 
 
 def _stream_ollama(messages: list[dict]) -> Iterator[str]:
-    host  = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
     model = os.getenv("OLLAMA_MODEL", OLLAMA_MODEL_DEFAULT)
     cuerpo = {
         "model": model,
@@ -169,16 +193,11 @@ def ask_stream(prompt: str, messages: list[dict] = None) -> Iterator[str]:
 
     Bloqueante: desde asyncio, consumir en un hilo.
     """
-    provider = os.getenv("LLM_PROVIDER", "groq")
-    if provider == "groq":
-        stream = _stream_groq(_mensajes(prompt, messages))
-    elif provider == "ollama":
-        stream = _stream_ollama(_mensajes(prompt, messages))
-    else:
-        raise ValueError(f"LLM_PROVIDER desconocido: {provider}")
-
     hubo_texto = False
-    for trozo in stream:
+    for trozo in _stream_crudo(_mensajes(prompt, messages)):
+        # Lo ya enviado al TTS no se puede repetir: aquí solo se quitan las letras
+        # de otro alfabeto (qwen2.5:3b se pasa al chino). ask() sí repite la petición.
+        trozo = "".join(c for c in trozo if not c.isalpha() or "LATIN" in unicodedata.name(c, ""))
         if trozo.strip():
             hubo_texto = True
         yield trozo
@@ -189,6 +208,38 @@ def ask_stream(prompt: str, messages: list[dict] = None) -> Iterator[str]:
 def ask(prompt: str, messages: list[dict] = None) -> str:
     """Envía un prompt al LLM y retorna la respuesta completa en texto.
 
-    Usa el backend configurado en LLM_PROVIDER (.env).
+    Usa el backend configurado en LLM_PROVIDER (.env). Si el modelo cambia de
+    alfabeto, repite la petición una vez con RECORDATORIO_IDIOMA.
     """
-    return "".join(ask_stream(prompt, messages)).strip()
+    crudo = lambda msgs: "".join(_stream_crudo(msgs)).strip()
+    mensajes = _mensajes(prompt, messages)
+    primero = crudo(mensajes)
+    if primero and solo_latino(primero):
+        return primero
+    texto = crudo(mensajes + [{"role": "assistant", "content": primero},
+                              {"role": "user", "content": RECORDATORIO_IDIOMA}]) if primero else ""
+    if texto and solo_latino(texto):
+        return texto
+    return (quitar_no_latino(texto) or quitar_no_latino(primero)
+            or ("Eso no sé decirlo en español, y mira que lo he intentado." if primero else RESPUESTA_VACIA))
+
+
+def _stream_crudo(messages: list[dict]) -> Iterator[str]:
+    provider = os.getenv("LLM_PROVIDER", "groq")
+    if provider == "groq":
+        return _stream_groq(messages)
+    if provider == "ollama":
+        return _stream_ollama(messages)
+    raise ValueError(f"LLM_PROVIDER desconocido: {provider}")
+
+
+def solo_latino(texto: str) -> bool:
+    """True si todas las letras son del alfabeto latino (con tildes y ñ)."""
+    return all("LATIN" in unicodedata.name(c, "") for c in texto if c.isalpha())
+
+
+def quitar_no_latino(texto: str) -> str:
+    """Último recurso: deja solo letras latinas, cifras, espacios y puntuación."""
+    limpio = "".join(c for c in texto if not c.isalpha() or "LATIN" in unicodedata.name(c, ""))
+    limpio = re.sub(r"[^\w\s.,;:¿?¡!'\"()%-]", "", limpio)
+    return " ".join(limpio.split())
