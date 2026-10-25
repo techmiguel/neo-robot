@@ -1,5 +1,143 @@
 # Análisis: gemma4:e2b + respuesta en streaming (25/10)
 
+Dos sesiones el mismo día:
+
+1. **11:52, tres variantes** (`gemma`, `gemma-completa`, `qwen-ref`): `informe.md` y
+   `resultados.csv` de esta carpeta. Es la que se analiza a partir de «Configuración».
+2. **13:10, solo `gemma` en streaming**, con el firmware nuevo (calibración del VAD por
+   percentil) y el prompt nuevo de NEO: [`sesion_1310/`](sesion_1310/). Su análisis está en la
+   sección siguiente.
+
+## Segunda sesión (13:10): solo gemma, firmware y prompt nuevos
+
+**Resumen.**
+
+- **La captura queda arreglada:** WER del 5,1 % (11,1 % en la primera sesión, 6,2 % local
+  el 24/10) e intención correcta en el 100 % de los casos.
+- **La latencia empeoró por el prompt nuevo:** primer token en 11,4 s, frente a 2,9 s en
+  `gemma-completa` con el prompt antiguo.
+- **El streaming ahora sí parte las respuestas:** adelanta el primer audio ~1,9 s.
+- Hubo una caída de red de 13:53 a 14:00, y el monitor de la placa se congeló a las 13:45.
+
+### Qué cambió respecto a la primera sesión
+
+| | 11:52 | 13:10 |
+|---|---|---|
+| Variantes | 3, en serie (sesgo de orden) | solo `gemma`; qwen descargado de Ollama |
+| Firmware | calibración del VAD por media | **percentil 25** (`a05d7b7`) |
+| System prompt | antiguo (118 tokens) | **nuevo, personaje con ejemplos (409 tokens)** (`d781ce3`) |
+| WER | criterio con tildes | **sin tildes** (`c335ff6`) |
+| Ritmo | ~30 s por frase | ~33 s por frase (el LLM es más lento), con una pausa de 74 min antes de c05 |
+
+### Transcripción: la captura queda arreglada
+
+| | 13:10 | 11:52 | 24/10 local |
+|---|---|---|---|
+| WER (sin tildes) | **5,1 %** | 11,1 % | 6,2 % |
+| WER con tildes | 7,2 % | 14,0 % | 9,7 % |
+| CER | 1,4 % | 6,7 % | 1,4 % |
+| Frases exactas | 74,2 % | 60,6 % | 80,6 % |
+| Intención correcta | **100 %** | 97,0 % | — |
+| Inicios perdidos | **1** (c03 «aguanto está el dólar») | 8 | 2–3 |
+| Alucinaciones sobre ruido | 1 (f03/1, descartado) | 3 | — |
+
+- **Calibración.** El ruido calibrado sale ahora 15–16 en todos los turnos, que es el mínimo
+  (`VAD_RUIDO_MIN`). En la primera sesión salía 18–203. El umbral de inicio queda fijo en
+  90–96.
+- **El fin de la grabación sigue bien:** 2,9–4,2 s, siempre por «Silencio prolongado» salvo
+  una vez.
+- **Un falso disparo.** Esa excepción es f03/1 (13:15:40): el VAD se disparó, cortó por «Sin
+  voz útil» a los 2,98 s y Whisper transcribió «Subtítulos por la comunidad de Amara.org». Con
+  un umbral más bajo, un ruido puede abrir la grabación. Si se repite, conviene subir
+  `VAD_RUIDO_MIN` (por ejemplo a 25, umbral 150), que sigue muy por debajo de los 1220 del
+  fallo original.
+- **Errores restantes:** «Explígame» (×2), «recomiendan» y «que gome» son pronunciación o
+  terminación, no cortes de la captura.
+
+### Latencia: el prompt nuevo cuesta ~8,5 s de primer token
+
+Preguntas libres, mediana. Sin las 5 frases de la caída de red, n = 20:
+
+| Tramo | 13:10 gemma (streaming) | 11:52 gemma-completa | 11:52 gemma corregida |
+|---|---|---|---|
+| STT | 2,38 | 2,43 | — |
+| LLM, primer token | **11,39** | 2,89 | ~2,9 |
+| LLM, respuesta completa | 14,44 | 4,69 | — |
+| TTS del primer fragmento | 2,89 | 2,99 | 2,99 |
+| Empieza a hablar (servidor) | **18,01** | 10,40 | 9,88 |
+| Palabras por respuesta | 16 | 10,5 | 10,5 |
+| Fragmentos de TTS | 2 | 1 | 1 |
+
+Medido directamente en Ollama con gemma4:e2b, tres preguntas distintas cada vez:
+
+| System prompt | Tokens de prompt | Tiempo de prompt |
+|---|---|---|
+| Nuevo (personaje + 4 ejemplos) | 409 | 8,4–11,6 s |
+| Antiguo | 118 | 2,7–3,2 s |
+
+**Ollama no reutiliza el system prompt entre preguntas distintas con gemma4:e2b.** En la
+primera sesión solo lo reutilizaba cuando la petición era idéntica. Por eso los 291 tokens de
+más se pagan en cada pregunta, a ~37 tokens/s. Además, la respuesta sale más larga: 16
+palabras frente a 10,5, y la generación completa pasa de 4,7 a 14,4 s. **Con este i5, el
+prompt nuevo no es viable para el perfil local.** En la nube (Groq) no importa.
+
+Hay dos salidas, y ninguna está aplicada todavía:
+
+- **Un prompt corto para el perfil local:** el mismo personaje y las mismas reglas, sin los
+  ejemplos, que son ~200 tokens. Se puede poner en `NEO_SYSTEM_PROMPT` del perfil.
+- **Medir si qwen2.5:3b reutiliza el prefijo.** En la primera sesión, qwen procesó 49 tokens
+  en 1,0–1,7 s.
+
+**Streaming.** Con respuestas de 16 palabras, la mediana es de 2 fragmentos y el audio sigue
+llegando 2,8 s después del primero. Si se esperara la respuesta completa, NEO empezaría a
+hablar al terminar el LLM más el TTS de la oración entera, ~3,1 s medidos con 17 palabras:
+unos 19,9 s. Con streaming empezó a los 18,0 s: **~1,9 s de ganancia**. Es más que en la
+primera sesión (0,4 s), porque ahora las respuestas sí se parten. El primer fragmento sale
+1,0 s después del primer token.
+
+### En la placa
+
+El log solo cubre hasta las 13:45:41, cuando el monitor se congeló (6 turnos; la placa siguió
+funcionando). Es la segunda vez que pasa, tras 24–35 min de monitor en el panel Terminal de
+la app. Para la próxima sesión conviene lanzarlo en una ventana de PowerShell aparte.
+
+| Tramo (n = 5) | Mediana | p90 |
+|---|---|---|
+| Espera de silencio del VAD | 1,50 | 1,50 |
+| Subida por WiFi | 0,61 | 0,67 |
+| Servidor + red hasta el primer audio | 18,02 | 22,91 |
+| Primer audio → empieza a sonar | 0,02 | 0,02 |
+| **Percibida total** | **20,14** | 25,00 |
+
+- **La reproducción progresiva funciona:** empieza 20 ms después del primer audio, unos 2,6 s
+  antes de que llegue `fin_respuesta`. Hubo 0 esperas por datos en 5 de 6 respuestas y 1 en
+  la otra.
+- **Wake word:** del fin de «Hola NEO» a la confirmación pasan 1,09 s de mediana (n = 5),
+  igual que el 24/10 (1,11 s).
+
+### Caída de red (13:53–14:00)
+
+El PC perdió el DNS (`getaddrinfo failed`). Cada consulta esperaba ~10 s y fallaba:
+
+- **Comandos c01–c04:** respondieron «No pude conectarme al servicio de clima» y similares.
+- **TTS:** edge-tts cayó a Piper.
+- **Preguntas f20–f24:** TTS de 20–30 s.
+
+El informe cuenta c01–c04 como «intención correcta» y sin errores, porque la intención sí se
+detectó y el error se dijo en voz alta. Las latencias de comandos de esta sesión no valen:
+3 de 7 son válidas y el TTS de c05–c07, a las 15:14, todavía fue lento (9,7 s).
+
+### Siguiente
+
+1. Prompt corto para el perfil local y repetir solo las 24 preguntas libres; el objetivo es
+   volver a ~10 s en «Empieza a hablar» con la ganancia del streaming.
+2. Monitor de la placa fuera del panel Terminal de la app.
+3. Si vuelve a haber alucinaciones sobre ruido, `VAD_RUIDO_MIN` a 25.
+
+---
+
+## Primera sesión (11:52): tres variantes
+
 Sesión `servidor/logs/panel/20261025_115254`, 31 frases del corpus leídas a la placa
 (33 intentos válidos), variantes `gemma` (streaming, la que oyó la placa),
 `gemma-completa` y `qwen-ref`. Plan e hipótesis en [`PLAN.md`](PLAN.md); referencia en
@@ -18,7 +156,7 @@ Corregido el sesgo, el streaming adelanta el primer audio unos **0,4 s** en preg
 y **1,3 s** en noticias. Las dos palancas grandes no son el streaming: son el coste fijo de
 edge-tts (~1,9 s por llamada) y la captura. Hay que repetir la sesión (ver al final).
 
-## Configuración frente al 24/10
+### Configuración frente al 24/10
 
 | | 24/10 (local) | 25/10 |
 |---|---|---|
@@ -29,7 +167,7 @@ edge-tts (~1,9 s por llamada) y la captura. Hay que repetir la sesión (ver al f
 | Firmware | reproduce al recibir `fin_respuesta` | reproducción progresiva (colchón de 256 ms) |
 | Ritmo | ~15 s entre frases, la placa seguía en conversación | ~30 s por frase: la placa volvía a reposo y cada pregunta empezaba con «Hola NEO» |
 
-## 1. «Empieza a hablar» y latencia percibida
+### 1. «Empieza a hablar» y latencia percibida
 
 Preguntas libres, mediana (p90), en segundos, desde `fin_grabacion`:
 
@@ -73,7 +211,7 @@ la sesión (11:52). De la sesión anterior (`20261025_111116`, gemma en streamin
 dos turnos. En ambos, de `grabacion_fin` a `playback_inicio` pasaron 12,1 s, que con los 1,5 s
 del VAD dan **13,6–13,7 s percibidos**. Fue con gemma recién cargada y el mismo sesgo de orden.
 
-## 2. Primer token frente a respuesta completa
+### 2. Primer token frente a respuesta completa
 
 - `gemma`: el primer token llega 1,9 s antes del final (5,92 frente a 7,87). En
   `gemma-completa`, 1,8 s antes (2,89 frente a 4,69). **El modelo no razona:** sin
@@ -100,7 +238,7 @@ fijo de edge-tts. Mientras la placa reproduzca más rápido de lo que llegan los
 se oye como pausas entre frases; de noticias no hay log de la placa para comprobarlo. Clima,
 toque y cripto son un solo fragmento y no cambian (5,7–6,6 s).
 
-## 3. WER e intención
+### 3. WER e intención
 
 **Criterio rectificado:** desde el 25/10 el WER, el CER y las frases exactas se calculan **sin
 tildes** (`metricas.py`); el WER con tildes queda como fila aparte, para comparar con lo
@@ -138,7 +276,7 @@ el VAD no oyó la frase. Con un umbral inflado, la voz solo lo supera ya entrada
 percentil 25 de los 32 bloques en vez de la media. El ruido de fondo está en casi todos los
 bloques, y la voz que entra en parte de la ventana ya no lo infla.
 
-## 4. Esperas por datos en la placa
+### 4. Esperas por datos en la placa
 
 Solo hay log de los dos turnos de la sesión anterior: **0 esperas por datos en ambos.** En el
 primero, la reproducción empezó 2,9 s antes de que llegara `fin_respuesta`. En el segundo,
@@ -146,7 +284,7 @@ llegaron 20 KB de golpe y `fin_respuesta` 150 ms después. La reproducción prog
 firmware funciona. Con un solo fragmento por respuesta no hay huecos que esperar; los habría
 en noticias, pero de esas no hay log.
 
-## 5. Calidad de las respuestas
+### 5. Calidad de las respuestas
 
 - **Cambios de idioma: ninguno** en 35 respuestas por variante, tampoco en qwen2.5:3b (2 de 24 el 24/10).
   Desde esta rama, `ask()` repite la pregunta si el modelo cambia de alfabeto, y `ask_stream()`
@@ -162,7 +300,7 @@ en noticias, pero de esas no hay log.
   `ECU`; ya está corregido (`router.py`, `toque.py`) y verificado contra la API: «El euro está
   a 930 pesos cubanos». Además, las tasas se leen «835» y no «835.0».
 
-## Hipótesis del plan
+### Hipótesis del plan
 
 | Hipótesis | Resultado |
 |---|---|
@@ -171,7 +309,7 @@ en noticias, pero de esas no hay log.
 | El streaming adelanta «Empieza a hablar» 2–3,5 s, hasta 5–6,5 s | **No se cumple:** 0,44 s una vez corregido el sesgo (9,9 s). Las respuestas de una oración casi nunca se parten, y edge-tts cobra ~1,9 s por fragmento. En noticias, 1,3 s menos hasta la primera palabra, a cambio de terminar 8 s más tarde. |
 | Lo que queda lo dominan el STT (~2,3 s) y el VAD (1,5 s) | **En parte:** STT 2,4 s, LLM hasta el primer fragmento ~4,5 s sin el sesgo, TTS del primer fragmento 3,0 s. El TTS por llamada pesa tanto como el STT. |
 
-## Qué cambia y siguientes pasos
+### Qué cambia y siguientes pasos
 
 1. **Repetir la sesión** con el firmware nuevo (calibración por percentil), el monitor abierto
    toda la sesión (`--port COM8`) y, para no sesgar, **una sola variante de gemma por sesión**:
