@@ -1,7 +1,7 @@
 """
 Handler de tasas de cambio informal — El Toque API.
 Requiere: ELTOQUE_API_KEY en .env
-Monedas soportadas: USD, EUR, MLC, ECU (según disponibilidad de la API)
+Monedas: USD, ECU (el euro: así lo publica El Toque), MLC, BTC, TRX, USDT_TRC20
 """
 
 import asyncio
@@ -18,9 +18,8 @@ _BASE = "https://tasas.eltoque.com/v1/trmi"
 
 _NOMBRES = {
     "USD": "dólar estadounidense",
-    "EUR": "euro",
+    "ECU": "euro",
     "MLC": "MLC",
-    "ECU": "ECU",
     "CAD": "dólar canadiense",
     "GBP": "libra esterlina",
 }
@@ -33,6 +32,7 @@ class ToqueTasasHandler(Handler):
             return "El servicio de tasas de cambio no está configurado."
 
         moneda = args.get("moneda", "USD").upper()
+        moneda = {"EUR": "ECU"}.get(moneda, moneda)   # por si llega el código ISO
 
         def _fetch():
             r = requests.get(
@@ -62,7 +62,12 @@ class ToqueTasasHandler(Handler):
             )
 
         nombre = _NOMBRES.get(moneda, moneda)
-        return f"El {nombre} está a {tasa} pesos cubanos."
+        return f"El {nombre} está a {_formatear(tasa)} pesos cubanos."
+
+
+def _formatear(tasa: float) -> str:
+    """930.0 → "930", 675.58 → "675,58": el TTS leía "930 punto 0"."""
+    return str(int(tasa)) if tasa == int(tasa) else f"{tasa:.2f}".replace(".", ",")
 
 
 def _extraer_tasa(data, moneda: str):

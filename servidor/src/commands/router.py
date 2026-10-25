@@ -36,24 +36,28 @@ _INTENCIONES: list[tuple[str, list[str]]] = [
     ("toque",    [r"\bdolar\b", r"d[óo]lar", r"\beuro\b", r"\bcupo\b",
                   r"\btasas?\b", r"el toque", r"moneda nacional",
                   r"peso cubano", r"trmi"]),
-    ("cripto",   [r"cripto", r"bitcoin", r"\bbtc\b", r"ethereum", r"\beth\b",
+    ("cripto",   [r"cripto", r"bitc[oó]in", r"\bbtc\b", r"ethereum", r"\beth\b",
                   r"solana", r"cardano", r"moneda digital", r"criptomoneda"]),
     ("noticias", [r"noticia", r"novedades", r"actualidad", r"que paso",
                   r"qu[ée] pas[óo]", r"titulares?"]),
-    ("clima",    [r"\bclima\b", r"\btiempo\b", r"temperatura", r"grados",
+    # "tiempo" solo con contexto meteorológico: suelto disparaba el clima con
+    # transcripciones como «tiempo de josé martín» (24/10).
+    ("clima",    [r"\bclima\b", r"qu[ée] tiempo (hace|va a hacer)", r"\btiempo (de )?(hoy|mañana)",
+                  r"\btiempo (hace|en)\b", r"pron[óo]stico", r"temperatura", r"grados",
                   r"\blluvia", r"llover", r"temperaturas?\b", r"cu[áa]nto hace"]),
     ("hola",     [r"^hola\b", r"\bbuenas\b", r"holi", r"que tal", r"qu[ée] tal"]),
 ]
 
 # Extracción de args específicas por tipo (moneda de cripto/toque).
 _CRIPTO_IDS = {
-    "bitcoin": "bitcoin", "btc": "bitcoin",
+    "bitcoin": "bitcoin", "bitcóin": "bitcoin", "btc": "bitcoin",
     "ethereum": "ethereum", "ether": "ethereum", "eth": "ethereum",
     "solana": "solana", "cardano": "cardano",
 }
 _TOQUE_CODIGOS = {
     "dolar": "USD", "dólar": "USD", "dolar": "USD",
-    "euro": "EUR", "mlc": "MLC", "ecu": "ECU",
+    # El Toque publica el euro como ECU, no EUR: {"ECU": 930.0, "USD": 835.0, ...}
+    "euro": "ECU", "mlc": "MLC", "ecu": "ECU",
     "canadiense": "CAD", "libra": "GBP",
 }
 
