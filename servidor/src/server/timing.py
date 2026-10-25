@@ -4,7 +4,9 @@ Instrumentación de latencia por etapa del pipeline.
 Registra timestamps estructurados en JSONL para análisis posterior:
 - stt_start, stt_end
 - llm_start, llm_end (solo si se usa LLM libre)
-- tts_start, tts_end
+- llm_primer_token (primer token del stream del LLM)
+- tts_start, tts_end (primer y último fragmento; se solapan con el LLM)
+- primer_audio (primer chunk de audio enviado al ESP32)
 - pipeline_start, pipeline_end
 
 Metadatos: session_id, modo, proveedor, tipo_consulta, longitud_audio, longitud_respuesta.
@@ -58,7 +60,9 @@ class PipelineTimer:
             "durations": {
                 "stt": self.duration("stt_start", "stt_end"),
                 "llm": self.duration("llm_start", "llm_end"),
+                "llm_primer_token": self.duration("llm_start", "llm_primer_token"),
                 "tts": self.duration("tts_start", "tts_end"),
+                "primer_audio": self.duration("pipeline_start", "primer_audio"),
                 "pipeline": self.duration("pipeline_start", "pipeline_end"),
             },
         }

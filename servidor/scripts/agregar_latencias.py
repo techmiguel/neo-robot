@@ -69,8 +69,8 @@ def generar_resumen_md(grupos):
         "",
         "## Por escenario",
         "",
-        "| Escenario | N | STT (p50) | Handler/LLM (p50) | TTS (p50) | Pipeline total (p50) |",
-        "|-----------|---|-----------|-------------------|-----------|----------------------|",
+        "| Escenario | N | STT (p50) | Handler/LLM (p50) | TTS (p50) | Primer audio (p50) | Pipeline total (p50) |",
+        "|-----------|---|-----------|-------------------|-----------|--------------------|----------------------|",
     ]
 
     for escenario, sesiones in sorted(grupos.items()):
@@ -85,17 +85,22 @@ def generar_resumen_md(grupos):
                 pass
         tts_vals = [s["durations"]["tts"] for s in sesiones if s["durations"]["tts"] > 0]
         pipeline_vals = [s["durations"]["pipeline"] for s in sesiones if s["durations"]["pipeline"] > 0]
+        # Solo existe en sesiones con respuesta en streaming
+        primer_vals = [s["durations"].get("primer_audio", 0) for s in sesiones
+                       if s["durations"].get("primer_audio", 0) > 0]
 
         stt_stats = calcular_estadisticas(stt_vals)
         handler_llm_stats = calcular_estadisticas(handler_llm_vals)
         tts_stats = calcular_estadisticas(tts_vals)
         pipeline_stats = calcular_estadisticas(pipeline_vals)
+        primer_stats = calcular_estadisticas(primer_vals)
 
         lineas.append(
             f"| {escenario} | {pipeline_stats['n']} | "
             f"{stt_stats['p50']:.2f}s | "
             f"{handler_llm_stats['p50']:.2f}s | "
             f"{tts_stats['p50']:.2f}s | "
+            f"{primer_stats['p50']:.2f}s | "
             f"{pipeline_stats['p50']:.2f}s |"
         )
 
@@ -105,7 +110,8 @@ def generar_resumen_md(grupos):
         "",
         "- STT: transcripción (Groq Whisper)",
         "- Handler/LLM: deducción de respuesta (handler keyword o LLM libre)",
-        "- TTS: síntesis de voz (edge-tts)",
+        "- TTS: síntesis de voz (edge-tts); con streaming, del primer al último fragmento",
+        "- Primer audio: desde que llega el audio del usuario hasta el primer chunk de respuesta",
         "- Pipeline total: suma de todas las etapas en el servidor",
         "",
         f"*Generado automáticamente por `scripts/agregar_latencias.py`*",
@@ -117,7 +123,7 @@ def generar_resumen_md(grupos):
 def generar_csv(sesiones):
     """Genera CSV con datos crudos por sesión."""
     lineas = [
-        "session_id,modo,tipo_consulta,tipo_intencion,stt_s,handler_llm_s,tts_s,pipeline_s,longitud_audio_bytes,longitud_respuesta_texto,longitud_respuesta_pcm"
+        "session_id,modo,tipo_consulta,tipo_intencion,stt_s,handler_llm_s,tts_s,primer_audio_s,pipeline_s,longitud_audio_bytes,longitud_respuesta_texto,longitud_respuesta_pcm"
     ]
     for s in sesiones:
         meta = s["metadata"]
@@ -126,7 +132,7 @@ def generar_csv(sesiones):
             f"{s['session_id']},{s['modo']},{meta.get('tipo_consulta', '')},"
             f"{meta.get('tipo_intencion', '')},"
             f"{dur['stt']:.3f},{dur.get('llm', 0):.3f},"
-            f"{dur['tts']:.3f},{dur['pipeline']:.3f},"
+            f"{dur['tts']:.3f},{dur.get('primer_audio', 0):.3f},{dur['pipeline']:.3f},"
             f"{meta.get('longitud_audio_bytes', 0)},"
             f"{meta.get('longitud_respuesta_texto', 0)},"
             f"{meta.get('longitud_respuesta_pcm', 0)}"

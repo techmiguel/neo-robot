@@ -11,9 +11,15 @@ Protocolo (texto = JSON, binario = PCM crudo):
     {"cmd":"listo"}          — conexión aceptada, listo para recibir audio
     {"cmd":"procesando"}     — STT+LLM+TTS en curso
     {"cmd":"keepalive"}      — latido durante procesamiento (evita timeout del proxy móvil)
-    bytes                    — chunk de audio PCM respuesta (24 kHz, mono, 16-bit)
+    bytes                    — chunk de audio PCM respuesta (16 kHz, mono, 16-bit)
     {"cmd":"fin_respuesta"}  — último chunk enviado
     {"cmd":"error","msg":"…"}
+
+Respuesta en streaming: el audio se envía por fragmentos (frases o cláusulas)
+en cuanto cada uno está sintetizado, mientras el LLM sigue generando el resto.
+El ESP32 puede empezar a reproducir con el primer chunk; fin_respuesta sigue
+marcando el final, así que un cliente que espera la respuesta completa
+funciona igual.
 """
 
 import asyncio
@@ -21,8 +27,10 @@ import http
 import json
 import logging
 import os
+import threading
 import time
 import uuid
+from collections.abc import AsyncIterator
 
 import websockets
 from dotenv import load_dotenv
@@ -32,6 +40,7 @@ load_dotenv()
 from src.commands.router import CommandRouter
 from src.server.timing import get_timer
 from src.server.memory import memory
+from src.tts.segmentador import Segmentador
 _router = CommandRouter()
 
 MIC_SAMPLE_RATE = 16000  # rate del INMP441 en el ESP32
@@ -83,20 +92,128 @@ async def _modo_echo(ws, buffer: bytearray):
     await _enviar_json(ws, {"cmd": "fin_respuesta"})
 
 
+class _ErrorEnHilo:
+    def __init__(self, exc: BaseException):
+        self.exc = exc
+
+
+async def _iterar_en_hilo(generador_factory) -> AsyncIterator[str]:
+    """Consume un generador bloqueante (stream del LLM) en un hilo aparte y
+    entrega sus elementos al event loop según llegan."""
+    loop  = asyncio.get_running_loop()
+    cola: asyncio.Queue = asyncio.Queue()
+    parar = threading.Event()
+    fin   = object()
+
+    def _trabajador():
+        try:
+            for item in generador_factory():
+                if parar.is_set():
+                    break
+                loop.call_soon_threadsafe(cola.put_nowait, item)
+        except BaseException as e:
+            loop.call_soon_threadsafe(cola.put_nowait, _ErrorEnHilo(e))
+        finally:
+            loop.call_soon_threadsafe(cola.put_nowait, fin)
+
+    asyncio.ensure_future(asyncio.to_thread(_trabajador))
+    try:
+        while True:
+            item = await cola.get()
+            if item is fin:
+                break
+            if isinstance(item, _ErrorEnHilo):
+                raise item.exc
+            yield item
+    finally:
+        parar.set()   # si el consumidor aborta, el hilo deja de leer el stream
+
+
+async def _texto_fijo(texto: str) -> AsyncIterator[str]:
+    yield texto
+
+
+async def _responder_en_streaming(ws, textos: AsyncIterator[str], timer, ka) -> str:
+    """Segmenta el texto entrante, sintetiza cada fragmento y lo envía en
+    cuanto está listo. Devuelve el texto completo de la respuesta.
+
+    Productor (LLM → segmentador) y consumidor (TTS → WebSocket) corren en
+    paralelo: mientras se sintetiza y envía el fragmento N, el LLM ya genera
+    el N+1. El keepalive se detiene con el primer audio: a partir de ahí los
+    chunks binarios mantienen viva la conexión.
+    """
+    from src.tts.synthesizer import synthesize
+
+    fragmentos: asyncio.Queue = asyncio.Queue()
+    partes: list[str] = []
+
+    async def _productor():
+        seg = Segmentador()
+        try:
+            async for texto in textos:
+                partes.append(texto)
+                for frag in seg.feed(texto):
+                    await fragmentos.put(frag)
+            resto = seg.flush()
+            if resto:
+                await fragmentos.put(resto)
+        finally:
+            await fragmentos.put(None)
+
+    productor = asyncio.create_task(_productor())
+    bytes_enviados = 0
+    n_fragmentos = 0
+    try:
+        while (frag := await fragmentos.get()) is not None:
+            if n_fragmentos == 0:
+                timer.mark("tts_start")
+            pcm = await synthesize(frag)
+            n_fragmentos += 1
+            if bytes_enviados == 0:
+                ka.cancel()
+                timer.mark("primer_audio")
+                log.info(f"[stream] primer audio a los "
+                         f"{timer.duration('pipeline_start', 'primer_audio'):.2f}s "
+                         f"← \"{frag}\"")
+            for i in range(0, len(pcm), CHUNK):
+                await ws.send(pcm[i:i + CHUNK])
+            bytes_enviados += len(pcm)
+        timer.mark("tts_end")
+        await productor   # propaga una excepción del LLM, si la hubo
+    except Exception as e:
+        if bytes_enviados == 0:
+            raise
+        # Ya sonó parte de la respuesta: cerrar limpio en vez de mandar error,
+        # el ESP32 reproduce lo recibido y sigue la conversación.
+        log.error(f"[stream] error tras {n_fragmentos} fragmento(s): {e}")
+        timer.set_metadata("error", str(e))
+    finally:
+        if not productor.done():
+            productor.cancel()
+
+    if bytes_enviados == 0:
+        # El ESP32 necesita algo de audio antes de fin_respuesta.
+        pcm = await synthesize("")
+        ka.cancel()
+        await ws.send(pcm)
+        bytes_enviados = len(pcm)
+
+    await _enviar_json(ws, {"cmd": "fin_respuesta"})
+    timer.set_metadata("fragmentos_tts", n_fragmentos)
+    timer.set_metadata("longitud_respuesta_pcm", bytes_enviados)
+    return "".join(partes).strip()
+
+
 async def _modo_consulta(ws, tipo: str, args: dict):
     """Despacha un comando estructurado al handler y devuelve audio TTS."""
-    from src.tts.synthesizer import synthesize
+    timer = get_timer()
+    timer.mark("pipeline_start")
     await _enviar_json(ws, {"cmd": "procesando"})
-    t0 = time.time()
     ka = await _iniciar_keepalive(ws)
     try:
         texto = await _router.handle(tipo, args)
-        log.info(f"[consulta:{tipo}] {time.time()-t0:.2f}s → \"{texto}\"")
-        pcm = await synthesize(texto)
-        ka.cancel()
-        for i in range(0, len(pcm), CHUNK):
-            await ws.send(pcm[i:i + CHUNK])
-        await _enviar_json(ws, {"cmd": "fin_respuesta"})
+        log.info(f"[consulta:{tipo}] {time.time() - timer.timestamps['pipeline_start']:.2f}s → \"{texto}\"")
+        await _responder_en_streaming(ws, _texto_fijo(texto), timer, ka)
     except Exception as e:
         ka.cancel()
         log.error(f"[consulta:{tipo}] error: {e}")
@@ -110,12 +227,14 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
     Si hay match, se ejecuta el handler correspondiente (clima, cripto, noticias,
     toque, hola). Si no, se trata como consulta libre y responde el LLM.
 
-    transcribe(), ask() y router.handle() son bloqueantes → to_thread para no
-    congelar el event loop (keepalives y pings deben seguir saliendo).
+    La respuesta (de handler o LLM) se sintetiza y envía por fragmentos: el
+    primer audio sale cuando está lista la primera frase, no la respuesta entera.
+
+    transcribe() y el stream del LLM son bloqueantes → hilos para no congelar
+    el event loop (keepalives y pings deben seguir saliendo).
     """
     from src.stt.transcriber import transcribe
-    from src.llm.client      import ask, SYSTEM_PROMPT
-    from src.tts.synthesizer import synthesize
+    from src.llm.client      import ask_stream, SYSTEM_PROMPT
 
     timer = get_timer()
     timer.mark("pipeline_start")
@@ -142,35 +261,41 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
             timer.mark("handler_start")
             respuesta = await _router.handle(tipo, args)
             timer.mark("handler_end")
+            textos = _texto_fijo(respuesta)
         else:
             timer.set_metadata("tipo_consulta", "llm_libre")
-            timer.mark("llm_start")
             # Construir mensajes con historial conversacional
             mensajes = memory.build_messages(session_id, SYSTEM_PROMPT, transcripcion)
-            respuesta = await asyncio.to_thread(ask, transcripcion, mensajes)
-            timer.mark("llm_end")
-            log.info(f"[LLM] {timer.duration('llm_start', 'llm_end'):.2f}s → \"{respuesta}\"")
 
+            async def _tokens_llm():
+                timer.mark("llm_start")
+                primero = True
+                async for token in _iterar_en_hilo(lambda: ask_stream(transcripcion, mensajes)):
+                    if primero:
+                        timer.mark("llm_primer_token")
+                        primero = False
+                    yield token
+                timer.mark("llm_end")
+
+            textos = _tokens_llm()
+
+        respuesta = await _responder_en_streaming(ws, textos, timer, ka)
         timer.set_metadata("longitud_respuesta_texto", len(respuesta))
-        timer.mark("tts_start")
-        pcm_salida = await synthesize(respuesta)
-        timer.mark("tts_end")
-        timer.set_metadata("longitud_respuesta_pcm", len(pcm_salida))
-        log.info(f"[TTS] {timer.duration('tts_start', 'tts_end'):.2f}s → {len(pcm_salida)//2} muestras")
+        if not tipo:
+            log.info(f"[LLM] {timer.duration('llm_start', 'llm_end'):.2f}s "
+                     f"(primer token {timer.duration('llm_start', 'llm_primer_token'):.2f}s) "
+                     f"→ \"{respuesta}\"")
+        log.info(f"[TTS] {timer.duration('tts_start', 'tts_end'):.2f}s en "
+                 f"{timer.metadata.get('fragmentos_tts')} fragmento(s)")
 
         # Agregar turnos al historial de memoria (solo si fue LLM libre, no handlers)
         if not tipo:
             memory.add_turno(session_id, "user", transcripcion)
             memory.add_turno(session_id, "assistant", respuesta)
 
-        ka.cancel()
-
-        for i in range(0, len(pcm_salida), CHUNK):
-            await ws.send(pcm_salida[i:i + CHUNK])
-
-        await _enviar_json(ws, {"cmd": "fin_respuesta"})
         timer.mark("pipeline_end")
-        log.info(f"[pipeline] latencia total: {timer.duration('pipeline_start', 'pipeline_end'):.2f}s")
+        log.info(f"[pipeline] primer audio: {timer.duration('pipeline_start', 'primer_audio'):.2f}s  "
+                 f"total: {timer.duration('pipeline_start', 'pipeline_end'):.2f}s")
         timer.save()
 
     except Exception as e:

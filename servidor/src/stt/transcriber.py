@@ -28,9 +28,15 @@ def _pcm_a_wav_bytes(pcm: bytes, sample_rate: int = SAMPLE_RATE) -> bytes:
     return buf.getvalue()
 
 
+_groq = None   # cliente reutilizado: evita un handshake TLS por consulta
+
+
 def _transcribir_groq(pcm: bytes, sample_rate: int) -> str:
-    from groq import Groq
-    cliente = Groq(api_key=os.environ["GROQ_API_KEY"])
+    global _groq
+    if _groq is None:
+        from groq import Groq
+        _groq = Groq(api_key=os.environ["GROQ_API_KEY"])
+    cliente = _groq
     wav = _pcm_a_wav_bytes(pcm, sample_rate)
     resultado = cliente.audio.transcriptions.create(
         file=("audio.wav", wav, "audio/wav"),

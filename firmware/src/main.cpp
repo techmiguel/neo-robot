@@ -95,7 +95,16 @@ static const uint32_t WAKE_RESULTADO_MS  = 1500;   // ms que se muestra el resul
 
 // volatile: escritos por tareaWs (Core 0), leídos por loop (Core 1).
 static volatile size_t play_bytes = 0;
-static volatile bool   play_ready = false;
+static volatile bool   play_ready = false;   // llegó fin_respuesta
+static volatile bool   play_abort = false;   // el servidor mandó error
+
+// Reproducción en streaming: se empieza a hablar en cuanto hay este colchón de
+// audio, sin esperar a fin_respuesta. El servidor manda cada frase apenas la
+// sintetiza y en LAN llega mucho más rápido que el tiempo real; el colchón
+// absorbe el jitter de red entre chunks de 4 KB (~128 ms cada uno).
+static const size_t   PLAY_PREBUFFER_BYTES  = 8192;   // ~256 ms a 16 kHz
+// Sin datos nuevos ni fin_respuesta durante este tiempo → cortar reproducción.
+static const uint32_t PLAY_SIN_DATOS_MS     = 15000;
 
 // ── FreeRTOS ──────────────────────────────────────────────────────────────────
 static TaskHandle_t  hTareaPrincipal = nullptr;  // grabarYEnviar espera notificación aquí
@@ -182,6 +191,10 @@ void reproducirAck() {
     }
 }
 
+// Reproduce la respuesta a medida que llega: tareaWs (Core 0) sigue escribiendo
+// en audio_buf mientras aquí se lee. Termina cuando llegó fin_respuesta y se
+// reprodujo todo lo recibido. Si el siguiente fragmento aún no llegó
+// (underrun), espera; el I2S emite silencio (tx_desc_auto_clear).
 void reproducirRespuesta() {
     s_wake_pos   = 0;
     s_conf_count = 0;
@@ -190,20 +203,64 @@ void reproducirRespuesta() {
     InfResultado _descarte; xQueueReceive(xColaInf, &_descarte, 0);  // descartar resultado pendiente
     pintarCara("Hablando");
     Serial.printf("[TIMING] playback_inicio %lu\n", (unsigned long)millis());
-    Serial.printf("[NEO] Reproduciendo: %u bytes (%.2fs)\n",
-                  (unsigned)play_bytes, play_bytes / (16000.0f * 2));
+    Serial.printf("[NEO] Reproduciendo en streaming (%u bytes en buffer, fin=%d)\n",
+                  (unsigned)play_bytes, (int)play_ready);
 
-    const size_t muestras = play_bytes / sizeof(int16_t);
-    for (size_t i = 0; i + Speaker::BLOCK_SIZE <= muestras; i += Speaker::BLOCK_SIZE) {
-        spk->reproducir(audio_buf + i);
-        pintarCara("Hablando");   // ojos vivos mientras habla
+    const uint8_t* base   = reinterpret_cast<const uint8_t*>(audio_buf);
+    const size_t   BLOQUE = Speaker::BLOCK_SIZE * sizeof(int16_t);
+    size_t   leido        = 0;
+    size_t   visto        = 0;
+    uint32_t t_ultimo     = millis();
+    uint16_t underruns    = 0;
+    bool     esperando    = false;
+
+    while (!play_abort) {
+        // Leer fin ANTES que play_bytes: tareaWs escribe todo el audio antes de
+        // procesar fin_respuesta, así que si fin es true el total ya es final.
+        const bool fin = play_ready;
+        __sync_synchronize();
+        const size_t disponible = play_bytes;
+
+        if (disponible - leido >= BLOQUE) {
+            spk->reproducir(reinterpret_cast<const int16_t*>(base + leido));
+            leido += BLOQUE;
+            esperando = false;
+            pintarCara("Hablando");   // ojos vivos mientras habla
+            continue;
+        }
+
+        if (fin) {
+            // Cola parcial final, rellena de silencio hasta el bloque completo.
+            const size_t resto = disponible - leido;
+            if (resto) {
+                int16_t tail[Speaker::BLOCK_SIZE] = {};
+                memcpy(tail, base + leido, resto);
+                spk->reproducir(tail);
+            }
+            break;
+        }
+
+        // Underrun: el siguiente fragmento aún se está sintetizando.
+        if (!esperando) { esperando = true; underruns++; }
+        if (disponible != visto) {
+            visto    = disponible;
+            t_ultimo = millis();
+        } else if (millis() - t_ultimo > PLAY_SIN_DATOS_MS) {
+            Serial.println("[NEO] Respuesta incompleta: sin datos del servidor — corto");
+            break;
+        }
+        pintarCara("Hablando");
+        vTaskDelay(pdMS_TO_TICKS(5));
     }
 
+    play_ready = false;
+    play_abort = false;
     play_bytes = 0;
     // NO se apaga la pantalla aquí: seguimos en conversación (escuchando otra
     // pregunta). El apagado ocurre al volver a REPOSO por silencio/timeout.
     Serial.printf("[TIMING] playback_fin %lu\n", (unsigned long)millis());
-    Serial.println("[NEO] Reproducción completa");
+    Serial.printf("[NEO] Reproducción completa (%.2fs, %u esperas por datos)\n",
+                  leido / (16000.0f * 2), (unsigned)underruns);
 }
 
 // ── Parámetros VAD ────────────────────────────────────────────────────────────
@@ -224,6 +281,7 @@ void consultarToque() {
 
     play_bytes = 0;
     play_ready = false;
+    play_abort = false;
     oled->mostrar("NEO", "Toque USD...");
     Serial.println("[NEO] Consultando El Toque — USD/CUP");
 
@@ -246,6 +304,7 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     InfResultado _descarte; xQueueReceive(xColaInf, &_descarte, 0);  // descartar resultado pendiente
     play_bytes = 0;
     play_ready = false;
+    play_abort = false;
 
     int16_t tmp[Microphone::BLOCK_SIZE];
 
@@ -646,8 +705,12 @@ void setup() {
         Serial.printf("[WS] %s\n", msg.c_str());
     
         if      (msg.indexOf("listo")         >= 0) neoListoYReposoOled();
-        else if (msg.indexOf("fin_respuesta") >= 0) play_ready = true;
+        else if (msg.indexOf("fin_respuesta") >= 0) {
+            Serial.printf("[TIMING] fin_respuesta %lu\n", (unsigned long)millis());
+            play_ready = true;
+        }
         else if (msg.indexOf("error")         >= 0) {
+            play_abort = true;   // corta una reproducción en curso
             oled->mostrarEstado("Error servidor");
             s_fase = Fase::REPOSO;   // liberar espera: no llegará audio de respuesta
         }
@@ -660,6 +723,7 @@ void setup() {
         size_t espacio = audio_buf_cap - play_bytes;
         size_t n = (len < espacio) ? len : espacio;
         memcpy(reinterpret_cast<uint8_t*>(audio_buf) + play_bytes, data, n);
+        __sync_synchronize();   // datos visibles en Core 1 antes que el nuevo total
         play_bytes += n;
     });
 
@@ -788,8 +852,9 @@ void loop() {
     // ws->tick() y reconexión los maneja tareaWs en Core 0.
     trigger->tick();
 
-    if (play_ready) {
-        play_ready = false;
+    // Empezar a hablar con el primer colchón de audio, o ya si la respuesta
+    // completa es más corta que el colchón.
+    if (play_ready || play_bytes >= PLAY_PREBUFFER_BYTES) {
         reproducirRespuesta();
         // Tras responder, seguimos despiertos: escuchar la siguiente pregunta.
         if (s_fase == Fase::ESPERA_RESPUESTA) s_fase = Fase::CONVERSACION;
@@ -815,7 +880,7 @@ void loop() {
         return;
     }
 
-    // ── ESPERA_RESPUESTA: consulta enviada; la respuesta llega por play_ready ─
+    // ── ESPERA_RESPUESTA: consulta enviada; el audio se reproduce arriba ─────
     if (s_fase == Fase::ESPERA_RESPUESTA) {
         pintarCara("Pensando");   // ojos vivos mientras el servidor procesa
         if (millis() - s_espera_t0 > ESPERA_RESPUESTA_TIMEOUT_MS) {

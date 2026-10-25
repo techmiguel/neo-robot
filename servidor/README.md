@@ -31,3 +31,11 @@ Conectar a `wss://YOUR_USERNAME-neo-servidor.hf.space`
 
 - ESP32 → servidor: chunks PCM binarios + `{"cmd":"fin_grabacion"}`
 - Servidor → ESP32: `{"cmd":"procesando"}` + chunks PCM + `{"cmd":"fin_respuesta"}`
+
+La respuesta se envía en streaming: el LLM genera token a token, el texto se
+corta en frases/cláusulas (`src/tts/segmentador.py`) y cada fragmento se
+sintetiza y envía en cuanto está listo, mientras el LLM sigue generando. El
+firmware empieza a reproducir con ~256 ms de audio en buffer, sin esperar a
+`fin_respuesta`. La métrica `durations.primer_audio` del JSONL de timing mide
+el tiempo desde que llega el audio del usuario hasta que sale el primer audio
+de respuesta. Detalles en `docs/streaming-latencia.md`.
