@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use NEO or its measurements, please cite it as below."
+title: "NEO: open-source ESP32-S3 voice assistant with an offline wake word and a local LLM"
+type: software
+authors:
+  - alias: techmiguel
+repository-code: "https://github.com/techmiguel/neo-robot"
+license: MIT
+keywords:
+  - ESP32-S3
+  - voice assistant
+  - wake word
+  - keyword spotting
+  - TinyML
+  - TensorFlow Lite Micro
+  - ESP-NN
+  - Whisper
+  - speech recognition
+  - local LLM
+  - Ollama
+  - Gemma
+  - text-to-speech
+  - Spanish
+  - smart speaker

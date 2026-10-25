@@ -1,295 +1,333 @@
-# NEO — Embedded Voice Assistant
+# NEO — open-source ESP32-S3 voice assistant with an offline wake word and a local LLM
 
-NEO is an embedded voice assistant. An **ESP32-S3** acts as the audio and interaction
-interface (microphone, speaker, OLED screen, button), while a **Python server** handles
-the heavy processing: transcription (STT), intent deduction, and voice synthesis (TTS).
+[![Tests](https://github.com/techmiguel/neo-robot/actions/workflows/ci.yml/badge.svg)](https://github.com/techmiguel/neo-robot/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![ESP32-S3](https://img.shields.io/badge/ESP32--S3-PlatformIO%20%2B%20Arduino-orange)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![Language](https://img.shields.io/badge/speaks-Spanish-yellow)
 
-The user wakes NEO by saying **"Hola NEO"**, then asks questions hands-free. NEO responds
-through the speaker. After a period of silence, it returns to rest until the next wake word.
+**NEO** is a DIY smart speaker built around an **ESP32-S3**. You say **"Hola NEO"**: a
+15 KB **TinyML** model (TensorFlow Lite Micro, int8) recognizes the **wake word on the
+chip, offline**. Then you ask anything, hands-free. A Python server on your PC transcribes
+the question with **Whisper**, answers it with a **local LLM (Ollama: Gemma, Qwen)** or the
+cloud (Groq), and talks back through the speaker with **streaming text-to-speech**.
 
+It is a privacy-friendly, hackable **Alexa / Google Home alternative** you can build on a
+breadboard for the price of a few modules, and **every number in this README was measured
+on the real board**, with the raw data in the repo.
+
+```mermaid
+flowchart LR
+    subgraph board["ESP32-S3 board"]
+        mic["INMP441 mic"] --> ww["Wake word<br/>TFLite Micro + ESP-NN<br/>'Hola NEO'"]
+        ww --> vad["VAD + 300 ms pre-roll"]
+        spk["DAC + amp + speaker"]
+        oled["OLED: animated eyes"]
+    end
+    subgraph server["Python server (your PC or Hugging Face Spaces)"]
+        stt["STT<br/>faster-whisper / Groq Whisper"] --> intent{"Intent<br/>keywords"}
+        intent -- command --> api["Weather · crypto · news<br/>exchange rates"]
+        intent -- free question --> llm["LLM<br/>Ollama (Gemma, Qwen) / Groq"]
+        api --> tts["TTS by fragments<br/>edge-tts / Piper"]
+        llm -- tokens --> tts
+    end
+    vad -- "PCM 16 kHz over WebSocket" --> stt
+    tts -- "PCM, streamed" --> spk
 ```
-   ┌──────────────┐   audio PCM    ┌───────────────────────────────────────┐
-   │  ESP32-S3    │ ─────────────▶ │            Python Server              │
-   │  (interface) │ ◀───────────── │  STT → intent → handler/LLM → TTS     │
-   └──────────────┘   audio PCM    └───────────────────────────────────────┘
-   mic · speaker ·      WS            Groq Whisper · Groq LLM · edge-tts
-   OLED · button                      APIs: weather, crypto, news, El Toque
+
+## Highlights
+
+- **Offline wake word on a microcontroller.** A CNN on MFCC features, quantized to int8
+  and accelerated with Espressif's ESP-NN SIMD kernels: **0.32–0.40 s per inference**,
+  **~1.1 s** from the end of "Hola NEO" to NEO answering. Test accuracy 95.7 %; the full
+  training pipeline is included.
+- **Local-first.** The board talks to your PC on the LAN; if it is not there, it falls
+  back to a cloud deployment. The server can run **fully local** (faster-whisper + Ollama)
+  or on free cloud tiers (Groq + edge-tts).
+- **Streaming responses.** The LLM's tokens are cut into phrases, each one is synthesized
+  and sent as soon as it is ready, and the firmware starts playing after 256 ms of buffered
+  audio, without waiting for the full reply.
+- **Commands without an LLM.** Weather, crypto prices, tech news and Cuban informal
+  exchange rates are answered by keyword intent detection and real APIs: faster, cheaper
+  and no hallucinations.
+- **Robust on bad networks.** Prerecorded phrases tell you when WiFi, the server or the
+  internet is down. WiFi sleeps after 10 min idle and the CPU drops to 80 MHz while the
+  wake word keeps listening.
+- **Measured, not claimed.** Word error rate, latency per pipeline stage, wake word
+  confusion matrix and power draw per state, from 31-phrase sessions read to the board.
+
+## Quick start
+
+You need the [hardware](#hardware), a PC on the same network (Windows, macOS or Linux) and
+about 30 minutes.
+
+### 1. Server
+
+```bash
+git clone https://github.com/techmiguel/neo-robot.git
+cd neo-robot/servidor
+python -m venv .venv
+.venv\Scripts\activate          # Windows; on macOS/Linux: source .venv/bin/activate
+pip install -e ".[dev]"
+cp .env.example .env            # Windows: copy .env.example .env
 ```
 
-## Architecture
+Pick a profile and edit `.env`:
 
-**Local-first with edge inference:**
+| Profile | What runs where | You need |
+|---|---|---|
+| `nube` (cloud, easiest) | Groq Whisper + Groq LLM + edge-tts | A free [Groq API key](https://console.groq.com/keys) in `GROQ_API_KEY` |
+| `local` | faster-whisper + Ollama on your PC, edge-tts voice (Piper offline fallback) | `pip install -e ".[local]"`, [Ollama](https://ollama.com) with `ollama pull gemma4:e2b` (or `qwen2.5:3b`) |
 
-- **On the ESP32 (local):** a very lightweight TensorFlow Lite Micro model (15 KB, int8)
-  detects **only the wake word** "Hola NEO". Once confirmed, NEO wakes up, greets with
-  a pre-recorded "¡Hola!", and records the user's free-form query.
-- **On the server:** transcribes the audio (Whisper), **deduces intent** with keywords
-  first and LLM as fallback, executes the corresponding handler (or free response),
-  and synthesizes voice (edge-tts).
-- **Local-first connection:** the ESP32 tries the LAN server (your PC) first; if it
-  doesn't respond, it falls back to the cloud deployment (Hugging Face Spaces).
+The command APIs are optional: `OPENWEATHER_API_KEY`, `NEWSAPI_KEY` and `ELTOQUE_API_KEY`
+(free tiers; CoinGecko needs no key). Every variable is explained in
+[`servidor/.env.example`](servidor/.env.example).
 
-Deliberate design: the local classifier only recognizes the wake word. Commands live
-on the server (Python), so adding or changing commands doesn't require reflashing the
-firmware.
+```bash
+python -m src.server.ws_server --perfil nube     # or --perfil local
+```
 
-### Conversation flow
+The server listens on `ws://0.0.0.0:8765`. Note your PC's LAN IP address.
 
-1. **REST** — OLED screen off (power saving); microphone + inference listening.
-   After 10 min without activity the WiFi is switched off and the CPU drops to
-   80 MHz (deep rest); the wake word keeps listening.
-2. **"Hola NEO"** — local model detects it (~1.1 s after the phrase ends); NEO turns
-   on the screen (animated eyes + connection status) and greets with a prerecorded
-   phrase ("¡Hola!", "¡Dime!", "¿Sí? Te escucho."). If the network was off it
-   reconnects meanwhile.
-3. **CONVERSATION** — hands-free: records a question (with 300 ms of pre-roll),
-   sends it, plays the response, and listens again.
-4. **Silence > 10s** — NEO returns to REST and requires the wake word again.
+### 2. Firmware
 
-NEO always speaks with the same voice (edge-tts `es-CU-ManuelNeural`; Piper only if
-edge-tts fails). Details: [docs/estrategia-software.md](docs/estrategia-software.md).
+Install [PlatformIO](https://platformio.org/install) (VS Code extension or `pip install platformio`).
+
+```bash
+cd neo-robot/firmware
+cp src/config_local.example.h src/config_local.h   # Windows: copy; set NEO_SERVIDOR_HOST to your PC's IP
+pio run -e esp32dev --target upload
+pio device monitor -e esp32dev
+```
+
+The first build downloads the ESP32 toolchain and TensorFlow Lite Micro and takes a few
+minutes. Without `config_local.h` the firmware builds with a placeholder IP (`192.168.1.100`)
+and no cloud fallback.
+
+### 3. First boot
+
+1. NEO has no WiFi yet, so it opens an access point called **`NEO-Config`**. Join it from
+   your phone and open <http://192.168.4.1>.
+2. Enter your WiFi name and password. NEO saves them, connects, and finds the server.
+3. Say **"Hola NEO"**, wait for the greeting and ask, in Spanish: *"¿Cuál es la capital de
+   Japón?"*, *"¿Va a llover mañana en La Habana?"*, *"¿Cuánto vale el bitcoin?"*.
+
+No wake word? Press the **BOOT** button briefly to ask without it. The model was trained on
+two voices; if it does not wake for yours, [train it on your voice](#train-the-wake-word-on-your-voice).
+
+### Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| `Could not install package 'links2004/WebSockets'` on Windows | The path is too long for Windows (260 characters). Clone to a short path such as `C:\neo`. |
+| `This chip is ESP8266, not ESP32-S3` while flashing | Another board is on the default port. Pass it explicitly: `--upload-port COM8` (the Freenove shows up as *USB-Enhanced-SERIAL CH343* in `pio device list`). |
+| Serial log full of `ASSOC_TOOMANY` | Your access point (often a phone hotspot) has no free client slots. Disconnect a device. |
+| `time: missing unit in duration "-1"` from Ollama | Use `OLLAMA_KEEP_ALIVE=-1m`, with a unit. |
+| NEO hears the wake word but misses the start of your question | Wait for the greeting to finish. The VAD calibrates the background noise for 0.5 s after it. |
+| The first answer takes minutes with the local profile | Ollama is loading the model from disk; later answers are fast. Keep it loaded with `OLLAMA_KEEP_ALIVE=-1m`. |
 
 ## Hardware
 
-Base board: **Freenove ESP32-S3 WROOM CAM** (FNK0085) + **GPIO Extension Board**.
+| Part | Notes |
+|---|---|
+| Freenove ESP32-S3 WROOM CAM (FNK0085), N8R8 module | 8 MB flash, 8 MB PSRAM |
+| INMP441 I2S microphone | I2S_NUM_0 |
+| PCM5100A + PAM8403 I2S DAC/amplifier module, 8 Ω speaker | I2S_NUM_1 |
+| SSD1306 128 × 64 I2C OLED | Animated eyes and connection status |
 
-| Peripheral | Bus | Pins (GPIO) |
-|------------|-----|-------------|
-| INMP441 Microphone | I2S_NUM_0 | WS=1, SCK=3, SD=14 |
-| PCM5100A+PAM8403 DAC+amp | I2S_NUM_1 | BCK=21, LCK=47, DIN=41, SCK→GND |
-| SSD1306 OLED | I2C | SDA=46, SCL=42 (addr 0x3C) |
-| Trigger button | GPIO 0 | onboard BOOT button |
+Wiring, pin tables and the mistakes to avoid are in **[docs/hardware.md](docs/hardware.md)**.
+A compact custom PCB (**NEO Lite**, 31 × 43 mm, USB-C, ready for JLCPCB assembly) is in
+[`hardware/neo-lite/`](hardware/neo-lite/), designed in KiCad 9 but not yet fabricated.
 
-> The board's camera (GPIO 4–18), SD (38–40), and PSRAM (35–37) are reserved.
-> Full wiring details are in `firmware/CLAUDE.md`.
+## What you can ask
 
-## Repository structure
+NEO speaks **Spanish**. After the wake word it detects the intent of the transcription:
 
-```
-neo/
-├── firmware/          # C++ (PlatformIO + Arduino) for ESP32-S3
-│   ├── src/
-│   │   ├── audio/       # microphone, speaker, MFCC, voice ack
-│   │   ├── display/     # OLED + animated eyes (Face)
-│   │   ├── network/     # WiFi manager + WebSocket client
-│   │   ├── commands/    # dispatcher + TFLite inference (wake word)
-│   │   ├── models/      # generated headers: wake_word_model.h, vocabulary.h
-│   │   └── demos/       # hw_test, loopback, wake_word, eyes, speaker
-│   ├── tools/           # capture, training, and generation scripts
-│   └── platformio.ini
-├── servidor/          # Python: STT + intent + LLM + TTS + WebSocket
-│   └── src/
-│       ├── stt/  llm/  tts/  server/  commands/
-├── docs/              # guides, hardware specs, design docs
-└── ROADMAP.md         # phases and status of each module
-```
+| Intent (keywords) | Answer | Source |
+|---|---|---|
+| clima, "qué tiempo hace", temperatura, pronóstico | Current weather (default city: La Habana) | OpenWeatherMap |
+| dólar, euro, tasa, El Toque | Informal Cuban peso (CUP) exchange rates | El Toque API |
+| bitcoin, ethereum, cripto | Crypto price | CoinGecko |
+| noticias, titulares | Tech news (Apple, Google, Nvidia, OpenAI…), one headline per outlet | NewsAPI |
+| hola, "qué tal" | Greeting | — |
+| anything else | Free answer in NEO's voice: a stranded alien traveller, curious, with dry humour, ≤ 20 words | LLM |
 
-## Getting started
-
-### Server (Python ≥ 3.10)
-
-```bash
-cd servidor
-python -m venv .venv && .venv\Scripts\activate      # Windows
-pip install -e .
-cp .env.example .env                                 # add your API keys
-python -m src.server.ws_server                       # listens on ws://0.0.0.0:8765
-```
-
-Required environment variables (see `servidor/.env.example`): `GROQ_API_KEY`,
-`OPENWEATHER_API_KEY`, `NEWSAPI_KEY`, `ELTOQUE_API_KEY`.
-
-### Firmware (PlatformIO)
-
-```bash
-cd firmware
-pio run -e esp32dev --target upload      # compiles and flashes main firmware
-pio device monitor -e esp32dev -b 115200
-```
-
-Available environments:
-
-| Env | Purpose |
-|-----|---------|
-| `esp32dev` | Full firmware (wake word + WebSocket + audio) |
-| `hw_test` | Hardware test: OLED, mic, speaker, button |
-| `loopback_test` | Records from mic and plays through speaker |
-| `wake_word_test` | Wake word inference without server |
-| `dataset_capture` | Audio capture for training |
-| `demo_ojos` / `demo_bocina` | Animation and playback demos |
-
-### Training the wake word
-
-```bash
-cd firmware
-pio run -e dataset_capture --target upload
-python tools/capture_dataset.py --port COM8          # records samples per class
-python tools/train_model.py                          # trains and exports TFLite
-python tools/gen_vocabulario.py --umbrales models/umbrales.json
-python tools/tflite_to_header.py                     # generates src/models/*.h
-```
-
-The vocabulary (classes, phrases, thresholds) is defined in `tools/vocabulario.json`
-and is the single source of truth shared between capture firmware, training, and
-inference.
-
-## Commands NEO recognizes
-
-After the wake word, NEO deduces intent from the transcribed audio:
-
-| Intent (keywords) | Action | Source |
-|-------------------|--------|--------|
-| weather / "qué tiempo hace" / temperature / forecast | Current weather (default city La Habana) | OpenWeatherMap |
-| dollar / euro / rate / El Toque | Informal CUP rates (El Toque publishes the euro as `ECU`) | El Toque API |
-| bitcoin / ethereum / crypto | Crypto price | CoinGecko |
-| news / headlines | Tech news: Apple, Google, Microsoft, Nvidia, Meta, Amazon, Samsung, OpenAI… (Spanish press, last 2 days, one headline per outlet) | NewsAPI |
-| anything else | Free response in NEO's voice ([personality](#personality)) | LLM (Groq or Ollama) |
-
-## Design decisions
-
-### Why local-first?
-
-The ESP32 tries the LAN server first (your PC) before falling back to the cloud
-(Hugging Face Spaces). This gives:
-- **Lower latency** on local network (no internet round-trip)
-- **Privacy** for sensitive queries (stays on your network)
-- **Resilience** if internet goes down (local server still works)
-
-### Why wake-word-only local model?
-
-A multi-command local classifier would require:
-- Recording a dataset for each command phrase
-- Retraining and reflashing the firmware for every change
-
-With wake-word-only local inference, commands live on the server (Python) and can
-be extended without reflashing. The trade-off is that every query requires network
-connectivity after the wake word.
-
-### Why two I2S buses?
-
-The ESP32-S3 has two I2S peripherals. We use:
-- **I2S_NUM_0** for the microphone (input)
-- **I2S_NUM_1** for the DAC+amplifier (output)
-
-Sharing a single bus between input and output would require complex time-division
-multiplexing and risk audio glitches. Two buses keep things simple and reliable.
-
-### Why SRAM for MFCC buffers (not PSRAM)?
-
-The ESP32-S3 has 8 MB of PSRAM (octal), but accessing it during WiFi activity causes
-random access delays that trigger the task watchdog (5s timeout). The MFCC extraction
-processes 148 frames of audio, and with WiFi active, PSRAM access stalls the IDLE
-task. Solution: allocate MFCC buffers and TFLite arena in **internal SRAM** (slower
-but deterministic timing).
-
-### Why intent detection by keywords first?
-
-The server tries keyword matching before falling back to the LLM:
-- **Faster** for common commands (no LLM latency)
-- **Cheaper** (no API tokens for "what's the weather?")
-- **More reliable** (regex doesn't hallucinate)
-
-The LLM is only used for free-form queries that don't match any keyword pattern.
-
-## Failure modes
-
-All the messages below are prerecorded in the firmware (Manuel's voice, 2–3 variants each), so NEO can say them without a server.
-
-| Scenario | What happens | User experience |
-|----------|--------------|-----------------|
-| **No server** (LAN + cloud down) | tareaWs keeps retrying; a pending question is dropped | NEO says "No encuentro mi servidor" (once while resting) and "Ya estoy conectado y listo" when it is back |
-| **No network** (WiFi down) | Same, with the WiFi | "No puedo conectarme a la wifi" / "No encuentro la red wifi"; the wake word keeps working |
-| **No internet on the server** (Groq, edge-tts or a handler API) | Server sends `{"cmd":"error","codigo":"sin_internet"}` | "No puedo acceder a internet ahora" |
-| **Empty transcription** | Server sends `codigo: no_entendi` | "No te entendí, ¿me lo repites?" and NEO listens again |
-| **Server silent > 30 s** | Firmware timeout | "Está tardando demasiado, inténtalo otra vez" |
-| **edge-tts fails** | Server answers with Piper | Different voice for that answer, but an answer |
-| **LLM answers in another script** (qwen2.5:3b drifts into Chinese) | Server asks again once, then strips non-Latin text | Spanish answer, possibly shorter |
-| **Wake word false positive** | Threshold 0.7618, single confirmation (CONF_MINIMAS=1) | NEO greets, hears nothing for 10 s and goes back to rest |
-
-## Security & limitations
-
-### Security
-
-- **API keys** stored in `.env` (server) and `secrets.h` (firmware), both gitignored.
-- **WebSocket** has no authentication; assumes trusted LAN. For public deployments,
-  add token-based auth or TLS client certificates.
-- **No encryption on LAN**; WebSocket uses `ws://` locally, `wss://` for cloud (HF).
-- **No user authentication**; anyone on the LAN can send queries.
-
-### Limitations
-
-- **Short conversation memory only.** The server keeps the last 10 messages (5 exchanges) per
-  WebSocket session, in RAM; the session ends when the network sleeps after 10 min, so
-  NEO forgets. See [docs/diseno-memoria.md](docs/diseno-memoria.md).
-- **Battery power is marginal**. NEO runs from one 18650 cell through an MT3608 boost
-  converter into its 5V pin, but the converter cannot hold 5 V above ~350 mA: the line
-  sags to ~3.8 V when the speaker starts and the ESP32-S3 can reset (brownout). Peaks
-  of ~0.8 A were measured while speaking, so the supply needs ≥ 1 A at 5 V (e.g. 2S
-  cells with a buck converter).
-- **No OTA updates**. Firmware must be flashed via USB. OTA could be added but isn't
-  critical for a prototype.
-- **Single language** (Spanish). The STT, LLM prompt, and TTS are all Spanish-only.
-  Adding multilingual support would require changes across the pipeline.
-- **Local profile is less accurate than the cloud one.** The server can run fully
-  local (Faster-Whisper small + Ollama `qwen2.5:3b`, edge-tts voice with Piper as
-  fallback) or in the cloud (Groq + edge-tts); locally the transcription error rate is
-  higher and the small LLM makes factual mistakes and keeps less of the personality.
+Adding a command is a Python class on the server (`servidor/src/commands/`); the firmware
+does not change.
 
 ## Measured results
 
-All numbers come from the board, not from simulation. Raw data and method are linked.
+All numbers come from the board. Method, raw data and analysis are linked.
 
-**Wake word "Hola NEO"** (two speakers, CNN int8 on the ESP32-S3;
-[method](firmware/models/experimentos/2026-10-20/RESUMEN.md))
+**Wake word "Hola NEO"**, CNN int8 on the ESP32-S3, two speakers
+([experiments](firmware/models/experimentos/2026-10-20/RESUMEN.md), [metrics](docs/metrics/wake_word_20261020/))
 
 | Metric | Value |
 |---|---|
 | Test accuracy (int8, 302 clips) | 95.7 % |
-| True positive rate / false positive rate (threshold 0.7618) | 95.6 % / 0.6 % |
-| Detection latency on the board, end of phrase → confirmed ([data](docs/metrics/latencia_wake_20261023/)) | **3.33 s** median (p90 3.38 s), of which inference 2.6 s (reference kernels) |
-| Inference with ESP-NN kernels (24/10, 8 runs on the board) | **0.32–0.40 s**, same scores; detection ≈ 1.1 s estimated, to be re-measured |
+| True / false positive rate per window (threshold 0.7618) | 95.6 % / 0.6 % |
+| Inference time with ESP-NN kernels | 0.32–0.40 s (2.6 s with the reference kernels) |
+| End of "Hola NEO" → confirmed, on the board | **1.1 s** median (1.11 s on 24/10, n = 4; 1.09 s on 25/10, n = 5) |
 
-**Conversation latency**, end of recording → full reply received, same audio sent to both
-profiles, 31 phrases read to the board ([data](docs/metrics/validacion_20261024/),
-[comparison](docs/metrics/validacion_20261024/ANALISIS.md)). Since 24/10 the firmware keeps
-300 ms of pre-roll before the voice onset, and NEO speaks with one voice (edge-tts Manuel,
-Piper only as fallback) — see [software strategy](docs/estrategia-software.md).
+![Wake word confusion matrix](docs/metrics/wake_word_20261020/matriz_confusion_int8.png)
 
-| Profile | Word error rate (ignoring accents) | Intent accuracy | Free questions, median (p90) | Commands, median (p90) |
-|---|---|---|---|---|
-| Local (Whisper small + qwen2.5:3b + edge-tts) | 9.7 % (6.2 %) | 96.8 % | 8.8 s (9.6 s) | 6.2 s (9.5 s) |
-| Cloud (Groq + edge-tts) | 4.6 % (3.1 %) | 96.8 % | 5.7 s (8.0 s) | 5.1 s (6.1 s) |
+**Conversation**, 31 phrases read to the board, same audio sent to every server variant.
+Word error rate ignores accents. Latency runs from the end of the recording to the first
+audio of the reply, median (p90).
 
-Before the pre-roll (23/10, [data](docs/metrics/validacion_20261023/)) the word error rate was
-18.5 % local / 10.8 % cloud: the VAD cut the first word of 12 / 8 phrases. Using edge-tts in the
-local profile costs ~2.2 s versus Piper (0.25 s TTS, 7.0 s median reply on 23/10).
+| Session | STT + LLM + TTS | WER | Intent | Free questions | Commands |
+|---|---|---|---|---|---|
+| 24/10 ([analysis](docs/metrics/validacion_20261024/ANALISIS.md)) | Cloud: Groq Whisper + gpt-oss-20b + edge-tts | 3.1 % | 96.8 % | 5.7 s (8.0 s) | 5.1 s (6.1 s) |
+| 24/10 | Local: Whisper small + qwen2.5:3b + edge-tts | 6.2 % | 96.8 % | 8.8 s (9.6 s) | 6.2 s (9.5 s) |
+| 25/10 ([analysis](docs/metrics/validacion_gemma4_streaming/ANALISIS.md)) | Local: Whisper small + gemma4:e2b, streaming | **5.1 %** | **100 %** | 18.0 s with the long prompt* | — |
 
-**Power draw at 5 V per state** (INA219 on NEO's 5V pin, preliminary: one 5.5-min
-session with 12 question/answer turns; [method](docs/experimento-consumo.md),
-[data](docs/metrics/consumo_20261024_preliminar/))
+\* The 25/10 run exposed that gemma4:e2b re-processes the system prompt on every question
+(~37 tokens/s on a laptop i5): the 409-token prompt cost ~8 s. The local profile now uses
+a 139-token prompt (2.7–3.3 s in Ollama, not yet re-measured end to end). Streaming saves
+~1.9 s once answers are long enough to split; edge-tts costs ~1.9 s per call from Cuba.
+On the board, add 1.5 s of end-of-speech silence and ~0.6 s of WiFi upload.
 
-| State | Mean current | Peak (0.53 ms) | Mean power |
+**Power at 5 V** (INA219, [method](docs/experimento-consumo.md), [data](docs/metrics/consumo_20261024_preliminar/), preliminary)
+
+| State | Mean current | Peak | Mean power |
 |---|---|---|---|
-| Rest (screen off, listening for the wake word) | 119 mA | 249 mA | 0.60 W |
+| Rest, listening for the wake word | 119 mA | 249 mA | 0.60 W |
 | Wake word capture + inference | 137 mA | 255 mA | 0.69 W |
-| Active listening | 131 mA | 634 mA | 0.65 W |
 | Sending audio over WiFi | 153 mA | 408 mA | 0.76 W |
-| Waiting for the reply | 135 mA | 497 mA | 0.67 W |
-| Speaking (speaker on) | 302 mA | 797 mA | 1.44 W |
+| Speaking | 302 mA | 797 mA | 1.44 W |
 
 ![Current during one interaction](docs/metrics/consumo_20261024_preliminar/traza_interaccion.png)
 
-## Development notes
+## Train the wake word on your voice
 
-- Random PSRAM access during MFCC extraction with active WiFi triggered the *task
-  watchdog*; inference buffers are allocated in **internal SRAM**.
-- The local model is kept small (channels 8/16/32). With TFLite Micro's reference kernels
-  inference took ~2.6 s (78 % of the wake word latency); the ESP-NN kernels (S3 SIMD) bring
-  it to ~0.4 s. In PlatformIO they need `scripts/parche_tflite.py` (see the script).
-- Groq's reasoning models need `max_tokens` set high; low values cause empty content
-  responses.
+The model ships in the firmware (`firmware/src/models/`) and was trained on two speakers.
+The recordings are not published (they are people's voices), but the pipeline is:
 
----
+```bash
+cd firmware
+pio run -e dataset_capture --target upload               # firmware that streams clips over serial
+pip install -r tools/requirements_dataset.txt
+python tools/capture_dataset.py --port COM8              # guided recording per class
+pip install -r tools/requirements_train.txt
+python tools/train_model.py                              # trains, quantizes to int8, exports TFLite
+python tools/gen_vocabulario.py --umbrales models/umbrales.json
+python tools/tflite_to_header.py                         # writes src/models/*.h
+pio run -e esp32dev --target upload
+```
 
-See `ROADMAP.md` for detailed phase status and `firmware/CLAUDE.md` /
-`servidor/CLAUDE.md` for component-specific conventions.
+`tools/vocabulario.json` (classes, phrases, thresholds) is the single source of truth for
+capture, training and inference. The experiments behind the current model (cross-validation,
+leave-one-speaker-out, negative speech) are in
+[`firmware/models/experimentos/`](firmware/models/experimentos/).
+
+## Other firmware environments
+
+| `pio run -e …` | Purpose |
+|---|---|
+| `esp32dev` | Full firmware: wake word, WebSocket, audio, OLED |
+| `hw_test` | Checks OLED, microphone, speaker and button |
+| `loopback_test` | Plays the microphone through the speaker |
+| `wake_word_test` | Wake word inference without the server |
+| `dataset_capture` | Records training clips over serial |
+| `demo_ojos` / `demo_bocina` | Eyes animation / speaker playback demos |
+| `consumo_logger` | Power logger on an ESP8266 + INA219 |
+
+## Benchmark your own setup
+
+The server includes the validation panel used for every number above: it relays the board's
+audio to several server variants (models, providers, streaming on/off), scores the
+transcriptions against the corpus and reads the latency from the board's serial log.
+
+```bash
+cd servidor
+python -m src.benchmark.panel --variante "gemma=local,OLLAMA_MODEL=gemma4:e2b" --variante "nube=nube"
+```
+
+Open <http://localhost:8080>, read the phrase it shows to NEO, and press *Generar informe*
+at the end. Details in [`servidor/benchmark/README.md`](servidor/benchmark/README.md).
+
+## Repository layout
+
+```
+firmware/            ESP32-S3 firmware (C++, PlatformIO + Arduino)
+  src/               audio, display, network, commands (TFLite inference), main.cpp
+  tools/             dataset capture, training, header generation, log analysis
+  models/            trained models and the experiments behind them
+  logs/              serial logs of the measured sessions
+servidor/            Python server: STT, intent, LLM, TTS, WebSocket, benchmark panel
+hardware/neo-lite/   custom PCB: KiCad project, generator scripts, Gerbers, BOM
+docs/                design notes, experiments and measured metrics (in Spanish)
+ROADMAP.md           phases and status (in Spanish)
+```
+
+## Documentation
+
+The design notes and experiment reports are written in Spanish.
+
+| Topic | Document |
+|---|---|
+| Wiring and parts | [docs/hardware.md](docs/hardware.md) |
+| Software strategy: voice, prerecorded phrases, network on demand | [docs/estrategia-software.md](docs/estrategia-software.md) |
+| Streaming responses and where the latency goes | [docs/streaming-latencia.md](docs/streaming-latencia.md) |
+| Conversation memory | [docs/diseno-memoria.md](docs/diseno-memoria.md) |
+| Experiments: latency, wake word latency, false positives, full flow, power | [`docs/experimento-*.md`](docs/) |
+| Measured sessions | [docs/metrics/](docs/metrics/) |
+| Custom PCB, phase by phase | [hardware/neo-lite/README.md](hardware/neo-lite/README.md) |
+| Status and next steps | [ROADMAP.md](ROADMAP.md) |
+
+## Design decisions
+
+- **Only the wake word runs on the chip.** A multi-command local classifier would need a
+  dataset per phrase and a reflash per change. Commands live on the server and grow without
+  touching the firmware; the cost is that every question needs the network.
+- **Keywords before the LLM.** Common commands skip the LLM: faster, free and
+  deterministic. The LLM only gets free-form questions.
+- **Two I2S buses.** Microphone and DAC each get their own peripheral; no time multiplexing.
+- **Inference buffers in internal SRAM.** PSRAM access with WiFi active tripped the watchdog.
+- **One voice.** NEO always speaks with edge-tts `es-CU-ManuelNeural`, including its
+  prerecorded phrases; Piper only answers when edge-tts is unreachable.
+
+## Failure modes
+
+Every message below is prerecorded in the firmware, so NEO can say it without a server.
+
+| Situation | What NEO does |
+|---|---|
+| Server unreachable (LAN and cloud) | Says "No encuentro mi servidor", and "Ya estoy conectado y listo" when it is back |
+| WiFi down | Says it cannot connect; the wake word keeps working |
+| No internet on the server | The server sends `sin_internet`; NEO says "No puedo acceder a internet ahora" |
+| Empty transcription | "No te entendí, ¿me lo repites?" and listens again |
+| Server silent for 30 s | "Está tardando demasiado, inténtalo otra vez" |
+| edge-tts unreachable | The server answers with Piper (different voice) |
+| LLM drifts into another script (qwen2.5:3b → Chinese) | The server asks again once, then strips non-Latin text |
+| Wake word false positive | NEO greets, hears nothing for 10 s and goes back to rest |
+
+## Security and limitations
+
+- The WebSocket has **no authentication**; it assumes a trusted LAN. Add a token or TLS
+  before exposing the server. API keys live in `servidor/.env` (gitignored).
+- **Spanish only**: STT, prompts and voice.
+- **Short memory**: the last 5 exchanges per WebSocket session, in RAM.
+- **USB power**: speaking peaks at ~0.8 A at 5 V; a single boosted 18650 cell browns out.
+- **No OTA updates** yet; flash over USB.
+- The local profile is slower and less accurate than the cloud one on a laptop CPU.
+
+## Contributing
+
+Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Run the tests
+before sending changes:
+
+```bash
+cd servidor && pytest
+cd firmware/tools && pytest
+```
+
+## License and acknowledgements
+
+[MIT](LICENSE). Built on [TensorFlow Lite Micro](https://github.com/espressif/esp-tflite-micro),
+[ESP-NN](https://github.com/espressif/esp-nn), [faster-whisper](https://github.com/SYSTRAN/faster-whisper),
+[Ollama](https://ollama.com), [Groq](https://groq.com), [edge-tts](https://github.com/rany2/edge-tts),
+[Piper](https://github.com/rhasspy/piper), [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+and [arduinoWebSockets](https://github.com/Links2004/arduinoWebSockets).
+
+*¿Hablas español?* Lee el [README en español](README.es.md).

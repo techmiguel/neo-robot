@@ -132,11 +132,24 @@ Hallazgos:
 - **Las tildes son 3,5 puntos del WER local** («que» por «qué», «como» por «cómo»…), que al TTS y a la intención no les afectan. El informe ahora da también el WER sin tildes.
 - **La voz única cuesta ~2,2 s en el perfil local:** edge-tts tarda 2,5 s y Piper tardaba 0,25 s. Se recuperaría transmitiendo el audio de edge-tts por fragmentos.
 - **Wake word en la placa con ESP-NN:** la inferencia pasa de 2,6 s a 0,32–0,40 s, con las mismas puntuaciones (0,98–0,996). Detección estimada en ~1,1 s (antes, 3,33 s medidos); falta medirla con `latencia_wake.py`.
-- **Por corregir:**
-  - qwen2.5:3b responde en chino en 2 de 24 preguntas.
+- **Por corregir** (corregido el 25/10):
+  - qwen2.5:3b responde en chino en 2 de 24 preguntas → `ask()` repite la pregunta y `ask_stream()` filtra el otro alfabeto.
   - El clima respondía por Ciudad de México por el `.env`; ya está cambiado a La Habana.
-  - El Toque no encuentra el euro.
-  - Las noticias salen sesgadas a criptomonedas.
+  - El Toque no encuentra el euro → lo publica como `ECU`.
+  - Las noticias salen sesgadas a criptomonedas → noticias de grandes tecnológicas.
+
+**Cuarta medición con la placa (25/10, gemma4:e2b y respuesta en streaming).** Análisis en `docs/metrics/validacion_gemma4_streaming/ANALISIS.md`. Desde esta sesión el WER se cuenta sin tildes.
+
+| Sesión | WER | Intención | Preguntas libres (mediana) |
+|---|---|---|---|
+| 11:52, tres variantes en serie | 11,1 % | 97,0 % | gemma 12,8 s (9,9 s sin el sesgo de orden), gemma completa 10,5 s, qwen 9,7 s |
+| 13:10, solo gemma, calibración del VAD por percentil y prompt nuevo | **5,1 %** | **100 %** | 18,0 s: el prompt de 409 tokens cuesta ~8 s de primer token |
+
+Hallazgos:
+- **La calibración del VAD perdía el inicio de las frases** cuando la persona hablaba justo tras el saludo: su voz entraba en la media del ruido (203 en vez de ~55). Con el percentil 25, los inicios perdidos bajan de 8 a 1.
+- **gemma4:e2b reprocesa el system prompt en cada pregunta** (~37 tokens/s en el i5). El perfil local usa ahora un prompt corto de 139 tokens (2,7–3,3 s frente a 8,4–11,6 s); falta medirlo de punta a punta.
+- **El streaming adelanta el primer audio ~1,9 s** cuando la respuesta se parte en dos fragmentos; con respuestas de una oración, solo 0,4 s. edge-tts cuesta ~1,9 s fijos por llamada: es la siguiente palanca (reenviar su audio a medida que llega).
+- Primer audio → empieza a sonar en la placa: 20 ms; 0 esperas por datos en 5 de 6 respuestas.
 
 Corregido (2026-10-21): `percentile()` de `servidor/scripts/neo_metrics_tool.py` no ordenaba los valores por etapa, por eso los p50/p95 de STT/LLM/TTS de `docs/metrics/README.md` (11/09) no son válidos. Hay que regenerarlos con los logs originales del PC.
 
@@ -185,7 +198,7 @@ Pendiente para cerrar 1.4: las sesiones completas del protocolo (offset, 5 arran
 - Estado actual y limitaciones, coherentes con este roadmap.
 - Vídeo corto de una conversación completa con wake word y batería.
 
-**Estado: EN CURSO** (README en inglés con los resultados medidos de 1.1, 1.2 y 1.4 y la limitación de la alimentación, actualizado el 24/10; faltan la sección de personalidad del prompt y el vídeo).
+**Estado: EN CURSO** (25/10: README en inglés y en español con guía de instalación desde cero, cableado en `docs/hardware.md`, resultados del 24 y 25/10, personalidad, modos de fallo, CI y guía de contribución; falta el vídeo).
 
 ### Cierre de la Entrega 1 (24/10)
 
@@ -195,7 +208,7 @@ Pendiente para cerrar 1.4: las sesiones completas del protocolo (offset, 5 arran
 | 1.2 Conversación y latencia | Casi completo | 31 frases con la placa (24/10): local 8,8 s / nube 5,7 s de mediana; WER 9,7 % / 4,6 % (sin tildes 6,2 % / 3,1 %) | Flujo completo con wake word en una sesión, primer audio en la placa |
 | 1.3 Batería 18650 | En curso | Conversa sin USB, pero brownout por encima de ~350 mA | Fuente ≥ 1 A a 5 V, nivel de carga en la OLED, esquema |
 | 1.4 Consumo por estado | Preliminar | Tabla por estado (1 sesión, 12 turnos) | Sesiones completas del protocolo y autonomía |
-| 1.5 Documentación y vídeo | En curso | README con resultados | Personalidad del prompt, vídeo |
+| 1.5 Documentación y vídeo | Casi completo | README (inglés y español), cableado, guía desde cero, CI | Vídeo |
 
 ---
 

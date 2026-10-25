@@ -10,8 +10,13 @@ app_port: 7860
 
 # NEO — Servidor WebSocket
 
-Servidor de voz para el robot NEO (ESP32-S3).  
-Pipeline: STT (Groq Whisper) → LLM (Groq LLaMA) → TTS (edge-tts).
+Servidor de voz para [NEO](https://github.com/techmiguel/neo-robot), el asistente de voz
+con ESP32-S3. Pipeline: STT (Groq Whisper) → intención por palabras clave → comando o LLM
+(Groq `openai/gpt-oss-20b`) → TTS (edge-tts), con la respuesta en streaming.
+
+Este Space es el respaldo en la nube; la placa usa primero el servidor de la red local.
+Para ejecutarlo en tu PC (perfiles `local` con Ollama y faster-whisper, o `nube`), sigue el
+[README del repositorio](https://github.com/techmiguel/neo-robot#quick-start).
 
 ## Secrets requeridos
 
