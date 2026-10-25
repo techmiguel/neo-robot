@@ -12,6 +12,7 @@
  */
 
 #include <Arduino.h>
+#include <algorithm>
 #include <cstring>
 #include <esp_heap_caps.h>
 #include <esp_task_wdt.h>
@@ -22,7 +23,7 @@
 #include "network/ws_client.h"
 #include "audio/microphone.h"
 #include "audio/speaker.h"
-#include "audio/ack.h"
+#include "audio/frases.h"
 #include "input/trigger.h"
 #include "commands/dispatcher.h"
 #include "commands/inference.h"
@@ -39,6 +40,27 @@ static const uint16_t SERVIDOR_PORT_NUBE = 443;
 
 enum class ServidorActivo : uint8_t { NINGUNO, LOCAL, NUBE };
 static ServidorActivo s_servidor = ServidorActivo::NINGUNO;
+
+// ── Red bajo demanda ──────────────────────────────────────────────────────────
+// La red (WiFi + WS) vive mientras haya actividad. Tras RED_INACTIVIDAD_MS en
+// REPOSO, tareaWs la apaga y la CPU baja a CPU_REPOSO_MHZ; el wake word sigue
+// escuchando. Al despertar, tareaWs reconecta mientras NEO saluda y graba.
+enum class RedEstado : uint8_t { APAGADA, CONECTANDO, LISTA, SIN_WIFI, SIN_SERVIDOR };
+static volatile RedEstado s_red_estado      = RedEstado::CONECTANDO;  // setup() conecta el WiFi
+static volatile uint32_t  s_ultima_actividad = 0;      // millis() de la última interacción
+static volatile bool      s_red_reintentar  = false;   // wake/botón: reintentar ya, sin esperar
+static const uint32_t RED_INACTIVIDAD_MS = 10UL * 60 * 1000;
+static const uint32_t CPU_REPOSO_MHZ     = 80;     // mínimo con WiFi; I2S va por APLL, no depende de la CPU
+static const uint32_t CPU_ACTIVA_MHZ     = 240;
+
+// Frase pregrabada que loop() debe decir (la piden tareaWs o el callback WS en Core 0).
+static volatile Frase s_frase_pendiente = Frase::N;   // N = ninguna
+static volatile bool  s_envio_ok        = false;      // tareaWs → grabarYEnviar
+// Aviso del estado de la red que loop() dice en reposo. Se avisa una vez al perder la
+// red y otra al recuperarla (y al conectar tras el arranque), no en cada reintento.
+static volatile Frase s_anuncio_red      = Frase::N;
+static volatile bool  s_fallo_anunciado  = false;
+static bool           s_primera_conexion = true;     // solo tareaWs
 
 static const size_t PLAY_MUESTRAS    = 30 * 16000;  // 480000 (30s, PSRAM)
 static const size_t PLAY_MUESTRAS_FB = 5  * 16000;  // 80000  (5s,  SRAM fallback)
@@ -75,7 +97,7 @@ enum class Fase : uint8_t { REPOSO, CONVERSACION, ESPERA_RESPUESTA };
 static Fase     s_fase        = Fase::REPOSO;
 static uint32_t s_espera_t0   = 0;
 static const uint32_t CONVERSACION_ESCUCHA_MS   = 10000;  // silencio que devuelve al reposo
-static const uint32_t ESPERA_RESPUESTA_TIMEOUT_MS = 40000; // servidor mudo → soltar
+static const uint32_t ESPERA_RESPUESTA_TIMEOUT_MS = 30000; // servidor mudo → "tardando" y soltar
 
 // VAD para wake word (pipeline nuevo: activación por umbral de volumen)
 enum class WakeState : uint8_t { OYENDO, CAPTANDO };
@@ -92,6 +114,9 @@ static const float    WAKE_FACTOR_FIN    = 2.0f;   // RMS < noise×2 → cuenta 
 static const uint32_t WAKE_SILENCIO_MS   = 700;    // ms de silencio para cortar captura
 static const uint32_t WAKE_MAX_MS        = 2500;   // duración máxima de captura
 static const uint32_t WAKE_RESULTADO_MS  = 1500;   // ms que se muestra el resultado
+// Piso del ruido de fondo (RMS). En silencio medido es 13–27; sin piso, en una sala muy
+// callada el ruido tiende a 0 y cualquier chasquido supera noise×factor.
+static const float    VAD_RUIDO_MIN      = 15.0f;
 
 // volatile: escritos por tareaWs (Core 0), leídos por loop (Core 1).
 static volatile size_t play_bytes = 0;
@@ -174,19 +199,27 @@ static void neoListoYReposoOled() {
 }
 
 // ── Reproducción ──────────────────────────────────────────────────────────────
-// Acuse de wake word: NEO dice "¡Hola!" localmente al salir del reposo,
-// antes de empezar a grabar la consulta libre.
-void reproducirAck() {
-    Serial.printf("[NEO] Ack wake: %u muestras (%.2fs)\n",
-                  (unsigned)ACK_MUESTRAS, ACK_MUESTRAS / 16000.0f);
-    for (size_t i = 0; i + Speaker::BLOCK_SIZE <= ACK_MUESTRAS; i += Speaker::BLOCK_SIZE) {
-        spk->reproducir(ACK_AUDIO + i);
+// Frase pregrabada (saludo o aviso de error), sin servidor: una variante al azar
+// de la categoría, distinta de la última que sonó de esa misma categoría.
+void reproducirFrase(Frase f) {
+    static uint8_t ultima[(size_t)Frase::N] = {};
+    const FraseCategoria& cat = FRASES[(size_t)f];
+    uint8_t v = esp_random() % cat.n;
+    if (cat.n > 1 && v == ultima[(size_t)f]) v = (v + 1) % cat.n;
+    ultima[(size_t)f] = v;
+    const int16_t* audio    = cat.variantes[v].audio;
+    const size_t   muestras = cat.variantes[v].muestras;
+
+    Serial.printf("[NEO] Frase %u.%u: %u muestras (%.2fs)\n",
+                  (unsigned)f, (unsigned)v, (unsigned)muestras, muestras / 16000.0f);
+    for (size_t i = 0; i + Speaker::BLOCK_SIZE <= muestras; i += Speaker::BLOCK_SIZE) {
+        spk->reproducir(audio + i);
     }
     // Cola parcial final, rellena de silencio hasta el bloque completo.
-    const size_t resto = ACK_MUESTRAS % Speaker::BLOCK_SIZE;
+    const size_t resto = muestras % Speaker::BLOCK_SIZE;
     if (resto) {
         int16_t tail[Speaker::BLOCK_SIZE] = {};
-        memcpy(tail, ACK_AUDIO + (ACK_MUESTRAS - resto), resto * sizeof(int16_t));
+        memcpy(tail, audio + (muestras - resto), resto * sizeof(int16_t));
         spk->reproducir(tail);
     }
 }
@@ -275,6 +308,9 @@ static const uint8_t  VAD_BLOQUES_INICIO_CONSEC = 3;
 static const uint32_t VAD_SIN_VOZ_MS    = 2500;
 static const uint32_t VAD_MAX_GRAB_MS   = 30000;
 static const uint32_t VAD_MIN_GRAB_MS   = 400;
+// Pre-roll: bloques previos a la detección que se conservan (~300 ms a 16 ms/bloque).
+// El VAD exige 3 bloques seguidos sobre el umbral: sin esto se perdía la primera sílaba.
+static const size_t   VAD_PREROLL_BLOQUES = 19;
 
 // ── Consulta directa ──────────────────────────────────────────────────────────
 void consultarToque() {
@@ -282,6 +318,8 @@ void consultarToque() {
     play_bytes = 0;
     play_ready = false;
     play_abort = false;
+    s_ultima_actividad = millis();
+    s_red_reintentar   = true;
     oled->mostrar("NEO", "Toque USD...");
     Serial.println("[NEO] Consultando El Toque — USD/CUP");
 
@@ -316,7 +354,7 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     for (uint16_t i = 0; i < VAD_BLOQUES_CAL; i++) {
         if (mic->leer(tmp)) suma_cal += Microphone::rms(tmp);
     }
-    const float noise_floor   = suma_cal / VAD_BLOQUES_CAL;
+    const float noise_floor   = max(suma_cal / VAD_BLOQUES_CAL, VAD_RUIDO_MIN);
     const float umbral_inicio = noise_floor * VAD_FACTOR_INICIO;
     const float umbral_fin    = noise_floor * VAD_FACTOR_FIN;
 
@@ -327,10 +365,14 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     const uint32_t t_espera = millis();
     bool voz_detectada = false;
     uint8_t bloques_consecutivos = 0;
+    size_t  bloques_espera = 0;   // los primeros VAD_PREROLL_BLOQUES de audio_buf son un búfer circular
 
     while (millis() - t_espera < escucha_ms) {
         if (!mic->leer(tmp)) continue;
         pintarCara("Escuchando");   // mantiene los ojos vivos mientras espera
+        memcpy(audio_buf + (bloques_espera % VAD_PREROLL_BLOQUES) * Microphone::BLOCK_SIZE,
+               tmp, sizeof(tmp));
+        bloques_espera++;
 
         if (Microphone::rms(tmp) > umbral_inicio) {
             if (bloques_consecutivos < 255) bloques_consecutivos++;
@@ -353,8 +395,13 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     Serial.printf("[TIMING] grabacion_inicio %lu\n", (unsigned long)millis());
     Serial.println("[VAD] Voz detectada — grabando");
 
-    size_t offset = Microphone::BLOCK_SIZE;
-    memcpy(audio_buf, tmp, offset * sizeof(int16_t));
+    // Ordenar el búfer circular (el bloque más antiguo primero); incluye el bloque actual.
+    if (bloques_espera > VAD_PREROLL_BLOQUES) {
+        const size_t mas_antiguo = bloques_espera % VAD_PREROLL_BLOQUES;
+        std::rotate(audio_buf, audio_buf + mas_antiguo * Microphone::BLOCK_SIZE,
+                    audio_buf + VAD_PREROLL_BLOQUES * Microphone::BLOCK_SIZE);
+    }
+    size_t offset = min(bloques_espera, VAD_PREROLL_BLOQUES) * Microphone::BLOCK_SIZE;
 
     const size_t   max_muestras = audio_buf_cap / sizeof(int16_t);
     const uint32_t t_inicio     = millis();
@@ -416,6 +463,7 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
     PedidoEnvio pedido{};
     pedido.tipo  = PEDIDO_AUDIO;
     pedido.bytes = offset * sizeof(int16_t);
+    s_envio_ok   = false;   // antes de encolar: tareaWs puede terminar enseguida
 
     if (xQueueSend(xColaEnvio, &pedido, pdMS_TO_TICKS(500)) != pdTRUE) {
         Serial.println("[NEO] Cola de envío ocupada");
@@ -423,9 +471,12 @@ bool grabarYEnviar(uint32_t escucha_ms = VAD_TIMEOUT_MS) {
         return false;
     }
 
-    // Bloquear hasta que tareaWs confirme que el envío terminó.
-    ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(35000));
-    return true;
+    // Bloquear hasta que tareaWs confirme el envío. Si la red está apagada, antes
+    // conecta (WiFi + WS, hasta ~25 s); si no lo logra, deja la frase de error pendiente.
+    if (ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(35000)) == 0 && s_frase_pendiente == Frase::N) {
+        s_frase_pendiente = Frase::SIN_SERVIDOR;
+    }
+    return s_envio_ok;
 }
 
 // ── Tarea de inferencia — Core 1, prioridad baja ─────────────────────────────
@@ -460,50 +511,98 @@ static void tareaInferencia(void* /*pvParam*/) {
     }
 }
 
-// ── Reconexión WiFi — helper usado por tareaWs ───────────────────────────────
-// Intenta reconectar WiFi: primero rápido, luego full reset desde NVS.
-// Devuelve true si quedó conectado.
-static bool _wifiReconectar() {
-    // Paso 1: reconexión rápida (reutiliza credenciales del begin() inicial)
-    Serial.println("[WIFI] Intento rápido (WiFi.reconnect)...");
-    WiFi.reconnect();
-    for (int i = 0; i < 20; i++) {          // hasta 10 s
-        if (WiFi.status() == WL_CONNECTED) return true;
-        vTaskDelay(pdMS_TO_TICKS(500));
-    }
-
-    // Paso 2: reset completo del stack + releer NVS
-    Serial.println("[WIFI] Reconexión rápida fallida — reset completo");
-    oled->mostrar("NEO", "Reset WiFi...");
-    WiFi.disconnect(true);
-    vTaskDelay(pdMS_TO_TICKS(1500));
-
-    wifiOk = wifi->begin(*oled);            // bloquea hasta conectar o timeout
-    if (!wifiOk) return false;
-
-    // Restaurar DNS fijo (evita resoluciones lentas del carrier)
+// ── Red: conexión y apagado — helpers usados por tareaWs ─────────────────────
+// Conecta el WiFi con las credenciales de NVS (sin portal: eso solo al arrancar).
+static bool _wifiConectar() {
+    if (!wifi->conectar()) return false;
+    // DNS fijo (evita resoluciones lentas del carrier)
     WiFi.config(WiFi.localIP(), WiFi.gatewayIP(), WiFi.subnetMask(),
                 IPAddress(8, 8, 8, 8), IPAddress(1, 1, 1, 1));
     vTaskDelay(pdMS_TO_TICKS(300));
     return WiFi.status() == WL_CONNECTED;
 }
 
+// Apaga WS y radio: WIFI_OFF detiene el módem (disconnect solo suelta el AP).
+static void _redApagar() {
+    ws->desconectar();
+    WiFi.disconnect(true);
+    WiFi.mode(WIFI_OFF);
+    s_servidor   = ServidorActivo::NINGUNO;
+    s_red_estado = RedEstado::APAGADA;
+    Serial.println("[RED] apagada");
+}
+
+// La red sigue viva mientras NEO conversa o hubo actividad hace menos de RED_INACTIVIDAD_MS.
+static bool _redNecesaria() {
+    return s_fase != Fase::REPOSO || millis() - s_ultima_actividad < RED_INACTIVIDAD_MS;
+}
+
+// Sin red no se puede atender el pedido: se descarta y loop() dice por qué.
+static void _fallarPedidos(Frase motivo) {
+    PedidoEnvio pedido;
+    if (xQueueReceive(xColaEnvio, &pedido, 0) != pdTRUE) return;
+    Serial.printf("[RED] pedido descartado: %s\n",
+                  motivo == Frase::SIN_WIFI ? "sin WiFi" : "sin servidor");
+    s_envio_ok        = false;
+    s_frase_pendiente = motivo;
+    s_fallo_anunciado = true;   // la frase de error ya avisa: al recuperar la red, "ya estoy conectado"
+    if (pedido.tipo == PEDIDO_AUDIO) xTaskNotifyGive(hTareaPrincipal);
+}
+
+// Primer fallo de una racha: avisar en reposo (los reintentos siguientes callan).
+static void _anunciarFallo(Frase motivo) {
+    if (s_fallo_anunciado) return;
+    s_fallo_anunciado = true;
+    s_anuncio_red     = motivo;
+}
+
+// Espera entre reintentos. Corta si NEO despierta (reintentar ya) o si la red
+// deja de hacer falta; un pedido que llega mientras tanto se rechaza al momento.
+static void _esperarReintento(uint32_t ms, Frase motivo) {
+    const uint32_t t0 = millis();
+    while (millis() - t0 < ms && !s_red_reintentar && _redNecesaria()) {
+        _fallarPedidos(motivo);
+        vTaskDelay(pdMS_TO_TICKS(50));
+    }
+}
+
 // ── Tarea WebSocket — corre en Core 0 junto al stack WiFi/TCP ─────────────────
 static void tareaWs(void* /* pvParam */) {
-    uint8_t fallos_ws = 0;   // fallos WS consecutivos (sin WiFi de por medio)
+    uint8_t  fallos_ws = 0;   // fallos WS consecutivos (sin WiFi de por medio)
+    uint32_t t_conexion = millis();
 
     while (true) {
+
+        // ── 0. Red bajo demanda ───────────────────────────────────────────────
+        if (!_redNecesaria()) {
+            if (s_red_estado != RedEstado::APAGADA) _redApagar();
+            vTaskDelay(pdMS_TO_TICKS(50));
+            continue;
+        }
+        if (s_red_estado == RedEstado::APAGADA) {
+            Serial.println("[RED] conectando");
+            s_red_estado = RedEstado::CONECTANDO;
+            t_conexion   = millis();
+        }
+        s_red_reintentar = false;
+        // Caída con la red lista: medir desde aquí el tiempo hasta reconectar.
+        if (s_red_estado == RedEstado::LISTA && (WiFi.status() != WL_CONNECTED || !ws->conectado())) {
+            s_red_estado = RedEstado::CONECTANDO;
+            t_conexion   = millis();
+        }
 
         // ── 1. Verificar WiFi ─────────────────────────────────────────────────
         // Si cae el WiFi, ninguna operación WS tiene sentido: reconectar primero.
         if (WiFi.status() != WL_CONNECTED) {
             ws->desconectar();
-            Serial.println("[WS-TASK] WiFi perdido — intentando reconectar");
-            oled->mostrar("NEO", "Sin WiFi...");
+            s_servidor = ServidorActivo::NINGUNO;
+            Serial.println("[WS-TASK] Sin WiFi — conectando");
 
-            if (!_wifiReconectar()) {
-                oled->mostrar("NEO", "Sin WiFi...");
-                vTaskDelay(pdMS_TO_TICKS(15000));
+            if (!_wifiConectar()) {
+                s_red_estado = RedEstado::SIN_WIFI;
+                _fallarPedidos(Frase::SIN_WIFI);
+                _anunciarFallo(Frase::SIN_WIFI);
+                _esperarReintento(15000, Frase::SIN_WIFI);
                 continue;
             }
             Serial.printf("[WS-TASK] WiFi OK: %s\n", WiFi.localIP().toString().c_str());
@@ -514,30 +613,35 @@ static void tareaWs(void* /* pvParam */) {
         // ── 2. Verificar/reconectar WebSocket ────────────────────────────────
         if (!ws->conectado()) {
             Serial.printf("[WS-TASK] WS caído (fallos=%d)\n", fallos_ws);
-            oled->mostrar("NEO", "Reconect...");
 
             // Cada 4 fallos WS consecutivos el stack lwIP acumula sockets
             // huérfanos de TLS — resetear WiFi limpia los descriptores.
             if (fallos_ws > 0 && fallos_ws % 4 == 0) {
                 Serial.println("[WS-TASK] Múltiples fallos WS — reset WiFi");
-                if (!_wifiReconectar()) {
-                    vTaskDelay(pdMS_TO_TICKS(5000));
-                    continue;
-                }
+                WiFi.disconnect(true);
+                vTaskDelay(pdMS_TO_TICKS(1500));
+                continue;   // el paso 1 reconecta
             }
 
             if (!_wsConectar()) {
                 fallos_ws++;
-                char buf[24];
-                snprintf(buf, sizeof(buf), "WS fallo #%u", (unsigned)fallos_ws);
-                oled->mostrar("NEO", buf);
-                vTaskDelay(pdMS_TO_TICKS(5000));
+                s_red_estado = RedEstado::SIN_SERVIDOR;
+                _fallarPedidos(Frase::SIN_SERVIDOR);
+                _anunciarFallo(Frase::SIN_SERVIDOR);
+                _esperarReintento(5000, Frase::SIN_SERVIDOR);
                 continue;
             }
 
-            Serial.println("[WS-TASK] WS reconectado OK");
+            Serial.println("[WS-TASK] WS conectado OK");
             fallos_ws = 0;
-            neoListoYReposoOled();
+        }
+        if (s_red_estado != RedEstado::LISTA) {
+            s_red_estado = RedEstado::LISTA;
+            Serial.printf("[RED] lista %lu ms\n", (unsigned long)(millis() - t_conexion));
+            // La reconexión normal tras el reposo profundo no se anuncia: NEO ya está conversando.
+            if (s_fallo_anunciado || s_primera_conexion) s_anuncio_red = Frase::CONECTADO;
+            s_fallo_anunciado  = false;
+            s_primera_conexion = false;
         }
 
         // ── 3. Tick normal + cola de envío ────────────────────────────────────
@@ -569,11 +673,12 @@ static void tareaWs(void* /* pvParam */) {
                 if (ok && ws->conectado()) {
                     vTaskDelay(pdMS_TO_TICKS(200));
                     ws->enviarTexto("{\"cmd\":\"fin_grabacion\"}");
+                    s_envio_ok = true;
                     Serial.printf("[TIMING] envio_ws_fin %lu\n", (unsigned long)millis());
                     Serial.println("[WS-TASK] fin_grabacion enviado");
                 } else {
                     Serial.println("[WS-TASK] Corte durante envío de audio");
-                    oled->mostrarEstado("WS perdido");
+                    s_frase_pendiente = Frase::SIN_SERVIDOR;
                 }
 
                 xTaskNotifyGive(hTareaPrincipal);
@@ -675,13 +780,15 @@ void setup() {
     static WifiManager wifi_instance;
     wifi   = &wifi_instance;
     wifiOk = wifi->begin(*oled);
-    if (!wifiOk) return;
+    if (!wifiOk) return;   // portal de configuración activo: loop() lo atiende
 
-    WiFi.config(WiFi.localIP(), WiFi.gatewayIP(), WiFi.subnetMask(),
-                IPAddress(8, 8, 8, 8), IPAddress(1, 1, 1, 1));
-    delay(300);
-    Serial.printf("[DNS] Configurado: 8.8.8.8 / 1.1.1.1  IP: %s\n",
-                  WiFi.localIP().toString().c_str());
+    if (WiFi.status() == WL_CONNECTED) {
+        WiFi.config(WiFi.localIP(), WiFi.gatewayIP(), WiFi.subnetMask(),
+                    IPAddress(8, 8, 8, 8), IPAddress(1, 1, 1, 1));
+        delay(300);
+        Serial.printf("[DNS] Configurado: 8.8.8.8 / 1.1.1.1  IP: %s\n",
+                      WiFi.localIP().toString().c_str());
+    }
 
     static Microphone mic_instance;
     mic = &mic_instance;
@@ -704,15 +811,17 @@ void setup() {
     ws->onTexto([](const String& msg) {
         Serial.printf("[WS] %s\n", msg.c_str());
     
-        if      (msg.indexOf("listo")         >= 0) neoListoYReposoOled();
+        // El error primero: su "msg" es texto libre y podría contener otras palabras clave.
+        if (msg.indexOf("\"error\"") >= 0) {
+            play_abort = true;   // corta una reproducción en streaming en curso
+            // No llegará (más) audio de respuesta: loop() dice la frase y suelta la espera.
+            s_frase_pendiente = msg.indexOf("sin_internet") >= 0 ? Frase::SIN_INTERNET
+                              : msg.indexOf("no_entendi")   >= 0 ? Frase::NO_ENTENDI
+                              :                                    Frase::ERROR;
+        }
         else if (msg.indexOf("fin_respuesta") >= 0) {
             Serial.printf("[TIMING] fin_respuesta %lu\n", (unsigned long)millis());
             play_ready = true;
-        }
-        else if (msg.indexOf("error")         >= 0) {
-            play_abort = true;   // corta una reproducción en curso
-            oled->mostrarEstado("Error servidor");
-            s_fase = Fase::REPOSO;   // liberar espera: no llegará audio de respuesta
         }
     });
     ws->onBinario([](const uint8_t* data, size_t len) {
@@ -727,56 +836,8 @@ void setup() {
         play_bytes += n;
     });
 
-    // Conexión inicial: bloqueante, ocurre antes de crear tareaWs.
-    oled->mostrarEstado("Conectando WS...");
-    Serial.println("[NEO] Iniciando conexión WebSocket...");
-    delay(1000);
-
-    int intento = 0;
-    while (true) {
-        intento++;
-        Serial.printf("[NEO] Intento WS #%d  heap DRAM: %u  PSRAM libre: %u\n",
-                      intento, heap_caps_get_free_size(MALLOC_CAP_INTERNAL),
-                      (unsigned)ESP.getFreePsram());
-
-        // Demasiados fallos seguidos: reiniciar WiFi para limpiar sockets huérfanos.
-        // El stack lwIP acumula descriptores si los intentos TLS fallan sin cerrar bien.
-        if (intento > 1 && intento % 4 == 0) {
-            Serial.println("[NEO] Reiniciando stack WiFi...");
-            oled->mostrar("NEO", "Reset WiFi...");
-            WiFi.disconnect(true);
-            delay(2000);
-            wifiOk = wifi->begin(*oled);
-            if (!wifiOk) { delay(3000); continue; }
-            WiFi.config(WiFi.localIP(), WiFi.gatewayIP(), WiFi.subnetMask(),
-                        IPAddress(8, 8, 8, 8), IPAddress(1, 1, 1, 1));
-            delay(500);
-        }
-
-        // Último recurso: si lleva muchos fallos, reiniciar el ESP32 completo.
-        if (intento > 12) {
-            Serial.println("[NEO] Demasiados fallos — reiniciando ESP32...");
-            oled->mostrar("NEO", "Reiniciando...");
-            delay(2000);
-            ESP.restart();
-        }
-
-        // Local First: _wsConectar() intenta LAN y luego nube; un fallo de DNS
-        // en la nube solo hace fallar ese intento, no bloquea el local.
-        Serial.println("[NEO] Intentando conectar a servidor local...");
-        if (_wsConectar()) {
-            Serial.println("[NEO] WS conectado exitosamente");
-            Serial.printf("[NEO] Servidor activo: %s  heap: %u\n",
-                          estadoConexionStr(), heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
-            break;
-        }
-
-        Serial.println("[NEO] Fallo al conectar, reintentando en 3s...");
-        char buf[24];
-        snprintf(buf, sizeof(buf), "WS reintento %d", intento);
-        oled->mostrar("NEO", buf);
-        delay(3000);
-    }
+    // Sin conexión inicial bloqueante: tareaWs conecta el WS en segundo plano y
+    // NEO escucha el wake word desde ya, haya servidor o no.
 
     // CREAR TAREAS ANTES DE CARGAR EL MODELO DE INFERENCIA
     // El modelo consume ~173K de heap, dejando muy poco para las tareas.
@@ -801,6 +862,7 @@ void setup() {
     trigger->onActivado([]() {
         if (s_fase == Fase::REPOSO) {
             Serial.println("[NEO] Botón — entro en conversación");
+            s_red_reintentar = true;
             s_fase = Fase::CONVERSACION;
         }
     });
@@ -852,6 +914,48 @@ void loop() {
     // ws->tick() y reconexión los maneja tareaWs en Core 0.
     trigger->tick();
 
+    // Mientras NEO conversa, la red no debe apagarse por inactividad.
+    if (s_fase != Fase::REPOSO) s_ultima_actividad = millis();
+
+    // Frase pendiente (fallo de red o error del servidor): decirla y soltar la espera.
+    if (s_frase_pendiente != Frase::N) {
+        const Frase f = s_frase_pendiente;
+        s_frase_pendiente = Frase::N;
+        play_ready = false;   // un fin_respuesta tardío ya no corresponde
+        play_bytes = 0;       // ni el audio parcial que llegó antes del error
+        play_abort = false;
+        reproducirFrase(f);
+        // "¿Me lo repites?" espera otra pregunta; el resto vuelve al reposo.
+        if (f == Frase::NO_ENTENDI) {
+            s_fase = Fase::CONVERSACION;
+        } else {
+            Serial.println("[NEO] Aviso dicho — vuelvo al reposo");
+            s_fase = Fase::REPOSO;
+            neoListoYReposoOled();
+        }
+        return;
+    }
+
+    // Aviso del estado de la red ("no encuentro la red wifi", "ya estoy conectado"):
+    // solo en reposo y sin captura en curso, para no pisar una conversación.
+    if (s_anuncio_red != Frase::N && s_fase == Fase::REPOSO &&
+        s_wake_state == WakeState::OYENDO && !s_inf_busy) {
+        const Frase f = s_anuncio_red;
+        s_anuncio_red = Frase::N;
+        reproducirFrase(f);
+        Serial.println("[NEO] Aviso de red dicho — vuelvo al reposo");
+        return;
+    }
+
+    // CPU baja solo en el reposo profundo (red apagada, sin captura ni inferencia).
+    const bool reposo_profundo = s_fase == Fase::REPOSO && s_red_estado == RedEstado::APAGADA &&
+                                 s_wake_state == WakeState::OYENDO && !s_inf_busy;
+    const uint32_t mhz = reposo_profundo ? CPU_REPOSO_MHZ : CPU_ACTIVA_MHZ;
+    if (getCpuFrequencyMhz() != mhz) {
+        setCpuFrequencyMhz(mhz);
+        Serial.printf("[CPU] %lu MHz\n", (unsigned long)mhz);
+    }
+
     // Empezar a hablar con el primer colchón de audio, o ya si la respuesta
     // completa es más corta que el colchón.
     if (play_ready || play_bytes >= PLAY_PREBUFFER_BYTES) {
@@ -872,7 +976,7 @@ void loop() {
         if (enviado) {
             s_fase = Fase::ESPERA_RESPUESTA;
             s_espera_t0 = millis();
-        } else {
+        } else if (s_frase_pendiente == Frase::N) {   // si hay frase de error, la dice el próximo ciclo
             Serial.println("[NEO] Silencio prolongado — vuelvo al reposo (di 'Hola NEO')");
             s_fase = Fase::REPOSO;
             neoListoYReposoOled();
@@ -885,8 +989,7 @@ void loop() {
         pintarCara("Pensando");   // ojos vivos mientras el servidor procesa
         if (millis() - s_espera_t0 > ESPERA_RESPUESTA_TIMEOUT_MS) {
             Serial.println("[NEO] Sin respuesta del servidor — vuelvo al reposo");
-            s_fase = Fase::REPOSO;
-            neoListoYReposoOled();
+            s_frase_pendiente = Frase::TARDANDO;
         }
         delay(20);
         return;
@@ -897,6 +1000,11 @@ void loop() {
     if (!mic->leer(bloque)) return;
 
     float rms = (float)Microphone::rms(bloque);
+#if LOG_NIVEL_WAKE
+    // Nivel de cada bloque (16 ms) con su millis(): tools/latencia_wake.py calcula con él
+    // el fin de la frase, independiente de la decisión del VAD. Solo en env esp32dev_latencia.
+    Serial.printf("[NIV] %lu %.0f\n", (unsigned long)millis(), rms);
+#endif
 
     // ── Consumir resultado de inferencia si está listo ────────────────────────
     InfResultado inf_res;
@@ -919,9 +1027,11 @@ void loop() {
                 s_conf_count = 0;
                 Serial.printf("[TIMING] wake_detectado %lu\n", (unsigned long)millis());
                 Serial.println("[WW] Wake word confirmado — enciendo pantalla, saludo y converso");
+                s_ultima_actividad = millis();
+                s_red_reintentar   = true;   // tareaWs conecta mientras saluda y graba
                 oled->encender();
-                if (face) face->begin();   // primeros ojos
-                reproducirAck();           // "¡Hola!"
+                if (face) face->begin();     // primeros ojos
+                reproducirFrase(Frase::SALUDO);
                 s_fase = Fase::CONVERSACION;
             }
         } else {
@@ -934,7 +1044,7 @@ void loop() {
     if (s_wake_state == WakeState::OYENDO) {
         // Actualizar noise floor solo cuando no hay inferencia activa
         if (!s_inf_busy) {
-            s_wake_noise = s_wake_noise * 0.98f + rms * 0.02f;
+            s_wake_noise = max(s_wake_noise * 0.98f + rms * 0.02f, VAD_RUIDO_MIN);
         }
 
         // En REPOSO la pantalla está apagada (ahorro): no se dibuja la barra de
@@ -979,6 +1089,7 @@ void loop() {
                 memset(s_wake_buf + s_wake_pos, 0,
                        ((int)MFCC_AUDIO_SAMPLES - s_wake_pos) * sizeof(int16_t));
             }
+            Serial.printf("[TIMING] captura_lista %lu\n", (unsigned long)millis());
             Serial.printf("[WW] Captura lista: %d muestras (%.2fs) [%s] → tareaInf\n",
                           s_wake_pos, s_wake_pos / 16000.0f,
                           fin_sil ? "silencio" : "max");

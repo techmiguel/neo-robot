@@ -43,6 +43,7 @@ def calculate_stats(latencies: list) -> dict:
     def percentile(vals, p):
         if not vals:
             return 0
+        vals = sorted(vals)  # sin ordenar, el "percentil" era un elemento cualquiera
         idx = int(len(vals) * p / 100)
         return vals[min(idx, len(vals) - 1)]
 

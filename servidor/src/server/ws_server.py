@@ -13,24 +13,30 @@ Protocolo (texto = JSON, binario = PCM crudo):
     {"cmd":"keepalive"}      — latido durante procesamiento (evita timeout del proxy móvil)
     bytes                    — chunk de audio PCM respuesta (16 kHz, mono, 16-bit)
     {"cmd":"fin_respuesta"}  — último chunk enviado
-    {"cmd":"error","msg":"…"}
+    {"cmd":"error","codigo":"sin_internet"|"no_entendi"|"interno","msg":"…"}
+                             — el ESP32 elige la frase pregrabada según codigo
 
 Respuesta en streaming: el audio se envía por fragmentos (frases o cláusulas)
 en cuanto cada uno está sintetizado, mientras el LLM sigue generando el resto.
 El ESP32 puede empezar a reproducir con el primer chunk; fin_respuesta sigue
 marcando el final, así que un cliente que espera la respuesta completa
-funciona igual.
+funciona igual. RESPUESTA_STREAMING=0 vuelve al modo anterior (respuesta
+completa, un solo TTS) para comparar.
 """
 
+import argparse
 import asyncio
 import http
 import json
 import logging
 import os
+import socket
 import threading
 import time
 import uuid
 from collections.abc import AsyncIterator
+from datetime import datetime
+from pathlib import Path
 
 import websockets
 from dotenv import load_dotenv
@@ -41,6 +47,7 @@ from src.commands.router import CommandRouter
 from src.server.timing import get_timer
 from src.server.memory import memory
 from src.tts.segmentador import Segmentador
+from src import perfiles
 _router = CommandRouter()
 
 MIC_SAMPLE_RATE = 16000  # rate del INMP441 en el ESP32
@@ -50,7 +57,7 @@ log = logging.getLogger("ws_server")
 
 HOST  = "0.0.0.0"
 PORT  = int(os.getenv("WS_PORT", "8765"))
-CHUNK = 4096   # bytes por chunk al enviar audio de vuelta (~85 ms a 24 kHz)
+CHUNK = 4096   # bytes por chunk al enviar audio de vuelta (128 ms a 16 kHz)
 
 # — Modo de operación —————————————————————————————————————————————————
 # "echo":     devuelve los bytes recibidos tal cual (prueba de conectividad)
@@ -62,9 +69,44 @@ MODO = os.getenv("WS_MODO", "pipeline")
 # "nube": servidor en HuggingFace Spaces
 SERVER_TYPE = os.getenv("SERVER_TYPE", "local")
 
+# — Respuesta en streaming ——————————————————————————————————————————————————
+# "1": el audio sale por fragmentos mientras el LLM genera (default).
+# "0": modo anterior, respuesta completa → un solo TTS → envío. Para comparar.
+def _streaming_activo() -> bool:
+    return os.getenv("RESPUESTA_STREAMING", "1") != "0"
+
+# — Corpus de audio ————————————————————————————————————————————————————————
+# Si está definido, cada consulta recibida se guarda como WAV + JSON con la
+# transcripción: así se arma el corpus de src.benchmark con el micrófono real.
+GUARDAR_AUDIO_DIR = os.getenv("GUARDAR_AUDIO_DIR")
+
+
+def _guardar_audio(pcm: bytes, transcripcion: str, perfil: dict):
+    from src.stt.transcriber import _pcm_a_wav_bytes
+    carpeta = Path(GUARDAR_AUDIO_DIR)
+    carpeta.mkdir(parents=True, exist_ok=True)
+    base = carpeta / datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    base.with_suffix(".wav").write_bytes(_pcm_a_wav_bytes(pcm, MIC_SAMPLE_RATE))
+    base.with_suffix(".json").write_text(json.dumps(
+        {"transcripcion": transcripcion, "perfil": perfil}, ensure_ascii=False), encoding="utf-8")
+
 
 async def _enviar_json(ws, data: dict):
     await ws.send(json.dumps(data, ensure_ascii=False))
+
+
+def _codigo_error(e: BaseException) -> str:
+    """sin_internet si la causa es de red (Groq, edge-tts, APIs de los handlers); si no, interno."""
+    while e is not None:
+        de_red = isinstance(e, (ConnectionError, TimeoutError, socket.gaierror))
+        if de_red or any(n in type(e).__name__ for n in ("Connect", "Timeout")):
+            return "sin_internet"
+        e = e.__cause__ or e.__context__
+    return "interno"
+
+
+async def _enviar_error(ws, e: BaseException):
+    await _enviar_json(ws, {"cmd": "error", "codigo": _codigo_error(e), "msg": str(e)})
 
 
 async def _iniciar_keepalive(ws, intervalo: int = 2) -> asyncio.Task:
@@ -147,14 +189,18 @@ async def _responder_en_streaming(ws, textos: AsyncIterator[str], timer, ka) -> 
     fragmentos: asyncio.Queue = asyncio.Queue()
     partes: list[str] = []
 
+    por_fragmentos = _streaming_activo()
+
     async def _productor():
         seg = Segmentador()
         try:
             async for texto in textos:
                 partes.append(texto)
-                for frag in seg.feed(texto):
-                    await fragmentos.put(frag)
-            resto = seg.flush()
+                if por_fragmentos:
+                    for frag in seg.feed(texto):
+                        await fragmentos.put(frag)
+            # Sin streaming, todo el texto va en un único fragmento final
+            resto = seg.flush() if por_fragmentos else "".join(partes).strip()
             if resto:
                 await fragmentos.put(resto)
         finally:
@@ -180,6 +226,7 @@ async def _responder_en_streaming(ws, textos: AsyncIterator[str], timer, ka) -> 
             bytes_enviados += len(pcm)
         timer.mark("tts_end")
         await productor   # propaga una excepción del LLM, si la hubo
+        timer.mark("envio_start")
     except Exception as e:
         if bytes_enviados == 0:
             raise
@@ -199,8 +246,10 @@ async def _responder_en_streaming(ws, textos: AsyncIterator[str], timer, ka) -> 
         bytes_enviados = len(pcm)
 
     await _enviar_json(ws, {"cmd": "fin_respuesta"})
+    timer.set_metadata("streaming", por_fragmentos)
     timer.set_metadata("fragmentos_tts", n_fragmentos)
     timer.set_metadata("longitud_respuesta_pcm", bytes_enviados)
+    timer.set_metadata("duracion_respuesta_s", bytes_enviados / 2 / MIC_SAMPLE_RATE)
     return "".join(partes).strip()
 
 
@@ -217,7 +266,7 @@ async def _modo_consulta(ws, tipo: str, args: dict):
     except Exception as e:
         ka.cancel()
         log.error(f"[consulta:{tipo}] error: {e}")
-        await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
+        await _enviar_error(ws, e)
 
 
 async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
@@ -240,6 +289,9 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
     timer.mark("pipeline_start")
     timer.set_metadata("longitud_audio_bytes", len(buffer))
     timer.set_metadata("tipo_servidor", SERVER_TYPE)
+    timer.set_metadata("duracion_audio_s", len(buffer) / 2 / MIC_SAMPLE_RATE)
+    perfil = perfiles.describir()
+    timer.set_metadata("perfil", perfil)
 
     await _enviar_json(ws, {"cmd": "procesando"})
     ka = await _iniciar_keepalive(ws)
@@ -248,7 +300,17 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
         timer.mark("stt_start")
         transcripcion = await asyncio.to_thread(transcribe, bytes(buffer), MIC_SAMPLE_RATE)
         timer.mark("stt_end")
+        timer.set_metadata("transcripcion", transcripcion)
+        if GUARDAR_AUDIO_DIR:
+            _guardar_audio(bytes(buffer), transcripcion, perfil)
         log.info(f"[STT] {timer.duration('stt_start', 'stt_end'):.2f}s → \"{transcripcion}\"")
+        if not transcripcion.strip():
+            ka.cancel()
+            timer.mark("pipeline_end")
+            timer.set_metadata("error", "transcripción vacía")
+            timer.save()
+            await _enviar_json(ws, {"cmd": "error", "codigo": "no_entendi", "msg": "transcripción vacía"})
+            return
 
         timer.mark("intencion_start")
         tipo, args = _router.detectar_intencion(transcripcion)
@@ -280,6 +342,7 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
             textos = _tokens_llm()
 
         respuesta = await _responder_en_streaming(ws, textos, timer, ka)
+        timer.set_metadata("respuesta", respuesta)
         timer.set_metadata("longitud_respuesta_texto", len(respuesta))
         if not tipo:
             log.info(f"[LLM] {timer.duration('llm_start', 'llm_end'):.2f}s "
@@ -304,7 +367,7 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
         timer.set_metadata("error", str(e))
         timer.save()
         log.error(f"[pipeline] error: {e}")
-        await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
+        await _enviar_error(ws, e)
 
 
 async def handler(ws):
@@ -334,7 +397,7 @@ async def handler(ws):
                             await _modo_pipeline(ws, buffer, session_id)
                     except Exception as e:
                         log.error(f"[fin_grabacion] excepción no capturada: {e}", exc_info=True)
-                        await _enviar_json(ws, {"cmd": "error", "msg": str(e)})
+                        await _enviar_error(ws, e)
                     buffer.clear()
 
                 elif cmd == "consulta":
@@ -374,21 +437,33 @@ async def _health(connection, request):
 
 async def _precalentar():
     """Carga los modelos locales antes de aceptar conexiones: la primera carga
-    (Whisper ~15 s, Ollama ~50 s, Piper ~7 s) superaría el timeout del ESP32."""
+    (Whisper ~15 s, Ollama 50–90 s en frío, Piper ~7 s) superaría el timeout del ESP32.
+
+    Un fallo aquí no tumba el servidor: si cae, la placa se va sola a la nube y
+    no se nota; mejor que escuche y que el error salga en el log y en la consulta."""
     from src.stt.transcriber import transcribe
-    from src.llm.client      import ask
-    from src.tts.synthesizer import synthesize
-    t0 = time.time()
+    from src.llm.client      import precargar_ollama
+    pasos = []
     if os.getenv("STT_PROVIDER") == "local":
-        await asyncio.to_thread(transcribe, b"\x00" * MIC_SAMPLE_RATE, MIC_SAMPLE_RATE)
+        pasos.append(("Whisper", lambda: asyncio.to_thread(transcribe, b"\x00" * MIC_SAMPLE_RATE, MIC_SAMPLE_RATE)))
     if os.getenv("LLM_PROVIDER") == "ollama":
-        await asyncio.to_thread(ask, "Hola")
-    if os.getenv("TTS_PROVIDER") == "local":
-        await synthesize("Hola")
-    log.info(f"[precarga] modelos locales listos en {time.time() - t0:.1f}s")
+        pasos.append(("Ollama", lambda: asyncio.to_thread(precargar_ollama)))
+    if os.path.isfile(os.getenv("PIPER_MODEL") or ""):   # también es el respaldo de edge-tts
+        from src.tts.synthesizer import _sintetizar_piper
+        pasos.append(("Piper", lambda: asyncio.to_thread(_sintetizar_piper, "Hola")))
+    t0 = time.time()
+    for nombre, paso in pasos:
+        t = time.time()
+        try:
+            await paso()
+            log.info(f"[precarga] {nombre} listo en {time.time() - t:.1f}s")
+        except Exception as e:
+            log.error(f"[precarga] {nombre} FALLÓ ({type(e).__name__}: {e}); las consultas que lo usen darán error")
+    log.info(f"[precarga] terminada en {time.time() - t0:.1f}s")
 
 
 async def main():
+    log.info(f"[perfil] {perfiles.describir()}")
     if MODO == "pipeline":
         await _precalentar()
     log.info(f"Servidor NEO WebSocket en ws://{HOST}:{PORT}  modo={MODO}")
@@ -407,4 +482,10 @@ async def main():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Servidor WebSocket de NEO")
+    parser.add_argument("--perfil", choices=sorted(perfiles.PERFILES),
+                        help="fija STT/LLM/TTS: local (PC, sin internet) o nube (Groq + edge-tts)")
+    args = parser.parse_args()
+    if args.perfil:
+        perfiles.aplicar(args.perfil)
     asyncio.run(main())

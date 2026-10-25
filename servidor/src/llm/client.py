@@ -15,6 +15,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+GROQ_LLM_DEFAULT     = "openai/gpt-oss-20b"
+OLLAMA_MODEL_DEFAULT = "llama3.2"
+
 # System prompt con personalidad distintiva de NEO.
 # Parametrizable por .env (NEO_SYSTEM_PROMPT) para ajustar sin tocar código.
 # La concisión es crítica: el TTS genera audio, y frases largas = latencia alta.
@@ -53,7 +56,7 @@ def _sesion_http():
 
 
 def _stream_groq(messages: list[dict]) -> Iterator[str]:
-    modelo = os.getenv("GROQ_LLM_MODEL", "openai/gpt-oss-20b")
+    modelo = os.getenv("GROQ_LLM_MODEL", GROQ_LLM_DEFAULT)
     stream = _cliente_groq().chat.completions.create(
         model=modelo,
         messages=messages,
@@ -95,7 +98,7 @@ def _opciones_ollama() -> dict:
 
 def _stream_ollama(messages: list[dict]) -> Iterator[str]:
     host  = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-    model = os.getenv("OLLAMA_MODEL", "llama3.2")
+    model = os.getenv("OLLAMA_MODEL", OLLAMA_MODEL_DEFAULT)
     cuerpo = {
         "model": model,
         "messages": messages,
@@ -127,6 +130,21 @@ def _stream_ollama(messages: list[dict]) -> Iterator[str]:
                 yield texto
             if dato.get("done"):
                 break
+
+
+def precargar_ollama(timeout: float = 300) -> None:
+    """Carga el modelo en memoria sin generar nada (/api/generate sin prompt).
+    En frío puede tardar más de un minuto; el timeout de 60 s de las consultas
+    no sirve aquí.
+
+    Usa las mismas opciones que las consultas: con otro num_ctx, Ollama
+    recargaría el modelo en la primera pregunta."""
+    host  = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    model = os.getenv("OLLAMA_MODEL", OLLAMA_MODEL_DEFAULT)
+    _sesion_http().post(f"{host}/api/generate",
+                        json={"model": model, "options": _opciones_ollama(),
+                              "keep_alive": os.getenv("OLLAMA_KEEP_ALIVE", "60m")},
+                        timeout=timeout).raise_for_status()
 
 
 def _mensajes(prompt: str, messages: list[dict] | None) -> list[dict]:

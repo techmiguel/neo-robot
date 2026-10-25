@@ -1,0 +1,265 @@
+{
+  "fecha": "2026-10-23 22:20",
+  "condicion": "h1_d050_frente",
+  "detectados": 12,
+  "intentos_con_voz": 15,
+  "intentos": 20,
+  "latencia_s": {
+    "n": 12,
+    "media": 3.342,
+    "p50": 3.334,
+    "p90": 3.378,
+    "min": 3.313,
+    "max": 3.399
+  },
+  "espera_vad_s": {
+    "n": 12,
+    "media": 0.737,
+    "p50": 0.736,
+    "p90": 0.768,
+    "min": 0.72,
+    "max": 0.784
+  },
+  "inferencia_s": {
+    "n": 12,
+    "media": 2.604,
+    "p50": 2.608,
+    "p90": 2.614,
+    "min": 2.593,
+    "max": 2.615
+  },
+  "latencia_estimada_log_s": {
+    "n": 12,
+    "media": 3.304,
+    "p50": 3.308,
+    "p90": 3.314,
+    "min": 3.293,
+    "max": 3.315
+  },
+  "detalle": [
+    {
+      "detectado": false,
+      "ruido": 20.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2541,
+      "voz": true,
+      "intento": 1,
+      "en_reposo": true
+    },
+    {
+      "detectado": false,
+      "ruido": 0.0,
+      "voz": false,
+      "intento": 2,
+      "en_reposo": false
+    },
+    {
+      "detectado": true,
+      "ruido": 19.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2565,
+      "latencia": 3.344,
+      "espera_vad": 0.736,
+      "inferencia": 2.608,
+      "latencia_estimada": 3.308,
+      "voz": true,
+      "intento": 3,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.2,
+      "fin_captura": "silencio",
+      "inf_ms": 2583,
+      "latencia": 3.399,
+      "espera_vad": 0.784,
+      "inferencia": 2.615,
+      "latencia_estimada": 3.315,
+      "voz": true,
+      "intento": 4,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2582,
+      "latencia": 3.35,
+      "espera_vad": 0.736,
+      "inferencia": 2.614,
+      "latencia_estimada": 3.314,
+      "voz": true,
+      "intento": 5,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 16.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2557,
+      "latencia": 3.32,
+      "espera_vad": 0.721,
+      "inferencia": 2.599,
+      "latencia_estimada": 3.299,
+      "voz": true,
+      "intento": 6,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 18.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2561,
+      "latencia": 3.313,
+      "espera_vad": 0.72,
+      "inferencia": 2.593,
+      "latencia_estimada": 3.293,
+      "voz": true,
+      "intento": 7,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.2,
+      "fin_captura": "silencio",
+      "inf_ms": 2565,
+      "latencia": 3.333,
+      "espera_vad": 0.736,
+      "inferencia": 2.597,
+      "latencia_estimada": 3.297,
+      "voz": true,
+      "intento": 8,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 16.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2563,
+      "latencia": 3.315,
+      "espera_vad": 0.72,
+      "inferencia": 2.595,
+      "latencia_estimada": 3.295,
+      "voz": true,
+      "intento": 9,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 18.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2564,
+      "latencia": 3.332,
+      "espera_vad": 0.736,
+      "inferencia": 2.596,
+      "latencia_estimada": 3.296,
+      "voz": true,
+      "intento": 10,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 16.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2571,
+      "latencia": 3.334,
+      "espera_vad": 0.72,
+      "inferencia": 2.614,
+      "latencia_estimada": 3.314,
+      "voz": true,
+      "intento": 11,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 16.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2556,
+      "latencia": 3.319,
+      "espera_vad": 0.721,
+      "inferencia": 2.598,
+      "latencia_estimada": 3.298,
+      "voz": true,
+      "intento": 12,
+      "en_reposo": true
+    },
+    {
+      "detectado": false,
+      "ruido": 0.0,
+      "inf_ms": 2543,
+      "voz": true,
+      "intento": 13,
+      "en_reposo": false
+    },
+    {
+      "detectado": false,
+      "ruido": 17.0,
+      "fin_captura": "max",
+      "inf_ms": 2613,
+      "voz": true,
+      "intento": 14,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2568,
+      "latencia": 3.362,
+      "espera_vad": 0.752,
+      "inferencia": 2.61,
+      "latencia_estimada": 3.31,
+      "voz": true,
+      "intento": 15,
+      "en_reposo": true
+    },
+    {
+      "detectado": true,
+      "ruido": 17.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2568,
+      "latencia": 3.378,
+      "espera_vad": 0.768,
+      "inferencia": 2.61,
+      "latencia_estimada": 3.31,
+      "voz": true,
+      "intento": 16,
+      "en_reposo": true
+    },
+    {
+      "detectado": false,
+      "ruido": 0.0,
+      "voz": false,
+      "intento": 17,
+      "en_reposo": false
+    },
+    {
+      "detectado": false,
+      "ruido": 0.0,
+      "voz": false,
+      "intento": 18,
+      "en_reposo": false
+    },
+    {
+      "detectado": true,
+      "ruido": 0.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2560,
+      "voz": true,
+      "intento": 19,
+      "en_reposo": false
+    },
+    {
+      "detectado": false,
+      "ruido": 17.0,
+      "fin_captura": "silencio",
+      "inf_ms": 2561,
+      "voz": true,
+      "intento": 20,
+      "en_reposo": true
+    }
+  ],
+  "intentos_validos": 15,
+  "nota": "Intentos 2, 13, 17, 18 y 19 inválidos: la placa no estaba en reposo al sonar el pitido (sin [NIV] previos). Marcados a posteriori con el criterio de en_reposo de latencia_wake.py.",
+  "log": "firmware/logs/latencia_wake_20261023_221325.log (no versionado)"
+}
