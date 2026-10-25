@@ -34,5 +34,14 @@ secrets.h
 config_local.h
 servidor/set_hf_secrets.py
 
-# Logs del monitor serie de la placa (pio device monitor --filter log2file)
+# Logs del monitor serie de la placa sin revisar en la raíz del firmware
+# (pio device monitor --filter log2file); los de las sesiones medidas van en firmware/logs/
 firmware/platformio-device-monitor-*.log
+
+# Salidas de herramientas que se regeneran
+*.egg-info/
+.pytest_cache/
+verification/
+/logs/
+hardware/**/~*.lck
+hardware/**/*.kicad_prl
