@@ -13,9 +13,23 @@ a la placa solo llegan 5 V y GND, también a un cabezal macho.
 ![Plano de montaje en la placa de 7 × 9 cm](img/montaje_placa_perforada.png)
 
 El plano es una vista desde arriba (lado de los componentes); las líneas de colores son
-los cables que van por la cara inferior, y las filas «x,5» (por ejemplo 10,5) pasan entre
+los cables que van por la cara inferior, y las filas «x,5» (por ejemplo 19,5) pasan entre
 dos pines sin tocarlos. Lo genera `hardware/placa-perforada/gen_plano.py` (SVG en
 `img/montaje_placa_perforada.svg`).
+
+**Ningún cable cruza a otro.** Todo el cableado va por la cara inferior en una sola capa:
+antes de dibujar, el script comprueba que dos redes distintas no se tocan y que ningún
+cable pasa por un pad ajeno (incluidos los pines libres de la Freenove), y falla si
+ocurre. Para conseguirlo:
+
+- Las cuatro señales de la tira izquierda (3V3, GPIO 3, 46 y 14) pasan bajo la Freenove
+  en forma de «L» anidadas, en las columnas B, C, E y G, y cruzan la tira derecha por
+  encima de las de esa tira. El 5V cruza entre GPIO 19 y GND (fila 19,5).
+- El orden de los pines de J2 y J3 está elegido para que cada cable llegue a su pin sin
+  rodear a otro. Cablea los módulos según ese orden (ver «Cabezales»).
+- La OLED queda «dentro» de los cables del micrófono: WS y SCK pasan por encima de J3 y
+  SD por debajo. El 3V3 rodea J2 por fuera y entra a VDD por la derecha; de ahí sale a la
+  OLED. La masa del micrófono y de la OLED sube por el borde derecho (columna X).
 
 ## Placa
 
@@ -34,7 +48,9 @@ perforada no debe estropearlo.
 Por eso la Freenove va con **el pin 1 en la fila 1**. En una placa de 90 mm con 30 filas
 centradas, el margen entre la fila 1 y el borde es de unos 8,2 mm: la antena queda
 entera sobre ese margen, que es laminado sin cobre, y su extremo a ~0,7 mm del borde.
-Debajo no hay agujeros, pads ni cables.
+Debajo no hay agujeros, pads ni cables. Los cables más cercanos son el de 3V3 y el de
+GPIO 3, en las filas 1,5 y 2,5: van bajo el blindaje del módulo, a unos 2,5 mm de la
+proyección de la antena y ~10 mm por debajo de ella.
 
 Compruébalo antes de soldar: pon la Freenove en su sitio (con los zócalos) y mira que la
 franja de la antena no tape ningún agujero de la placa. Si tu placa tiene un margen
@@ -56,10 +72,10 @@ Para el chasis:
 |---|---|---|
 | Freenove | Columnas A y K, filas 1–20 (pin 1 arriba) | Antena sobre el margen sin cobre de la placa. |
 | Paso del USB-C | Columnas A–K, filas 21–30 | El conector queda dentro de la placa; ahí no van cabezales ni nada alto para que entre el cable. |
-| J3, cabezal de la OLED | P7–S7 | Con al menos 5 filas de separación de la antena. |
-| J2, cabezal del micrófono | P10–U10 | Lejos del amplificador; los cables del I2S del micro no cruzan su zona. |
-| Módulo DAC + amplificador | Cuerpo en M15–X26, pines en N15–S15 | Junto a GPIO 41/47/21 y al único GND de la Freenove. |
-| J1, cabezal de la batería, C1 y C2 | Fila 30, abajo a la derecha | Junto al amplificador, que hace los picos de ~0,8 A, y en el extremo opuesto a la antena. |
+| J3, cabezal de la OLED | N8–Q8 (horizontal) | Lejos de la antena y del amplificador. |
+| J2, cabezal del micrófono | T6–T11 (vertical) | Lejos del amplificador; sus cables no pasan por la zona del DAC. |
+| Módulo DAC + amplificador | Pines en N15–S15, cuerpo hacia abajo | Junto a GPIO 41/47/21 y a la entrada de 5 V. |
+| J1, cabezal de la batería, C1 y C2 | Filas 28–30, abajo a la derecha | Junto al amplificador, que hace los picos de ~0,8 A, y en el extremo opuesto a la antena. |
 
 ## Cabezales
 
@@ -68,9 +84,13 @@ no por la posición en el dibujo.
 
 | Cabezal | Pines, de izquierda a derecha | Cable hasta |
 |---|---|---|
-| J1 batería | GND · 5V · 5V · GND | Salida de 5 V del elevador/regulador de la batería |
-| J2 micrófono | VDD · GND · SD · WS · SCK · L/R | INMP441 |
-| J3 OLED | GND · VCC · SCL · SDA | SSD1306 |
+| J1 batería (P29–S29) | GND · 5V · 5V · GND | Salida de 5 V del elevador/regulador de la batería |
+| J2 micrófono (T6–T11, de arriba abajo) | SCK · WS · VDD · GND · SD · L/R | INMP441 |
+| J3 OLED (N8–Q8) | SCL · SDA · GND · VCC | SSD1306 |
+
+El orden de J2 y J3 no es el de la serigrafía de los módulos: es el que deja el cableado
+de la placa sin cruces. El cable Dupont hace la conversión; márcalo (cinta o rotulador)
+para no invertirlo al montar el chasis.
 
 **J1 es simétrico** (GND, 5V, 5V, GND): si el conector hembra de 4 vías entra al revés,
 la polaridad sigue siendo correcta. Usa los cuatro pines: cada contacto Dupont tiene
@@ -80,27 +100,33 @@ mitad. Los dos GND y los dos 5V están puenteados por debajo.
 En J2, el pin **L/R ya está unido a GND en la placa**: el cable lo lleva al L/R del
 INMP441 y así el micrófono sale por el canal izquierdo, como espera el firmware.
 
+## Módulo DAC
+
+El plano supone que los pines del módulo están en el orden de la tabla de
+[hardware.md](hardware.md): **BCK · LCK · DIN · SCK · VCC · GND**, con el cuerpo del
+módulo hacia abajo (hacia J1). No lo he podido comprobar en el módulo real. Si su
+serigrafía tiene otro orden, el trazado del DAC cambia (el del micrófono y la OLED no):
+antes de soldar esa zona, compara la serigrafía con el plano y, si no coincide, ajusta el
+orden en `CABEZALES` de `gen_plano.py`; la comprobación dirá si el nuevo trazado cruza.
+
 ## Conexiones
 
-| Señal | Pin de la Freenove | Agujero | Destino | Cable |
+| Señal | Pin de la Freenove | Recorrido (cara inferior) | Destino | Cable |
 |---|---|---|---|---|
-| 5 V batería | — | J1 (V30, W30) | Bus de 5 V en la fila 28 (C1 +, C2) | ≥ 22 AWG |
-| 5 V ESP32 | 5V | A20 | Fila 28 → M28 → M21 → A21 (por debajo de la zona del USB) | ≥ 22 AWG |
-| 5 V DAC | — | N28 → N15 | VCC del módulo DAC | ≥ 22 AWG |
-| GND estrella | GND | K20 + L20 | Puente de estaño K20–L20: todos los GND salen de L20 | — |
-| GND batería | — | L20 → L30 → U30 | J1 (U30, X30), C1 −, C2 − | ≥ 22 AWG |
-| GND DAC | — | L20 → O20 → O15 | GND del módulo; puente O15–P15 a su SCK | ≥ 22 AWG |
-| GND señal | — | L20 → L7 | GND de la OLED (P7); L11 → GND (Q10) y L/R (U10) del micro | fino |
-| 3V3 | 3V3 | A1 → B1 → B10,5 | VDD del micro (P10); B6,5 → VCC de la OLED (Q7) | fino |
-| Micro WS | GPIO 1 | K3 | WS (S10) | fino |
-| Micro SCK | GPIO 3 | A12 | SCK (T10) | fino |
-| Micro SD | GPIO 14 | A19 | SD (R10) | fino |
-| DAC BCK | GPIO 21 | K17 | BCK (Q15) | fino |
-| DAC LCK | GPIO 47 | K16 | LCK (S15) | fino |
-| DAC DIN | GPIO 41 | K6 | DIN (R15) | fino |
-| DAC SCK | — | P15 | **GND** (activa el PLL interno del PCM5100A) | puente |
-| OLED SCL | GPIO 42 | K5 | SCL (R7) | fino |
-| OLED SDA | GPIO 46 | A13 | SDA (S7), por debajo de la Freenove | fino |
+| 3V3 | 3V3 (A1) | B1 → B1,5 → U1,5 → U8 → T8 | VDD del micro (T8); de T8 a VCC de la OLED (Q8) | fino |
+| Micro SCK | GPIO 3 (A12) | C12 → C2,5 → T2,5 | SCK (T6) | fino |
+| Micro WS | GPIO 1 (K3) | S3 → S7 | WS (T7) | fino |
+| Micro SD | GPIO 14 (A19) | G19 → G5,5 → M5,5 → M10 | SD (T10), por debajo de J3 | fino |
+| OLED SDA | GPIO 46 (A13) | E13 → E4,5 → O4,5 | SDA (O8) | fino |
+| OLED SCL | GPIO 42 (K5) | N5 | SCL (N8) | fino |
+| DAC DIN | GPIO 41 (K6) | L6 → L13 → P13 | DIN (P15) | fino |
+| DAC LCK | GPIO 47 (K16) | L16 → L14 → O14 | LCK (O15) | fino |
+| DAC BCK | GPIO 21 (K17) | N17 | BCK (N15) | fino |
+| DAC SCK | — | Q14 → S14 | GND del DAC (S15): activa el PLL interno del PCM5100A | fino |
+| 5 V | 5V (A20) | B20 → B19,5 → M19,5 → M28 → bus de la fila 28 → R28 → R15 | C2 (N28), C1 + (O28), J1 (Q29, R29), VCC del DAC (R15) | ≥ 22 AWG |
+| GND | GND (K20) | L20 → L30 → bus de la fila 30 → X30 | C2 (N30), C1 − (O30), J1 (P29, S29) | ≥ 22 AWG |
+| GND del DAC | — | T30 → T16 → S16 | GND del DAC (S15) | ≥ 22 AWG |
+| GND del micro y la OLED | — | X30 → X9 → T9; X11 → T11 | GND (T9) y L/R (T11) del micro; T9 → P9 → GND de la OLED (P8) | fino |
 
 El altavoz va a los bornes del módulo, entre **L+ y L−**: la salida del PAM8403 es en
 puente y ningún cable del altavoz puede tocar GND.
@@ -119,11 +145,11 @@ puente y ningún cable del altavoz puede tocar GND.
 
 ## Por qué así
 
-- **Una sola masa en estrella.** La Freenove tiene un único pin GND (K20). Todo retorno
-  sale de L20, pegado a él, y la corriente del amplificador vuelve a J1 por su propio
-  cable grueso sin pasar por la masa del micrófono y la OLED. El ruido del clase D (que
-  ya apareció en el I2C y en el log, ver `ROADMAP.md` 1.4) no se suma a la referencia
-  del micrófono.
+- **Masa por caminos separados.** Los picos del amplificador vuelven por S15 → T16 → T30
+  y llegan a J1 por el bus de la fila 30 sin pasar por el pin GND de la Freenove. La masa
+  del micrófono y de la OLED sale de X30, al otro lado de J1, así que tampoco la recorre la
+  corriente del amplificador. El ruido del clase D (que ya apareció en el I2C y en el log,
+  ver `ROADMAP.md` 1.4) no se suma a la referencia de los periféricos de señal.
 - **C1 y C2 se quedan en la placa** aunque la electrónica de la batería esté fuera. Los
   picos de corriente tienen que salir de un condensador junto a la carga, no del otro
   extremo de un cable.
@@ -148,10 +174,11 @@ puente y ningún cable del altavoz puede tocar GND.
 
 1. Suelda los zócalos de la Freenove (pin 1 en la fila 1) y comprueba que la antena no
    tapa agujeros. Después, los cabezales, el zócalo del DAC y los condensadores.
-2. Haz los cables de potencia (5 V y GND, gruesos), el puente K20–L20 y los de J1.
+2. Haz los cables de potencia (5 V y GND, gruesos).
 3. **Sin la Freenove ni el DAC puestos**, mide con el polímetro: sin continuidad entre
-   5 V y GND ni entre 3V3 y GND. Conecta la batería a J1 y mide 5 V en A20 y en N15.
-4. Haz los cables de señal y revisa cada uno con continuidad contra la tabla de arriba.
+   5 V y GND ni entre 3V3 y GND. Conecta la batería a J1 y mide 5 V en A20 y en R15.
+4. Haz los cables de señal, empezando por los que pasan bajo la Freenove (columnas G, E,
+   C y B, de dentro afuera), y revisa cada uno con continuidad contra la tabla de arriba.
 5. Inserta la Freenove sola y flashea `esp32dev` por USB (sin batería). Después añade los
    módulos de uno en uno: OLED (ojos), micrófono (wake word), DAC y altavoz (frase de
    arranque).
