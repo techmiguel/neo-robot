@@ -16,7 +16,7 @@ uses two I2S buses (microphone in, DAC out) plus I2C for the screen.
 | USB cable | Power, flashing, serial log | The board's BOOT button doubles as the push-to-talk button. |
 
 To solder everything on a 7 × 9 cm perfboard instead, see
-[montaje-placa-perforada.md](montaje-placa-perforada.md) (Spanish: layout, wiring and checks).
+[montaje-placa-perforada.md](montaje-placa-perforada.md) (Spanish: layout, antenna clearance, wiring and checks).
 
 A custom 31 × 43 mm PCB that replaces the breadboard (**NEO Lite**: ESP32-S3, USB-C,
 MAX98357A amplifier, JLCPCB SMT assembly) is designed and ready to order in
