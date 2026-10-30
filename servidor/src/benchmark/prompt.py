@@ -35,24 +35,32 @@ def preguntas_libres() -> list[tuple[str, str]]:
         return [(r["id"], r["frase"]) for r in csv.DictReader(f) if not r["intencion"]]
 
 
+def preguntar(messages: list[dict], metricas: dict | None = None) -> str:
+    """Respuesta cruda del backend configurado, sin el reintento ni el filtro de idioma
+    de ask(): se quiere ver lo que el modelo responde de verdad."""
+    return "".join(client._stream_crudo(messages, metricas)).strip()
+
+
 def evaluar(prompt: str, repeticiones: int, historial: bool = False) -> list[dict]:
     """historial=True: cada repetición es una conversación, con la memoria del
     servidor (últimos MAX_TURNOS mensajes), como en una sesión real o en el panel."""
     from src.server.memory import MAX_TURNOS
-    preguntar = client._preguntar_ollama if os.getenv("LLM_PROVIDER") == "ollama" else client._preguntar_groq
     filas = []
     for rep in range(repeticiones):
         turnos = []
         for id_, frase in preguntas_libres():
             t0 = time.time()
             previos = turnos[-MAX_TURNOS:] if historial else []   # MAX_TURNOS mensajes, como memory.py
-            texto = preguntar([{"role": "system", "content": prompt}, *previos, {"role": "user", "content": frase}])
+            stats = {}
+            texto = preguntar([{"role": "system", "content": prompt}, *previos, {"role": "user", "content": frase}],
+                              stats)
             turnos += [{"role": "user", "content": frase}, {"role": "assistant", "content": texto}]
             palabras = len(texto.split())
             filas.append({"id": id_, "rep": rep, "pregunta": frase, "respuesta": texto,
                           "latino": client.solo_latino(texto), "palabras": palabras,
                           "larga": palabras > LIMITE_PALABRAS, "guino": bool(GUINO.search(texto)),
-                          "s": round(time.time() - t0, 2)})
+                          "s": round(time.time() - t0, 2),
+                          "prompt_tokens": stats.get("prompt_tokens"), "prompt_s": stats.get("prompt_s")})
             print(f"{id_} r{rep} {palabras:>2}p {'  ' if filas[-1]['latino'] else 'NL'} {texto}", flush=True)
     return filas
 
