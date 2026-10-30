@@ -11,6 +11,7 @@ import asyncio
 import io
 import logging
 import os
+import time
 import miniaudio
 import edge_tts
 
@@ -38,17 +39,22 @@ def _sintetizar_piper(texto: str) -> bytes:
         miniaudio.SampleFormat.SIGNED16, 1, SAMPLE_RATE))
 
 
-async def _sintetizar_mp3(texto: str, voz: str) -> bytes:
+async def _sintetizar_mp3(texto: str, voz: str, marcas: dict | None = None) -> bytes:
     communicate = edge_tts.Communicate(texto, voice=voz)
     mp3 = b""
     async for chunk in communicate.stream():
         if chunk["type"] == "audio":
+            if not mp3 and marcas is not None:
+                marcas["primer_byte"] = time.time()   # separa el coste fijo de edge-tts
             mp3 += chunk["data"]
     return mp3
 
 
-async def synthesize(texto: str, voz: str = VOZ_DEFAULT) -> bytes:
+async def synthesize(texto: str, voz: str = VOZ_DEFAULT, marcas: dict | None = None) -> bytes:
     """Convierte texto en PCM crudo (16 kHz, mono, 16-bit, little-endian).
+
+    Con `marcas`, edge-tts anota en marcas["primer_byte"] (time.time()) cuándo
+    llegó el primer trozo de MP3.
 
     Defensivo: si el texto viene vacío o edge-tts no devuelve MP3, se retorna
     silencio corto en vez de reventar en miniaudio ("failed to decode data").
@@ -63,7 +69,7 @@ async def synthesize(texto: str, voz: str = VOZ_DEFAULT) -> bytes:
         return pcm or silencio
 
     try:
-        mp3 = await asyncio.wait_for(_sintetizar_mp3(texto, voz), EDGE_TIMEOUT_S)
+        mp3 = await asyncio.wait_for(_sintetizar_mp3(texto, voz, marcas), EDGE_TIMEOUT_S)
         if not mp3:
             raise RuntimeError("edge-tts no devolvió audio")
     except Exception as e:

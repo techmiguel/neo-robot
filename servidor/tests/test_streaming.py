@@ -42,14 +42,16 @@ class WsFalso:
 def dobles(monkeypatch, tmp_path):
     estado = {"fin_llm": None, "fragmentos_tts": []}
 
-    def ask_stream(prompt, messages=None):
+    def ask_stream(prompt, messages=None, metricas=None):
         for t in TOKENS:
             time.sleep(RETARDO_TOKEN)
             yield t
         estado["fin_llm"] = time.monotonic()
 
-    async def synthesize(texto, voz=None):
+    async def synthesize(texto, voz=None, marcas=None):
         estado["fragmentos_tts"].append(texto)
+        if marcas is not None:
+            marcas["primer_byte"] = time.time()
         return b"\x01\x00" * 1600 * max(1, len(texto.split()))   # 0.1 s por palabra
 
     monkeypatch.setattr(stt, "transcribe", lambda pcm, rate: "qué es la fotosíntesis")
@@ -73,6 +75,8 @@ async def test_primer_audio_antes_de_que_termine_el_llm(dobles):
 
     registro = json.loads((timing.LOG_FILE).read_text().splitlines()[-1])
     assert 0 < registro["durations"]["primer_audio"] < registro["durations"]["pipeline"]
+    d = registro["durations"]
+    assert 0 < d["llm_primer_fragmento"] and 0 <= d["tts_primer_byte"] <= d["tts_primer_fragmento"]
 
     historial = srv.memory.get_historial("s1")
     assert historial[-1]["content"] == "".join(TOKENS).strip()
@@ -80,7 +84,7 @@ async def test_primer_audio_antes_de_que_termine_el_llm(dobles):
 
 
 async def test_error_del_llm_tras_primer_audio_cierra_limpio(dobles, monkeypatch):
-    def ask_stream_roto(prompt, messages=None):
+    def ask_stream_roto(prompt, messages=None, metricas=None):
         yield "Primera frase completa. "
         time.sleep(0.05)
         raise RuntimeError("se cayó Ollama")
@@ -95,7 +99,7 @@ async def test_error_del_llm_tras_primer_audio_cierra_limpio(dobles, monkeypatch
 
 
 async def test_error_antes_de_audio_envia_error(dobles, monkeypatch):
-    def ask_stream_roto(prompt, messages=None):
+    def ask_stream_roto(prompt, messages=None, metricas=None):
         raise RuntimeError("sin conexión")
         yield
 
@@ -115,3 +119,20 @@ async def test_consulta_directa_por_frases(dobles, monkeypatch):
     await srv._modo_consulta(ws, "toque", {"moneda": "USD"})
     assert dobles["fragmentos_tts"] == ["El dólar está a 400 pesos.", "El euro a 450."]
     assert ws.comandos()[-1] == "fin_respuesta"
+
+
+async def test_edge_tts_marca_el_primer_byte(monkeypatch):
+    class Communicate:
+        def __init__(self, texto, voice):
+            pass
+
+        async def stream(self):
+            yield {"type": "WordBoundary"}
+            yield {"type": "audio", "data": b"\xff\xfb"}
+            yield {"type": "audio", "data": b"\x00\x00"}
+
+    monkeypatch.setattr(tts.edge_tts, "Communicate", Communicate)
+    marcas = {}
+    antes = time.time()
+    assert await tts._sintetizar_mp3("hola", "voz", marcas) == b"\xff\xfb\x00\x00"
+    assert antes <= marcas["primer_byte"] <= time.time()

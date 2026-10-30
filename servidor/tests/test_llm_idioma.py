@@ -45,7 +45,7 @@ def test_solo_latino():
 
 
 def _ollama_falso(monkeypatch, respuestas, llamadas):
-    def stream(messages):
+    def stream(messages, metricas=None):
         llamadas.append(messages)
         yield from respuestas[len(llamadas) - 1]
     monkeypatch.setenv("LLM_PROVIDER", "ollama")

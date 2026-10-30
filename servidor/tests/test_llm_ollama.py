@@ -20,7 +20,9 @@ LINEAS = [
     {"message": {"role": "assistant", "content": "", "thinking": "el usuario saluda"}, "done": False},
     {"message": {"role": "assistant", "content": "Hola, "}, "done": False},
     {"message": {"role": "assistant", "content": "humano."}, "done": False},
-    {"message": {"role": "assistant", "content": ""}, "done": True},
+    {"message": {"role": "assistant", "content": ""}, "done": True,
+     "prompt_eval_count": 139, "prompt_eval_duration": 3_000_000_000,
+     "eval_count": 4, "eval_duration": 500_000_000, "load_duration": 20_000_000},
 ]
 
 
@@ -63,3 +65,11 @@ def test_think_omitido(ollama_falso, monkeypatch):
     monkeypatch.setenv("OLLAMA_THINK", "")
     assert llm.ask("hola") == "Hola, humano."
     assert "think" not in ollama_falso[0]
+
+
+def test_metricas_del_ultimo_chunk(ollama_falso):
+    """Las estadísticas de Ollama (ns) llegan en segundos; sin `metricas`, nada cambia."""
+    metricas = {}
+    assert list(llm.ask_stream("hola", metricas=metricas)) == ["Hola, ", "humano."]
+    assert metricas == {"prompt_tokens": 139, "prompt_s": 3.0, "eval_tokens": 4,
+                        "eval_s": 0.5, "load_s": 0.02}

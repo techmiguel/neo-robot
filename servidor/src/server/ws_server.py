@@ -211,9 +211,14 @@ async def _responder_en_streaming(ws, textos: AsyncIterator[str], timer, ka) -> 
     n_fragmentos = 0
     try:
         while (frag := await fragmentos.get()) is not None:
+            marcas = {}
             if n_fragmentos == 0:
                 timer.mark("tts_start")
-            pcm = await synthesize(frag)
+                pcm = await synthesize(frag, marcas=marcas)
+                if "primer_byte" in marcas:
+                    timer.timestamps["tts_primer_byte"] = marcas["primer_byte"]
+            else:
+                pcm = await synthesize(frag)
             n_fragmentos += 1
             if bytes_enviados == 0:
                 ka.cancel()
@@ -332,12 +337,15 @@ async def _modo_pipeline(ws, buffer: bytearray, session_id: str):
             async def _tokens_llm():
                 timer.mark("llm_start")
                 primero = True
-                async for token in _iterar_en_hilo(lambda: ask_stream(transcripcion, mensajes)):
+                stats = {}
+                async for token in _iterar_en_hilo(lambda: ask_stream(transcripcion, mensajes, metricas=stats)):
                     if primero:
                         timer.mark("llm_primer_token")
                         primero = False
                     yield token
                 timer.mark("llm_end")
+                if stats:
+                    timer.set_metadata("llm_stats", stats)
 
             textos = _tokens_llm()
 

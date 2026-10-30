@@ -60,9 +60,13 @@ from src.benchmark import cliente, corpus, red
 from src.benchmark.metricas import errores_transcripcion, resumen, resumen_transcripcion
 
 RAIZ = corpus.RAIZ
-ETAPAS = ["stt", "intencion", "llm", "llm_primer_token", "handler", "tts", "envio", "servidor"]
+ETAPAS = ["stt", "intencion", "llm", "llm_primer_token", "llm_primer_fragmento", "handler", "tts",
+          "tts_primer_byte", "tts_primer_fragmento", "envio", "servidor"]
 LATENCIAS_LIBRE = ["inicio_audio", "e2e", "cliente_subida", "cliente_primer_audio", "cliente_espera",
-                   "servidor", "stt", "llm_primer_token", "llm", "tts", "envio"]
+                   "servidor", "stt", "llm_primer_token", "llm_primer_fragmento", "llm",
+                   "tts_primer_byte", "tts_primer_fragmento", "tts", "envio"]
+# Estadísticas de Ollama por consulta (metadata.llm_stats del servidor)
+LLM_STATS = ["prompt_tokens", "prompt_s", "prefill_tok_s", "eval_tokens", "eval_tok_s", "load_s"]
 LATENCIAS_COMANDO = ["inicio_audio", "e2e", "cliente_primer_audio", "servidor", "stt", "handler", "tts"]
 
 
@@ -190,6 +194,13 @@ def construir_fila(item: dict, repeticion: int, c: dict, reg: dict | None) -> di
     for etapa in ETAPAS:
         clave = "pipeline" if etapa == "servidor" else etapa
         fila[etapa] = d.get(clave) or None
+    st = m.get("llm_stats") or {}
+    fila["prompt_tokens"] = st.get("prompt_tokens")
+    fila["prompt_s"] = st.get("prompt_s")
+    fila["eval_tokens"] = st.get("eval_tokens")
+    fila["load_s"] = st.get("load_s")
+    fila["prefill_tok_s"] = st["prompt_tokens"] / st["prompt_s"] if st.get("prompt_s") and st.get("prompt_tokens") else None
+    fila["eval_tok_s"] = st["eval_tokens"] / st["eval_s"] if st.get("eval_s") and st.get("eval_tokens") else None
     # Cuándo empieza a hablar la placa, desde fin_grabacion: con streaming, al
     # llegar el primer audio; sin streaming (o servidor anterior), al terminar.
     fila["streaming"] = bool(m.get("streaming"))
@@ -242,6 +253,7 @@ def resumir(filas: list[dict]) -> dict:
         "mensajes_error": dict(collections.Counter(f["error"] for f in filas if not f["ok"])),
         "latencia_libre": {k: resumen([f.get(k) for f in libres]) for k in LATENCIAS_LIBRE},
         "latencia_comandos": {k: resumen([f.get(k) for f in comandos]) for k in LATENCIAS_COMANDO},
+        "llm_stats": {k: resumen([f.get(k) for f in libres]) for k in LLM_STATS},
         "rtf_tts": resumen([f.get("rtf_tts") for f in ok]),
         "stt": resumen_transcripcion(con_stt),
         "stt_latencia": resumen([f["stt"] for f in con_stt]),
@@ -321,8 +333,12 @@ def informe(res: dict) -> str:
                "e2e": "End-to-end (subida → respuesta completa)", "cliente_subida": "Subida del audio",
                "cliente_primer_audio": "Primer audio recibido (desde fin_grabacion)",
                "cliente_espera": "Respuesta completa (desde fin_grabacion)", "servidor": "Servidor (pipeline)",
-               "stt": "STT", "llm_primer_token": "LLM, primer token", "llm": "LLM, respuesta completa",
-               "handler": "Handler (API externa)", "tts": "TTS", "envio": "Envío de la respuesta"}
+               "stt": "STT", "llm_primer_token": "LLM, primer token",
+               "llm_primer_fragmento": "LLM, primer fragmento para el TTS", "llm": "LLM, respuesta completa",
+               "handler": "Handler (API externa)",
+               "tts_primer_byte": "TTS, primer byte del primer fragmento (edge-tts)",
+               "tts_primer_fragmento": "TTS del primer fragmento", "tts": "TTS",
+               "envio": "Envío de la respuesta"}
 
     L += ["", "## Latencia de preguntas libres (STT → LLM → TTS)", "",
           "Segundos, mediana (p90).", "", cab, sep]
@@ -343,6 +359,18 @@ def informe(res: dict) -> str:
     L += ["", "La latencia percibida en la placa está en la última sección." if panel else
           "En la placa hay que sumar la espera de silencio del VAD (1.5 s, `VAD_HOLD_MS`) y el WiFi "
           "placa↔PC; ver `python -m src.benchmark.placa`."]
+
+    if any(p["resumen"].get("llm_stats", {}).get("prompt_tokens", {}).get("n") for p in perfs):
+        stats = {"prompt_tokens": "Tokens de prompt procesados", "prompt_s": "Prompt (prefill), s",
+                 "prefill_tok_s": "Prefill, tokens/s", "eval_tokens": "Tokens generados",
+                 "eval_tok_s": "Generación, tokens/s", "load_s": "Carga del modelo, s"}
+        L += ["", "## LLM (Ollama), preguntas libres", "",
+              "Mediana (p90). «Tokens de prompt procesados» cuenta solo lo que Ollama no tenía en su "
+              "caché: si es mucho menor que el prompt completo, hay caché de prefijo.", "", cab, sep]
+        for k, nombre in stats.items():
+            L.append(f"| {nombre} | " + " | ".join(
+                f"{_s(p['resumen']['llm_stats'][k])} ({_s(p['resumen']['llm_stats'][k], 'p90')})"
+                for p in perfs) + " |")
 
     if any(p["resumen"]["latencia_comandos"]["e2e"].get("n") for p in perfs):
         L += ["", "## Latencia de comandos (incluye API externa)", "", cab, sep]

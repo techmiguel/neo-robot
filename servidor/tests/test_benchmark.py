@@ -84,9 +84,15 @@ def servidor(tmp_path, monkeypatch):
     monkeypatch.setattr(timing, "LOG_FILE", tmp_path / "logs" / "pipeline_timing.jsonl")
     monkeypatch.setattr(ws_server, "GUARDAR_AUDIO_DIR", str(tmp_path / "grabaciones"))
     monkeypatch.setattr(stt, "transcribe", lambda pcm, sr=16000: FRASES[len(pcm) // 32])
-    monkeypatch.setattr(llm, "ask_stream", lambda prompt, messages=None: iter(["Tokio, ", "obviamente."]))
 
-    async def sintetizar(texto, voz=None):
+    def ask_stream(prompt, messages=None, metricas=None):
+        yield from ["Tokio, ", "obviamente."]
+        if metricas is not None:   # lo que deja _stream_ollama al terminar
+            metricas.update(prompt_tokens=150, prompt_s=3.0, eval_tokens=12, eval_s=1.5, load_s=0.1)
+
+    monkeypatch.setattr(llm, "ask_stream", ask_stream)
+
+    async def sintetizar(texto, voz=None, marcas=None):
         return _pcm(1000)
 
     async def handler(tipo, args):
@@ -149,6 +155,13 @@ async def test_ciclo_completo(servidor):
                          "perfiles": [{"nombre": "local", "config": libre["perfil"], "resumen": res}]})
     assert "| WER | 5.6 % |" in texto and "| WER con tildes | 16.7 % |" in texto
     assert "Peores transcripciones (local)" in texto
+
+    # Estadísticas de Ollama: solo en las preguntas libres
+    assert (libre["prompt_tokens"], libre["prefill_tok_s"], libre["eval_tok_s"]) == (150, 50.0, 8.0)
+    assert comando["prompt_tokens"] is None
+    assert libre["llm_primer_fragmento"] is not None and comando["llm_primer_fragmento"] is None
+    assert res["llm_stats"]["prompt_tokens"]["p50"] == 150
+    assert "## LLM (Ollama), preguntas libres" in texto and "| Prefill, tokens/s | 50.00 (50.00) |" in texto
 
 
 # ── Servidor real en subproceso ───────────────────────────────────────────────

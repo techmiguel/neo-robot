@@ -103,7 +103,7 @@ def _sesion_http():
     return _http
 
 
-def _stream_groq(messages: list[dict]) -> Iterator[str]:
+def _stream_groq(messages: list[dict], metricas: dict | None = None) -> Iterator[str]:
     modelo = os.getenv("GROQ_LLM_MODEL", GROQ_LLM_DEFAULT)
     extra = {}
     if modelo.startswith("openai/gpt-oss"):
@@ -144,7 +144,17 @@ def _opciones_ollama() -> dict:
     return opciones
 
 
-def _stream_ollama(messages: list[dict]) -> Iterator[str]:
+# Estadísticas del último chunk de Ollama (duraciones en ns) → claves de `metricas`
+# (segundos). prompt_tokens son los tokens del prompt que Ollama procesó de verdad:
+# si reutilizó su caché KV, solo los nuevos. Así se ve si hay caché de prefijo.
+_STATS_OLLAMA = {
+    "prompt_eval_count": "prompt_tokens", "prompt_eval_duration": "prompt_s",
+    "eval_count": "eval_tokens", "eval_duration": "eval_s",
+    "load_duration": "load_s", "total_duration": "total_s",
+}
+
+
+def _stream_ollama(messages: list[dict], metricas: dict | None = None) -> Iterator[str]:
     host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
     model = os.getenv("OLLAMA_MODEL", OLLAMA_MODEL_DEFAULT)
     cuerpo = {
@@ -177,6 +187,11 @@ def _stream_ollama(messages: list[dict]) -> Iterator[str]:
             if texto:
                 yield texto
             if dato.get("done"):
+                if metricas is not None:
+                    for clave, nombre in _STATS_OLLAMA.items():
+                        if clave in dato:
+                            v = dato[clave]
+                            metricas[nombre] = v / 1e9 if nombre.endswith("_s") else v
                 break
 
 
@@ -204,17 +219,20 @@ def _mensajes(prompt: str, messages: list[dict] | None) -> list[dict]:
     ]
 
 
-def ask_stream(prompt: str, messages: list[dict] = None) -> Iterator[str]:
+def ask_stream(prompt: str, messages: list[dict] = None,
+               metricas: dict | None = None) -> Iterator[str]:
     """Genera la respuesta del LLM en fragmentos de texto (tokens) según llegan.
 
     Si se proporciona `messages`, se usa directamente (permite historial
     conversacional). Si el modelo no produce texto, emite RESPUESTA_VACIA para
-    que el TTS nunca reciba cadena vacía.
+    que el TTS nunca reciba cadena vacía. Si se pasa `metricas`, al terminar
+    tiene las estadísticas del backend (con Ollama: tokens y tiempos del prompt
+    y de la generación; ver _STATS_OLLAMA).
 
     Bloqueante: desde asyncio, consumir en un hilo.
     """
     hubo_texto = False
-    for trozo in _stream_crudo(_mensajes(prompt, messages)):
+    for trozo in _stream_crudo(_mensajes(prompt, messages), metricas):
         # Lo ya enviado al TTS no se puede repetir: aquí solo se quitan las letras
         # de otro alfabeto (qwen2.5:3b se pasa al chino). ask() sí repite la petición.
         trozo = "".join(c for c in trozo if not c.isalpha() or "LATIN" in unicodedata.name(c, ""))
@@ -244,12 +262,12 @@ def ask(prompt: str, messages: list[dict] = None) -> str:
             or ("Eso no sé decirlo en español, y mira que lo he intentado." if primero else RESPUESTA_VACIA))
 
 
-def _stream_crudo(messages: list[dict]) -> Iterator[str]:
+def _stream_crudo(messages: list[dict], metricas: dict | None = None) -> Iterator[str]:
     provider = os.getenv("LLM_PROVIDER", "groq")
     if provider == "groq":
-        return _stream_groq(messages)
+        return _stream_groq(messages, metricas)
     if provider == "ollama":
-        return _stream_ollama(messages)
+        return _stream_ollama(messages, metricas)
     raise ValueError(f"LLM_PROVIDER desconocido: {provider}")
 
 

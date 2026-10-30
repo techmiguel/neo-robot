@@ -131,7 +131,9 @@ class Panel:
         campos = ["id", "intento", "descartado", "referencia"]
         por_perfil = ["transcripcion", "errores_palabra", "palabras", "intencion_ok", "respuesta",
                       "stt", "llm_primer_token", "llm", "handler", "tts", "servidor", "streaming",
-                      "primer_audio", "respuesta_completa", "inicio_audio", "percibida"]
+                      "primer_audio", "respuesta_completa", "inicio_audio", "percibida",
+                      "llm_primer_fragmento", "tts_primer_byte", "tts_primer_fragmento",
+                      "prompt_tokens", "prompt_s", "eval_tokens", "eval_tok_s"]
         nombres = list(self.upstream)
         campos += [f"{p}_{c}" for p in nombres for c in por_perfil]
         with open(self.carpeta / "resultados.csv", "w", encoding="utf-8-sig", newline="") as f:
