@@ -158,6 +158,89 @@ aparte (el panel Terminal se congeló dos veces).
 
 - Da la latencia percibida B0-placa, la referencia de la Fase 6 y de la validación final.
 
+### Comandos de la Fase 0 (PC, PowerShell)
+
+Los pasos 0.1–0.3 son código y ya están en la rama, con sus tests. Para medir:
+
+1. **Actualizar el repo e instalar.** Desde `servidor\`:
+
+   ```powershell
+   git pull
+   .venv\Scripts\activate
+   pip install -e ".[dev,local]"
+   pytest -q
+   ```
+
+2. **Configurar Ollama una vez.** Salir de Ollama desde el icono de la bandeja, ejecutar lo
+   siguiente y volver a abrirlo:
+
+   ```powershell
+   setx OLLAMA_MAX_LOADED_MODELS 1
+   setx OLLAMA_NUM_PARALLEL 1
+   ```
+
+3. **Preparar cada sesión de medida**, en la misma ventana en la que se lanza `e2e`:
+
+   ```powershell
+   $env:OLLAMA_KEEP_ALIVE = "-1m"
+   ollama ps                     # gemma4:e2b al 100 %; si sale otro modelo: ollama stop <modelo>
+   Get-CimInstance Win32_OperatingSystem | Select-Object FreePhysicalMemory   # RAM libre (KB), al REGISTRO
+   ```
+
+   Cerrar el navegador y cualquier otra aplicación pesada. Anotar en el REGISTRO la hora, la RAM
+   libre y qué hay abierto.
+
+4. **Localizar el corpus fijo**, el de la sesión del panel del 25/10 a las 13:10:
+
+   ```powershell
+   Get-ChildItem logs\panel -Directory -Filter "20261025_13*"
+   $corpus = "logs\panel\<carpeta>\corpus.csv"
+   ```
+
+5. **0.4: línea base, dos veces (A/A).** Lanzar cada una en un momento distinto (por ejemplo,
+   una por la mañana y otra por la tarde), con el PC en reposo. Cada una dura unos 25–30 min.
+
+   ```powershell
+   python -m src.benchmark.e2e --corpus $corpus --repeticiones 3 --calentamiento 2 --sin-red `
+       --whisper-model small --variante "b0=local,OLLAMA_MODEL=gemma4:e2b" --salida logs\aceleracion\p0_a1
+   python -m src.benchmark.e2e --corpus $corpus --repeticiones 3 --calentamiento 2 --sin-red `
+       --whisper-model small --variante "b0=local,OLLAMA_MODEL=gemma4:e2b" --salida logs\aceleracion\p0_a2
+   ```
+
+   Antes de dar la primera por buena, mirar en `informe.md` la tabla «LLM (Ollama)»:
+
+   - los tokens de prompt procesados deberían rondar 150–170 (prompt corto + pregunta) si gemma no
+     reutiliza el prefijo;
+   - la carga del modelo debería ser casi 0, y si no, el modelo se estaba recargando.
+
+   Con `small` se sigue la referencia de las sesiones del 24 y 25/10. Si el `.env` dice otra cosa,
+   `--whisper-model` lo pisa.
+
+6. **0.5: línea base con la placa.** Comprobar que la placa lleva el firmware de `main`
+   (`pio run -e esp32dev --target upload` desde `firmware\`, si hay duda). Ventana 1, PowerShell
+   aparte, no el panel Terminal de la app:
+
+   ```powershell
+   cd firmware
+   pio device monitor -e esp32dev --filter time --filter log2file
+   ```
+
+   Ventana 2, desde `servidor\`:
+
+   ```powershell
+   python -m src.benchmark.panel --responde b0 --variante "b0=local,OLLAMA_MODEL=gemma4:e2b" --whisper-model small
+   ```
+
+   Decir «Hola NEO» y leer cada frase del corpus. Al terminar, pulsar «Generar informe».
+
+7. **Entregar los datos.** Copiar `logs\aceleracion\p0_a1`, `p0_a2` y la carpeta del panel
+   (`informe.md` y `resultados.csv`) a `docs\metrics\aceleracion_20261030\p0_linea_base\`. Después,
+   o subirlas con un commit, o pegarme los `informe.md`. Con eso relleno B0, Δ_AA y B0-placa en el
+   REGISTRO.
+
+Los `servidor.log` y `consultas.jsonl` de `e2e` no hace falta publicarlos. Las grabaciones
+(`grabaciones\`, WAV) no se publican.
+
 ## Fase 1 — Modelo: LFM3 frente a gemma4:e2b y qwen2.5:3b
 
 **1.1 Comprobaciones previas de LFM3** (PC, manuales, anotadas):
