@@ -139,6 +139,22 @@ python -m src.benchmark.placa ..\firmware\platformio-device-monitor-<fecha>.log 
 
 Para el perfil nube, repite una sesión corta con la placa, sin `GUARDAR_AUDIO_DIR`, con `$env:TIMING_LOG_DIR = "logs/placa_nube"` y `--perfil nube`, y analízala igual. Los registros del servidor se emparejan por orden con los turnos de la placa: cada sesión tiene que tener su propia carpeta `TIMING_LOG_DIR`.
 
+## Diagnósticos del LLM, sin STT ni TTS
+
+Hablan directamente con el LLM y tardan minutos, no media hora:
+
+```powershell
+# ¿Reutiliza Ollama el system prompt y el historial? (escenarios A, B, C; ver la cabecera del módulo)
+python -m src.benchmark.cache_prefijo --ollama-model gemma4:e2b --salida logs/cache/gemma.json
+python -m src.benchmark.cache_prefijo --comparar logs/cache/*.json
+
+# Calidad del system prompt con un modelo: alfabeto, longitud, guiños, tiempo
+python -m src.benchmark.prompt --ollama-model gemma4:e2b --repeticiones 3 --salida logs/prompt/gemma.json
+python -m src.benchmark.prompt --comparar logs/prompt/*.json
+```
+
+Con Ollama, el informe de `e2e` tiene además una tabla «LLM (Ollama)»: tokens de prompt que procesó de verdad (solo los que no tenía en caché), prefill y generación en tokens/s, y carga del modelo.
+
 ## 5. Publicar
 
 Copia `informe.md` y las tablas de la placa a `docs/metrics/` con la fecha, junto con las condiciones de la prueba: red (sale en el informe), distancia a la placa y quién habló.
