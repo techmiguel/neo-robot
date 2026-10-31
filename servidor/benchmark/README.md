@@ -153,6 +153,8 @@ python -m src.benchmark.prompt --ollama-model gemma4:e2b --repeticiones 3 --sali
 python -m src.benchmark.prompt --comparar logs/prompt/*.json
 ```
 
+Para las pruebas de aceleración (`docs/metrics/aceleracion_20261030/`), `python -m src.benchmark.aceleracion` comprueba el PC, mide con los parámetros fijos del plan, publica los datos y compara dos mediciones frase a frase con la regla de decisión del plan.
+
 Con Ollama, el informe de `e2e` tiene además una tabla «LLM (Ollama)»: tokens de prompt que procesó de verdad (solo los que no tenía en caché), prefill y generación en tokens/s, y carga del modelo.
 
 ## 5. Publicar

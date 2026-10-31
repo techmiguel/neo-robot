@@ -39,11 +39,16 @@ experimento manual, sin tocar NEO.
 
 ## Método común a todas las pruebas
 
-**Corpus fijo.** Se usan las 31 grabaciones reales de la sesión del panel del 25/10 a las 13:10
-(`servidor/logs/panel/20261025_1310*/corpus.csv`). Se reproducen con `python -m src.benchmark.e2e
---corpus <ruta> --repeticiones 3 --calentamiento 2 --sin-red`. El mismo audio en todas las
-pruebas aísla el efecto del cambio. Los WAV no se publican: tienen tu voz y ya están en
-`.gitignore`.
+**Corpus fijo C0.** Son las grabaciones de la sesión con la placa de la prueba 0.5, que se hace
+antes que la 0.4 (cambio del 31/10). Con eso:
+
+- no se depende de archivos antiguos;
+- la línea base del PC y la de la placa usan el mismo audio.
+
+`python -m src.benchmark.aceleracion fijar-corpus` lo fija, y `aceleracion medir` lo reproduce
+siempre con los mismos parámetros: `--repeticiones 3 --calentamiento 2 --sin-red --whisper-model
+small`. El mismo audio en todas las pruebas aísla el efecto del cambio. Los WAV no se publican:
+tienen tu voz y ya están en `.gitignore`.
 
 **Condiciones del PC**, anotadas en cada prueba:
 
@@ -144,7 +149,7 @@ Salida: tabla por consola y JSON. En cada petición se considera que hay reutili
 
 - Prueba automática: test con el Ollama falso de `test_llm_ollama.py`.
 
-**0.4 Línea base y prueba A/A** (PC). Configuración actual del perfil local: gemma4:e2b, prompt
+**0.4 Línea base y prueba A/A** (PC, después de 0.5). Configuración actual del perfil local: gemma4:e2b, prompt
 corto, edge-tts.
 
 - Dos ejecuciones `e2e` completas en momentos distintos → referencia B0 y Δ_AA.
@@ -152,94 +157,188 @@ corto, edge-tts.
 - Hipótesis: «Empieza a hablar» ≈ 9–9,5 s en el servidor. Cerrará el «falta medirlo de punta a
   punta» del README.
 
-**0.5 Línea base con la placa** (PC + placa). Una sesión del panel con
-`--responde local`, sin más variantes, y el monitor de la placa en una ventana de PowerShell
+**0.5 Línea base con la placa** (PC + placa, primero). Una sesión del panel con
+una sola variante, y el monitor de la placa en una ventana de PowerShell
 aparte (el panel Terminal se congeló dos veces).
 
 - Da la latencia percibida B0-placa, la referencia de la Fase 6 y de la validación final.
+- Sus grabaciones son el corpus C0.
 
-### Comandos de la Fase 0 (PC, PowerShell)
+**0.3b Asistente de medición: `src/benchmark/aceleracion.py`** (añadido el 31/10). Tiene cuatro
+subcomandos:
 
-Los pasos 0.1–0.3 son código y ya están en la rama, con sus tests. Para medir:
+- `comprobar`: comprobaciones previas;
+- `fijar-corpus`: fija C0;
+- `medir`: lanza `e2e` con los parámetros del plan, guarda las condiciones del PC y copia lo
+  publicable a esta carpeta;
+- `comparar`: comparación pareada por frase, Δ_AA y la regla de decisión, con un bloque listo
+  para el REGISTRO.
 
-1. **Actualizar el repo e instalar.** Desde `servidor\`:
+### Guía de la Fase 0: qué hacer en el PC y con la placa
+
+Orden: A (una vez) → B (placa, 0.5) → C (PC, 0.4, dos veces). Todos los comandos son de
+PowerShell; los de Python se ejecutan desde `servidor\` con el entorno activado.
+
+**A. Preparar el PC (una vez, ~10 min)**
+
+1. Actualizar e instalar:
 
    ```powershell
+   cd neo-robot
+   git fetch origin
+   git checkout claude/inference-acceleration-strategies-mymk0c
    git pull
+   cd servidor
    .venv\Scripts\activate
    pip install -e ".[dev,local]"
    pytest -q
    ```
 
-2. **Configurar Ollama una vez.** Salir de Ollama desde el icono de la bandeja, ejecutar lo
-   siguiente y volver a abrirlo:
+   `pytest` tiene que terminar sin fallos.
+2. Configurar Ollama: salir de Ollama desde el icono de la bandeja y ejecutar:
 
    ```powershell
    setx OLLAMA_MAX_LOADED_MODELS 1
    setx OLLAMA_NUM_PARALLEL 1
    ```
 
-3. **Preparar cada sesión de medida**, en la misma ventana en la que se lanza `e2e`:
+   Abrir Ollama de nuevo y **una PowerShell nueva**: `setx` no afecta a la ventana actual.
+3. Comprobar:
 
    ```powershell
+   cd neo-robot\servidor
+   .venv\Scripts\activate
    $env:OLLAMA_KEEP_ALIVE = "-1m"
-   ollama ps                     # gemma4:e2b al 100 %; si sale otro modelo: ollama stop <modelo>
-   Get-CimInstance Win32_OperatingSystem | Select-Object FreePhysicalMemory   # RAM libre (KB), al REGISTRO
+   python -m src.benchmark.aceleracion comprobar
    ```
 
-   Cerrar el navegador y cualquier otra aplicación pesada. Anotar en el REGISTRO la hora, la RAM
-   libre y qué hay abierto.
+   Antes de la sesión con la placa, el único aviso que puede quedar es «corpus C0 sin fijar».
+   Un FALLO hay que resolverlo; el propio mensaje dice cómo.
 
-4. **Localizar el corpus fijo**, el de la sesión del panel del 25/10 a las 13:10:
+**B. Sesión con la placa, prueba 0.5 (~45 min)**
+
+1. Montaje:
+   - la placa conectada por USB al PC (alimentación y monitor serie);
+   - micrófono INMP441, DAC PCM5100A, amplificador y altavoz conectados como en
+     [`docs/hardware.md`](../../hardware.md), y la OLED si la usas.
+2. Red:
+   - la placa y el PC en la misma wifi;
+   - mirar la IP del PC con `ipconfig` (adaptador wifi, «Dirección IPv4») y comprobar que
+     `firmware\src\config_local.h` tiene esa IP en `NEO_SERVIDOR_HOST`. Si no existe, copiar
+     `config_local.example.h` y editarlo.
+3. Flashear el firmware de esta rama, con cualquier monitor serie cerrado para que el puerto COM
+   esté libre:
 
    ```powershell
-   Get-ChildItem logs\panel -Directory -Filter "20261025_13*"
-   $corpus = "logs\panel\<carpeta>\corpus.csv"
+   cd neo-robot\firmware
+   pio run -e esp32dev --target upload
    ```
 
-5. **0.4: línea base, dos veces (A/A).** Lanzar cada una en un momento distinto (por ejemplo,
-   una por la mañana y otra por la tarde), con el PC en reposo. Cada una dura unos 25–30 min.
+4. Sala, que se anota en el REGISTRO:
+   - en silencio, ventanas cerradas, sin música ni televisión;
+   - unos 50 cm frente a la placa, como el 23/10;
+   - siempre la misma persona leyendo, con voz normal.
+5. **Ventana 1, primero el panel.** Una PowerShell aparte, no el terminal integrado de ninguna
+   app:
 
    ```powershell
-   python -m src.benchmark.e2e --corpus $corpus --repeticiones 3 --calentamiento 2 --sin-red `
-       --whisper-model small --variante "b0=local,OLLAMA_MODEL=gemma4:e2b" --salida logs\aceleracion\p0_a1
-   python -m src.benchmark.e2e --corpus $corpus --repeticiones 3 --calentamiento 2 --sin-red `
-       --whisper-model small --variante "b0=local,OLLAMA_MODEL=gemma4:e2b" --salida logs\aceleracion\p0_a2
-   ```
-
-   Antes de dar la primera por buena, mirar en `informe.md` la tabla «LLM (Ollama)»:
-
-   - los tokens de prompt procesados deberían rondar 150–170 (prompt corto + pregunta) si gemma no
-     reutiliza el prefijo;
-   - la carga del modelo debería ser casi 0, y si no, el modelo se estaba recargando.
-
-   Con `small` se sigue la referencia de las sesiones del 24 y 25/10. Si el `.env` dice otra cosa,
-   `--whisper-model` lo pisa.
-
-6. **0.5: línea base con la placa.** Comprobar que la placa lleva el firmware de `main`
-   (`pio run -e esp32dev --target upload` desde `firmware\`, si hay duda). Ventana 1, PowerShell
-   aparte, no el panel Terminal de la app:
-
-   ```powershell
-   cd firmware
-   pio device monitor -e esp32dev --filter time --filter log2file
-   ```
-
-   Ventana 2, desde `servidor\`:
-
-   ```powershell
+   cd neo-robot\servidor
+   .venv\Scripts\activate
+   $env:OLLAMA_KEEP_ALIVE = "-1m"
    python -m src.benchmark.panel --responde b0 --variante "b0=local,OLLAMA_MODEL=gemma4:e2b" --whisper-model small
    ```
 
-   Decir «Hola NEO» y leer cada frase del corpus. Al terminar, pulsar «Generar informe».
+   Esperar a que la consola diga `Panel listo: http://localhost:8080` (se abre el navegador): la
+   primera vez carga Whisper y gemma, y puede tardar 1–2 min. No tiene que haber otro servidor de
+   NEO en marcha, porque el panel usa el puerto 8765.
+6. **Ventana 2, después el monitor de la placa.** Otra PowerShell:
 
-7. **Entregar los datos.** Copiar `logs\aceleracion\p0_a1`, `p0_a2` y la carpeta del panel
-   (`informe.md` y `resultados.csv`) a `docs\metrics\aceleracion_20261030\p0_linea_base\`. Después,
-   o subirlas con un commit, o pegarme los `informe.md`. Con eso relleno B0, Δ_AA y B0-placa en el
-   REGISTRO.
+   ```powershell
+   cd neo-robot\firmware
+   pio device monitor -e esp32dev
+   ```
 
-Los `servidor.log` y `consultas.jsonl` de `e2e` no hace falta publicarlos. Las grabaciones
-(`grabaciones\`, WAV) no se publican.
+   Los filtros de hora y de log ya están en `platformio.ini`; el log se guarda en `firmware\`.
+   Pulsar el botón **RST** (o EN) de la placa para que arranque con el panel ya en marcha, y
+   buscar en el monitor esta línea:
+
+   - `[WS] Conectado al servidor LOCAL (LAN)`: correcto.
+   - `[WS] Servidor local no disponible — conectado a la NUBE (HF)`: **incorrecto**. La placa
+     respondería desde la nube y la sesión no vale. Comprobar la IP de `config_local.h` y el
+     cortafuegos de Windows (puerto 8765), y pulsar RST otra vez.
+7. Para cada una de las 31 frases que muestra el panel:
+   1. decir «Hola NEO»;
+   2. esperar al «¡Hola!» y contar un segundo;
+   3. leer la frase de corrido, con voz normal;
+   4. no hablar hasta que NEO termine la respuesta.
+
+   El panel pasa solo a la siguiente frase. Si te equivocas leyendo, la placa corta antes de
+   tiempo o hay un ruido, pulsa «Descartar último y repetir». Los comandos (clima, El Toque,
+   cripto, noticias) necesitan internet en el PC.
+8. Pulsar «Generar informe» y comprobar que la sección «Latencia percibida en la placa» tiene
+   alrededor de 31 turnos. Si sale vacía, el panel no encontró el log de la placa. No hace falta
+   repetir la sesión: la latencia percibida se calcula aparte, desde `servidor\`, con:
+
+   ```powershell
+   python -m src.benchmark.placa ..\firmware\<log más reciente>.log --timing logs\panel\<carpeta>\servidor_b0\pipeline_timing.jsonl --json logs\panel\<carpeta>\placa.json
+   ```
+
+   y se guarda `placa.json` junto al informe.
+9. Ctrl+C en las dos ventanas. Después, desde `servidor\`:
+
+   ```powershell
+   Get-ChildItem logs\panel | Sort-Object LastWriteTime | Select-Object -Last 1   # carpeta de la sesión
+   python -m src.benchmark.aceleracion fijar-corpus logs\panel\<carpeta>
+   New-Item -ItemType Directory ..\docs\metrics\aceleracion_20261030\p0_placa -Force
+   Copy-Item logs\panel\<carpeta>\informe.md, logs\panel\<carpeta>\resultados.csv ..\docs\metrics\aceleracion_20261030\p0_placa\
+   # y logs\panel\<carpeta>\placa.json si tuviste que usar el paso 8
+   ```
+
+   Las grabaciones (`grabaciones\`) no se copian nunca.
+
+**C. Línea base y prueba A/A en el PC, prueba 0.4 (dos veces, ~30 min cada una)**
+
+La placa no hace falta. Lanzar cada medición en un momento distinto (por ejemplo, una ahora y
+otra en unas horas).
+
+1. Cerrar el navegador y las aplicaciones pesadas. En una PowerShell, desde `servidor\`:
+
+   ```powershell
+   .venv\Scripts\activate
+   $env:OLLAMA_KEEP_ALIVE = "-1m"
+   ollama ps          # solo gemma4:e2b, o nada; si hay otro: ollama stop <modelo>
+   ```
+
+2. Primera medición:
+
+   ```powershell
+   python -m src.benchmark.aceleracion medir --prueba p0_a1 --variante "b0=local,OLLAMA_MODEL=gemma4:e2b"
+   ```
+
+   Antes de medir hace las comprobaciones y se detiene si alguna falla. Mientras dura, no uses el
+   PC.
+3. Unas horas después, la segunda: el mismo comando con `--prueba p0_a2`.
+4. Comparar:
+
+   ```powershell
+   python -m src.benchmark.aceleracion comparar p0_a1 p0_a2 --aa
+   ```
+
+   Da Δ_AA, que fija el umbral de ganancia de todas las pruebas siguientes. Hay que repetir la
+   segunda medición si avisa de que:
+   - Δ_AA > 0,5 s: demasiado ruido; revisa qué más estaba abierto;
+   - la carga del modelo > 0,5 s: Ollama recargaba el modelo.
+5. Entregar:
+
+   ```powershell
+   cd ..
+   git add docs/metrics/aceleracion_20261030
+   git commit -m "data(metrics): record the phase 0 baselines"
+   git push
+   ```
+
+   O pegar en el chat la salida de `comparar` y los dos `informe.md` (el de `p0_placa` y uno de
+   `p0_a1`). Con eso se rellenan B0, Δ_AA y B0-placa en el REGISTRO y se cierra la Fase 0.
 
 ## Fase 1 — Modelo: LFM3 frente a gemma4:e2b y qwen2.5:3b
 

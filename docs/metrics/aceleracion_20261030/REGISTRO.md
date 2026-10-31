@@ -27,8 +27,9 @@ libres). Un valor negativo es una mejora.
 | 0.1 | 30/10 | `fb0da9c` | Estadísticas de Ollama y marcas del primer fragmento | — | — | — | tests ✓ | mantener (instrumentación) |
 | 0.2 | 30/10 | `f03fa79` | Arreglo de `prompt.py` | — | — | — | tests ✓ | mantener (herramienta) |
 | 0.3 | 30/10 | `f6a6337` | Diagnóstico `cache_prefijo.py` | — | — | — | tests ✓ | mantener (herramienta) |
-| 0.4 | | | Línea base (A/A) | Δ_AA = | — | — | | referencia |
-| 0.5 | | | Línea base con la placa | — | — | — | | referencia |
+| 0.3b | 31/10 | `5628109` | Asistente `aceleracion.py` | — | — | — | tests ✓ | mantener (herramienta) |
+| 0.5 | | | Línea base con la placa (primero; da el corpus C0) | — | — | — | | referencia |
+| 0.4 | | | Línea base en el PC (A/A) | Δ_AA = | — | — | | referencia |
 
 ## Entradas
 
@@ -97,3 +98,51 @@ Plantilla (copiar por prueba):
   Esta prueba ya confirma, sobre el simulador, el problema de la poda de `memory.py` que motiva el
   paso 2.2.
 - **Decisión:** mantener. Se usa en 1.2, 2.x y 5.x.
+
+### 0.3b — Asistente de medición (`src/benchmark/aceleracion.py`)
+
+- **Fecha:** 31/10. **Commit:** `5628109`.
+- **Cambio:** subcomandos `comprobar`, `fijar-corpus`, `medir` y `comparar`:
+  - `medir` fija los parámetros comunes del plan (C0, 3 repeticiones, 2 de calentamiento, sin
+    medir la red, Whisper small), guarda `condiciones.json` (CPU, RAM, Ollama y modelos cargados,
+    commit, variables) y copia aquí `informe.md`, `resultados.json`, `consultas.jsonl` y
+    `condiciones.json`;
+  - `comparar` hace la comparación pareada por frase y aplica la regla del plan (o calcula Δ_AA
+    con `--aa`).
+- **Cambio de orden:** la sesión con la placa (0.5) va antes que la A/A (0.4), y sus grabaciones
+  son el corpus C0.
+- **Prueba automática:** `tests/test_aceleracion.py`, 11 pruebas. Cubren:
+  - comparación y veredictos (mantener, repetir y descartar por calidad o por pocas frases);
+  - Δ_AA y sus avisos;
+  - el bloque markdown;
+  - variantes de una misma ejecución;
+  - `fijar-corpus` con WAV ausentes;
+  - condiciones sin Ollama;
+  - `medir` con `e2e` simulado (argumentos y archivos publicados).
+
+  En total pasan 62 pruebas.
+- **Decisión:** mantener.
+
+### 0.5 — Línea base con la placa (pendiente)
+
+- **Hipótesis previa:**
+  - percibida (desde que acaba la voz hasta que suena NEO) de 11–12 s de mediana, con el prompt
+    corto y gemma4:e2b;
+  - unos 150–170 tokens de prompt procesados por consulta (sin caché de prefijo);
+  - 0–1 esperas por datos por respuesta;
+  - WER ≤ 6 %.
+- **Condiciones de la sala:** (rellenar) distancia, ruido, quién lee.
+- **Comando:** guía B de [`PLAN.md`](PLAN.md#guía-de-la-fase-0-qué-hacer-en-el-pc-y-con-la-placa).
+- **Datos:** `p0_placa/`.
+
+### 0.4 — Línea base en el PC y prueba A/A (pendiente)
+
+- **Hipótesis previa:**
+  - «Empieza a hablar» de 9–9,5 s de mediana en el servidor;
+  - STT ~2,4 s;
+  - primer token ~3 s, con ~150–170 tokens procesados por consulta (gemma no reutiliza el
+    prefijo);
+  - TTS del primer fragmento ~2,9 s, de los que ~1,9 s son el primer byte de edge-tts;
+  - Δ_AA ≤ 0,3 s.
+- **Comando:** guía C de [`PLAN.md`](PLAN.md#guía-de-la-fase-0-qué-hacer-en-el-pc-y-con-la-placa).
+- **Datos:** `p0_a1/` y `p0_a2/`.
